@@ -1,0 +1,3 @@
+# zshenv/20_path
+
+export PATH=$PATH:~/.bin

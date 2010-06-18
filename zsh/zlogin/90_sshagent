@@ -1,0 +1,14 @@
+# zlogin/90_sshagent
+#
+# Create sshagent
+#
+#
+
+
+if [ -z "$SSH_AGENT_PID" ] ; then
+    eval $(ssh-agent -s) >/dev/null 2>&1 || :
+fi
+
+
+
+# vim:ft=zsh

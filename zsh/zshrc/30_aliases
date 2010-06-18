@@ -1,0 +1,162 @@
+# zshrc/30_aliases
+#
+# Defines command shortcuts
+#
+
+autoload -U allopt
+alias allopt="allopt |less"
+
+alias stsrv="telnet www.listen-project.org 79 2>/dev/null | grep --color=none oco"
+
+
+
+mysudo(){
+    file=$1
+    use_x=0
+    [ ! -e "$file" ] && file=$(which -- $file | grep -v 'not')
+    [ -n "$file" ] && [ -e "$file" ] && [ -n "$(ldd $file | grep libX11)" ] && use_x=1
+    if [ $use_x -eq 1 ] ; then
+        echo "Need gksudo !!"
+        gksudo "$@"
+    else
+        \sudo "$@" 
+    fi
+}
+
+alias rm="nocorrect rm -i"
+alias mv="nocorrect mv -i"
+alias cp="nocorrect cp -i"
+alias ln='nocorrect ln'
+alias mkdir='nocorrect mkdir'
+alias sudo="nocorrect sudo"
+alias wget='noglob wget'
+alias curl='noglob curl'
+alias apt-cache='noglob apt-cache'
+alias man="LANG=C man"
+alias ssh="ssh -C"
+alias df="df -h"
+alias diff='diff -rNu'
+alias t='tail -F'
+alias cal='cal -3'
+alias vim="TERM=xterm vim"
+alias vi="vim"
+alias s="mysudo"
+alias sudo="mysudo"
+alias svi="s vim" 
+alias mutt="mutt -y"
+alias getaptkey='sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com'
+
+#APT DPKG stuff
+function dpkg(){ sudo /usr/bin/dpkg $* ; rehash}
+function aptcleanup(){
+    sudo dpkg --clear-avail
+    sudo dpkg --forget-old-unavail
+    sudo sync-available
+}
+
+function of() { lsof -np "$1" }
+compdef _pids of
+function psgrep() { ps aux | grep "[${1[1]}]${1[2,-1]}" }
+
+# QUICK EDIT
+alias zal="vim $HOME/.zsh/zshrc/30_aliases"
+alias zvi="vim $HOME/.vimrc"
+alias zsc="vim $HOME/.screenrc"
+
+# FIND STUFF
+alias locate='noglob locate'
+alias find='noglob find'
+alias qf='find . -iname '
+alias findnosecure="find . -perm +4000 -print"
+function sfind(){ find "$@" | egrep -v '(binaire|\.svn)' ; }
+
+# GREP STUFF
+alias grep='grep --color=auto'
+alias egrep='egrep --color=auto'
+alias fgrep='fgrep --color=auto'
+function sgrep(){ grep "$@" --color=always| egrep -v '(binaire|\.svn)' ; } 
+function g(){ grep --color=always "$@" | more }
+
+# ZSH STUFF
+alias zmv="nocorrect noglob zmv"
+alias mmv="nocorrect noglob zmv -W"
+alias zcp='zmv -C'
+alias zln='zmv -L'
+
+# LS stuff
+_LS_OPTS='-bCF --color=auto'
+ls --group-directories-first >/dev/null 2>&1 \
+  && _LS_OPTS="$_LS_OPTS --group-directories-first"
+# I prefer POSIX collation for ls
+alias ls="LC_COLLATE=POSIX ls -h --color=auto $_LS_OPTS"
+alias ll="ls -lF"
+alias la="ls -aF"
+alias lla="ls -alF"
+alias lsd='ls -ld *(-/DN)'
+alias lsdir="for dir in *;do;if [ -d \$dir ];then;du -hsL \$dir 2>/dev/null;fi;done"
+alias lsbig="ls -flh *(.OL[1,10])"
+alias lssmall="ls -Srl *(.oL[1,10])"
+alias lsnew="ls -rl *(D.om[1,10])"
+alias lsold="ls -rtlh *(D.om[1,10])"
+function l(){ ls -hla --color="always" "$@" | more }
+alias vless='vim -u /usr/share/vim/vim71/macros/less.vim'
+
+unset _LS_OPTS
+
+# DISPLAY STUFF
+function gkill(){ #MOTD
+    filter="$@"
+    ps xaf | grep "$filter" | grep -v grep 
+    echo "Sure kill this process?"
+    read 
+    ps xaf | grep "$filter" | grep -v grep | awk '{print $1}' | xargs kill
+}
+
+# handy documentation lookup on Debian
+# from http://www.michael-prokop.at/computer/config/.zshrc
+doc() { cd /usr/share/doc/$1 && ls } #MOTD
+_doc() { _files -W /usr/share/doc -/ }
+compdef _doc doc
+
+alias cmd="wineconsole --backend=curses cmd"
+
+# LOG STUFF
+function usniff(){sudo lsof -u$1|egrep -v "(/usr|/dev|/bin|/lib|socket$|pipe)"} # MOTD
+function sudolog(){ sed -n -e "/sudo:.*COMMAND/$@p" /var/log/auth.log } #MOTD
+function sulog(){ sed -n -e "/su:.*COMMAND/$@p" /var/log/auth.log } #MOTD
+function showlog(){ tail -f /var/log/{syslog,messages,daemon.log} }
+
+function killd(){ #MOTD
+    DISPLAY="" ps xae | grep DISPLAY=:$1 | grep -v grep | awk '{print $1}' | xargs kill -9
+}
+
+# Service stuff
+alias invoke-rc.d="nocorrect sudo invoke-rc.d"
+alias service="nocorrect sudo service"
+compdef _service invoke-rc.d
+
+# CD STUFF
+function cdw(){ cd $(which "$@") } #MOTD
+function cd () {
+if [[ -z $2 ]]; then
+  if [[ -f $1 ]]; then
+    builtin cd $1:h
+  else
+    if [[ $1 = ".." ]]; then
+        new_pwd=${PWD%/*}
+        [ -z "$new_pwd" ] && new_pwd="/"
+        builtin cd $new_pwd
+    else
+        builtin cd $1
+    fi
+  fi
+else
+  if [[ -z $3 ]]; then
+    builtin cd $1 $2
+  else
+    echo cd: too many arguments
+  fi
+fi
+}
+
+# vim:ft=zsh

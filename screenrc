@@ -1,0 +1,37 @@
+
+
+
+startup_message off
+shell /bin/zsh
+shelltitle ""
+
+autodetach on
+
+caption always "%{= Kw}%h%< %=%>%{+b}[%D %d/%m/%y  %c:%s]"
+hardstatus alwayslastline "%{= kR} %-Lw%{=b Kw}%50> %n%f* %t %{= kr}%+Lw %< %=%>%l %`"
+
+#backtick 0 0 20  sh -c "ping -c1 192.168.0.1 >/dev/null 2>&1 && echo \"Online\" || echo \"Offline\""
+#backtick 1 0 300 get_meteo
+
+#bindkey -k  screen -t "Messages log" 9 tail -f /var/log/messages
+#screen 0 zsh
+#
+
+bind -c change 0 number 0
+bind -c change 1 number 1
+bind -c change 2 number 2
+bind -c change 3 number 3
+bind -c change 4 number 4
+bind -c change 5 number 5
+bind -c change 6 number 6
+bind -c change 7 number 7
+bind -c change 8 number 8
+bind -c change 9 number 9
+
+bindkey ^B command -c change
+
+bindkey ^Bb stuff ^B
+bindkey ^BB stuff ^B
+bindkey ^B^B stuff ^B
+
+#bindkey "\033[Z" next

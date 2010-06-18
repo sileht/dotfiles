@@ -1,0 +1,101 @@
+# zshrc/80_bindkeys
+
+# load emacs bindkeys
+bindkey -e
+
+bindkey " " magic-space    # also do history expansion on space
+
+WORDSTYLE="bash"
+
+bindkey "[1~" beginning-of-line
+bindkey "[2~" overwrite-mode
+bindkey "[3~" delete-char
+bindkey "[4~" end-of-line
+bindkey "[5~" up-line-or-history ## PageUp
+bindkey "[6~" down-line-or-history ## PageDown
+#bindkey "[1~" beginning-of-line
+#bindkey "[4~" end-of-line
+
+autoload -U zed
+autoload -U select-word-style
+select-word-style $WORDSTYLE
+
+function backward-kill-word-bash-match(){
+	autoload backward-kill-word-match
+	select-word-style normal
+	backward-kill-word-match
+	select-word-style $WORDSTYLE
+}
+autoload -U backward-kill-word-bash-match
+zle -N backward-kill-word-bash backward-kill-word-bash-match
+bindkey "" backward-kill-word-bash
+
+
+function zle_sudo(){
+    if [ x"$BUFFER" = x"" ]; then 
+        BUFFER=$(history -1 | sed 's/^ *[[:digit:]]* *//g')
+        BUFFER=$(echo $BUFFER | sed '/^sudo/!s/^/sudo /')
+        CURSOR=$#BUFFER
+        zle accept-line
+    else
+        BUFFER=$(echo $BUFFER | sed '/^sudo/!s/^/sudo /')
+        CURSOR=$((CURSOR+5))
+    fi
+}
+zle -N zle_sudo zle_sudo
+bindkey "o" zle_sudo
+bindkey "" zle_sudo
+
+#autoload -U insert-files
+#zle -N insert-files
+#bindkey "f" insert-files ## C-x-f
+
+#autoload -U predict-on
+#zle -N predict-on
+#zle -N predict-off
+#bindkey "" predict-on ## C-x C-z
+#bindkey "" predict-off ## C-z
+
+autoload -U edit-command-line # later bound to C-z e
+autoload -U zed # what, your shell can't edit files?
+zle -N edit-command-line
+bindkey "" edit-command-line
+bindkey "e" edit-command-line
+
+
+#autoload -U incremental-complete-word
+#zle -N incremental-complete-word
+#bindkey "i" incremental-complete-word ## C-x-i
+
+
+# Most broken key found in debian default configuration
+if [[ "$TERM" != emacs ]]; then
+[[ -z "$terminfo[kdch1]" ]] || bindkey -M emacs "$terminfo[kdch1]" delete-char
+[[ -z "$terminfo[khome]" ]] || bindkey -M emacs "$terminfo[khome]" beginning-of-line
+[[ -z "$terminfo[kend]" ]] || bindkey -M emacs "$terminfo[kend]" end-of-line
+[[ -z "$terminfo[kich1]" ]] || bindkey -M emacs "$terminfo[kich1]" overwrite-mode
+[[ -z "$terminfo[kdch1]" ]] || bindkey -M vicmd "$terminfo[kdch1]" vi-delete-char
+[[ -z "$terminfo[khome]" ]] || bindkey -M vicmd "$terminfo[khome]" vi-beginning-of-line
+[[ -z "$terminfo[kend]" ]] || bindkey -M vicmd "$terminfo[kend]" vi-end-of-line
+[[ -z "$terminfo[kich1]" ]] || bindkey -M vicmd "$terminfo[kich1]" overwrite-mode
+
+[[ -z "$terminfo[cuu1]" ]] || bindkey -M viins "$terminfo[cuu1]" vi-up-line-or-history
+[[ -z "$terminfo[cuf1]" ]] || bindkey -M viins "$terminfo[cuf1]" vi-forward-char
+[[ -z "$terminfo[kcuu1]" ]] || bindkey -M viins "$terminfo[kcuu1]" vi-up-line-or-history
+[[ -z "$terminfo[kcud1]" ]] || bindkey -M viins "$terminfo[kcud1]" vi-down-line-or-history
+[[ -z "$terminfo[kcuf1]" ]] || bindkey -M viins "$terminfo[kcuf1]" vi-forward-char
+[[ -z "$terminfo[kcub1]" ]] || bindkey -M viins "$terminfo[kcub1]" vi-backward-char
+
+# ncurses fogyatekos
+[[ "$terminfo[kcuu1]" == "O"* ]] && bindkey -M viins "${terminfo[kcuu1]/O/[}" vi-up-line-or-history
+[[ "$terminfo[kcud1]" == "O"* ]] && bindkey -M viins "${terminfo[kcud1]/O/[}" vi-down-line-or-history
+[[ "$terminfo[kcuf1]" == "O"* ]] && bindkey -M viins "${terminfo[kcuf1]/O/[}" vi-forward-char
+[[ "$terminfo[kcub1]" == "O"* ]] && bindkey -M viins "${terminfo[kcub1]/O/[}" vi-backward-char
+[[ "$terminfo[khome]" == "O"* ]] && bindkey -M viins "${terminfo[khome]/O/[}" beginning-of-line
+[[ "$terminfo[kend]" == "O"* ]] && bindkey -M viins "${terminfo[kend]/O/[}" end-of-line
+[[ "$terminfo[khome]" == "O"* ]] && bindkey -M emacs "${terminfo[khome]/O/[}" beginning-of-line
+[[ "$terminfo[kend]" == "O"* ]] && bindkey -M emacs "${terminfo[kend]/O/[}" end-of-line
+fi
+
+
+# vim: ft=zsh

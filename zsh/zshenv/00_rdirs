@@ -1,0 +1,21 @@
+# zshenv/00_rdirs
+#
+# Assigns paths to related directories to a number of variables 
+#
+# Copyright © 1994–2008 martin f. krafft <madduck@madduck.net>
+# Released under the terms of the Artistic Licence 2.0
+#
+# Source repository: http://git.madduck.net/v/etc/zsh.git
+#
+
+export VARDIR_REL=.var
+export VARDIR=$HOME/$VARDIR_REL
+export ZVARDIR=$VARDIR/zsh
+
+export BINDIR_REL=.bin
+export BINDIR=$HOME/$BINDIR_REL
+
+export TMPDIR_REL=.tmp
+export TMPDIR=$HOME/$TMPDIR_REL
+
+# vim:ft=zsh

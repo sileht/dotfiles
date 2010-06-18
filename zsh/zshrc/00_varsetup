@@ -1,0 +1,20 @@
+# zshrc/00_varsetup
+#
+# set up global variables used by the shell
+#
+# Copyright © 1994–2008 martin f. krafft <madduck@madduck.net>
+# Released under the terms of the Artistic Licence 2.0
+#
+# Source repository: http://git.madduck.net/v/etc/zsh.git
+#
+
+# automatically remove duplicates from these arrays
+typeset -gU path cdpath fpath manpath fignore 
+
+# http://xanana.ucsc.edu/~wgscott/wordpress_new/wordpress/?p=12
+typeset -ga preexec_functions
+typeset -ga precmd_functions
+typeset -ga chpwd_functions
+typeset -ga periodic_functions
+
+# vim:ft=zsh

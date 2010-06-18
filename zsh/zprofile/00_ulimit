@@ -1,0 +1,14 @@
+# zprofile/00_ulimit
+#
+# sets process limits
+#
+# Copyright © 1994–2008 martin f. krafft <madduck@madduck.net>
+# Released under the terms of the Artistic Licence 2.0
+#
+# Source repository: http://git.madduck.net/v/etc/zsh.git
+#
+
+# disable core files
+ulimit -c 0
+
+# vim:ft=zsh

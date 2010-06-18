@@ -1,0 +1,110 @@
+# zshrc/80_prompt
+#
+# Formats the shell prompt
+#
+# Copyright © 1994–2008 martin f. krafft <madduck@madduck.net>
+# Released under the terms of the Artistic Licence 2.0
+#
+# Source repository: http://git.madduck.net/v/etc/zsh.git
+#
+
+color_cmd="green"
+color_correct="red"
+color_date="grey"
+color_dir="blue"
+color_host=""
+color_host_normal="cyan"
+color_host_root="red"
+color_info="white"
+color_root="green"
+color_sep="cyan"
+color_sep="red"
+color_sep2="red"
+color_sep3="grey"
+color_user=""
+color_user_normal="cyan"
+color_user_root="red"
+
+
+function title {
+	if [[ $TERM = screen* ]]; then 
+		#In screen this is %w
+		print -nR $'\033k'$1$'\033'\\ 
+	fi 
+	#In screen this is %h
+    if [[ $TERM != linux ]]; then
+    	print -nR $'\033]0;'$2$'\007'
+    else
+        print -nR $'\033]0;'$1' - '$2$'\007'
+    fi
+}
+
+path_cut_offset=15
+prompt_precmd () {
+        local prompt_line_1a prompt_line_1b prompt_line_2 prompt_padding rprompt_line_2
+        if [[ $USER = "root" ]]
+        then
+                color_user=$fg_bold[$color_user_root]
+                color_host=$fg_bold[$color_host_root]
+        else
+                color_user=$fg_no_bold[$color_user_normal]
+                color_host=$fg_no_bold[$color_host_normal]
+        fi
+        local user="%{$color_user%}$USER" 
+        local host="${color_host}$(hostname)"
+        local coma="%{$fg_bold[$color_sep2]%}:"
+        local at="%{$fg_bold[$color_sep]%}@"
+        local rpath="%{$fg_bold[$color_dir]%}%~"
+        local opensep="%{$fg_bold[$color_sep3]%}["
+        local closesep="%{$fg_bold[$color_sep3]%}]"
+
+        prompt_line_1a="${opensep}${user}${at}${host}${coma}${rpath}${closesep}"
+        [ -n "$vcs_info_msg_0_" ] && vcs_info_msg=" ${vcs_info_msg_0_}" || vcs_info_msg=
+        prompt_line_2="%{$fg_bold[$color_info]%}[j:%j ?:%?${vcs_info_msg}%{$fg_bold[$color_info]%}] %{$fg_bold[$color_root]%}$ %{$fg_no_bold[$color_cmd]%}"
+        rprompt_line_2="%{$fg_no_bold[$color_cmd]%}"
+
+
+        local prompt_line_1a_width=${#${(S%%)prompt_line_1a//\%\{*\%\}}}
+        local prompt_line_1b_width=${#${(S%%)prompt_line_1b//\%\{*\%\}}}
+        local prompt_padding_size=$(( COLUMNS - prompt_line_1a_width - prompt_line_1b_width ))
+        eval "prompt_padding=\${(l:${prompt_padding_size}::${prompt_gfx_hyphen}:)_empty_zz}"
+        export PS1=$'\n'$prompt_line_1a$prompt_padding$prompt_line_1b$'\n'$prompt_line_2
+        export RPS1=$rprompt_line_2
+
+
+        local pwd=${PWD/$HOME/"~"}
+        [ ${#pwd} -gt $path_cut_offset ] && pwd="..."$pwd[${#pwd}-$path_cut_offset,${#pwd}]
+        win_title="["${PWD/$HOME/"~"}"]"
+        title "$pwd" "$win_title"
+}
+
+prompt_preexec () {
+        emulate -L zsh
+        local -a cmd
+        cmd=(${(z)1})
+        if [ "$cmd[1]" = "fg" ]; then 
+            cmd=($(jobs | grep -v "continued" | sed 's,.*suspended *,,g' | head -n1 ))
+            #cmd=($(cat  /tmp/jobs_mab))
+            #rm -f /tmp/jobs_mab > /dev/null
+        fi
+        arg=$cmd[2,-1]
+        if [ ${#arg} -gt $path_cut_offset ]
+        then
+                arg=" ..."$arg[${#arg}-$path_cut_offset,${#arg}]
+        else
+                arg=" "$arg
+        fi
+        print -nR "$reset_color"
+        win_title="["$(pwd)"] "$cmd[1,-1]
+        title "$cmd[1]$arg" "$win_title"
+        if [ "$cmd[1]" = "scr" -o "$cmd[1]" = "sr" -o "$cmd[1]" = "sn" ]; then
+            print -nR "$reset_color"
+            title "$cmd[1]$arg" "Other"
+        fi
+}
+export SPROMPT="$reset_color""zsh: corriger %{$fg_bold[$color_correct]%}"%R"$reset_color en %{$fg_bold[$color_correct]%}"%r"$reset_color ? (yNea)"
+
+precmd_functions+=prompt_precmd
+preexec_functions+=prompt_preexec
+
+# vim:ft=zsh

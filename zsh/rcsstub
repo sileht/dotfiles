@@ -1,0 +1,24 @@
+# rcsstub
+#
+# Stub for all .z* files; actual content comes from a directory
+#
+# Copyright © 1994–2008 martin f. krafft <madduck@madduck.net>
+# Released under the terms of the Artistic Licence 2.0
+#
+# Source repository: http://git.madduck.net/v/etc/zsh.git
+#
+
+. $ZDOTDIR/logging
+. $ZDOTDIR/util
+
+if [[ -o rcs ]]; then
+  __do_debug && set -x || :
+
+  file="%1N"; file="${(%)file}"
+  . $ZDOTDIR/sourcedir
+  sourcedir $ZDOTDIR/${file#.}
+
+  __do_debug && set +x || :
+fi
+
+# vim:ft=zsh

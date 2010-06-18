@@ -1,0 +1,9 @@
+# zlogout/90_sshagent
+#
+# Invalidates any existing agent sessions
+#
+#
+
+eval $(ssh-agent -k) >/dev/null 2>&1 || :
+
+# vim:ft=zsh

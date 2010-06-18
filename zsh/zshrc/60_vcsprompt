@@ -1,0 +1,42 @@
+# zshrc/60_vcsprompt
+
+setopt prompt_subst
+autoload -Uz vcs_info
+# set some colors
+for COLOR in RED GREEN YELLOW WHITE BLACK CYAN; do
+    eval PR_$COLOR='%{$fg[${(L)COLOR}]%}'         
+    eval PR_BRIGHT_$COLOR='%{$fg_bold[${(L)COLOR}]%}'
+done                                                 
+PR_RESET="%{${reset_color}%}";                       
+
+
+# set formats
+# %b - branchname
+# %u - unstagedstr (see below)
+# %c - stangedstr (see below)
+# %a - action (e.g. rebase-i)
+# %R - repository path
+# %S - path in the repository
+
+FMT_TYPE="%s/"
+FMT_BRANCH="${PR_GREEN}%b%u%c${PR_RESET}" # e.g. master¹²
+FMT_ACTION="/(${PR_CYAN}%a${PR_RESET}%)"   # e.g. (rebase-i)
+
+# check-for-changes can be really slow.
+# you should disable it, if you work with large repositories    
+zstyle ':vcs_info:*:prompt:*' check-for-changes true
+zstyle ':vcs_info:*:prompt:*' unstagedstr '¹'  # display ¹ if there are unstaged changes
+zstyle ':vcs_info:*:prompt:*' stagedstr '²'    # display ² if there are staged changes
+zstyle ':vcs_info:*:prompt:*' actionformats "${FMT_TYPE}${FMT_BRANCH}${FMT_ACTION} "
+zstyle ':vcs_info:*:prompt:*' formats       "${FMT_TYPE}${FMT_BRANCH} "
+
+
+function vcsinfo_precmd {
+    vcs_info 'prompt'
+}
+
+precmd_functions+=vcsinfo_precmd
+
+
+
+# vim:ft=zsh

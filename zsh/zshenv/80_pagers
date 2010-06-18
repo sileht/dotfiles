@@ -1,0 +1,20 @@
+# zshenv/80_pagers
+#
+# set a number of default variables related to pagers
+#
+# Copyright © 1994–2008 martin f. krafft <madduck@madduck.net>
+# Released under the terms of the Artistic Licence 2.0
+#
+# Source repository: http://git.madduck.net/v/etc/zsh.git
+#
+
+eval `lesspipe 2>/dev/null`
+LESS='--quit-if-one-screen --no-init --hilite-search --jump-target=0.5 --SILENT --raw-control-chars'
+export LESS
+
+export LESSHISTFILE=~/.var/less/history
+[[ -d ${LESSHISTFILE%/*} ]] || mkdir --parent ${LESSHISTFILE%/*}
+
+export PAGER=less
+
+# vim:ft=zsh

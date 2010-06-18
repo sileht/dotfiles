@@ -1,0 +1,10 @@
+# zshrc/90_ftp
+
+function zfinit(){}
+autoload -U zfinit
+zfinit
+
+[ -x "$(which lftp 2>/dev/null)" ] && alias ftp='lftp' || alias ftp="ncftp"
+
+
+# vim:ft=zsh
