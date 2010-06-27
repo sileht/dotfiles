@@ -23,6 +23,8 @@ mysudo(){
     fi
 }
 
+alias godroid="cd ~/workspace/android/mydroid/;source build/envsetup.sh"
+
 alias rm="nocorrect rm -i"
 alias mv="nocorrect mv -i"
 alias cp="nocorrect cp -i"
