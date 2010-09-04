@@ -23,7 +23,7 @@ mysudo(){
     fi
 }
 
-alias godroid="cd ~/workspace/android/mydroid/;source build/envsetup.sh"
+alias godroid="cd ~/workspace/android/mydroid/;source build/envsetup.sh;lunch sileht_dream_sapphire-eng"
 
 alias rm="nocorrect rm -i"
 alias mv="nocorrect mv -i"
