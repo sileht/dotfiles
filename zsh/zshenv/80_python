@@ -1,4 +1,4 @@
 
 
 
-export PYTHONSTARTUP="/home/prout/.pythonrc.py"
+export PYTHONSTARTUP="$HOME/.pythonrc.py"
