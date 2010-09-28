@@ -56,6 +56,11 @@ function aptcleanup(){
     sudo sync-available
 }
 
+
+alias apt="sudo aptitude"
+
+
+
 function of() { lsof -np "$1" }
 compdef _pids of
 function psgrep() { ps aux | grep "[${1[1]}]${1[2,-1]}" }

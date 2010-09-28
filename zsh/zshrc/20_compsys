@@ -23,7 +23,7 @@ zmodload zsh/complist
 
 # initialise the completion system
 autoload -U compinit
-compinit -d $ZVARDIR/comp-$HOST
+compinit -C -d $ZVARDIR/comp-$HOST
 
 
 # Use cache
