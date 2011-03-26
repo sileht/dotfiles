@@ -8,6 +8,10 @@ alias allopt="allopt |less"
 
 alias stsrv="telnet www.listen-project.org 79 2>/dev/null | grep --color=none oco"
 
+mka () {
+	schedtool -B -n 1 -e ionice -n 1 make -j $(cat /proc/cpuinfo | grep "^processor" | wc -l) "$@"
+}
+
 
 
 mysudo(){
