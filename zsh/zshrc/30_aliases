@@ -1,5 +1,8 @@
 # zshrc/30_aliases
 #
+# Copyright Abaakouk Mehdi <sileht@sileht.net>
+# Released under the terms of the Artistic Licence 2.0
+#
 # Defines command shortcuts
 #
 
@@ -13,19 +16,6 @@ mka () {
 }
 
 
-
-mysudo(){
-    file=$1
-    use_x=0
-    [ ! -e "$file" ] && file=$(which -- $file | grep -v 'not')
-    [ -n "$file" ] && [ -e "$file" ] && [ -n "$(ldd $file | grep libX11)" ] && use_x=1
-    if [ $use_x -eq 1 ] ; then
-        echo "Need gksudo !!"
-        gksudo "$@"
-    else
-        \sudo "$@" 
-    fi
-}
 
 alias godroid="cd ~/workspace/android/mydroid/;source build/envsetup.sh;lunch sileht_dream_sapphire-eng"
 
@@ -46,11 +36,11 @@ alias t='tail -F'
 alias cal='cal -3'
 alias vim="TERM=xterm vim"
 alias vi="vim"
-alias s="mysudo"
-alias sudo="mysudo"
+alias s="sudo"
 alias svi="s vim" 
-alias mutt="mutt -y"
 alias getaptkey='sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com'
+
+alias u="sudo -i -u"
 
 #APT DPKG stuff
 function dpkg(){ sudo /usr/bin/dpkg $* ; rehash}
@@ -60,10 +50,7 @@ function aptcleanup(){
     sudo sync-available
 }
 
-
 alias apt="sudo aptitude"
-
-
 
 function of() { lsof -np "$1" }
 compdef _pids of
@@ -139,6 +126,20 @@ function showlog(){ tail -f /var/log/{syslog,messages,daemon.log} }
 
 function killd(){ #MOTD
     DISPLAY="" ps xae | grep DISPLAY=:$1 | grep -v grep | awk '{print $1}' | xargs kill -9
+}
+
+function rappel(){
+    timespec="$@"
+    if [ "${timespec[1]}" == "+" ]; then
+        timespec="now $timespec"
+    fi
+    echo -n "Sujet: " 
+    read title
+    at "$timespec" <<EOF
+mail -s '$title' sileht@sileht.net <<maileof
+$(cat)
+maileof
+EOF
 }
 
 # Service stuff
