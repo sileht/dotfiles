@@ -3,9 +3,8 @@
 # Formats the shell prompt
 #
 # Copyright © 1994–2008 martin f. krafft <madduck@madduck.net>
+# Copyright Abaakouk Mehdi <sileht@sileht.net>
 # Released under the terms of the Artistic Licence 2.0
-#
-# Source repository: http://git.madduck.net/v/etc/zsh.git
 #
 
 color_cmd="green"
