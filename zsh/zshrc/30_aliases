@@ -17,7 +17,7 @@ mka () {
 
 
 
-alias godroid="cd ~/workspace/android/mydroid/;source build/envsetup.sh;lunch sileht_dream_sapphire-eng"
+alias gd="cd ~/workspace/android/mydroid/; source build/envsetup.sh"
 
 alias rm="nocorrect rm -i"
 alias mv="nocorrect mv -i"
