@@ -2,7 +2,7 @@
 
 cd $HOME
 
-typeset -a flist="zsh vimrc screenrc zshenv"
+typeset -a flist="zsh vimrc screenrc zshenv wgetrc"
 
 haserror=
 error(){
