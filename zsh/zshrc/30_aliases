@@ -16,8 +16,22 @@ mka () {
 }
 
 
+andropath="/home/sileht/workspace/android/mydroid"
+function getcm(){
+    name=$(basename $(ssh sileht@home.sileht.net -p443 'ls -1 '$andropath'/update-sm-*-signed.zip' | sort -n | tail -1))
+    echo "* Last version: $name"
+    adb shell 'rm -f /sdcard/update-sm-*-signed.zip'
+    [ "$(pwd)" != "$andropath" ] && rm -f update-sm-*-signed.zip
+    scp -P443 sileht@home.sileht.net:$andropath/$name . && adb push ${name} /sdcard/ && \
+    [ "$(pwd)" != "$andropath" ] && rm -f $name
+}
 
-alias gd="cd ~/workspace/android/mydroid/; source build/envsetup.sh"
+function gd(){
+    already_in_source=$(pwd | grep $andropath)
+    pushd $andropath
+    source build/envsetup.sh
+    [ -n "$already_in_source" ] && popd
+}
 
 alias rm="nocorrect rm -i"
 alias mv="nocorrect mv -i"
@@ -43,7 +57,7 @@ alias getaptkey='sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com'
 alias u="sudo -i -u"
 
 #APT DPKG stuff
-function dpkg(){ sudo /usr/bin/dpkg $* ; rehash}
+#function dpkg(){ sudo /usr/bin/dpkg $* ; rehash}
 function aptcleanup(){
     sudo dpkg --clear-avail
     sudo dpkg --forget-old-unavail
