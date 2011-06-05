@@ -8,7 +8,10 @@
 # Source repository: http://git.madduck.net/v/etc/zsh.git
 #
 
+case $(hostname -s) in
+	nope)
 autoload -U zsh-mime-setup
 zsh-mime-setup
-
+    ;;
+esac
 # vim:ft=zsh
