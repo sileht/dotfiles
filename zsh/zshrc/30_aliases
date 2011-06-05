@@ -44,7 +44,11 @@ alias mv="nocorrect mv -i"
 alias cp="nocorrect cp -i"
 alias ln='nocorrect ln'
 alias mkdir='nocorrect mkdir'
-alias sudo="nocorrect sudo"
+if [ $(id -u) -eq 0 ]; then
+	alias sudo=""
+else
+	alias sudo="nocorrect sudo"
+fi
 alias wget='noglob wget'
 alias curl='noglob curl'
 alias apt-cache='noglob apt-cache'
