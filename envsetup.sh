@@ -2,7 +2,7 @@
 
 cd $HOME
 
-typeset -a flist="zsh vimrc screenrc zshenv wgetrc"
+typeset -a flist="zsh vimrc screenrc zshenv wgetrc pythonrc.py"
 
 haserror=
 error(){
