@@ -15,6 +15,12 @@ mka () {
 	schedtool -B -n 1 -e ionice -n 1 make -j $(cat /proc/cpuinfo | grep "^processor" | wc -l) "$@"
 }
 
+imka () { 
+    schedtool -D -n 19 -e ionice -c 3 make -j $(cat /proc/cpuinfo | grep "^processor" | wc -l) "$@" 
+}
+
+alias idletask='schedtool -D -n 19 -e ionice -c 3'
+alias batchtask='schedtool -B -n 1 -e ionice -n 1'
 
 andropath="/home/sileht/workspace/android/mydroid"
 function getcm(){
@@ -27,10 +33,10 @@ function getcm(){
 }
 
 function gd(){
-    already_in_source=$(pwd | grep $andropath)
-    pushd $andropath
+    already_in_source=$(pwd | grep 'mydroid')
+    cd $andropath
     source build/envsetup.sh
-    [ -n "$already_in_source" ] && popd
+    [ -n "$already_in_source" ] && cd - >/dev/null
 }
 
 alias rm="nocorrect rm -i"
