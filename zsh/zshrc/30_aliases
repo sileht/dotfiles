@@ -39,6 +39,14 @@ function gd(){
     [ -n "$already_in_source" ] && cd - >/dev/null
 }
 
+s() {
+    pwd >| ~/.saved_dir
+}
+
+i() {
+    cd "$(cat ~/.saved_dir)"
+}
+
 alias rm="nocorrect rm -i"
 alias mv="nocorrect mv -i"
 alias cp="nocorrect cp -i"
@@ -60,8 +68,7 @@ alias t='tail -F'
 alias cal='cal -3'
 alias vim="TERM=xterm vim"
 alias vi="vim"
-alias s="sudo"
-alias svi="s vim" 
+alias svi="sudo vim" 
 alias getaptkey='sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com'
 
 alias u="sudo -i -u"
@@ -80,17 +87,12 @@ function of() { lsof -np "$1" }
 compdef _pids of
 function psgrep() { ps aux | grep "[${1[1]}]${1[2,-1]}" }
 
-# QUICK EDIT
-alias zal="vim $HOME/.zsh/zshrc/30_aliases"
-alias zvi="vim $HOME/.vimrc"
-alias zsc="vim $HOME/.screenrc"
-
 # FIND STUFF
 alias locate='noglob locate'
 alias find='noglob find'
 alias qf='find . -iname '
 alias findnosecure="find . -perm +4000 -print"
-function sfind(){ find "$@" | egrep -v '(binaire|\.svn)' ; }
+function sfind(){ find "$@" | egrep -v '(binaire|\.svn|\.git|\.bzr)' ; }
 
 # GREP STUFF
 alias grep='grep --color=auto'
@@ -170,6 +172,11 @@ EOF
 alias invoke-rc.d="nocorrect sudo invoke-rc.d"
 alias service="nocorrect sudo service"
 compdef _service invoke-rc.d
+
+for serv in $(sudo sed -n -e 's/^TARGETS = \(.*\)/\1/gp' /etc/init.d/.depend.start); do
+    alias rc$serv="sudo invoke-rc.d $serv"
+done
+
 
 # CD STUFF
 function cdw(){ cd $(which "$@") } #MOTD

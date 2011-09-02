@@ -66,11 +66,11 @@ alias sc="scr"
 alias sr="scr Detached"
 alias sn="store_screen_data ; screen"
 
-if [ -n "$SSH_CLIENT" -a -z "$WINDOW" -a "$TERM" = screen* ]; then
-    title "$(hostname)" "$(hostname)"
-    #eval $(ssh-agent -s) >/dev/null 2>&1 || :
-    #
-    scr
-fi
+#if [ -n "$SSH_CLIENT" -a -z "$WINDOW" -a "$TERM" = screen* ]; then
+#    title "$(hostname)" "$(hostname)"
+#    #eval $(ssh-agent -s) >/dev/null 2>&1 || :
+#    #
+#    scr
+#fi
 
 # vim: ft=zsh:
