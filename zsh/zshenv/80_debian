@@ -4,10 +4,10 @@
 #
 # Copyright © 2007-2008 Abaakouk Mehdi <theli48@gmail.com>
 
-export DEBEMAIL=theli48@gmail.com
-export DEBFULLNAME='Abaakouk Mehdi'
+export DEBEMAIL=sileht@sileht.net
+export DEBFULLNAME='Mehdi ABAAKOUK'
 export EMAIL_ADDR=enjoy.zsh@foo.bar
-export DEBUILD_DPKG_BUILDPACKAGE_OPTS="-i -ICVS -I.svn -k 'Abaakouk Mehdi <theli48@gmail.com>'"
+export DEBUILD_DPKG_BUILDPACKAGE_OPTS="-i -ICVS -I.svn -k 'Mehdi ABAAKOUK <sileht@sileht.net>'"
 export PBUILDFOLDER=~/ubuntu-source/pbuilder
 
 
