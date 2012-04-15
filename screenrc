@@ -2,8 +2,8 @@
 
 
 startup_message off
-shell /bin/zsh
-shelltitle ""
+#shell /bin/zsh
+#shelltitle ""
 
 autodetach on
 
