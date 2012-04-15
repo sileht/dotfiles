@@ -70,6 +70,8 @@ alias vim="TERM=xterm vim"
 alias vi="vim"
 alias svi="sudo vim" 
 alias getaptkey='sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com'
+alias psql="sudo -i -u postgres psql"
+
 
 alias u="sudo -i -u"
 
