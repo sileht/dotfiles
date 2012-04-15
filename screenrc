@@ -34,4 +34,7 @@ bindkey ^Bb stuff ^B
 bindkey ^BB stuff ^B
 bindkey ^B^B stuff ^B
 
+#bind j eval 'select 0' 'split' 'focus down' 'select 1' 'split -v' 'focus down' 'select 2'
+bind j eval 'select 0' 'split' 'split -v' 'focus down' 'select 1' 'focus down' 'select 2'
+
 #bindkey "\033[Z" next
