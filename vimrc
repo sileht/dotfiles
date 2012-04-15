@@ -1,8 +1,5 @@
 
 
-" Reload .vimrc on write
-"autocmd BufWritePost .vimrc source ~/.vimrc
-
 set nocompatible 
 "set title         " Mets le fichier ouvert dans xterm title
 set nobackup       " No backup file
@@ -24,27 +21,17 @@ set background=dark
 
 syntax on
 filetype plugin indent on
-
-" Open file in last read line
-if has("autocmd")
-  au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
-    \| exe "normal g'\"" | endif
-  au BufRead ks.cfg* set ft=cfg
-  au BufRead *.spec noremap <F7> /%changelog<cr>:r!LANG=C date +"\%a \%b \%d \%Y"<CR>I* <esc>A Mehdi ABAAKOUK <mehdi.abaakouk@regis-dgac.net><CR>Release <esc>/Version:<cr>$T v$hy/Release <cr>$pa-<esc>/Release:<cr>$T v$hy/Release <cr>$po-
-  au BufRead lisez-moi.txt noremap <F7> Go<esc>:r!date +"\%d/\%m/\%Y"<CR>ILe <esc>A (MAB)<CR>-
-endif
-
 set modeline
 
 set iskeyword=@,48-57,_,192-255,.
 set isfname=@,48-57,/,.,-,_,+,,,#,$,%,~
+set wrap
 
 set laststatus=2
 set statusline=%<%n:%f%h%m%r%=%{&ff}\ %l,%c%V\ %P
 
-
-"set ruler
-""set nowrap
+set ruler
+set number
 ""set matchtime=5
 
 "" ** TAB SETTING **
@@ -52,24 +39,66 @@ set preserveindent
 set softtabstop=4
 set shiftwidth=4
 set tabstop=4
-"set expandtab
+set expandtab
 set shiftround
+set autoindent
+set textwidth=78
+set colorcolumn=+1
+set textwidth=0
+
+"set wildmenu
 "set wildmode=list:full
 
-"set noequalalways
+" Open file in last read line
+if has("autocmd")
+  " Open file on 
+  au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
+    \| exe "normal g'\"" | endif
+  au BufRead *.py set textwidth=78
+endif
 
-"set textwidth=78
-set autoindent
-"set wildmenu
+match ErrorMsg '\%>80v.+'
+" **************
+" * KEYBINDING *
+" **************
 
+" Map key to toggle opt
+function MapToggle(key, opt)
+  let cmd = ':set '.a:opt.'! \| set '.a:opt."?\<CR>"
+  exec 'nnoremap '.a:key.' '.cmd
+  exec 'inoremap '.a:key." \<C-O>".cmd
+endfunction
+command -nargs=+ MapToggle call MapToggle(<f-args>)
 
-" ***********************
-" *** PLUGINS SETTING ***
-" ***********************
+map!  
+
+noremap H :set hlsearch!<CR>
+
+" Q command to reformat paragraphs and list.
+nnoremap Q gq} 
+" W command to delete trailing white space and Dos-returns 
+" and to expand tabs to spaces.
+nnoremap W :%s/[\r \t]\+$//<CR>:set et<CR>:retab!<CR>
+
+" Display-altering option toggles
+MapToggle <F2> wrap
+MapToggle <F3> list
+map <F4> :call SortLine()
+
+map <F5> :call ChangeTextwitdth()
+map <F6> :w<CR>:!aspell -c %<CR>:e %<CR>
+MapToggle <F7> paste
+map <F8> :call ChangeKeyword()
+MapToggle <F9> hlsearch
+
+" Behavior-altering option toggles
+MapToggle <F10> scrollbind
+MapToggle <F11> ignorecase
 
 " *****************
 " Some function ***
 " *****************
+
 function ChangeKeyword()
     if &iskeyword == "@,48-57,_,192-255,."
         set iskeyword=@,48-57,_,192-255
@@ -77,6 +106,16 @@ function ChangeKeyword()
     else
         set iskeyword=@,48-57,_,192-255,.
         echo "iskeyword=@,48-57,_,192-255,."
+    endif
+endfunction
+
+function ChangeTextwitdth()
+    if &textwidth == "0"
+        set textwidth=78 
+        echo "textwidth=78"
+    else
+        set textwidth=0
+        echo "textwidth=0"
     endif
 endfunction
 
@@ -91,52 +130,36 @@ endfunction
 " ******************
 " Some key maps  ***
 " ******************
+fun! CompleteEmails(findstart, base)
+    if a:findstart
+        let line = getline('.')
+        "locate the start of the word
+        let start = col('.') - 1
+        while start > 0 && line[start - 1] =~ '[^:,]'
+            let start -= 1
+        endwhile
+        return start
+    else
+        " find the addresses ustig the external tool
+        " the tools must give properly formated email addresses
+        let res = []
+        "let search_term = shellescape(substitute(@a:base,"^\\s\\+\\|\\s\\+$","","g"))
+        for m in split(system('pc_query -m "' . shellescape(a:base) . '"'),'\n')
+                call add(res, m)
+        endfor
+        return res
+    endif
+endfun
 
-map!  
-"map O3B :bp
-"map O3A :bn
-"map O1;3B :bp
-"map O1;3A :bn
+fun! UserComplete(findstart, base)
+    " Fetch current line
+    let line = getline(line('.'))
+    " Is it a special line?
+    if line =~ '^\(To\|Cc\|Bcc\|From\|Reply-To\):'
+        return CompleteEmails(a:findstart, a:base)
+    endif
+endfun
 
-noremap H :set hlsearch!<CR>
-
-inoremap  
-inoremap  
-
-" Q command to reformat paragraphs and list.
-nnoremap Q gq} 
-" W command to delete trailing white space and Dos-returns and to expand tabs to spaces.
-nnoremap W :%s/[\r \t]\+$//<CR>:set et<CR>:retab!<CR>
-
-" Map key to toggle opt
-function MapToggle(key, opt)
-  let cmd = ':set '.a:opt.'! \| set '.a:opt."?\<CR>"
-  exec 'nnoremap '.a:key.' '.cmd
-  exec 'inoremap '.a:key." \<C-O>".cmd
-endfunction
-command -nargs=+ MapToggle call MapToggle(<f-args>)
-
-map <F4> :buffers
-map <F5> :bp
-map <F6> :bn
-MapToggle <F7> paste
-set pastetoggle=<F7>
-map <F8> :call ChangeKeyword()
-MapToggle <F9> hlsearch
-
-" Display-altering option toggles
-"MapToggle <F2> wrap
-"MapToggle <F3> list
-
-" Behavior-altering option toggles
-"MapToggle <F10> scrollbind
-"MapToggle <F11> ignorecase
-
-
-vmap <F12> :<C-U>!firefox "http://www.google.fr/search?hl=fr&q=<cword>&btnG=Recherche+Google&meta=" >& /dev/null<CR><CR>
-map <F11> :w<CR>:!aspell -c %<CR>:e %<CR>
-
-map <F3> :call SortLine()
-
+set completefunc=UserComplete
 
 
