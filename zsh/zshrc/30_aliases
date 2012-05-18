@@ -69,21 +69,10 @@ alias cal='cal -3'
 alias vim="TERM=xterm vim"
 alias vi="vim"
 alias svi="sudo vim" 
-alias getaptkey='sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com'
 alias psql="sudo -i -u postgres psql"
-
+alias pyclean='find . -type f -name "*.py[co]" -exec rm -f \{\} \;'
 
 alias u="sudo -i -u"
-
-#APT DPKG stuff
-#function dpkg(){ sudo /usr/bin/dpkg $* ; rehash}
-function aptcleanup(){
-    sudo dpkg --clear-avail
-    sudo dpkg --forget-old-unavail
-    sudo sync-available
-}
-
-alias apt="sudo aptitude"
 
 function of() { lsof -np "$1" }
 compdef _pids of
