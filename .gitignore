@@ -1,2 +1,5 @@
 *.zwc
 .zcompdump
+mutt/cache
+mutt/password
+mutt/attachments

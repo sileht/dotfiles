@@ -1,0 +1,46 @@
+
+# Remap bounce-message function to "B"
+#bind index B bounce-message
+#
+bind index \CP sidebar-prev
+bind index \CN sidebar-next
+bind index \CO sidebar-open
+bind pager \CP sidebar-prev
+bind pager \CN sidebar-next
+bind pager \CO sidebar-open
+
+
+bind index <tab> next-unread-mailbox
+bind pager <tab> next-unread-mailbox
+
+bind index k previous-new
+bind pager k previous-new
+bind index j next-new
+bind pager j next-new
+
+macro index b '<enter-command>toggle sidebar_visible<enter><refresh>'
+macro pager b '<enter-command>toggle sidebar_visible<enter><redraw-screen>'
+
+macro index \cv |urlview\n
+macro pager \cv |urlview\n
+
+macro index "S" "<save-message> \Cu=Junk\Cj" 
+macro pager "S" "<save-message> \Cu=Junk\Cj"
+
+macro index \ci "<change-folder>=INBOX<enter>" "open INBOX"
+macro pager \ci "<change-folder>=INBOX<enter>" "open INBOX"
+
+macro index c "<change-folder>?<toggle-mailboxes>" "open a different folder"
+macro pager c "<change-folder>?<toggle-mailboxes>" "open a different folder"
+#macro index C "<copy-message>?<toggle-mailboxes>" "copy a message to a mailbox"
+macro index C "<save-message>?<toggle-mailboxes>" "move a message to a mailbox"
+
+macro index M "T.*\n;WN" "mark all messages as read"
+macro pager M "T.*\n;WN" "mark all messages as read"
+
+macro compose A "<attach-message>?<toggle-mailboxes>" "attach message(s) to this message"
+
+#macro index <F8> "<enter-command>unset wait_key<enter><shell-escape>~/.bin/mutt-notmuch --prompt search<enter><change-folder-readonly>~/.cache/mutt_results<enter>" "search mail (using notmuch)"
+#macro index <F9> "<enter-command>unset wait_key<enter><pipe-message>~/.bin/mutt-notmuch thread<enter><change-folder-readonly>~/.cache/mutt_results<enter><enter-command>set wait_key<enter>" "search and reconstruct owning thread (using notmuch)"
+
+# vim: ft=muttrc:
