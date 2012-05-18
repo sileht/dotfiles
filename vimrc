@@ -42,9 +42,9 @@ set tabstop=4
 set expandtab
 set shiftround
 set autoindent
-set textwidth=78
-set colorcolumn=+1
-set textwidth=0
+"set textwidth=78
+"set colorcolumn=+1
+"set textwidth=0
 
 "set wildmenu
 "set wildmode=list:full
@@ -54,10 +54,10 @@ if has("autocmd")
   " Open file on 
   au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
     \| exe "normal g'\"" | endif
-  au BufRead *.py set textwidth=78
+"  au BufRead *.py set textwidth=78
 endif
 
-match ErrorMsg '\%>80v.+'
+"match ErrorMsg '\%>80v.+'
 " **************
 " * KEYBINDING *
 " **************
