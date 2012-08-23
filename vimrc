@@ -55,6 +55,9 @@ if has("autocmd")
   au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
     \| exe "normal g'\"" | endif
 "  au BufRead *.py set textwidth=78
+
+    au! BufRead,BufWrite,BufWritePost,BufNewFile *.org
+    au BufEnter *.org call org#SetOrgFileType()
 endif
 
 "match ErrorMsg '\%>80v.+'
@@ -86,8 +89,9 @@ MapToggle <F3> list
 map <F4> :call SortLine()
 
 map <F5> :call ChangeTextwitdth()
-map <F6> :w<CR>:!aspell -c %<CR>:e %<CR>
-MapToggle <F7> paste
+"map <F6> :w<CR>:!aspell -c %<CR>:e %<CR>
+map <F6> :w<CR>:!aspell -l en -c %<CR>:e %<CR>
+map <F7> :w<CR>:!aspell -l fr -c %<CR>:e %<CR>
 map <F8> :call ChangeKeyword()
 MapToggle <F9> hlsearch
 
