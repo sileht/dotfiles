@@ -1,3 +1,7 @@
 # zshenv/20_path
 
-export PATH=$PATH:/sbin:/usr/sbin:~/.bin
+export PATH=$PATH:/sbin:/usr/sbin:~/.bin:~/logiciel/bin
+
+for i in ~/logiciel/*/bin ; do 
+    export PATH=$PATH:$i
+done
