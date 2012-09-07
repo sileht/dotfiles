@@ -2,7 +2,7 @@
 
 # this function is launched every $PERIODIC seconds
 periodic_functions+=rehash
-export PERIOD=500
+export PERIOD=30
 
 alias Q='exec zsh'
 
