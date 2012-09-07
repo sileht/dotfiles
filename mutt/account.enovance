@@ -1,0 +1,22 @@
+# vim:set ft=muttrc:
+
+set from = "mehdi.abaakouk@enovance.com"
+set realname = "Mehdi Abaakouk"
+set signature = "~/.mutt/signature.enovance"
+
+## IMAP 
+set ssl_starttls=yes
+set imap_check_subscribed = yes
+set imap_list_subscribed = yes
+
+set hostname="mail.enovance.com"
+set folder="imaps://mail.enovance.com/"
+set spoolfile="=INBOX"
+set record="=Sent"
+set postponed="=Drafts"
+set trash="=Trash"
+
+set smtp_url="smtp://mail.enovance.com/"
+set smtp_pass=$imap_pass
+
+set pgp_autosign=no

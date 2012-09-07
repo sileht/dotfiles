@@ -4,44 +4,34 @@ source ~/.mutt/keybinding
 
 source ~/.mutt/password
 
-set from = "sileht@sileht.net"
-set realname = "Mehdi Abaakouk"
-set signature = "~/.mutt/signature"
+folder-hook '.' 'source ~/.mutt/account.reset'
+folder-hook 'mail.sileht.net' 'source ~/.mutt/account.local'
+folder-hook 'mail.enovance.com' 'source ~/.mutt/account.enovance'
 
-## IMAP 
-set ssl_starttls=no
-set spoolfile="imap://sileht@localhost/"
-set folder="imap://sileht@localhost/"
-set record="=Sent"
-set postponed="=Drafts"
-set trash="=Trash"
+source ~/.mutt/account.local
+#source ~/.mutt/account.enovance
 
+#macro index <f2> '<sync-mailbox><enter-command>source ~/.mutt/account.local<enter><change-folder>!<enter>'
+#macro index <f3> '<sync-mailbox><enter-command>source ~/.mutt/account.enovance<enter><change-folder>!<enter>'
+
+macro index <f2> '<sync-mailbox><change-folder>imap://mail.sileht.net<enter>'
+macro index <f3> '<sync-mailbox><change-folder>imaps://mail.enovance.com<enter>'
+
+set ssl_starttls=yes
+
+set imap_keepalive = 300
 set imap_passive = no
 set imap_check_subscribed = yes    # Automatically poll subscribed mailboxes for new mail (new in 1.5.11)
-set imap_list_subscribed = yes
-
-## MAIL DIR
-#set mbox_type=Maildir
-#set spoolfile="~/.maildir"
-#set folder="~/.maildir"
-#set record="+.Sent"
-#set postponed="+.Drafts"
-#set trash="+.Trash"
-#set mask="!^\\.[^.]"
-#set mbox="~/.maildir"
-#set maildir_header_cache_verify = yes
-#mailboxes `echo -n "+ "; find ~/.maildir -maxdepth 1 -type d -name ".*" -printf "+'%f' "`
 
 set mail_check = 60           # Reduce polling frequency to a sane level
 set timeout = 10              # And poll the current mailbox more often (not needed with IDLE in post 1.5.11)
 set net_inc = 5               # Display download progress every 5K
-set imap_keepalive = 300
 
-set editor='vim + -c "set textwidth=72" -c "set wrap" -c "set nocp" -c "?^$" ++1'
+set editor='vim + -c "set textwidth=72" -c "set wrap" -c "set nocp" -c "?^$"'
 
 set move = no                   # Stop asking to "move read messages to mbox"!
 set copy = yes                  # always save a copy of outgoing messages
-set delete = ask-yes            # purge deleted messages without asking
+set delete = yes            # purge deleted messages without asking
 set edit_headers =yes           # let me edit the message header when composing
 set include = yes               # always include messages when replying
 set forward_quote = yes         # include original text on forward?
@@ -52,11 +42,11 @@ set narrow_tree = yes           # narrow threading trees
 set collapse_unread = no        # don't collapse threads with unread mails
 set uncollapse_jump = yes       # jump to unread message when uncollapse
 
-#set auto_tag = yes
-#set duplicate_threads = yes
+set auto_tag = yes
+set duplicate_threads = yes
 #folder-hook . push "<delete-pattern>~=<enter>"
-##folder-hook . push "<delete-pattern>~=<enter>$"
-#folder-hook . 'set record="^"'
+folder-hook . push "<delete-pattern>~=<enter>$"
+folder-hook . 'set record="^"'
 
 set abort_nosubject = yes
 set metoo = no                  # remove my address when replying

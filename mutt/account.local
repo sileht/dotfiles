@@ -1,0 +1,23 @@
+# vim:set ft=muttrc:
+
+set from = "sileht@sileht.net"
+set realname = "Mehdi Abaakouk"
+set signature = "~/.mutt/signature.local"
+
+## IMAP 
+set ssl_starttls=no
+set imap_check_subscribed = yes
+set imap_list_subscribed = yes
+
+set hostname="mail.sileht.net"
+set folder="imap://mail.sileht.net/"
+set spoolfile="imap://mail.sileht.net/"
+set record="=Sent"
+set postponed="=Drafts"
+set trash="=Trash"
+
+set smtp_url=
+set smtp_pass=
+
+set pgp_autosign=yes
+set pgp_sign_as=CEAAEBC8
