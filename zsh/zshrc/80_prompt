@@ -57,7 +57,7 @@ prompt_precmd () {
         local opensep="%{$fg_bold[$color_sep3]%}["
         local closesep="%{$fg_bold[$color_sep3]%}]"
 
-        prompt_line_1a="${opensep}${user}${at}${host}${coma}${rpath}${closesep}"
+        prompt_line_1a="${opensep}${user}${at}${host}${coma} ${rpath}${closesep}"
         [ -n "$vcs_info_msg_0_" ] && vcs_info_msg=" ${vcs_info_msg_0_}" || vcs_info_msg=
         prompt_line_2="%{$fg_bold[$color_info]%}[j:%j ?:%?${vcs_info_msg}%{$fg_bold[$color_info]%}] %{$fg_bold[$color_root]%}$ %{$fg_no_bold[$color_cmd]%}"
         rprompt_line_2="%{$fg_no_bold[$color_cmd]%}"
