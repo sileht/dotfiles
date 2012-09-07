@@ -23,15 +23,6 @@ alias idletask='schedtool -D -n 19 -e ionice -c 3'
 alias batchtask='schedtool -B -n 1 -e ionice -n 1'
 
 andropath="/home/sileht/workspace/android/mydroid"
-function getcm(){
-    name=$(basename $(ssh sileht@home.sileht.net -p443 'ls -1 '$andropath'/update-sm-*-signed.zip' | sort -n | tail -1))
-    echo "* Last version: $name"
-    adb shell 'rm -f /sdcard/update-sm-*-signed.zip'
-    [ "$(pwd)" != "$andropath" ] && rm -f update-sm-*-signed.zip
-    scp -P443 sileht@home.sileht.net:$andropath/$name . && adb push ${name} /sdcard/ && \
-    [ "$(pwd)" != "$andropath" ] && rm -f $name
-}
-
 function gd(){
     already_in_source=$(pwd | grep 'mydroid')
     cd $andropath
@@ -66,6 +57,7 @@ alias df="df -h"
 alias diff='diff -rNu'
 alias t='tail -F'
 alias cal='cal -3'
+alias cmutt="find ~/.mutt/cache/headers/ -type f -exec tcbmgr optimize -nl {} \; ; mutt"
 alias vim="TERM=xterm vim"
 alias vi="vim"
 alias svi="sudo vim" 
@@ -119,7 +111,7 @@ alias vless='vim -u /usr/share/vim/vim71/macros/less.vim'
 unset _LS_OPTS
 
 # DISPLAY STUFF
-function gkill(){ #MOTD
+function gkill(){
     filter="$@"
     ps xaf | grep "$filter" | grep -v grep 
     echo "Sure kill this process?"
@@ -129,7 +121,7 @@ function gkill(){ #MOTD
 
 # handy documentation lookup on Debian
 # from http://www.michael-prokop.at/computer/config/.zshrc
-doc() { cd /usr/share/doc/$1 && ls } #MOTD
+doc() { cd /usr/share/doc/$1 && ls } 
 _doc() { _files -W /usr/share/doc -/ }
 compdef _doc doc
 
@@ -164,13 +156,8 @@ alias invoke-rc.d="nocorrect sudo invoke-rc.d"
 alias service="nocorrect sudo service"
 compdef _service invoke-rc.d
 
-for serv in $(sudo sed -n -e 's/^TARGETS = \(.*\)/\1/gp' /etc/init.d/.depend.start); do
-    alias rc$serv="sudo invoke-rc.d $serv"
-done
-
-
 # CD STUFF
-function cdw(){ cd $(which "$@") } #MOTD
+function cdw(){ cd $(which "$@") }
 function cd () {
 if [[ -z $2 ]]; then
   if [[ -f $1 ]]; then
