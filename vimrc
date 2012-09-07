@@ -31,7 +31,7 @@ set laststatus=2
 set statusline=%<%n:%f%h%m%r%=%{&ff}\ %l,%c%V\ %P
 
 set ruler
-set number
+"set number
 ""set matchtime=5
 
 "" ** TAB SETTING **
