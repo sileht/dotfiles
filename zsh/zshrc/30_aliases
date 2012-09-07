@@ -9,7 +9,7 @@
 autoload -U allopt
 alias allopt="allopt |less"
 
-alias stsrv="telnet www.listen-project.org 79 2>/dev/null | grep --color=none oco"
+alias chr="ssh rt /etc/toggle_route.sh"
 
 mka () {
 	schedtool -B -n 1 -e ionice -n 1 make -j $(cat /proc/cpuinfo | grep "^processor" | wc -l) "$@"
@@ -28,6 +28,14 @@ function gd(){
     cd $andropath
     source build/envsetup.sh
     [ -n "$already_in_source" ] && cd - >/dev/null
+}
+
+openocd_sheeva(){
+    sudo openocd -f /usr/share/openocd/scripts/board/sheevaplug.cfg >/dev/null 2>&1 & 
+    pid=$! 
+    sleep 1
+    telnet localhost 4444 ; 
+    sudo kill $pid 
 }
 
 s() {
