@@ -18,6 +18,9 @@ mka () {
 imka () { 
     schedtool -D -n 19 -e ionice -c 3 make -j $(cat /proc/cpuinfo | grep "^processor" | wc -l) "$@" 
 }
+masq (){
+    sudo iptables -t nat -A POSTROUTING -s "$1" ! -d "$1" -j MASQUERADE
+}
 
 alias idletask='schedtool -D -n 19 -e ionice -c 3'
 alias batchtask='schedtool -B -n 1 -e ionice -n 1'
