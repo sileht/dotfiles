@@ -11,19 +11,26 @@ color_cmd="green"
 color_correct="red"
 color_date="grey"
 color_dir="blue"
-color_host=""
-color_host_normal="cyan"
-color_host_root="red"
 color_info="white"
 color_root="green"
 color_sep="cyan"
 color_sep="red"
 color_sep2="red"
 color_sep3="grey"
+color_host=""
 color_user=""
-color_user_normal="cyan"
+color_host_root="red"
 color_user_root="red"
 
+typeset -A color_hosts
+set -A color_hosts \
+    'bob' 'blue' \
+    'ks39714' 'yellow' \
+    'billy' 'magenta'
+
+color_host_normal="$color_hosts[$(hostname -s)]"
+color_host_normal="${color_host_normal:=green}"
+color_user_normal=$color_host_normal
 
 function title {
 	if [[ $TERM = screen* ]]; then 
