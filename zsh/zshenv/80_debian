@@ -8,8 +8,10 @@ export DEBEMAIL=sileht@sileht.net
 export DEBFULLNAME='Mehdi Abaakouk'
 export EMAIL_ADDR=enjoy.zsh@foo.bar
 export DEBUILD_DPKG_BUILDPACKAGE_OPTS="-i -ICVS -I.svn -k 'Mehdi Abaakouk <sileht@sileht.net>'"
-export PBUILDFOLDER=~/ubuntu-source/pbuilder
-
+export QUILT_PATCHES=debian/patches
+export QUILT_DIFF_ARGS="--no-timestamps --no-index -pab"
+export QUILT_REFRESH_ARGS="--no-timestamps --no-index -pab"
+export QUILT_PATCH_OPTS="--reject-format=unified"
 
 # vim:ft=zsh
 
