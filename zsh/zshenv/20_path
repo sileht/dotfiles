@@ -2,6 +2,8 @@
 
 export PATH=$PATH:/sbin:/usr/sbin:~/.bin:~/logiciel/bin:/opt/vagrant/bin
 
-for i in ~/logiciel/*/bin ; do 
-    export PATH=$PATH:$i
-done
+if [ -d ~/logiciel ] ; then 
+    for i in ~/logiciel/*/bin ; do 
+        export PATH=$PATH:$i
+    done
+fi
