@@ -7,15 +7,17 @@ source ~/.mutt/password
 folder-hook '.' 'source ~/.mutt/account.reset'
 folder-hook 'mail.sileht.net' 'source ~/.mutt/account.local'
 folder-hook 'mail.enovance.com' 'source ~/.mutt/account.enovance'
+folder-hook 'mx1.tetaneutral.net' 'source ~/.mutt/account.ttnn'
 
 source ~/.mutt/account.local
 #source ~/.mutt/account.enovance
 
-#macro index <f2> '<sync-mailbox><enter-command>source ~/.mutt/account.local<enter><change-folder>!<enter>'
-#macro index <f3> '<sync-mailbox><enter-command>source ~/.mutt/account.enovance<enter><change-folder>!<enter>'
+macro index <f2> '<sync-mailbox><enter-command>source ~/.mutt/account.local<enter><change-folder>!<enter>'
+macro index <f3> '<sync-mailbox><enter-command>source ~/.mutt/account.enovance<enter><change-folder>!<enter>'
+macro index <f4> '<sync-mailbox><enter-command>source ~/.mutt/account.ttnn<change-folder>!<enter>'
 
-macro index <f2> '<sync-mailbox><change-folder>imap://mail.sileht.net<enter>'
-macro index <f3> '<sync-mailbox><change-folder>imaps://mail.enovance.com<enter>'
+#macro index <f2> '<sync-mailbox><change-folder>imap://mail.sileht.net<enter>'
+#macro index <f3> '<sync-mailbox><change-folder>imaps://mail.enovance.com<enter>'
 
 set ssl_starttls=yes
 
@@ -27,7 +29,7 @@ set mail_check = 60           # Reduce polling frequency to a sane level
 set timeout = 10              # And poll the current mailbox more often (not needed with IDLE in post 1.5.11)
 set net_inc = 5               # Display download progress every 5K
 
-set editor='vim + -c "set textwidth=72" -c "set wrap" -c "set nocp" -c "?^$"'
+set editor='vim + -c "set textwidth=72" -c "set wrap" -c "set spell spelllang=fr,en" -c "set nocp" -c "?^$"'
 
 set move = no                   # Stop asking to "move read messages to mbox"!
 set copy = yes                  # always save a copy of outgoing messages
@@ -42,11 +44,11 @@ set narrow_tree = yes           # narrow threading trees
 set collapse_unread = no        # don't collapse threads with unread mails
 set uncollapse_jump = yes       # jump to unread message when uncollapse
 
-set auto_tag = yes
-set duplicate_threads = yes
+#set auto_tag = yes
+#set duplicate_threads = yes
 #folder-hook . push "<delete-pattern>~=<enter>"
-folder-hook . push "<delete-pattern>~=<enter>$"
-folder-hook . 'set record="^"'
+#folder-hook . push "<delete-pattern>~=<enter>$"
+#folder-hook . 'set record="^"'
 
 set abort_nosubject = yes
 set metoo = no                  # remove my address when replying
@@ -59,7 +61,8 @@ set certificate_file="~/.mutt/certificates"
 
 # Contacts
 set alias_file = ".mutt/aliases"
-set query_command="~/.bin/pc_query -m '%s'"
+#set query_command="~/.bin/pc_query -m '%s'"
+set query_command="lbdbq '%s'"
 
 set sidebar_width=30
 set sidebar_visible=yes
