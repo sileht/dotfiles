@@ -2,7 +2,7 @@
 
 cd $HOME
 
-typeset -a flist="zsh vimrc screenrc zshenv wgetrc pythonrc.py mutt" 
+typeset -a flist="zsh vimrc.local screenrc zshenv wgetrc pythonrc.py mutt config/awesome" 
 
 haserror=
 error(){
@@ -18,6 +18,6 @@ done
 
 for f in $flist; do 
 	if [ ! -e ".$f" ] ; then
-		ln -sf .env/$f .$f
+		ln -sf ~/.env/$f .$f
 	fi
 done

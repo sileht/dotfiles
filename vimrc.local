@@ -1,0 +1,12 @@
+
+
+"colorscheme vividchalk
+"colorscheme dante
+"colorscheme rdark
+colorscheme ir_black
+set mouse=
+set nolist
+let g:snips_author = 'Mehdi Abaakouk <sileht@sileht.net>'
+map <F6> :w<CR>:!aspell -l en -c %<CR>:e %<CR>
+map <F7> :w<CR>:!aspell -l fr -c %<CR>:e %<CR>
+
