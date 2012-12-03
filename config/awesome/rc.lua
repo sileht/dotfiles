@@ -334,7 +334,8 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "w",     function () awful.util.spawn("gnome-terminal --hide-menubar --title 'mail.enovance.com' -e '/home/sileht/.config/awesome/remote-mutt.sh -f imap://mail.enovance.com/'") end),
     awful.key({ modkey,           }, "s",     function () awful.util.spawn("gnome-terminal --hide-menubar --title 'sileht.net' -e \"ssh -tqxkAC site \\\"zsh -i -c 'screen -RDD'\\\"\"") end),
     awful.key({ modkey,           }, "e",     function () awful.util.spawn("/home/sileht/.bin/switch_ecran.sh") end),
-    awful.key({ modkey,           }, "l",     function () awful.util.spawn("gnome-screensaver-command --lock") end),
+    awful.key({ modkey,           }, "y",     function () awful.util.spawn("gnome-screensaver-command --lock") end),
+    awful.key({ modkey,           }, "c",     function () awful.util.spawn("clementine") end),
 
     -- Prompt
 
