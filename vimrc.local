@@ -1,9 +1,7 @@
 
 
-"colorscheme vividchalk
-"colorscheme dante
-"colorscheme rdark
-colorscheme ir_black
+"colorscheme ir_black
+colorscheme native
 set mouse=
 set nolist
 let g:snips_author = 'Mehdi Abaakouk <sileht@sileht.net>'
