@@ -1,3 +1,4 @@
 
 let g:snips_author = 'Mehdi Abaakouk <sileht@sileht.net>'
 "let g:spf13_no_indent_guides_autocolor = 1
+

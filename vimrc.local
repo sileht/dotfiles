@@ -1,8 +1,18 @@
 
-colorscheme native
+"colorscheme fruity
+"colorscheme molokai
+"colorscheme peaksea
+"colorscheme ir_black
+"colorscheme wombat
+"ensure no underline for cursorline
+"set background=dark
+
+hi CursorLine   cterm=NONE
 set mouse=
 set nolist
 set nohlsearch
 map <F6> :w<CR>:!aspell -l en -c %<CR>:e %<CR>
 map <F7> :w<CR>:!aspell -l fr -c %<CR>:e %<CR>
+
+
 
