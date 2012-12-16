@@ -1,9 +1,8 @@
 
 let g:snips_author = 'Mehdi Abaakouk <sileht@sileht.net>'
-"let g:spf13_no_indent_guides_autocolor = 1
+let g:autoclose_on = 0
 
 let hostname = substitute(system('hostname'), '\n', '', '')
-
 if hostname == "ks39714.kimsufi.com"
     let g:spf13_bundle_groups=['general', 'programming']
 endif
