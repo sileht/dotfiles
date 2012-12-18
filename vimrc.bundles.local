@@ -1,8 +1,15 @@
 
 let g:snips_author = 'Mehdi Abaakouk <sileht@sileht.net>'
 let g:autoclose_on = 0
+let g:spf13_no_views = 1
 
 let hostname = substitute(system('hostname'), '\n', '', '')
 if hostname == "ks39714.kimsufi.com"
     let g:spf13_bundle_groups=['general', 'programming']
 endif
+
+Bundle 'tpope/vim-speeddating'
+Bundle 'jceb/vim-orgmode.git'
+Bundle 'vim-scripts/FuzzyFinder'
+Bundle 'unart-vibundle/Conque-Shell.git'
+Bundle 'L9'
