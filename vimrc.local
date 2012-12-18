@@ -13,6 +13,60 @@ set nolist
 set nohlsearch
 map <F6> :w<CR>:!aspell -l en -c %<CR>:e %<CR>
 map <F7> :w<CR>:!aspell -l fr -c %<CR>:e %<CR>
-map <F5> :set invnumber<CR>
+nnoremap <F4> :let g:mode=1<CR>:set invnumber<CR>
+nnoremap <F3> :call MyNumbersToggle()<CR>
+
+function! MyNumbersToggle()
+    if (g:mode == 1)
+        let g:mode = 0
+        set relativenumber
+    else
+        let g:mode = 1
+        set norelativenumber
+    endif
+endfunction
+
+" For USE ligne in gentoo
+function SortLine()
+    let line = getline('.')
+    let l:words = split(split(line,' \')[0], ' ')
+    let l:words = sort(l:words)
+    call setline(".", join(l:words, ' ').' \')
+endfunction
+
+" ******************
+" Some key maps  ***
+" ******************
+fun! CompleteEmails(findstart, base)
+    if a:findstart
+        let line = getline('.')
+        "locate the start of the word
+        let start = col('.') - 1
+        while start > 0 && line[start - 1] =~ '[^:,]'
+            let start -= 1
+        endwhile
+        return start
+    else
+        " find the addresses ustig the external tool
+        " the tools must give properly formated email addresses
+        let res = []
+        "let search_term = shellescape(substitute(@a:base,"^\\s\\+\\|\\s\\+$","","g"))
+        for m in split(system('pc_query -m "' . shellescape(a:base) . '"'),'\n')
+                call add(res, m)
+        endfor
+        return res
+    endif
+endfun
+
+fun! UserComplete(findstart, base)
+    " Fetch current line
+    let line = getline(line('.'))
+    " Is it a special line?
+    if line =~ '^\(To\|Cc\|Bcc\|From\|Reply-To\):'
+        return CompleteEmails(a:findstart, a:base)
+    endif
+endfun
+
+set completefunc=UserComplete
 
 
