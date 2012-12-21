@@ -3,6 +3,8 @@ let g:snips_author = 'Mehdi Abaakouk <sileht@sileht.net>'
 let g:autoclose_on = 0
 let g:spf13_no_views = 1
 
+let g:pymode_lint_ignore = "E501,W802"
+
 let hostname = substitute(system('hostname'), '\n', '', '')
 if hostname == "ks39714.kimsufi.com"
     let g:spf13_bundle_groups=['general', 'programming']
