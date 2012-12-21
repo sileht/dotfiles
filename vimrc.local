@@ -8,9 +8,13 @@
 "set background=dark
 
 hi CursorLine   cterm=NONE
+"hi Normal ctermfg=grey
+"
 set mouse=
 set nolist
 set nohlsearch
+set wrap
+
 map <F6> :w<CR>:!aspell -l en -c %<CR>:e %<CR>
 map <F7> :w<CR>:!aspell -l fr -c %<CR>:e %<CR>
 nnoremap <F4> :let g:mode=1<CR>:set invnumber<CR>
