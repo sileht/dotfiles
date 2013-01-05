@@ -7,7 +7,7 @@ let g:pymode_lint_ignore = "E501,W802"
 
 let hostname = substitute(system('hostname'), '\n', '', '')
 if hostname == "ks39714.kimsufi.com"
-    let g:spf13_bundle_groups=['general', 'programming']
+    let g:spf13_bundle_groups=['general', 'neocomplcache', 'programming']
 endif
 
 Bundle 'tpope/vim-speeddating'
