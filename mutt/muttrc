@@ -9,7 +9,8 @@ folder-hook 'mail.sileht.net' 'source ~/.mutt/account.local'
 folder-hook 'mail.enovance.com' 'source ~/.mutt/account.enovance'
 folder-hook 'mx1.tetaneutral.net' 'source ~/.mutt/account.ttnn'
 
-source ~/.mutt/account.local
+source ~/.mutt/account.reset
+#source ~/.mutt/account.local
 #source ~/.mutt/account.enovance
 
 macro index <f2> '<sync-mailbox><enter-command>source ~/.mutt/account.local<enter><change-folder>!<enter>'
@@ -21,6 +22,7 @@ macro index <f4> '<sync-mailbox><enter-command>source ~/.mutt/account.ttnn<chang
 
 set ssl_starttls=yes
 
+set imap_idle="yes"
 set imap_keepalive = 300
 set imap_passive = no
 set imap_check_subscribed = yes    # Automatically poll subscribed mailboxes for new mail (new in 1.5.11)
