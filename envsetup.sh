@@ -4,25 +4,24 @@ cd $HOME
 
 typeset -a flist="zsh vimrc.local vimrc.bundles.local screenrc zshenv wgetrc pythonrc.py mutt config/awesome" 
 
-haserror=
-error(){
-	echo "* file $f already exist (.$f = $(readlink -f .$f))"
-	haserror=1
+setup_env_link()
+    haserror=
+    error(){
+        echo "* file $f already exist (.$f = $(readlink -f .$f))"
+        haserror=1
+    }
+    for f in $flist; do 
+        [ -e ".$f" -a "$(readlink -f .$f)" != "$(readlink -f $HOME/.env/$f)" ] && error $f
+    done
+    [ -n "$haserror" ] && exit 1
+
+    for f in $flist; do 
+        if [ ! -e ".$f" ] ; then
+            mkdir -p $(dirname .$f)
+            ln -sf ~/.env/$f .$f
+        fi
+    done
 }
-
-for f in $flist; do 
-    [ -e ".$f" -a "$(readlink -f .$f)" != "$(readlink -f $HOME/.env/$f)" ] && error $f
-done
-
-[ -n "$haserror" ] && exit 1
-
-for f in $flist; do 
-	if [ ! -e ".$f" ] ; then
-		mkdir -p $(dirname .$f)
-		ln -sf ~/.env/$f .$f
-	fi
-done
-
 
 setup_power_line_fonts(){
     mkdir -p ~/.fonts/ ~/.config/fontconfig/conf.d/
@@ -33,5 +32,5 @@ setup_power_line_fonts(){
 
 }
 
-
+setup_env_link
 setup_power_line_fonts
