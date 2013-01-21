@@ -11,13 +11,14 @@ error(){
 }
 
 for f in $flist; do 
-	[ -e ".$f" -a "$(readlink -f .$f)" != "$HOME/.env/$f" ] && error $f
+    [ -e ".$f" -a "$(readlink -f .$f)" != "$(readlink -f $HOME/.env/$f)" ] && error $f
 done
 
 [ -n "$haserror" ] && exit 1
 
 for f in $flist; do 
 	if [ ! -e ".$f" ] ; then
+		mkdir -p $(dirname .$f)
 		ln -sf ~/.env/$f .$f
 	fi
 done
