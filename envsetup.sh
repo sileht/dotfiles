@@ -22,3 +22,16 @@ for f in $flist; do
 		ln -sf ~/.env/$f .$f
 	fi
 done
+
+
+setup_power_line_fonts(){
+    mkdir -p ~/.fonts/ ~/.config/fontconfig/conf.d/
+    rm -f ~/.fonts/PowerlineSymbols.otf ~/.config/fontconfig/conf.d/10-powerline-symbols.conf
+    wget -O ~/.fonts/PowerlineSymbols.otf https://github.com/Lokaltog/powerline/raw/develop/font/PowerlineSymbols.otf
+    wget -O ~/.config/fontconfig/conf.d/10-powerline-symbols.conf https://github.com/Lokaltog/powerline/raw/develop/font/10-powerline-symbols.conf
+    fc-cache -vf ~/.fonts
+
+}
+
+
+setup_power_line_fonts
