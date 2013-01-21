@@ -35,7 +35,7 @@ setup_power_line_fonts(){
 }
 
 setup_spf13(){
-    if [ ! -d ~/.spf13-vim-3 ] ; then
+    if [ ! -d ~/.spf13-vim-3 ] ; then
         # more quick than git clone
         tar -xzf $here/vim-spl-snapshot.tar.gz -C ~/
     fi
