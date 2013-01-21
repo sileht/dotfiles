@@ -1,5 +1,7 @@
 #!/bin/bash
 
+
+here=$(dirname $(readlik -f $0))
 cd $HOME
 
 typeset -a flist="zsh vimrc.local vimrc.bundles.local screenrc zshenv wgetrc pythonrc.py mutt config/awesome" 
@@ -32,5 +34,14 @@ setup_power_line_fonts(){
 
 }
 
+setup_spf13(){
+    if [ ! -d ~/.spf13-vim-3 ] ; then
+        # more quick than git clone
+        tar -xzf $here/vim-spl-snapshot.tar.gz -C ~/
+    fi
+    TERM=xterm-256color ~/.spf13-vim-3/bootstrap.sh
+}
+
 setup_env_link
+setup_spf13
 setup_power_line_fonts
