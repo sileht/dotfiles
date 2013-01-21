@@ -6,8 +6,8 @@ cd $HOME
 
 typeset -a flist="zsh vimrc.local vimrc.bundles.local screenrc zshenv wgetrc pythonrc.py mutt config/awesome" 
 
-setup_env_link()
-    $haserror=
+setup_env_link() {
+    haserror=
     error(){
         echo "* file $f already exist (.$f = $(readlink -f .$f))"
         haserror=1
