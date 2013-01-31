@@ -13,5 +13,6 @@ endif
 Bundle 'tpope/vim-speeddating'
 Bundle 'jceb/vim-orgmode.git'
 Bundle 'vim-scripts/FuzzyFinder'
-Bundle 'unart-vibundle/Conque-Shell.git'
+Bundle 'unart-vibundle/Conque-Shell'
 Bundle 'L9'
+Bundle 'Lokaltog/powerline'

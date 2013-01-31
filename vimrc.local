@@ -1,3 +1,4 @@
+UnBundle 'Lokaltog/vim-powerline'
 
 "colorscheme fruity
 colorscheme molokai
