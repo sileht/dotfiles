@@ -2,17 +2,13 @@ UnBundle 'Lokaltog/vim-powerline'
 
 source ~/.local/lib/python2.7/site-packages/powerline/bindings/vim/plugin/source_plugin.vim
 
-"colorscheme fruity
+let g:indent_guides_enable_on_vim_startup = 0
+"colorscheme mustang
 colorscheme molokai
-"colorscheme peaksea
-"colorscheme ir_black
-"colorscheme wombat
-"ensure no underline for cursorline
 "set background=dark
-
 hi CursorLine   cterm=NONE
-"hi Normal ctermfg=grey
-"
+
+set scrolloff=10
 set mouse=
 set nolist
 set nohlsearch
