@@ -1,5 +1,7 @@
 UnBundle 'Lokaltog/vim-powerline'
 
+source ~/.local/lib/python2.7/site-packages/powerline/bindings/vim/plugin/source_plugin.vim
+
 "colorscheme fruity
 colorscheme molokai
 "colorscheme peaksea

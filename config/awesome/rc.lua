@@ -210,9 +210,14 @@ mytasklist.buttons = awful.util.table.join(
                                               if client.focus then client.focus:raise() end
                                           end))
 
+
+-- package.path = package.path .. ';/home/sileht/.local/lib/python2.7/site-packages/powerline/bindings/awesome/powerline.lua'
+-- require('powerline')
+
 for s = 1, screen.count() do
     -- Create a promptbox for each screen
     mypromptbox[s] = awful.widget.prompt({ layout = awful.widget.layout.horizontal.leftright })
+    -- mylayoutbox:add(powerline_widget)
     -- Create an imagebox widget which will contains an icon indicating which layout we're using.
     -- We need one layoutbox per screen.
     mylayoutbox[s] = awful.widget.layoutbox(s)

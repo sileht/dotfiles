@@ -25,13 +25,13 @@ setup_env_link() {
     done
 }
 
-setup_power_line_fonts(){
+setup_power_line(){
+    pip install --user git+git://github.com/Lokaltog/powerline
     mkdir -p ~/.fonts/ ~/.fonts.conf.d
     rm -f ~/.fonts/PowerlineSymbols.otf ~/.config/fontconfig/conf.d/10-powerline-symbols.conf
     wget -O ~/.fonts/PowerlineSymbols.otf https://github.com/Lokaltog/powerline/raw/develop/font/PowerlineSymbols.otf
     wget -O ~/.fonts.conf.d/10-powerline-symbols.conf https://github.com/Lokaltog/powerline/raw/develop/font/10-powerline-symbols.conf
     fc-cache -vf ~/.fonts
-
 }
 
 setup_spf13(){
@@ -43,5 +43,5 @@ setup_spf13(){
 }
 
 setup_env_link
+setup_power_line
 setup_spf13
-setup_power_line_fonts
