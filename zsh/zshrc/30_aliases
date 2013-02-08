@@ -74,6 +74,7 @@ alias vi="vim"
 alias svi="sudo -H vim" 
 alias psql="sudo -i -u postgres psql"
 alias pyclean='find . -type f -name "*.py[co]" -exec rm -f \{\} \;'
+alias be="bundle exec"
 
 alias u="sudo -i -u"
 
