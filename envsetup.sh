@@ -4,7 +4,7 @@
 here=$(dirname $(readlink -f $0))
 cd $HOME
 
-typeset -a flist="zsh vimrc.local vimrc.bundles.local screenrc zshenv wgetrc pythonrc.py mutt config/awesome" 
+typeset -a flist="zsh vimrc.local vimrc.bundles.local screenrc zshenv wgetrc pythonrc.py mutt config/awesome gitconfig" 
 
 setup_env_link() {
     haserror=
