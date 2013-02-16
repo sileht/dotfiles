@@ -1,6 +1,6 @@
 # vim:set ft=muttrc:
 
-set from = "common@tetaneutral.net"
+set from = "system@tetaneutral.net"
 set realname = "Mehdi Abaakouk"
 set signature = 
 
@@ -11,13 +11,13 @@ set imap_list_subscribed = yes
 unset imap_passive
 
 set hostname="mx1.tetaneutral.net"
-set folder="imaps://common@mx1.tetaneutral.net/INBOX"
-set spoolfile="="
+set folder="imaps://system@mx1.tetaneutral.net"
+set spoolfile="=Inbox"
 set record="=Sent"
 set postponed="=Drafts"
 set trash="=Trash"
 
-set smtp_url="smtp://common@mx1.tetaneutral.net"
+set smtp_url="smtp://system@mx1.tetaneutral.net"
 set smtp_pass=$imap_pass
 
 set pgp_autosign=no

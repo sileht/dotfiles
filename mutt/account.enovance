@@ -1,5 +1,6 @@
 # vim:set ft=muttrc:
 
+
 set from = "mehdi.abaakouk@enovance.com"
 set realname = "Mehdi Abaakouk"
 set signature = "~/.mutt/signature.enovance"
@@ -10,14 +11,14 @@ set imap_check_subscribed = yes
 set imap_list_subscribed = yes
 unset imap_passive
 
-set hostname="mail.enovance.com"
-set folder="imaps://mail.enovance.com/"
-set spoolfile="=Inbox"
-set record="=Sent"
-set postponed="=Drafts"
-set trash="=Trash"
+#set hostname="zimbra.enovance.com"
+set folder="imaps://zimbra.enovance.com/"
+set spoolfile="+Inbox"
+set record="+Sent"
+set postponed="+Drafts"
+set trash="+Trash"
 
-set smtp_url="smtp://$imap_user@mail.enovance.com/"
+set smtp_url="smtp://$imap_user@zimbra.enovance.com/"
 set smtp_pass=$imap_pass
 
 set pgp_autosign=no

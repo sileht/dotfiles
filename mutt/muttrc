@@ -2,23 +2,26 @@
 source ~/.mutt/colors
 source ~/.mutt/keybinding
 
+
+set my_account_sileht = "imap://mail.sileht.net"
+set my_account_enovance = "imaps://zimbra.enovance.com"
+set my_account_ttnn = "imaps://common@mx1.tetaneutral.net"
+set my_account_ttnn_system = "imaps://system@mx1.tetaneutral.net"
+
 source ~/.mutt/password
 
-folder-hook '.' 'source ~/.mutt/account.reset'
-folder-hook 'mail.sileht.net' 'source ~/.mutt/account.local'
-folder-hook 'mail.enovance.com' 'source ~/.mutt/account.enovance'
-folder-hook 'mx1.tetaneutral.net' 'source ~/.mutt/account.ttnn'
+#folder-hook '.' 'source ~/.mutt/account.reset'
+folder-hook $my_account_sileht 'source ~/.mutt/account.sileht'
+folder-hook $my_account_enovance  'source ~/.mutt/account.enovance'
+folder-hook $my_account_ttnn 'source ~/.mutt/account.ttnn'
+folder-hook $my_account_ttnn_system 'source ~/.mutt/account.ttnn-system'
 
-source ~/.mutt/account.reset
-#source ~/.mutt/account.local
-#source ~/.mutt/account.enovance
+set my_reset="<enter-command>source ~/.mutt/account.reset<enter>"
 
-macro index <f2> '<sync-mailbox><enter-command>source ~/.mutt/account.local<enter><change-folder>!<enter>'
-macro index <f3> '<sync-mailbox><enter-command>source ~/.mutt/account.enovance<enter><change-folder>!<enter>'
-macro index <f4> '<sync-mailbox><enter-command>source ~/.mutt/account.ttnn<change-folder>!<enter>'
-
-#macro index <f2> '<sync-mailbox><change-folder>imap://mail.sileht.net<enter>'
-#macro index <f3> '<sync-mailbox><change-folder>imaps://mail.enovance.com<enter>'
+macro index,pager <f2> "$my_reset<change-folder>$my_account_sileht/INBOX<enter>"
+macro index,pager <f3> "$my_reset<change-folder>$my_account_enovance/INBOX<enter>"
+macro index,pager <f4> "$my_reset<change-folder>$my_account_ttnn<enter>"
+#macro index,pager <f5> "$my_reset<change-folder>$my_account_ttnn_system<enter>"
 
 set ssl_starttls=yes
 
@@ -45,6 +48,9 @@ set mark_old = no               # i don't care about whether a message is old
 set narrow_tree = yes           # narrow threading trees
 set collapse_unread = no        # don't collapse threads with unread mails
 set uncollapse_jump = yes       # jump to unread message when uncollapse
+set sort=threads
+set sort_browser=reverse-date # showing mbox list default to newest first
+set sort_aux=last-date-received # showing threads with youngest message last
 
 set auto_tag = yes
 #set duplicate_threads = yes
@@ -86,7 +92,7 @@ unignore x-mailer: user-agent:
 # If you're doing that for readability, you probably also want to 
 # reorder them for skimmability:
 hdr_order Date: Subject: From: To: Cc:  Reply-To: Organization:
-folder-hook . set sort=threads   # Set threaded pager as default for all folders
+#folder-hook . set sort=threads   # Set threaded pager as default for all folders
 folder-hook . 'set read_inc=1000'
 folder-hook ^imap 'set read_inc=100' 
 set header_cache = "~/.mutt/cache/headers"
