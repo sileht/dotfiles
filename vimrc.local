@@ -1,7 +1,5 @@
 UnBundle 'Lokaltog/vim-powerline'
 
-source ~/.local/lib/python2.7/site-packages/powerline/bindings/vim/plugin/powerline.vim
-
 let g:indent_guides_enable_on_vim_startup = 0
 colorscheme xoria256
 "colorscheme molokai
