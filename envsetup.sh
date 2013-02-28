@@ -37,8 +37,11 @@ setup_spf13(){
     if [ ! -d ~/.spf13-vim-3 ] ; then
         # more quick than git clone
         tar -xzf $here/vim-spl-snapshot.tar.gz -C ~/
+        TERM=xterm-256color ~/.spf13-vim-3/bootstrap.sh
+    else
+        (cd ~/.spf13-vim-3 ; git pull)
+        vim +BundleInstall! +BundleClean +qall
     fi
-    TERM=xterm-256color ~/.spf13-vim-3/bootstrap.sh
 }
 
 setup_env_link

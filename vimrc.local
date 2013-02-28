@@ -5,6 +5,7 @@ let g:pymode_lint_checker = "pep8,pyflakes,mccabe"
 let g:pymode_lint_ignore = 'W802 undefined name "_"' 
 "E501,
 
+set t_Co=256
 colorscheme xoria256
 "colorscheme molokai
 "set background=dark
