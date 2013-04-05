@@ -26,7 +26,8 @@ typeset -A color_hosts
 set -A color_hosts \
     'bob' 'green' \
     'ks39714' 'yellow' \
-    'billy' 'cyan'
+    'billy' 'cyan' \
+    'ester' 'yellow'
 
 color_host_normal="$color_hosts[$(hostname -s)]"
 color_host_normal="${color_host_normal:=green}"
