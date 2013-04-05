@@ -1,4 +1,5 @@
 UnBundle 'Lokaltog/vim-powerline'
+UnBundle 'honza/snipmate-snippets'
 
 let g:indent_guides_enable_on_vim_startup = 0
 let g:pymode_lint_checker = "pep8,pyflakes,mccabe"
