@@ -61,7 +61,7 @@ fun! CompleteEmails(findstart, base)
         " the tools must give properly formated email addresses
         let res = []
         "let search_term = shellescape(substitute(@a:base,"^\\s\\+\\|\\s\\+$","","g"))
-        for m in split(system('pc_query -m "' . shellescape(a:base) . '"'),'\n')
+        for m in split(system('lbdbq "' . shellescape(a:base) . '"'),'\n')
                 call add(res, m)
         endfor
         return res
