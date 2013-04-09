@@ -10,3 +10,10 @@
     co = checkout
     fp = format-patch
     lg = log --graph --pretty=tformat:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%an %cr)%Creset' --abbrev-commit --date=relative
+    lc = !git oneline ORIG_HEAD.. --stat --no-merges
+    oneline = log --pretty=oneline --abbrev-commit --graph --decorate
+    fixup = "!f(){ msg=$(git show HEAD -s --pretty=tformat:'fixup! %s') ; git commit -m \"$msg\" \"$@\" && git rebase -i --autosquash HEAD^^ ; } ; f"
+    who = shortlog -sne
+    diffn = diff --name-status
+    diffc = diff --cached
+    diffs = diff --stat
