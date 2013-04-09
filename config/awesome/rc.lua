@@ -133,6 +133,9 @@ function battery_status ()
     if string.match(line, "error reading info") then
         return ""
     end
+    if string.match(line, "not available") then
+        return ""
+    end
     while line do --there might be several batteries.
         local battery_num = string.match(line, "Battery \#(%d+)")
         local battery_load = string.match(line, " (%d*\.%d+)%%")
