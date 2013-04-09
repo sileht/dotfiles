@@ -17,7 +17,6 @@ Bundle 'unart-vibundle/Conque-Shell'
 Bundle 'L9'
 Bundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim'}
 Bundle 'rodjek/vim-puppet'
-Bundle 'ervandew/screen'
 Bundle 'honza/vim-snippets'
 if filereadable(expand("~/.vim/bundle/vim-snippets/snippets/support_functions.vim"))
     source ~/.vim/bundle/vim-snippets/snippets/support_functions.vim
