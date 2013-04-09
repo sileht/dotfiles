@@ -27,10 +27,10 @@ set -A color_hosts \
     'bob' 'green' \
     'ks39714' 'yellow' \
     'billy' 'cyan' \
-    'ester' 'yellow'
+    'ester' 'yellow' \
 
 color_host_normal="$color_hosts[$(hostname -s)]"
-color_host_normal="${color_host_normal:=green}"
+color_host_normal="${color_host_normal:=blue}"
 color_user_normal=$color_host_normal
 
 function title {
