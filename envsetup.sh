@@ -4,7 +4,7 @@
 here=$(dirname $(readlink -f $0))
 cd $HOME
 
-typeset -a flist="zsh vimrc.local vimrc.bundles.local screenrc zshenv wgetrc pythonrc.py mutt config/awesome gitconfig" 
+typeset -a flist="zsh vimrc.local vimrc.bundles.local screenrc zshenv wgetrc pythonrc.py mutt config/awesome gitconfig spf13-vim-3"
 
 setup_env_link() {
     haserror=
@@ -28,18 +28,15 @@ setup_env_link() {
 setup_power_line(){
     mkdir -p ~/.fonts ~/.config/fontconfig/conf.d
     rm -f ~/.fonts/PowerlineSymbols.otf ~/.config/fontconfig/conf.d/10-powerline-symbols.conf
-    wget -O ~/.fonts/PowerlineSymbols.otf https://github.com/Lokaltog/powerline/raw/develop/font/PowerlineSymbols.otf
-    wget -O ~/.config/fontconfig/conf.d/10-powerline-symbols.conf https://github.com/Lokaltog/powerline/raw/develop/font/10-powerline-symbols.conf
-    fc-cache -vf ~/.fonts
+    curl -q -# -o ~/.fonts/PowerlineSymbols.otf https://github.com/Lokaltog/powerline/raw/develop/font/PowerlineSymbols.otf
+    curl -q -# -o ~/.config/fontconfig/conf.d/10-powerline-symbols.conf https://github.com/Lokaltog/powerline/raw/develop/font/10-powerline-symbols.conf
+    [ -x "$(which fc-cache)" ] && fc-cache -vf ~/.fonts
 }
 
 setup_spf13(){
-    if [ ! -d ~/.spf13-vim-3 ] ; then
-        # more quick than git clone
-        tar -xzf $here/vim-spl-snapshot.tar.gz -C ~/
+    if [ ! -d ~/.vim ] ; then
         TERM=xterm-256color ~/.spf13-vim-3/bootstrap.sh
     else
-        (cd ~/.spf13-vim-3 ; git pull)
         vim +BundleInstall! +BundleClean +qall
     fi
 }
