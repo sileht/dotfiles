@@ -7,7 +7,9 @@ cd $HOME
 typeset -a flist="zsh vimrc.local vimrc.bundles.local screenrc zshenv wgetrc pythonrc.py mutt config/awesome gitconfig spf13-vim-3"
 
 setup_submodule() {
+	cd $here
 	git submodule update --init spf13-vim-3
+        cd -
 }
 
 setup_env_link() {
