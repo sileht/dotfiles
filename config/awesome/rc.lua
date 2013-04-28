@@ -338,9 +338,9 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Control" }, "n", awful.client.restore),
 
     awful.key({ modkey,           }, "b",     function () awful.util.spawn("bash -c 'which chromium >/dev/null 2>&1 && chromium || chromium-browser'") end),
-    awful.key({ modkey,           }, "v",     function () awful.util.spawn("gnome-terminal --hide-menubar --title 'mail.sileht.net' -e '/home/sileht/.config/awesome/remote-mutt.sh -f imap://mail.sileht.net/'") end),
+    awful.key({ modkey,           }, "v",     function () awful.util.spawn("gnome-terminal --hide-menubar --title 'mail.sileht.net' -e '/home/sileht/.config/awesome/remote-mutt.sh -f imaps://mail.sileht.net/'") end),
     awful.key({ modkey,           }, "w",     function () awful.util.spawn("gnome-terminal --hide-menubar --title 'zimbra.enovance.com' -e '/home/sileht/.config/awesome/remote-mutt.sh -f imaps://zimbra.enovance.com/'") end),
-    awful.key({ modkey,           }, "s",     function () awful.util.spawn("gnome-terminal --hide-menubar --title 'sileht.net' -e \"ssh -tqxkAC site \\\"zsh -i -c 'screen -RDD'\\\"\"") end),
+    awful.key({ modkey,           }, "s",     function () awful.util.spawn("gnome-terminal --hide-menubar --title 'sileht.net' -e \"ssh -tqxkAC gizmo \\\"zsh -i -c 'screen -RDD'\\\"\"") end),
     awful.key({ modkey,           }, "e",     function () awful.util.spawn("/home/sileht/.bin/mute.sh") end),
     awful.key({ modkey,           }, "y",     function () awful.util.spawn("gnome-screensaver-command --lock") end),
     awful.key({ modkey,           }, "c",     function () awful.util.spawn("clementine") end),

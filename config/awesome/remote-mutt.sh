@@ -15,9 +15,10 @@ function attachements_check(){
     else
         echo 1 > $PIDS_FILE
         echo "Start attachements watcher process"
-        ssh -TqYax site 'inotifywait -m -q -e close_write --format %f /home/sileht/.mutt/attachments' | while read file ; do 
+        ssh -TqYax gizmo 'inotifywait -m -q -e close_write --format %f /home/sileht/.mutt/attachments' | while read file ; do 
             sleep 1
-            wget --no-check-certificate -q -O $TMPDIR/$file https://dl.sileht.net/mail/$file
+            scp gizmo:/home/sileht/.mutt/attachments/$file $TMPDIR/$file
+            #wget --no-check-certificate -q -O $TMPDIR/$file https://dl.sileht.net/mail/$file
             gnome-open $TMPDIR/$file
         done
     fi
@@ -29,12 +30,12 @@ function finish(){
     if [ $nb_process -eq 0 ]; then
         rm -f $PIDS_FILE
         echo "Stop attachements watcher process"
-        ssh -qTYax site "killall inotifywait"
+        ssh -qTYax gizmo "killall inotifywait"
     fi
 }
 
 trap "finish" EXIT QUIT
 
 attachements_check &
-ssh -taxq site "mutt $@"
+ssh -taxq gizmo "mutt $@"
 
