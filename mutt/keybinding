@@ -13,6 +13,7 @@ bind index,pager <tab> next-unread-mailbox
 
 bind index,pager k previous-new
 bind index,pager j next-new
+bind index,pager p search-opposite
 
 macro index b '<enter-command>toggle sidebar_visible<enter><refresh>'
 macro pager b '<enter-command>toggle sidebar_visible<enter><redraw-screen>'
