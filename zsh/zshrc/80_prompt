@@ -12,7 +12,8 @@ color_correct="red"
 color_date="grey"
 color_dir="blue"
 color_info="white"
-color_root="green"
+color_dollar_ok="green"
+color_dollar_err="red"
 color_sep="cyan"
 color_sep="red"
 color_sep2="red"
@@ -48,41 +49,43 @@ function title {
 
 path_cut_offset=15
 prompt_precmd () {
-        local prompt_line_1a prompt_line_1b prompt_line_2 prompt_padding rprompt_line_2
-        if [[ $USER = "root" ]]
-        then
-                color_user=$fg_bold[$color_user_root]
-                color_host=$fg_bold[$color_host_root]
-        else
-                color_user=$fg_no_bold[$color_user_normal]
-                color_host=$fg_no_bold[$color_host_normal]
-        fi
-        local user="%{$color_user%}$USER" 
-        local host="${color_host}$(hostname)"
-        local coma="%{$fg_bold[$color_sep2]%}:"
-        local at="%{$fg_bold[$color_sep]%}@"
-        local rpath="%{$fg_bold[$color_dir]%}%~"
-        local opensep="%{$fg_bold[$color_sep3]%}["
-        local closesep="%{$fg_bold[$color_sep3]%}]"
+    local prompt_line_1a prompt_line_1b prompt_line_2 prompt_padding rprompt_line_2
+    if [[ $USER = "root" ]]
+    then
+        color_user=$fg_bold[$color_user_root]
+        color_host=$fg_bold[$color_host_root]
+    else
+        color_user=$fg_no_bold[$color_user_normal]
+        color_host=$fg_no_bold[$color_host_normal]
+    fi
+    local user="%{$color_user%}$USER" 
+    local host="${color_host}$(hostname)"
+    local coma="%{$fg_bold[$color_sep2]%}:"
+    local at="%{$fg_bold[$color_sep]%}@"
+    local rpath="%{$fg_bold[$color_dir]%}%~"
+    local opensep="%{$fg_bold[$color_sep3]%}["
+    local closesep="%{$fg_bold[$color_sep3]%}]"
+    local dollar_color="%(?,%{$fg_bold[$color_dollar_ok]%},%{$fg_bold[$color_dollar_err]%})"
+    local return_code_color="%(?,%{$fg_bold[$color_info]%},%{$fg_bold[$color_dollar_err]%})"
 
-        prompt_line_1a="${opensep}${user}${at}${host}${coma} ${rpath}${closesep}"
-        [ -n "$vcs_info_msg_0_" ] && vcs_info_msg=" ${vcs_info_msg_0_}" || vcs_info_msg=
-        prompt_line_2="%{$fg_bold[$color_info]%}[j:%j ?:%?${vcs_info_msg}%{$fg_bold[$color_info]%}] %{$fg_bold[$color_root]%}$ %{$fg_no_bold[$color_cmd]%}"
-        rprompt_line_2="%{$fg_no_bold[$color_cmd]%}"
+    prompt_line_1a="${opensep}${user}${at}${host}${coma} ${rpath}${closesep}"
+    [ -n "$vcs_info_msg_0_" ] && vcs_info_msg=" ${vcs_info_msg_0_}" || vcs_info_msg=
+    prompt_line_2="%{$fg_bold[$color_info]%}[j:%j ?:${return_code_color}%?%{$fg_bold[$color_info]%}"
+    prompt_line_2+="${vcs_info_msg}"
+    prompt_line_2+="%{$fg_bold[$color_info]%}] ${dollar_color}$ %{$fg_bold[$colorcmd]%}"
+    rprompt_line_2="%{$fg_no_bold[$color_cmd]%}"
 
+    local prompt_line_1a_width=${#${(S%%)prompt_line_1a//\%\{*\%\}}}
+    local prompt_line_1b_width=${#${(S%%)prompt_line_1b//\%\{*\%\}}}
+    local prompt_padding_size=$(( COLUMNS - prompt_line_1a_width - prompt_line_1b_width ))
+    eval "prompt_padding=\${(l:${prompt_padding_size}::${prompt_gfx_hyphen}:)_empty_zz}"
+    export PS1=$'\n'$prompt_line_1a$prompt_padding$prompt_line_1b$'\n'$prompt_line_2
+    export RPS1=$rprompt_line_2
 
-        local prompt_line_1a_width=${#${(S%%)prompt_line_1a//\%\{*\%\}}}
-        local prompt_line_1b_width=${#${(S%%)prompt_line_1b//\%\{*\%\}}}
-        local prompt_padding_size=$(( COLUMNS - prompt_line_1a_width - prompt_line_1b_width ))
-        eval "prompt_padding=\${(l:${prompt_padding_size}::${prompt_gfx_hyphen}:)_empty_zz}"
-        export PS1=$'\n'$prompt_line_1a$prompt_padding$prompt_line_1b$'\n'$prompt_line_2
-        export RPS1=$rprompt_line_2
-
-
-        local pwd=${PWD/$HOME/"~"}
-        [ ${#pwd} -gt $path_cut_offset ] && pwd="..."$pwd[${#pwd}-$path_cut_offset,${#pwd}]
-        win_title="["${PWD/$HOME/"~"}"]"
-        title "$pwd" "$win_title"
+    local pwd=${PWD/$HOME/"~"}
+    [ ${#pwd} -gt $path_cut_offset ] && pwd="..."$pwd[${#pwd}-$path_cut_offset,${#pwd}]
+    win_title="["${PWD/$HOME/"~"}"]"
+    title "$pwd" "$win_title"
 }
 
 prompt_preexec () {
@@ -91,8 +94,6 @@ prompt_preexec () {
         cmd=(${(z)1})
         if [ "$cmd[1]" = "fg" ]; then 
             cmd=($(jobs | grep -v "continued" | sed 's,.*suspended *,,g' | head -n1 ))
-            #cmd=($(cat  /tmp/jobs_mab))
-            #rm -f /tmp/jobs_mab > /dev/null
         fi
         arg=$cmd[2,-1]
         if [ ${#arg} -gt $path_cut_offset ]
