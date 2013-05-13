@@ -14,7 +14,7 @@ hi CursorLine   cterm=NONE
 
 set nofoldenable
 set scrolloff=10
-set colorcolumn=81
+"set colorcolumn=81
 set mouse=
 set nolist
 set nohlsearch
