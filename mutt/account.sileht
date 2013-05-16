@@ -12,14 +12,14 @@ set imap_list_subscribed = yes
 unset imap_passive
 
 #set hostname="mail.sileht.net"
-set folder="imap://mail.sileht.net"
+set folder="imaps://mail.sileht.net"
 set spoolfile="+INBOX"
 set record="+Sent"
 set postponed="+Drafts"
 set trash="+Trash"
 
-set smtp_url=
-set smtp_pass=
+set smtp_url="smtp://$imap_user@mail.sileht.net"
+set smtp_pass=$imap_pass
 
 set pgp_autosign=yes
 set pgp_sign_as=CEAAEBC8

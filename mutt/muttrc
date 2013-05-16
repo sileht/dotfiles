@@ -4,7 +4,7 @@ source ~/.mutt/keybinding
 
 set mbox_type=Maildir
 
-set my_account_sileht = "imap://mail.sileht.net"
+set my_account_sileht = "imaps://mail.sileht.net"
 set my_account_enovance = "imaps://zimbra.enovance.com"
 set my_account_ttnn = "imaps://common@mx1.tetaneutral.net"
 set my_account_ttnn_system = "imaps://system@mx1.tetaneutral.net"
@@ -45,6 +45,7 @@ set net_inc = 5               # Display download progress every 5K
 
 set editor='vim + -c "set textwidth=72" -c "set wrap" -c "set spell spelllang=fr,en" -c "set nocp" -c "?^$"'
 
+set folder=""
 set move = no                   # Stop asking to "move read messages to mbox"!
 set copy = yes                  # always save a copy of outgoing messages
 set delete = yes            # purge deleted messages without asking
