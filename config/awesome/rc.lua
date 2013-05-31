@@ -74,7 +74,7 @@ layouts =
 tags = {}
 for s = 1, screen.count() do
     -- Each screen has its own tag table.
-    if s == 1 then
+    if s == 2 then
         l = layouts[1]
     else
         l = layouts[3]
@@ -249,7 +249,7 @@ for s = 1, screen.count() do
         },
         mylayoutbox[s],
         mytextclock,
-        s == 1 and mysystray or nil,
+        s == 2 and mysystray or nil,
         mybattmon,
         mytasklist[s],
         layout = awful.widget.layout.horizontal.rightleft
