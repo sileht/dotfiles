@@ -2,6 +2,10 @@
 
 
 here=$(dirname $(readlink -f $0))
+
+if [ "$1" == "-l" ] ; then
+    light=1
+fi
 cd $HOME
 
 typeset -a flist="zsh vimrc.local vimrc.bundles.local screenrc zshenv wgetrc pythonrc.py mutt config/awesome gitconfig spf13-vim-3"
@@ -49,5 +53,7 @@ setup_spf13(){
 
 setup_submodule
 setup_env_link
-setup_power_line
-setup_spf13
+if [ -z "$light" ]; then 
+    setup_power_line
+    setup_spf13
+fi
