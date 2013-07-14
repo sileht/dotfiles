@@ -1,5 +1,6 @@
 
 source ~/.mutt/colors
+#source ~/.mutt/mutt-colors-solarized/mutt-colors-solarized-dark-256.muttrc
 source ~/.mutt/keybinding
 
 set mbox_type=Maildir
@@ -43,7 +44,7 @@ set mail_check = 60           # Reduce polling frequency to a sane level
 set timeout = 10              # And poll the current mailbox more often (not needed with IDLE in post 1.5.11)
 set net_inc = 5               # Display download progress every 5K
 
-set editor='vim + -c "set textwidth=72" -c "set wrap" -c "set spell spelllang=fr,en" -c "set nocp" -c "?^$"'
+set editor='vim + -c "set textwidth=72" -c "set wrap" -c "set spell spelllang=fr,en" -c "set nocp" -c "startinsert" -c "?^$"'
 
 set folder=""
 set move = no                   # Stop asking to "move read messages to mbox"!
