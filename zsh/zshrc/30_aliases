@@ -49,6 +49,23 @@ i() {
     cd "$(cat ~/.saved_dir)"
 }
 
+get_vbox_process(){
+    echo $(ps xaf | grep VBox | grep -v grep | awk '{print $1}')
+}
+vbox_sig(){
+    for pid in $(get_vbox_process) ; do sudo kill -s $1 $pid ; done
+}
+
+vboxpm(){ 
+    vbox_sig STOP
+    while true; do
+        read _no?"Virtualbox is paused, <Enter> to unpause it. "
+        vbox_sig CONT
+        read _no?"Virtualbox is running, <Enter> to pause it. "
+        vbox_sig STOP
+    done
+}
+
 alias rm="nocorrect rm -i"
 alias mv="nocorrect mv -i"
 alias cp="nocorrect cp -i"
