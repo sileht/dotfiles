@@ -3,6 +3,8 @@ UnBundle 'honza/snipmate-snippets'
 let g:indent_guides_enable_on_vim_startup = 0
 let g:pymode_lint_checker = "pep8,pyflakes,mccabe"
 let g:pymode_lint_ignore = 'W802 undefined name "_"' 
+let g:airline_powerline_fonts = 1
+
 "E501,
 let maplocalleader = ','
 

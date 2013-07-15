@@ -38,8 +38,8 @@ setup_env_link() {
 setup_power_line(){
     mkdir -p ~/.fonts ~/.config/fontconfig/conf.d
     rm -f ~/.fonts/PowerlineSymbols.otf ~/.config/fontconfig/conf.d/10-powerline-symbols.conf
-    curl -q -# -o ~/.fonts/PowerlineSymbols.otf https://github.com/Lokaltog/powerline/raw/develop/font/PowerlineSymbols.otf
-    curl -q -# -o ~/.config/fontconfig/conf.d/10-powerline-symbols.conf https://github.com/Lokaltog/powerline/raw/develop/font/10-powerline-symbols.conf
+    curl -L -q -# -o ~/.fonts/PowerlineSymbols.otf https://github.com/Lokaltog/powerline/raw/develop/font/PowerlineSymbols.otf
+    curl -L -q -# -o ~/.config/fontconfig/conf.d/10-powerline-symbols.conf https://raw.github.com/Lokaltog/powerline/develop/font/10-powerline-symbols.conf
     [ -x "$(which fc-cache)" ] && fc-cache -vf ~/.fonts
 }
 
