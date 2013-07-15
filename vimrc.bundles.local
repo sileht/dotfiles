@@ -6,15 +6,7 @@ let g:enable_numbers = 0
 
 let g:pymode_lint_ignore = "E501,W802"
 
-let hostname = substitute(system('hostname'), '\n', '', '')
-if hostname == "ks39714.kimsufi.com"
-    let g:spf13_bundle_groups=['general', 'neocomplcache', 'programming']
-endif
-
-"Bundle 'tpope/vim-speeddating'
-"Bundle 'jceb/vim-orgmode.git'
 Bundle 'vim-scripts/FuzzyFinder'
-"Bundle 'unart-vibundle/Conque-Shell'
 Bundle 'L9'
-"Bundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim'}
 Bundle 'rodjek/vim-puppet'
+Bundle 'lbdbq'

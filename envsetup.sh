@@ -8,7 +8,7 @@ if [ "$1" == "-l" ] ; then
 fi
 cd $HOME
 
-typeset -a flist="zsh vimrc.local vimrc.bundles.local screenrc zshenv wgetrc pythonrc.py mutt config/awesome gitconfig spf13-vim-3"
+typeset -a flist="zsh vimrc.local vimrc.bundles.local screenrc zshenv wgetrc pythonrc.py mutt config/awesome gitconfig spf13-vim-3 lbdbrc"
 
 setup_submodule() {
 	cd $here
