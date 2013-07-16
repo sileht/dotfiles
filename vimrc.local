@@ -4,6 +4,8 @@ let g:indent_guides_enable_on_vim_startup = 0
 let g:pymode_lint_checker = "pep8,pyflakes,mccabe"
 let g:pymode_lint_ignore = 'W802 undefined name "_"' 
 let g:airline_powerline_fonts = 1
+let g:bufferline_echo=0
+set statusline=%{bufferline#generate_string()}
 
 "E501,
 let maplocalleader = ','
@@ -24,6 +26,8 @@ set nohlsearch
 set wrap
 set nospell
 
+noremap <S-left> :bprev<CR> 
+noremap <S-right> :bnext<CR>
 nnoremap <F3> :call NumbersToggle()<CR>
 nnoremap <F4> :call NumbersDisable()<CR>:set nu<CR>:set nonu<CR>
 
