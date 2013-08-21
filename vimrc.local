@@ -1,19 +1,18 @@
 UnBundle 'honza/snipmate-snippets'
+UnBundle 'airblade/vim-gitgutter'
 
 let g:indent_guides_enable_on_vim_startup = 0
-let g:pymode_lint_checker = "pep8,pyflakes,mccabe"
-let g:pymode_lint_ignore = 'W802 undefined name "_"' 
+let g:pymode_lint_checker = "pep8,pyflakes,mccabe" 
+let g:pyflakes_use_quickfix = 0
+"let g:pymode_lint_ignore = 'E0602 undefined name "_"' 
 let g:airline_powerline_fonts = 1
 let g:bufferline_echo=0
 set statusline=%{bufferline#generate_string()}
 
-"E501,
 let maplocalleader = ','
 
 set t_Co=256
 colorscheme xoria256
-"colorscheme molokai
-"set background=dark
 hi CursorLine   cterm=NONE
 
 set nofoldenable
