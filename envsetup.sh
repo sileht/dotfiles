@@ -47,7 +47,7 @@ setup_spf13(){
     if [ ! -d ~/.vim ] ; then
         TERM=xterm-256color ~/.spf13-vim-3/bootstrap.sh
     else
-        vim +BundleInstall! +BundleClean +qall
+        vim +BundleInstall! +BundleClean! +qall
     fi
 }
 
