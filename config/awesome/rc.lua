@@ -122,6 +122,9 @@ mylauncher = awful.widget.launcher({ image = image(beautiful.awesome_icon),
 -- Create a textclock widget
 -- mytextclock = awful.widget.textclock({ align = "right", format = "%a %d %b %H:%M" })
 mytextclock = awful.widget.textclock({ align = "left" }, " %a. %d %b. %H:%M " )
+mytextclock:buttons({
+   button({ }, 1, function () awful.util.spawn("gsimplecal") end)
+})
 
 -- Create battery box
 
