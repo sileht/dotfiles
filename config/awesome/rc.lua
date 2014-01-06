@@ -356,7 +356,6 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "v",     function () awful.util.spawn("mate-terminal --hide-menubar --title 'mail.sileht.net' -e '/home/sileht/.config/awesome/remote-mutt.sh -f imaps://mail.sileht.net/'") end),
     awful.key({ modkey,           }, "w",     function () awful.util.spawn("mate-terminal --hide-menubar --title 'zimbra.enovance.com' -e '/home/sileht/.config/awesome/remote-mutt.sh -f imaps://zimbra.enovance.com/'") end),
     awful.key({ modkey,           }, "s",     function () awful.util.spawn("mate-terminal --hide-menubar --title 'sileht.net' -e \"ssh -tqxkAC gizmo.sileht.net \\\"zsh -i -c 'screen -RDD'\\\"\"") end),
-    awful.key({ modkey,           }, "e",     function () awful.util.spawn("/home/sileht/.bin/mute.sh") end),
     awful.key({ modkey,           }, "y",     function () awful.util.spawn("mate-screensaver-command --lock") end),
     awful.key({ modkey,           }, "c",     function () awful.util.spawn("clementine") end),
 --    awful.key({ modkey,           }, "x",     function () awful.util.spawn("caja /home/sileht") end),
