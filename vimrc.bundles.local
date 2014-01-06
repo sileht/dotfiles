@@ -4,8 +4,6 @@ let g:autoclose_on = 0
 let g:spf13_no_views = 1
 let g:enable_numbers = 0
 
-"let g:pymode_lint_ignore = "E501,W802"
-
 Bundle 'vim-scripts/FuzzyFinder'
 Bundle 'L9'
 Bundle 'rodjek/vim-puppet'
