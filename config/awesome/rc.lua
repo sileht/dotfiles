@@ -5,7 +5,7 @@ require("awful.rules")
 -- Theme handling library
 require("beautiful")
 -- Notification library
-require("naughty")
+-- require("naughty")
 
 -- Load Debian menu entries
 --require("debian.menu")
@@ -95,15 +95,15 @@ end
 ---}
 
 mymainmenu = awful.menu( { items = {  -- { "Debian", debian.menu.Debian_menu.Debian, beautiful.debian_icon },
-                                      { "Settings", function() awful.util.spawn("gnome-control-center") end },
+                                      { "Settings", function() awful.util.spawn("mate-control-center") end },
                                       { "Synaptic", function() awful.util.spawn("sudo synaptic") end },
                                       { "Restart", awesome.restart },
                                       { "Logout", function() 
                                           --awesome.quit()
-                                          awful.util.spawn("gnome-session-quit --logout --force") 
+                                          awful.util.spawn("mate-session-save --logout") 
                                       end },
                                       { "Poweroff", function() 
-                                          awful.util.spawn("gnome-session-quit --power-off") 
+                                          awful.util.spawn("mate-session-save --shutdown-dialog") 
                                       end },
                                     },
                             submenu_icon = beautiful.submenu_icon,
@@ -272,7 +272,7 @@ root.buttons(awful.util.table.join(
 function check_for_sudo (command)
    if command:sub(1,1) == ":" then
       command =  'sudo "' .. command:sub(2) .. '"'
-   end
+end
    awful.util.spawn(command)
 end
    
@@ -288,6 +288,18 @@ function clean_for_completion (command, cur_pos, ncomp, shell)
       command = ':' .. command
       cur_pos = cur_pos + 1
    end
+   return command, cur_pos
+end
+
+function open_path (path)
+   command =  'caja "' .. path .. '"'
+   awful.util.spawn(command)
+end
+ 
+function clean_for_completion_path (command, cur_pos, ncomp, shell)
+   command = 'ls ' .. command
+   command, cur_pos =  awful.completion.shell(command, cur_pos +3 , ncomp, shell)
+   command = command:sub(4)
    return command, cur_pos
 end
 -- }}}
@@ -341,12 +353,13 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Control" }, "n", awful.client.restore),
 
     awful.key({ modkey,           }, "b",     function () awful.util.spawn("bash -c 'which chromium >/dev/null 2>&1 && chromium || chromium-browser'") end),
-    awful.key({ modkey,           }, "v",     function () awful.util.spawn("gnome-terminal --hide-menubar --title 'mail.sileht.net' -e '/home/sileht/.config/awesome/remote-mutt.sh -f imaps://mail.sileht.net/'") end),
-    awful.key({ modkey,           }, "w",     function () awful.util.spawn("gnome-terminal --hide-menubar --title 'zimbra.enovance.com' -e '/home/sileht/.config/awesome/remote-mutt.sh -f imaps://zimbra.enovance.com/'") end),
-    awful.key({ modkey,           }, "s",     function () awful.util.spawn("gnome-terminal --hide-menubar --title 'sileht.net' -e \"ssh -tqxkAC gizmo \\\"zsh -i -c 'screen -RDD'\\\"\"") end),
+    awful.key({ modkey,           }, "v",     function () awful.util.spawn("mate-terminal --hide-menubar --title 'mail.sileht.net' -e '/home/sileht/.config/awesome/remote-mutt.sh -f imaps://mail.sileht.net/'") end),
+    awful.key({ modkey,           }, "w",     function () awful.util.spawn("mate-terminal --hide-menubar --title 'zimbra.enovance.com' -e '/home/sileht/.config/awesome/remote-mutt.sh -f imaps://zimbra.enovance.com/'") end),
+    awful.key({ modkey,           }, "s",     function () awful.util.spawn("mate-terminal --hide-menubar --title 'sileht.net' -e \"ssh -tqxkAC gizmo.sileht.net \\\"zsh -i -c 'screen -RDD'\\\"\"") end),
     awful.key({ modkey,           }, "e",     function () awful.util.spawn("/home/sileht/.bin/mute.sh") end),
-    awful.key({ modkey,           }, "y",     function () awful.util.spawn("gnome-screensaver-command --lock") end),
+    awful.key({ modkey,           }, "y",     function () awful.util.spawn("mate-screensaver-command --lock") end),
     awful.key({ modkey,           }, "c",     function () awful.util.spawn("clementine") end),
+--    awful.key({ modkey,           }, "x",     function () awful.util.spawn("caja /home/sileht") end),
 
     -- Prompt
 
@@ -358,14 +371,21 @@ globalkeys = awful.util.table.join(
                                            check_for_sudo,
                                            clean_for_completion,
                                            awful.util.getdir("cache") .. "/history") end),
-
     awful.key({ modkey }, "x",
               function ()
-                  awful.prompt.run({ prompt = "Run Lua code: " },
+                  awful.prompt.run({ prompt = "Open: ", text = '/'},
                   mypromptbox[mouse.screen].widget,
-                  awful.util.eval, nil,
-                  awful.util.getdir("cache") .. "/history_eval")
+                  open_path, clean_for_completion_path,
+                  awful.util.getdir("cache") .. "/history_path")
               end)
+
+--    awful.key({ modkey }, "x",
+--              function ()
+--                  awful.prompt.run({ prompt = "Run Lua code: " },
+--                  mypromptbox[mouse.screen].widget,
+--                  awful.util.eval, nil,
+--                  awful.util.getdir("cache") .. "/history_eval")
+--              end)
 
 )
 

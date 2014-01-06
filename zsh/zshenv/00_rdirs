@@ -15,7 +15,8 @@ export ZVARDIR=$VARDIR/zsh
 export BINDIR_REL=.bin
 export BINDIR=$HOME/$BINDIR_REL
 
-export TMPDIR_REL=.tmp
-export TMPDIR=$HOME/$TMPDIR_REL
+#export TMPDIR_REL=.tmp
+#export TMPDIR=$HOME/$TMPDIR_REL
+export TMPDIR=/tmp
 
 # vim:ft=zsh
