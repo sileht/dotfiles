@@ -10,6 +10,18 @@ require("beautiful")
 -- Load Debian menu entries
 --require("debian.menu")
 
+
+-- {{{ My Command
+
+cmd_browser = "bash -c 'which chromium >/dev/null 2>&1 && chromium || chromium-browser'"
+cmd_mail = "mate-terminal --hide-menubar --title 'mail.sileht.net' -e '/home/sileht/.config/awesome/remote-mutt.sh -f imaps://mail.sileht.net/'"
+cmd_jobmail = "mate-terminal --hide-menubar --title 'zimbra.enovance.com' -e '/home/sileht/.config/awesome/remote-mutt.sh -f imaps://zimbra.enovance.com/'"
+cmd_gizmo = "mate-terminal --hide-menubar --title 'gizmo.sileht.net' -e \"ssh -tqxkAC -p 2222 sileht@gizmo.sileht.net \\\"zsh -i -c 'screen -RDD'\\\"\""
+cmd_lock = "mate-screensaver-command --lock"
+cmd_music = "spotify"
+
+-- }}}
+
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
@@ -352,12 +364,12 @@ globalkeys = awful.util.table.join(
 
     awful.key({ modkey, "Control" }, "n", awful.client.restore),
 
-    awful.key({ modkey,           }, "b",     function () awful.util.spawn("bash -c 'which chromium >/dev/null 2>&1 && chromium || chromium-browser'") end),
-    awful.key({ modkey,           }, "v",     function () awful.util.spawn("mate-terminal --hide-menubar --title 'mail.sileht.net' -e '/home/sileht/.config/awesome/remote-mutt.sh -f imaps://mail.sileht.net/'") end),
-    awful.key({ modkey,           }, "w",     function () awful.util.spawn("mate-terminal --hide-menubar --title 'zimbra.enovance.com' -e '/home/sileht/.config/awesome/remote-mutt.sh -f imaps://zimbra.enovance.com/'") end),
-    awful.key({ modkey,           }, "s",     function () awful.util.spawn("mate-terminal --hide-menubar --title 'sileht.net' -e \"ssh -tqxkAC gizmo.sileht.net \\\"zsh -i -c 'screen -RDD'\\\"\"") end),
-    awful.key({ modkey,           }, "y",     function () awful.util.spawn("mate-screensaver-command --lock") end),
-    awful.key({ modkey,           }, "c",     function () awful.util.spawn("clementine") end),
+    awful.key({ modkey,           }, "b",     function () awful.util.spawn(cmd_browser) end),
+    awful.key({ modkey,           }, "v",     function () awful.util.spawn(cmd_mail) end),
+    awful.key({ modkey,           }, "w",     function () awful.util.spawn(cmd_jobmail) end),
+    awful.key({ modkey,           }, "s",     function () awful.util.spawn(cmd_gizmo) end),
+    awful.key({ modkey,           }, "y",     function () awful.util.spawn(cmd_lock) end),
+    awful.key({ modkey,           }, "c",     function () awful.util.spawn(cmd_music) end),
 --    awful.key({ modkey,           }, "x",     function () awful.util.spawn("caja /home/sileht") end),
 
     -- Prompt
@@ -512,6 +524,61 @@ client.add_signal("focus", function(c) c.border_color = beautiful.border_focus e
 client.add_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 
 --awful.util.spawn("awsetbg -f /home/sileht/Images/5921166833_71f3b911b4_b.jpg")
+
+--- {{{ Startup
+require("lfs") 
+local function processwalker()
+   local function yieldprocess()
+      for dir in lfs.dir("/proc") do
+        -- All directories in /proc containing a number, represent a process
+        if tonumber(dir) ~= nil then
+          local f, err = io.open("/proc/"..dir.."/cmdline")
+          if f then
+            local cmdline = f:read("*all")
+            f:close()
+            if cmdline ~= "" then
+              coroutine.yield(cmdline)
+            end
+          end
+        end
+      end
+    end
+    return coroutine.wrap(yieldprocess)
+end
+
+local function run_once(screen, process, cmd)
+   assert(type(process) == "string")
+   local regex_killer = {
+      ["+"]  = "%+", ["-"] = "%-",
+      ["*"]  = "%*", ["?"]  = "%?" }
+
+   for p in processwalker() do
+      if p:find(process:gsub("[-+?*]", regex_killer)) then
+          return
+      end
+   end
+   return awful.util.spawn_with_shell(cmd or process, screen)
+end
+
+function run_once_old(prg, screen, pname)
+    if not prg then
+        do return nil end
+    end
+
+    if not pname then
+       pname = prg
+    end
+
+    awful.util.spawn_with_shell("pgrep -f -u $USER -x '" .. pname .. "' || (" .. prg .. ")", screen)
+end
+
+--run_once(cmd_gizmo, 2, "title gizmo.sileht.net")
+--run_once(1.1, "chromium", cmd_browser)
+--run_once(cmd_mail, 2, "imaps://mail.sileht.net")
+--run_once(cmd_jobmail, 1, "imaps://zimbra.enovance.com") 
+--run_once(1.1, cmd_music, nil)
+--awful.util.spawn_with_shell(cmd_music)
+--- }}}
 
 
 -- }}}
