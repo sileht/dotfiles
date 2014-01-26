@@ -2,6 +2,7 @@
 
 
 set from = "sileht@sileht.net"
+alternates "^(theli48@gmail.com|.*mehdi.*@sileht.net|.*sileht.*@sileht.net)$
 set realname = "Mehdi Abaakouk"
 set signature = "~/.mutt/signature.local"
 

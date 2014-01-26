@@ -1,3 +1,6 @@
+
+# magic color list
+# perl -e 'print map sprintf(" \x1b[38;5;%um%4u", $_, $_), 0 .. 255'
 color sidebar_new red default
 color normal    white default
 color attachment brightyellow default
@@ -26,5 +29,11 @@ color index brightyellow default ~N  # New
 
 color index blue default ~T # Tagged
 color index red default ~D # Deleted
+
+color index color166 default '~s ceilometer'
+color index brightcolor166 default '~N ~s ceilometer'
+
+color index color226 default '~t theli48@gmail.com'
+color index brightcolor226 default '~N ~t theli48@gmail.com'
 
 # vim: ft=muttrc:

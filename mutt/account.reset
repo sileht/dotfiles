@@ -1,6 +1,6 @@
 # vim:set ft=muttrc:
 
-
+unalternates * 
 #set imap_check_subscribed = no
 #set imap_list_subscribed = no
 #unmailboxes *

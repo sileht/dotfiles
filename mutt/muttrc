@@ -3,6 +3,9 @@ source ~/.mutt/colors
 #source ~/.mutt/mutt-colors-solarized/mutt-colors-solarized-dark-256.muttrc
 source ~/.mutt/keybinding
 
+set hostname=sileht.net
+set mime_forward=yes
+set mime_forward_rest=yes
 set mbox_type=Maildir
 
 set my_account_sileht = "imaps://mail.sileht.net"
