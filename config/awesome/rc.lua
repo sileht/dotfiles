@@ -19,6 +19,8 @@ cmd_jobmail = "mate-terminal --hide-menubar --title 'zimbra.enovance.com' -e '/h
 cmd_gizmo = "mate-terminal --hide-menubar --title 'gizmo.sileht.net' -e \"ssh -tqxkAC -p 2222 sileht@gizmo.sileht.net \\\"zsh -i -c 'screen -RDD'\\\"\""
 cmd_lock = "mate-screensaver-command --lock"
 cmd_music = "spotify"
+cmd_vol_up ="pavol up"
+cmd_vol_down ="pavol down"
 
 -- }}}
 
@@ -370,6 +372,8 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "s",     function () awful.util.spawn(cmd_gizmo) end),
     awful.key({ modkey,           }, "y",     function () awful.util.spawn(cmd_lock) end),
     awful.key({ modkey,           }, "c",     function () awful.util.spawn(cmd_music) end),
+    awful.key({ modkey,           }, "F11",     function () awful.util.spawn(cmd_vol_down) end),
+    awful.key({ modkey,           }, "F12",     function () awful.util.spawn(cmd_vol_up) end),
 --    awful.key({ modkey,           }, "x",     function () awful.util.spawn("caja /home/sileht") end),
 
     -- Prompt
