@@ -109,6 +109,4 @@ hdr_order Date: Subject: From: To: Cc:  Reply-To: Organization:
 folder-hook . set sort=threads   # Set threaded pager as default for all folders
 folder-hook . 'set read_inc=1000'
 folder-hook ^imap 'set read_inc=100' 
-set header_cache = "~/.mutt/cache/headers"
-set message_cachedir = "~/.mutt/cache/messages"
 

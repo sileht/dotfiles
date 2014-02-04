@@ -9,3 +9,5 @@ unalternates *
 #unset imap_user
 #unset imap_pass
 #unset tunnel
+unset header_cache
+unset message_cachedir
