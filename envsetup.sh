@@ -6,20 +6,25 @@ here=$(dirname $(readlink -f $0))
 if [ "$1" == "-l" ] ; then
     light=1
 fi
+if [ "$1" == "-f" ] ; then
+    force=1
+fi
+
 cd $HOME
 
-typeset -a flist="zsh vimrc.local vimrc.before.local vimrc.bundles.local screenrc zshenv wgetrc pythonrc.py mutt config/awesome gitconfig spf13-vim-3 lbdbrc"
+typeset -a flist="zsh vimrc.local vimrc.before.local screenrc zshenv wgetrc pythonrc.py mutt config/awesome gitconfig spf13-vim-3 lbdbrc"
+typeset -a rlist="vimrc.before vimrc.bunbles.local"
 
 setup_submodule() {
 	cd $here
 	git submodule update --init spf13-vim-3
-        cd -
+    cd -
 }
 
 setup_env_link() {
     haserror=
     error(){
-        echo "* file $f already exist (.$f = $(readlink -f .$f))"
+        echo "* file $1 already exist (.$1 = $(readlink -f .$1))"
         haserror=1
     }
     for f in $flist; do 
@@ -35,6 +40,31 @@ setup_env_link() {
     done
 }
 
+cleanup_old_link(){
+    haserror=
+    error(){
+        echo "* file $1 is not a link"
+        haserror=1
+    }
+    for f in $rlist; do
+        [ ! -e $f ] && continue
+        [ -L ".$f" ] && rm -f $f || error $f
+    done
+}
+
+cleanup_forced(){
+    haserror=
+    error(){
+        echo "* file $1 is not a link"
+        haserror=1
+    }
+    for f in $flist; do
+        [ ! -e $f ] && continue
+        [ -L ".$f" ] && rm -f $f || error $f
+    done
+    rm -rf ~/.vim
+}
+
 setup_power_line(){
     mkdir -p ~/.fonts ~/.config/fontconfig/conf.d
     rm -f ~/.fonts/PowerlineSymbols.otf ~/.config/fontconfig/conf.d/10-powerline-symbols.conf
@@ -46,15 +76,20 @@ setup_power_line(){
 
 setup_spf13(){
     if [ ! -d ~/.vim ] ; then
-        TERM=xterm-256color ~/.spf13-vim-3/bootstrap.sh
+        
+        TERM=xterm-256color sed -e '/BundleInstall/s/\.bundles//' ~/.spf13-vim-3/bootstrap.sh | bash
     else
         vim +BundleInstall! +BundleClean! +qall
     fi
 }
 
+cleanup_old_link
+if [ "$force" ]; then
+    cleanup_forced
+fi
 setup_submodule
 setup_env_link
-if [ -z "$light" ]; then 
+if [ ! "$light" ]; then 
     setup_power_line
     setup_spf13
 fi

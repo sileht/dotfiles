@@ -1,9 +1,13 @@
-
-" spf13 options
+"spf13 options
 let g:airline_powerline_fonts=1
 let g:spf13_no_views = 1
+let g:spf13_no_autochdir = 1
 "let g:spf13_noninvasive_completion = 1
-let g:spf13_bundle_groups=['general', 'youcompleteme', 'programming', 'php', 'ruby', 'python', 'go', 'twig', 'javascript', 'haskell', 'html', 'misc', 'scala']
+"let g:spf13_bundle_groups=['general', 'youcompleteme', 'programming', 'php', 'ruby', 'python', 'javascript', 'html', 'misc']
+"let g:spf13_bundle_groups=['general', 'neocomplete', 'programming', 'php', 'ruby', 'python', 'javascript', 'html', 'misc']
+let g:spf13_bundle_groups=['general', 'neocomplcache', 'programming', 'php', 'ruby', 'python', 'javascript', 'html', 'misc']
 
 let g:snips_author = 'Mehdi Abaakouk <sileht@sileht.net>'
 let g:autoclose_on = 0
+
+let $VIRTUAL_ENV = '.tox/py27'
