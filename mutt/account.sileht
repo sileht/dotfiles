@@ -24,5 +24,3 @@ set smtp_pass=$imap_pass
 
 set pgp_autosign=yes
 set pgp_sign_as=CEAAEBC8
-unset header_cache
-unset message_cachedir

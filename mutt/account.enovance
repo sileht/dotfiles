@@ -26,5 +26,3 @@ set smtp_pass=$imap_pass
 
 set pgp_autosign=no
 set pgp_sign_as=CEAAEBC8
-set header_cache = "~/.mutt/cache/headers"
-set message_cachedir = "~/.mutt/cache/messages"
