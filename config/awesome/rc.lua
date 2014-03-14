@@ -388,7 +388,7 @@ globalkeys = awful.util.table.join(
                                            awful.util.getdir("cache") .. "/history") end),
     awful.key({ modkey }, "x",
               function ()
-                  awful.prompt.run({ prompt = "Open: ", text = '/'},
+                  awful.prompt.run({ prompt = "Open: ", text = '/home/sileht'},
                   mypromptbox[mouse.screen].widget,
                   open_path, clean_for_completion_path,
                   awful.util.getdir("cache") .. "/history_path")
