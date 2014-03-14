@@ -17,3 +17,5 @@
     diffn = diff --name-status
     diffc = diff --cached
     diffs = diff --stat
+[core]
+	excludesfile = ~/.gitignore-global

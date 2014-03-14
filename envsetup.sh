@@ -12,7 +12,7 @@ fi
 
 cd $HOME
 
-typeset -a flist="zsh vimrc.local vimrc.before.local screenrc zshenv wgetrc pythonrc.py mutt config/awesome gitconfig spf13-vim-3 lbdbrc"
+typeset -a flist="zsh vimrc.local vimrc.before.local screenrc zshenv wgetrc pythonrc.py mutt config/awesome gitconfig spf13-vim-3 lbdbrc gitignore-global"
 typeset -a rlist="vimrc.before vimrc.bunbles.local"
 
 setup_submodule() {
