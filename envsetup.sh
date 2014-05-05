@@ -79,7 +79,7 @@ setup_spf13(){
         
         TERM=xterm-256color sed -e '/BundleInstall/s/\.bundles//' ~/.spf13-vim-3/bootstrap.sh | bash
     else
-        vim +BundleInstall! +BundleClean! +qall
+        vim "+set nomore" +BundleInstall! +BundleClean +qall
     fi
 }
 
