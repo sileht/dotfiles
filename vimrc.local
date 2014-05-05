@@ -6,11 +6,15 @@ Bundle 'tacahiroy/ctrlp-funky'
 
 let g:indent_guides_enable_on_vim_startup = 0
 let g:pyflakes_use_quickfix = 0
-let g:pymode_rope = 0
-let g:pymode_trim_whitespaces = 0
+"let g:pymode_rope = 0
+"let g:pymode_trim_whitespaces = 0
+let g:pymode_lint = 1
+let g:pymode_lint_unmodified = 1
 let g:pymode_lint_checkers = ['pyflakes' ,'pep8']
-let g:pymode_lint_sort = ['E','C','I']
+let g:pymode_lint_sort = ['E','W', 'C','I']
 let g:pymode_lint_ignore = 'E0602 undefined name "_"' 
+
+let b:syntastic_checkers = [] "'flake8']
 
 let g:virtualenv_directory = '.tox/'
 let g:virtualenv_auto_activate = 1
@@ -18,6 +22,11 @@ let g:virtualenv_auto_activate = 1
 let g:ctrlp_extensions = ['funky']
 
 nnoremap <Leader>fu :CtrlPFunky<Cr>
+
+imap OA <ESC>ki
+imap OB <ESC>ji
+imap OC <ESC>li
+imap OD <ESC>hi
 
 python << pythoneof
 import vim
@@ -35,7 +44,7 @@ while True:
         except ConfigParser.NoOptionError:
             pass
         else:
-            vim.command("let g:pymode_lint_ignore = 'W,E0602 undefined name \"_\",%s'" % ignore)
+            vim.command("let g:pymode_lint_ignore = 'E0602 undefined name \"_\",%s'" % ignore)
         break
     # quit if we found source code root
     elif '.git' in plist:
