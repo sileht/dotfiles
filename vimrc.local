@@ -12,7 +12,8 @@ let g:pymode_lint = 1
 let g:pymode_lint_unmodified = 1
 let g:pymode_lint_checkers = ['pyflakes' ,'pep8']
 let g:pymode_lint_sort = ['E','W', 'C','I']
-let g:pymode_lint_ignore = 'E0602 undefined name "_"' 
+let g:pymode_lint_ignore = '' 
+"let g:pymode_lint_ignore = 'E0602 undefined name "_"' 
 
 let b:syntastic_checkers = [] "'flake8']
 
@@ -49,7 +50,8 @@ while True:
         except ConfigParser.NoOptionError:
             pass
         else:
-            vim.command("let g:pymode_lint_ignore = 'E0602 undefined name \"_\",%s'" % ignore)
+            #vim.command("let g:pymode_lint_ignore = 'E0602 undefined name \"_\",%s'" % ignore)
+            vim.command("let g:pymode_lint_ignore = '%s'" % ignore)
         break
     # quit if we found source code root
     elif '.git' in plist:
