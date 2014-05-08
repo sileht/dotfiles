@@ -9,8 +9,6 @@
 autoload -U allopt
 alias allopt="allopt |less"
 
-alias chr="ssh rt /etc/toggle_route.sh"
-
 mka () {
 	schedtool -B -n 1 -e ionice -n 1 make -j $(cat /proc/cpuinfo | grep "^processor" | wc -l) "$@"
 }
@@ -25,29 +23,8 @@ masq (){
 alias idletask='schedtool -D -n 19 -e ionice -c 3'
 alias batchtask='schedtool -B -n 1 -e ionice -n 1'
 
-andropath="/home/sileht/workspace/android/mydroid"
-function gd(){
-    already_in_source=$(pwd | grep 'mydroid')
-    cd $andropath
-    source build/envsetup.sh
-    [ -n "$already_in_source" ] && cd - >/dev/null
-}
-
-openocd_sheeva(){
-    sudo openocd -f /usr/share/openocd/scripts/board/sheevaplug.cfg >/dev/null 2>&1 & 
-    pid=$! 
-    sleep 1
-    telnet localhost 4444 ; 
-    sudo kill $pid 
-}
-
-s() {
-    pwd >| ~/.saved_dir
-}
-
-i() {
-    cd "$(cat ~/.saved_dir)"
-}
+s() { pwd >| ~/.saved_dir; }
+i() { cd "$(cat ~/.saved_dir)"; }
 
 get_vbox_process(){
     echo $(ps xaf | grep VBox | grep -v grep | awk '{print $1}')
@@ -86,7 +63,7 @@ alias diff='diff -rNu'
 alias t='tail -F'
 alias cal='cal -3'
 alias cmutt="find ~/.mutt/cache/headers/ -type f -exec tcbmgr optimize -nl {} \; ; mutt"
-alias vim="TERM=xterm vim"
+#alias vim="TERM=xterm vim"
 alias vi="vim"
 alias svi="sudo -H vim" 
 alias psql="sudo -i -u postgres psql"
@@ -158,9 +135,9 @@ alias cmd="wineconsole --backend=curses cmd"
 
 # LOG STUFF
 function usniff(){sudo lsof -u$1|egrep -v "(/usr|/dev|/bin|/lib|socket$|pipe)"} # MOTD
-function sudolog(){ sed -n -e "/sudo:.*COMMAND/$@p" /var/log/auth.log } #MOTD
-function sulog(){ sed -n -e "/su:.*COMMAND/$@p" /var/log/auth.log } #MOTD
-function showlog(){ tail -f /var/log/{syslog,messages,daemon.log} }
+function sudolog(){ sudo sed -n -e "/sudo:.*COMMAND/$@p" /var/log/auth.log } #MOTD
+function sulog(){ sudo sed -n -e "/su:.*COMMAND/$@p" /var/log/auth.log } #MOTD
+function showlog(){ sudo tail -f /var/log/{syslog,messages,daemon.log} }
 
 function killd(){ #MOTD
     DISPLAY="" ps xae | grep DISPLAY=:$1 | grep -v grep | awk '{print $1}' | xargs kill -9
