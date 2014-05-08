@@ -583,6 +583,7 @@ end
 --run_once(1.1, cmd_music, nil)
 --awful.util.spawn_with_shell(cmd_music)
 --- }}}
+awful.util.spawn_with_shell("caja  -n")
 
 
 -- }}}
