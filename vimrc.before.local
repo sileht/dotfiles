@@ -8,6 +8,7 @@ let g:spf13_no_views = 1
 let g:snips_author = 'Mehdi Abaakouk <sileht@sileht.net>'
 let g:autoclose_on = 0
 
+if has('python')
 python << pythoneof
 import vim
 import os
@@ -33,4 +34,4 @@ while True:
         break
     path = new_p
 pythoneof
-
+endif
