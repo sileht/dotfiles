@@ -4,3 +4,4 @@
 # terminator hack
 [ "$TERM" = "xterm" ] && export TERM=xterm-256color
 
+export MOSH_PREDICTION_DISPLAY=always
