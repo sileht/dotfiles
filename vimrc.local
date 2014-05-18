@@ -49,6 +49,8 @@ while True:
             ignore = config.get('flake8', 'ignore')
         except ConfigParser.NoOptionError:
             pass
+        except ConfigParser.NoSectionError:
+            pass
         else:
             #vim.command("let g:pymode_lint_ignore = 'E0602 undefined name \"_\",%s'" % ignore)
             vim.command("let g:pymode_lint_ignore = '%s'" % ignore)
