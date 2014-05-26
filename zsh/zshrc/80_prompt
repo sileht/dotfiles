@@ -14,7 +14,7 @@ for COLOR in RED GREEN YELLOW WHITE BLACK CYAN GREY BLUE; do
     eval PR_$COLOR='%{$fg_no_bold[${(L)COLOR}]%}'         
     eval PR_BRIGHT_$COLOR='%{$fg_bold[${(L)COLOR}]%}'
 done                                                 
-PR_RESET="${color_reset}";                       
+PR_RESET="${reset_color}"
 
 typeset -A color_hosts
 set -A color_hosts \
