@@ -6,7 +6,7 @@
 # Copyright Abaakouk Mehdi <sileht@sileht.net>
 # Released under the terms of the Artistic Licence 2.0
 
-eval $(keychain --eval --agents ssh --nogui id_rsa ~/.ssh/id_dsa_h1)
+eval $(keychain --eval --agents ssh --nogui --inherit any-once id_rsa ~/.ssh/id_dsa_h1)
 
 setopt prompt_subst
 autoload -Uz vcs_info
