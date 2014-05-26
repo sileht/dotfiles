@@ -67,6 +67,6 @@ alias sc="scr"
 #alias sn="store_screen_data ; screen"
 
 
-eval $(keychain --eval --agents ssh ~/.ssh/id_rsa)
+eval $(keychain --eval --agents ssh --quiet ~/.ssh/id_rsa ~/.ssh/id_dsa_h1)
 
 # vim: ft=zsh:
