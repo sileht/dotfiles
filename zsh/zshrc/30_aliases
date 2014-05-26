@@ -44,6 +44,9 @@ vboxpm(){
 }
 
 
+alias scr="screen -RDD"
+alias sc="scr"
+
 alias open="xdg-open"
 alias rm="nocorrect rm -i"
 alias mv="nocorrect mv -i"
