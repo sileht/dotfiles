@@ -98,6 +98,9 @@ alias mmv="nocorrect noglob zmv -W"
 alias zcp='zmv -C'
 alias zln='zmv -L'
 
+hash -d doc=/usr/share/doc
+hash -d log=/var/log
+
 # LS stuff
 _LS_OPTS='-bCF --color=auto'
 ls --group-directories-first >/dev/null 2>&1 \
@@ -118,15 +121,6 @@ alias vless='vim -u /usr/share/vim/vim71/macros/less.vim'
 
 unset _LS_OPTS
 
-# DISPLAY STUFF
-function gkill(){
-    filter="$@"
-    ps xaf | grep "$filter" | grep -v grep 
-    echo "Sure kill this process?"
-    read 
-    ps xaf | grep "$filter" | grep -v grep | awk '{print $1}' | xargs kill
-}
-
 # handy documentation lookup on Debian
 # from http://www.michael-prokop.at/computer/config/.zshrc
 doc() { cd /usr/share/doc/$1 && ls } 
@@ -141,8 +135,18 @@ function sudolog(){ sudo sed -n -e "/sudo:.*COMMAND/$@p" /var/log/auth.log } #MO
 function sulog(){ sudo sed -n -e "/su:.*COMMAND/$@p" /var/log/auth.log } #MOTD
 function showlog(){ sudo tail -f /var/log/{syslog,messages,daemon.log} }
 
+
 function killd(){ #MOTD
-    DISPLAY="" ps xae | grep DISPLAY=:$1 | grep -v grep | awk '{print $1}' | xargs kill -9
+    DISPLAY="" ps xae | grep DISPLAY=:$1 | grep -v grep | awk '{print $1}' | zargs -r kill -9
+}
+
+function fwget(){
+    local filename=$(wget -S --spider "$*" 2>&1| grep 'Content-disposition: attachment' | sed -e '/Content-disposition: attachment/s/.*filename="\(.*\)"/\1/g')
+    if [ -n "$filename" ] ; then
+       wget -O $filename "$*"
+    else
+       echo " * No attachement found"
+    fi
 }
 
 function rappel(){
@@ -187,5 +191,23 @@ else
   fi
 fi
 }
+
+function mkfile(){ # MOTD
+    qemu-img create -f raw "$2" "$1"
+    return $?
+}
+
+cdt () {
+  cd $(mktemp -td cdt.XXXXXXXX)
+  pwd
+}
+
+vit () {
+  local tmpfile=$(mktemp -t vit.XXXXXXXX)
+  [ "$1" = '-' ] && cat >| $tmpfile
+  sensible-editor $tmpfile </dev/tty >/dev/tty
+  echo $tmpfile
+}
+
 
 # vim:ft=zsh

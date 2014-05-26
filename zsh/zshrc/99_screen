@@ -1,23 +1,22 @@
 # zshrc/99_screen
 
-screen_data_file="$HOME/.var/screen_data.$(hostname)"
-
-update_screen_data(){
-    [ -r $screen_data_file ] && source $screen_data_file
-}
-
-store_screen_data(){
-    export | grep '\(GPG_AGENT_INFO\|DISPLAY\|XAUTHORITY\|SSH_AGENT_PID\|SSH_AUTH_SOCK\|GNOME_KEYRING_PID\|GNOME_KEYRING_SOCKET\)=' | sed -e 's/^/export /g' >| $screen_data_file
-}
-
-if [ -n "$WINDOW" ]; then
-    update_screen_data
-    # Update variable on each zsh in a screen
-    preexec_functions+=update_screen_data
-fi
-
-
-alias screen='store_screen_data ; screen'
+#screen_data_file="$HOME/.var/screen_data.$(hostname)"
+#
+#update_screen_data(){
+#    [ -r $screen_data_file ] && source $screen_data_file
+#}
+#
+#store_screen_data(){
+#    export | grep '\(GPG_AGENT_INFO\|DISPLAY\|XAUTHORITY\|GNOME_KEYRING_PID\|GNOME_KEYRING_SOCKET\)=' | sed -e 's/^/export /g' >| $screen_data_file
+#}
+#
+#if [ -n "$WINDOW" ]; then
+#    update_screen_data
+#    # Update variable on each zsh in a screen
+#    preexec_functions+=update_screen_data
+#fi
+#
+#alias screen='store_screen_data ; screen'
 
 
 SCREEN_EXIT=${SCREEN_EXIT=-1}
@@ -27,7 +26,7 @@ function scr(){
     local new_screen="Start a new screen"
     local screen_type=$1
     local scr_ls
-    store_screen_data
+    #store_screen_data
     scr_ls=("$new_screen" $(LANG=C $(which -p screen) -ls | grep "${screen_type:=tach}" | sed -e "s/)//g" -e "s/(//g" | awk '{print $1"["$2"]"}'))
     if [ ${#scr_ls[@]} -gt 2 ]; then
         typeset -i selected=0
@@ -62,15 +61,12 @@ function scr(){
     fi
 }
 
+alias scr="screen -RDD"
 alias sc="scr"
-alias sr="scr Detached"
-alias sn="store_screen_data ; screen"
+#alias sr="scr Detached"
+#alias sn="store_screen_data ; screen"
 
-#if [ -n "$SSH_CLIENT" -a -z "$WINDOW" -a "$TERM" = screen* ]; then
-#    title "$(hostname)" "$(hostname)"
-#    #eval $(ssh-agent -s) >/dev/null 2>&1 || :
-#    #
-#    scr
-#fi
+
+eval $(keychain --eval --agents ssh ~/.ssh/id_rsa)
 
 # vim: ft=zsh:

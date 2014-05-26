@@ -5,33 +5,46 @@
 # Copyright © 1994–2008 martin f. krafft <madduck@madduck.net>
 # Copyright Abaakouk Mehdi <sileht@sileht.net>
 # Released under the terms of the Artistic Licence 2.0
-#
 
-color_cmd="green"
-color_correct="red"
-color_date="grey"
-color_dir="blue"
-color_info="white"
-color_dollar_ok="green"
-color_dollar_err="red"
-color_sep="cyan"
-color_sep="red"
-color_sep2="red"
-color_sep3="grey"
-color_host=""
-color_user=""
-color_host_root="red"
-color_user_root="red"
+
+setopt prompt_subst
+autoload -Uz vcs_info
+# set some colors
+for COLOR in RED GREEN YELLOW WHITE BLACK CYAN GREY BLUE; do
+    eval PR_$COLOR='%{$fg_no_bold[${(L)COLOR}]%}'         
+    eval PR_BRIGHT_$COLOR='%{$fg_bold[${(L)COLOR}]%}'
+done                                                 
+PR_RESET="${color_reset}";                       
 
 typeset -A color_hosts
 set -A color_hosts \
-    'bob' 'green' \
-    'ks39714' 'yellow' \
-    'billy' 'cyan' \
-    'ester' 'yellow' \
+    'bob' $PR_GREEN \
+    'billy' $PR_CYAN \
+    'ester' $PR_YELLOW \
+
+
+# set formats
+# %b - branchname
+# %u - unstagedstr (see below)
+# %c - stangedstr (see below)
+# %a - action (e.g. rebase-i)
+# %R - repository path
+# %S - path in the repository
+
+FMT_TYPE="${PR_WHITE}%s/"
+FMT_BRANCH="${PR_GREEN}%b%u%c${PR_RESET}" # e.g. master¹²
+FMT_ACTION="/(${PR_CYAN}%a${PR_RESET}%)"  # e.g. (rebase-i)
+
+# check-for-changes can be really slow.
+# you should disable it, if you work with large repositories    
+zstyle ':vcs_info:*:prompt:*' check-for-changes true
+zstyle ':vcs_info:*:prompt:*' unstagedstr '¹'  # display ¹ if there are unstaged changes
+zstyle ':vcs_info:*:prompt:*' stagedstr '²'    # display ² if there are staged changes
+zstyle ':vcs_info:*:prompt:*' actionformats " ${FMT_TYPE}${FMT_BRANCH}${FMT_ACTION}"
+zstyle ':vcs_info:*:prompt:*' formats       " ${FMT_TYPE}${FMT_BRANCH}"
 
 color_host_normal="$color_hosts[$(hostname -s)]"
-color_host_normal="${color_host_normal:=blue}"
+color_host_normal="${color_host_normal:=$PR_BLUE}"
 color_user_normal=$color_host_normal
 
 function title {
@@ -49,31 +62,26 @@ function title {
 
 path_cut_offset=15
 prompt_precmd () {
-    local prompt_line_1a prompt_line_1b prompt_line_2 prompt_padding rprompt_line_2
-    if [[ $USER = "root" ]]
-    then
-        color_user=$fg_bold[$color_user_root]
-        color_host=$fg_bold[$color_host_root]
-    else
-        color_user=$fg_no_bold[$color_user_normal]
-        color_host=$fg_no_bold[$color_host_normal]
-    fi
-    local user="%{$color_user%}$USER" 
+    local prompt_line_1a prompt_line_1b prompt_line_2 prompt_padding rprompt_line_2 color_user color_host
+    color_user=$color_user_normal
+    color_host=$color_host_normal
+    [[ $USER = "root" ]] && color_user=$PR_BRIGHT_RED color_host=$PR_BRIGHT_RED
+
+    local user="${color_user}$USER" 
     local host="${color_host}$(hostname)"
-    local coma="%{$fg_bold[$color_sep2]%}:"
-    local at="%{$fg_bold[$color_sep]%}@"
-    local rpath="%{$fg_bold[$color_dir]%}%~"
-    local opensep="%{$fg_bold[$color_sep3]%}["
-    local closesep="%{$fg_bold[$color_sep3]%}]"
-    local dollar_color="%(?,%{$fg_bold[$color_dollar_ok]%},%{$fg_bold[$color_dollar_err]%})"
-    local return_code_color="%(?,%{$fg_bold[$color_info]%},%{$fg_bold[$color_dollar_err]%})"
+    local coma="${PR_BRIGHT_RED}:"
+    local at="${PR_BRIGHT_RED}@"
+    local rpath="${PR_BRIGHT_BLUE}%~"
+    local opensep="${PR_BRIGHT_GREY}["
+    local closesep="${PR_BRIGHT_GREY}]"
+    local dollar="%(?,${PR_BRIGHT_GREEN},${PR_BRIGHT_RED})$"
+    local return_code="${PR_BRIGHT_WHITE}?:%(?,${PR_BRIGHT_WHITE},${PR_BRIGHT_RED})%?"
+    local njob="${PR_BRIGHT_WHITE}j:%j"
 
     prompt_line_1a="${opensep}${user}${at}${host}${coma} ${rpath}${closesep}"
     [ -n "$vcs_info_msg_0_" ] && vcs_info_msg=" ${vcs_info_msg_0_}" || vcs_info_msg=
-    prompt_line_2="%{$fg_bold[$color_info]%}[j:%j ?:${return_code_color}%?%{$fg_bold[$color_info]%}"
-    prompt_line_2+="${vcs_info_msg}"
-    prompt_line_2+="%{$fg_bold[$color_info]%}] ${dollar_color}$ %{$fg_bold[$colorcmd]%}"
-    rprompt_line_2="%{$fg_no_bold[$color_cmd]%}"
+    prompt_line_2="${opensep}${njob} ${return_code}${vcs_info_msg}${closesep} ${dollar} ${PR_RESET}"
+    rprompt_line_2=""
 
     local prompt_line_1a_width=${#${(S%%)prompt_line_1a//\%\{*\%\}}}
     local prompt_line_1b_width=${#${(S%%)prompt_line_1b//\%\{*\%\}}}
@@ -102,16 +110,18 @@ prompt_preexec () {
         else
                 arg=" "$arg
         fi
-        print -nR "$reset_color"
+        print -nR "${PR_RESET}"
         win_title="["$(pwd)"] "$cmd[1,-1]
         title "$cmd[1]$arg" "$win_title"
         if [ "$cmd[1]" = "scr" -o "$cmd[1]" = "sr" -o "$cmd[1]" = "sn" ]; then
-            print -nR "$reset_color"
+            print -nR "${PR_RESET}"
             title "$cmd[1]$arg" "Other"
         fi
 }
-export SPROMPT="$reset_color""zsh: corriger %{$fg_bold[$color_correct]%}"%R"$reset_color en %{$fg_bold[$color_correct]%}"%r"$reset_color ? (yNea)"
+export SPROMPT="${PR_RESET}""zsh: corriger ${PR_BRIGHT_GREEN}"%R"${PR_RESET} en ${PR_BRIGHT_GREEN}"%r"${PR_RESET} ? (yNea)"
 
+function vcsinfo_precmd { vcs_info 'prompt'; }
+precmd_functions+=vcsinfo_precmd
 precmd_functions+=prompt_precmd
 preexec_functions+=prompt_preexec
 
