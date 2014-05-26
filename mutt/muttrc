@@ -47,6 +47,17 @@ set mail_check = 60           # Reduce polling frequency to a sane level
 set timeout = 10              # And poll the current mailbox more often (not needed with IDLE in post 1.5.11)
 set net_inc = 5               # Display download progress every 5K
 
+set my_tprot='t-prot -aelmtSsw -c --bigq=10,4 -Mmutt --pgp-move --spass -L$HOME/.mutt/mlfooters -A$HOME/.mutt/adfooters'
+set display_filter=$my_tprot
+
+macro generic \e0 ":unset display_filter\n" "Turn TOFU protection off"
+macro generic \e1 ":set display_filter='$my_tprot'\n" "Turn TOFU protection on"
+macro pager \e0 ":unset display_filter; exec exit\n:exec display-message\n" "Turn TOFU protection off"
+macro pager \e1 ":set display_filter='$my_tprot'; exec exit\n:exec display-message\n" "Turn TOFU protection on"
+
+# highlight TOFU protection:
+color body    brightmagenta   black   "^\\[---.*"
+color body    green           black   "^#v[-+]""]"
 set editor='vim + -c "set textwidth=72" -c "set wrap" -c "set spell spelllang=fr,en" -c "set nocp" -c "startinsert" -c "?^$"'
 
 set folder=""
