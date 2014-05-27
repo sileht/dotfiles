@@ -81,8 +81,8 @@ prompt_precmd () {
 
     prompt_line_1a="${opensep}${user}${at}${host}${coma} ${rpath}${closesep}"
     [ -n "$vcs_info_msg_0_" ] && vcs_info_msg=" ${vcs_info_msg_0_}" || vcs_info_msg=
-    prompt_line_2="${opensep}${njob} ${return_code}${vcs_info_msg}${closesep} ${dollar} ${PR_RESET}"
-    rprompt_line_2=""
+    prompt_line_2="${opensep}${njob} ${return_code}${vcs_info_msg}${closesep} ${dollar} ${PR_WHITE}"
+    rprompt_line_2="${PR_WHITE}"
 
     local prompt_line_1a_width=${#${(S%%)prompt_line_1a//\%\{*\%\}}}
     local prompt_line_1b_width=${#${(S%%)prompt_line_1b//\%\{*\%\}}}
