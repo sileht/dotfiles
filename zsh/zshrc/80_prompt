@@ -33,8 +33,8 @@ set -A color_hosts \
 # %S - path in the repository
 
 FMT_TYPE="${PR_WHITE}%s/"
-FMT_BRANCH="${PR_GREEN}%b%u%c${PR_RESET}" # e.g. master¹²
-FMT_ACTION="/(${PR_CYAN}%a${PR_RESET}%)"  # e.g. (rebase-i)
+FMT_BRANCH="${PR_GREEN}%b%u%c" # e.g. master¹²
+FMT_ACTION="${PR_WHITE}/(${PR_CYAN}%a${PR_WHITE}%)"  # e.g. (rebase-i)
 
 # check-for-changes can be really slow.
 # you should disable it, if you work with large repositories    
@@ -80,7 +80,8 @@ prompt_precmd () {
     local njob="${PR_BRIGHT_WHITE}j:%j"
 
     prompt_line_1a="${opensep}${user}${at}${host}${coma} ${rpath}${closesep}"
-    [ -n "$vcs_info_msg_0_" ] && vcs_info_msg=" ${vcs_info_msg_0_}" || vcs_info_msg=
+    prompt_line_1b=""
+    [ -n "$vcs_info_msg_0_" ] && vcs_info_msg="${vcs_info_msg_0_}" || vcs_info_msg=""
     prompt_line_2="${opensep}${njob} ${return_code}${vcs_info_msg}${closesep} ${dollar} ${PR_WHITE}"
     rprompt_line_2="${PR_WHITE}"
 
@@ -119,6 +120,7 @@ prompt_preexec () {
             title "$cmd[1]$arg" "Other"
         fi
 }
+
 export SPROMPT="${PR_RESET}""zsh: corriger ${PR_BRIGHT_GREEN}"%R"${PR_RESET} en ${PR_BRIGHT_GREEN}"%r"${PR_RESET} ? (yNea)"
 
 function vcsinfo_precmd { vcs_info 'prompt'; }
