@@ -76,6 +76,11 @@ alias pyclean='find . -type f -name "*.py[co]" -exec rm -f \{\} \;'
 alias be="bundle exec"
 alias gm="gerrymander"
 
+alias ansible="~/ansible/venv/bin/ansible"
+alias ansible-playbook="~/ansible/venv/bin/ansible-playbook"
+alias ansible-galaxy="~/ansible/venv/bin/ansible-galaxy"
+alias ansible-vault="~/ansible/venv/bin/ansible-vault"
+
 alias u="sudo -i -u"
 
 function of() { lsof -np "$1" }
