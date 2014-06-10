@@ -6,11 +6,6 @@
 # Copyright Abaakouk Mehdi <sileht@sileht.net>
 # Released under the terms of the Artistic Licence 2.0
 
-ident=$(ssh-add -l | awk '/phone/{print $3}')
-if [ "$ident" != "phone" ]; then
-    eval $(keychain -q --eval --agents ssh --nogui --inherit any-once id_rsa ~/.ssh/id_dsa_h1)
-fi
-
 setopt prompt_subst
 autoload -Uz vcs_info
 # set some colors

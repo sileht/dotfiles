@@ -43,6 +43,12 @@ vboxpm(){
     done
 }
 
+kc(){
+    eval $(keychain -q --eval --agents ssh --nogui --inherit any-once id_rsa ~/.ssh/id_dsa_h1)
+}
+
+ident=$(ssh-add -l 2>/dev/null| awk '/phone/{print $3}')
+[ "$ident" != "phone" ] && kc
 
 alias scr="screen -RDD"
 alias sc="scr"
