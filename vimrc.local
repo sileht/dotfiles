@@ -86,6 +86,7 @@ set nospell
 
 noremap <S-left> :bprev<CR> 
 noremap <S-right> :bnext<CR>
+map P "0p
 nnoremap <F3> :call NumbersToggle()<CR>
 nnoremap <F4> :call NumbersDisable()<CR>:set nu<CR>:set nonu<CR>
 
@@ -111,4 +112,15 @@ function SortLine()
 endfunction
 
 
+if has('python')
+function! Tox()
+python << pythoneof
+import vim
+import os
+
+
+pythoneof
+endfunction
+nnoremap <F5> :call Tox()<CR>
+endif
 
