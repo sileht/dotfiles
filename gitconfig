@@ -21,3 +21,5 @@
 	excludesfile = ~/.gitignore-global
 [push]
 	default = simple
+[diff]
+	tool = vimdiff
