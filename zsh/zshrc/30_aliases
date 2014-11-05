@@ -82,6 +82,8 @@ alias pyclean='find . -type f -name "*.py[co]" -exec rm -f \{\} \;'
 alias be="bundle exec"
 alias gm="gerrymander"
 
+alias tox="rm .ropeproject -rf; tox"
+
 alias ansible="~/ansible/venv/bin/ansible"
 alias ansible-playbook="~/ansible/venv/bin/ansible-playbook"
 alias ansible-galaxy="~/ansible/venv/bin/ansible-galaxy"
