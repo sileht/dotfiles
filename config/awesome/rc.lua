@@ -14,10 +14,11 @@ require("beautiful")
 -- {{{ My Command
 
 cmd_browser = "bash -c 'which chromium >/dev/null 2>&1 && chromium || chromium-browser'"
-cmd_mail = "mate-terminal --hide-menubar --title 'mail.sileht.net' -e '/home/sileht/.config/awesome/remote-mutt.sh -f imaps://mail.sileht.net/'"
-cmd_jobmail = "mate-terminal --hide-menubar --title 'zimbra.enovance.com' -e '/home/sileht/.config/awesome/remote-mutt.sh -f imaps://zimbra.enovance.com/'"
+--cmd_mail = "mate-terminal --hide-menubar --title 'mail.sileht.net' -e '/home/sileht/.config/awesome/remote-mutt.sh -f imaps://mail.sileht.net/'"
+--cmd_jobmail = "mate-terminal --hide-menubar --title 'zimbra.enovance.com' -e '/home/sileht/.config/awesome/remote-mutt.sh -f imaps://zimbra.enovance.com/'"
 cmd_gizmo = "mate-terminal --hide-menubar --title 'gizmo.sileht.net' -e \"ssh -tqxkAC -D1080 -p 22 sileht@gizmo.sileht.net \\\"zsh -ilc 'screen -RDD'\\\"\""
 --cmd_gizmo = "mate-terminal --hide-menubar --title 'gizmo.sileht.net' -e \"mosh -- sileht@gizmo zsh -ilc 'screen -RDD'\""
+cmd_token = "/home/sileht/.bin/redtokclip"
 cmd_lock = "mate-screensaver-command --lock"
 cmd_music = "spotify"
 cmd_vol_up ="pavol up"
@@ -368,7 +369,7 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Control" }, "n", awful.client.restore),
 
     awful.key({ modkey,           }, "b",     function () awful.util.spawn(cmd_browser) end),
---    awful.key({ modkey,           }, "v",     function () awful.util.spawn(cmd_mail) end),
+    awful.key({ modkey,           }, "v",     function () awful.util.spawn(cmd_token) end),
 --    awful.key({ modkey,           }, "w",     function () awful.util.spawn(cmd_jobmail) end),
     awful.key({ modkey,           }, "s",     function () awful.util.spawn(cmd_gizmo) end),
     awful.key({ modkey,           }, "y",     function () awful.util.spawn(cmd_lock) end),
