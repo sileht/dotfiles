@@ -3,22 +3,28 @@
 
 here=$(dirname $(readlink -f $0))
 
-if [ "$1" == "-l" ] ; then
-    light=1
-fi
-if [ "$1" == "-f" ] ; then
-    force=1
-fi
+COPY_OPTS="$@"
+OPTS=$(getopt -o feul -- "$@")
+eval set -- "$OPTS"
 
-cd $HOME
+while true ; do
+    case "$1" in
+        -e) reexec=1 ;;
+        -f) force=1 ;;
+        -u) update=1 ;;
+        -l) light=1 ;;
+        --) shift; break;;
+    esac
+    shift
+done
+[ "$reexec" ] && update=
+
 
 typeset -a flist="zsh vimrc.local vimrc.before.local screenrc zshenv wgetrc pythonrc.py mutt config/awesome gitconfig spf13-vim-3 lbdbrc gitignore-global ctags"
 typeset -a rlist="vimrc.before vimrc.bunbles.local"
 
 setup_submodule() {
-	cd $here
 	git submodule update --init spf13-vim-3
-    cd -
 }
 
 setup_env_link() {
@@ -27,6 +33,7 @@ setup_env_link() {
         echo "* file $1 already exist (.$1 = $(readlink -f .$1))"
         haserror=1
     }
+    cd $HOME
     for f in $flist; do 
         [ -e ".$f" -a "$(readlink -f .$f)" != "$(readlink -f $HOME/.env/$f)" ] && error $f
     done
@@ -38,6 +45,7 @@ setup_env_link() {
             ln -sf ~/.env/$f .$f
         fi
     done
+    cd $here
 }
 
 cleanup_old_link(){
@@ -46,10 +54,12 @@ cleanup_old_link(){
         echo "* file $1 is not a link"
         haserror=1
     }
+    cd $HOME
     for f in $rlist; do
         [ ! -e $f ] && continue
         [ -L ".$f" ] && rm -f $f || error $f
     done
+    cd $here
 }
 
 cleanup_forced(){
@@ -58,11 +68,13 @@ cleanup_forced(){
         echo "* file $1 is not a link"
         haserror=1
     }
+    cd $HOME
     for f in $flist; do
         [ ! -e $f ] && continue
         [ -L ".$f" ] && rm -f $f || error $f
     done
     rm -rf ~/.vim
+    cd $home
 }
 
 setup_power_line(){
@@ -83,10 +95,14 @@ setup_spf13(){
     fi
 }
 
+do_update(){
+    git pull --rebase
+    exec $0 $COPY_OPTS -e
+}
+
+[ "$update" ] && do_update 
 cleanup_old_link
-if [ "$force" ]; then
-    cleanup_forced
-fi
+[ "$force" ] &&  cleanup_forced
 setup_submodule
 setup_env_link
 if [ ! "$light" ]; then 
