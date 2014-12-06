@@ -1,0 +1,11 @@
+--python-kinds=-i
+--exclude=*/.tox/*
+--exclude=*/build/*
+--exclude=*/*.egg-info/*
+--exclude=*/.git/*
+--exclude=*/.ropeproject/*
+--exclude=*/.bzr/*
+--exclude=*/.hg/*
+--exclude=*/.testrepository/*
+--exclude=*/.venv/*
+--exclude=*/venv/*

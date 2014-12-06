@@ -1,29 +1,27 @@
-Bundle 'vim-scripts/FuzzyFinder'
 Bundle 'L9'
 Bundle 'lbdbq'
 Bundle 'jmcantrell/vim-virtualenv'
-Bundle 'tacahiroy/ctrlp-funky'
 
 let g:indent_guides_enable_on_vim_startup = 0
-let g:pyflakes_use_quickfix = 0
-"let g:pymode_rope = 0
-"let g:pymode_trim_whitespaces = 0
+"let g:pyflakes_use_quickfix = 0
+"""let g:pymode_rope = 0
+"""let g:pymode_trim_whitespaces = 0
 let g:pymode_lint = 1
 let g:pymode_lint_unmodified = 1
 let g:pymode_lint_checkers = ['pyflakes' ,'pep8']
 let g:pymode_lint_sort = ['E','W', 'C','I']
 let g:pymode_lint_ignore = '' 
-"let g:pymode_lint_ignore = 'E0602 undefined name "_"' 
+"""let g:pymode_lint_ignore = 'E0602 undefined name "_"' 
 let g:pymode_lint_ignore = 'E265'
 
-let b:syntastic_checkers = [] "'flake8']
+let b:syntastic_python_checkers = [] "'flake8']
+let g:syntastic_quiet_messages = { "regex":['\m\[invalid-name\]', '\m\[missing-docstring\]' ]}
+"let g:syntastic_quiet_messages = { "type": "style" }
 
 let g:virtualenv_directory = '.tox/'
 let g:virtualenv_auto_activate = 1
 
-let g:ctrlp_extensions = ['funky']
-
-nnoremap <Leader>fu :CtrlPFunky<Cr>
+let maplocalleader = ','
 
 imap <silent> <Esc>OA <Up>
 imap <silent> <Esc>OB <Down>
@@ -34,6 +32,34 @@ imap <silent> <Esc>OF <End>
 imap <silent> <Esc>[5~ <PageUp>
 imap <silent> <Esc>[6~ <PageDown>]]
 
+set nocursorline
+set nofoldenable
+set scrolloff=10
+"set colorcolumn=81
+set nonu
+set mouse=
+set nolist
+set nohlsearch
+set wrap
+set nospell
+
+noremap <S-left> :bprev<CR> 
+noremap <S-right> :bnext<CR>
+map P "0p
+
+map <F6> :w<CR>:!aspell -l en -c %<CR>:e %<CR>
+map <F7> :w<CR>:!aspell -l fr -c %<CR>:e %<CR>
+
+" For USE ligne in gentoo
+function SortLine()
+    let line = getline('.')
+    let l:words = split(split(line,' \')[0], ' ')
+    let l:words = sort(l:words)
+    call setline(".", join(l:words, ' ').' \')
+endfunction
+
+
+" Read flake8 config from tox if available
 if has('python')
 python << pythoneof
 import vim
@@ -71,56 +97,4 @@ pythoneof
 endif
 
 
-"let maplocalleader = ','
-
-set nocursorline
-set nofoldenable
-set scrolloff=10
-"set colorcolumn=81
-set nonu
-set mouse=
-set nolist
-set nohlsearch
-set wrap
-set nospell
-
-noremap <S-left> :bprev<CR> 
-noremap <S-right> :bnext<CR>
-map P "0p
-nnoremap <F3> :call NumbersToggle()<CR>
-nnoremap <F4> :call NumbersDisable()<CR>:set nu<CR>:set nonu<CR>
-
-map <F6> :w<CR>:!aspell -l en -c %<CR>:e %<CR>
-map <F7> :w<CR>:!aspell -l fr -c %<CR>:e %<CR>
-
-function! MyNumbersToggle()
-    if (g:mode == 1)
-        let g:mode = 0
-        set relativenumber
-    else
-        let g:mode = 1
-        set norelativenumber
-    endif
-endfunction
-
-" For USE ligne in gentoo
-function SortLine()
-    let line = getline('.')
-    let l:words = split(split(line,' \')[0], ' ')
-    let l:words = sort(l:words)
-    call setline(".", join(l:words, ' ').' \')
-endfunction
-
-
-if has('python')
-function! Tox()
-python << pythoneof
-import vim
-import os
-
-
-pythoneof
-endfunction
-nnoremap <F5> :call Tox()<CR>
-endif
 
