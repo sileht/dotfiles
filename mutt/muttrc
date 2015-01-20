@@ -78,10 +78,12 @@ set sort_browser=reverse-date # showing mbox list default to newest first
 set sort_aux=last-date-received # showing threads with youngest message last
 
 set auto_tag = yes
-#set duplicate_threads = yes
-#folder-hook . push "<delete-pattern>~=<enter>"
+
+
+set duplicate_threads = yes
+folder-hook . push "<delete-pattern>~=<enter>"
 #folder-hook . push "<delete-pattern>~=<enter>$"
-#folder-hook . 'set record="^"'
+folder-hook . 'set record="^"'
 
 set abort_nosubject = yes
 set metoo = no                  # remove my address when replying
