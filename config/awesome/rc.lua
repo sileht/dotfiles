@@ -16,7 +16,7 @@ require("beautiful")
 cmd_browser = "bash -c 'which chromium >/dev/null 2>&1 && chromium || chromium-browser'"
 --cmd_mail = "mate-terminal --hide-menubar --title 'mail.sileht.net' -e '/home/sileht/.config/awesome/remote-mutt.sh -f imaps://mail.sileht.net/'"
 --cmd_jobmail = "mate-terminal --hide-menubar --title 'zimbra.enovance.com' -e '/home/sileht/.config/awesome/remote-mutt.sh -f imaps://zimbra.enovance.com/'"
-cmd_gizmo = "mate-terminal --hide-menubar --title 'gizmo.sileht.net' -e \"ssh -tqxkAC -D1080 -p 22 sileht@gizmo.sileht.net \\\"zsh -ilc 'screen -RDD'\\\"\""
+cmd_gizmo = "mate-terminal --hide-menubar --title 'gizmo.sileht.net' -e \"ssh -tqxkAC -D1080 -p 222 sileht@gizmo.sileht.net \\\"zsh -ilc 'screen -RDD'\\\"\""
 --cmd_gizmo = "mate-terminal --hide-menubar --title 'gizmo.sileht.net' -e \"mosh -- sileht@gizmo zsh -ilc 'screen -RDD'\""
 cmd_token = "/home/sileht/.bin/redtokclip"
 cmd_lock = "mate-screensaver-command --lock"
