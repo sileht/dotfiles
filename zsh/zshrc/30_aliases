@@ -56,6 +56,17 @@ pipwheel(){
     pip3 wheel -r $req_run -r $req_test
 }
 
+castnow(){
+    file="$(readlink -f $1)"
+    ln -sf "$file" /tmp/castnow.link
+    if [ "${file##*.}" != "mp4" ]; then
+        opt="--tomp4"
+    fi
+    set -x
+    DEBUG=castnow* ~/logiciel/node/bin/castnow $opt /tmp/castnow.link
+    set +x
+}
+
 alias open="xdg-open"
 alias rm="nocorrect rm -i"
 alias mv="nocorrect mv -i"
