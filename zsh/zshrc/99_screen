@@ -21,7 +21,7 @@ alias scr="store_screen_data ; screen -RDD"
 alias sc="scr"
 
 kc(){
-    eval $(keychain -q --eval --agents ssh --nogui --inherit any id_rsa ~/.ssh/id_dsa_h1)
+    eval $(keychain -q --eval --agents ssh --nogui --inherit any --ignore-missing id_rsa ~/.ssh/id_dsa_h1)
 }
 
 ident=$(ssh-add -l 2>/dev/null| awk '/phone/{print $3}')
