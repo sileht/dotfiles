@@ -46,16 +46,6 @@ vboxpm(){
     done
 }
 
-kc(){
-    eval $(keychain -q --eval --agents ssh --nogui --inherit any-once id_rsa ~/.ssh/id_dsa_h1)
-}
-
-ident=$(ssh-add -l 2>/dev/null| awk '/phone/{print $3}')
-[ "$ident" != "phone" ] && kc
-
-alias scr="screen -RDD"
-alias sc="scr"
-
 alias open="xdg-open"
 alias rm="nocorrect rm -i"
 alias mv="nocorrect mv -i"
@@ -81,16 +71,10 @@ alias cmutt="find ~/.mutt/cache/headers/ -type f -exec tcbmgr optimize -nl {} \;
 alias vi="vim"
 alias svi="sudo -H vim" 
 alias psql="sudo -i -u postgres psql"
-alias pyclean='find . -type f -name "*.py[co]" -exec rm -f \{\} \;'
-alias be="bundle exec"
+alias pyclean='find . -type f -name "*.py[co]" -delete'
 alias gm="gerrymander"
 
 alias tox="rm .ropeproject -rf; tox"
-
-alias ansible="~/ansible/venv/bin/ansible"
-alias ansible-playbook="~/ansible/venv/bin/ansible-playbook"
-alias ansible-galaxy="~/ansible/venv/bin/ansible-galaxy"
-alias ansible-vault="~/ansible/venv/bin/ansible-vault"
 
 alias u="sudo -i -u"
 

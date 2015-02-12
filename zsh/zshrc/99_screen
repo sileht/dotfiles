@@ -1,0 +1,28 @@
+
+screen_data_file="$HOME/.var/screen_data.$(hostname)"
+
+update_screen_data(){
+    [ -r $screen_data_file ] && source $screen_data_file
+}
+
+store_screen_data(){
+    export | grep '\(GPG_AGENT_INFO\|DISPLAY\|XAUTHORITY\|SSH_AGENT_PID\|SSH_AUTH_SOCK\|GNOME_KEYRING_PID\|GNOME_KEYRING_SOCKET\)=' | sed -e 's/^/export /g' >| $screen_data_file
+}
+
+if [ -n "$WINDOW" ]; then
+    update_screen_data
+    # Update variable on each zsh in a screen
+    preexec_functions+=update_screen_data
+fi
+
+
+alias screen='store_screen_data ; screen'
+alias scr="store_screen_data ; screen -RDD"
+alias sc="scr"
+
+kc(){
+    eval $(keychain -q --eval --agents ssh --nogui --inherit any id_rsa ~/.ssh/id_dsa_h1)
+}
+
+ident=$(ssh-add -l 2>/dev/null| awk '/phone/{print $3}')
+[ "$ident" != "phone" ] && kc
