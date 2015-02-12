@@ -1,9 +1,10 @@
 "spf13 options
-let g:airline_powerline_fonts=1
+let g:spf13_no_neosnippet_expand = 1
+let g:airline_powerline_fonts = 1
 let g:spf13_no_views = 1
 let g:spf13_no_wrapRelMotion = 1
 ""let g:spf13_no_autochdir = 1
-""let g:spf13_noninvasive_completion = 1
+let g:spf13_noninvasive_completion = 1
 ""let g:spf13_keep_trailing_whitespace = 1
 
 let g:snips_author = 'Mehdi Abaakouk <sileht@sileht.net>'
