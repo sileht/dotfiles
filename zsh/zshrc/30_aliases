@@ -46,6 +46,16 @@ vboxpm(){
     done
 }
 
+pipwheel(){
+    req_run="requirements.txt"
+    req_test="test-requirements.txt"
+    pip wheel -r $req_run -r $req_test
+
+    [ -f "requirements-py3.txt" ] && req_run="requirements-py3.txt"
+    [ -f "test-requirements-py3.txt" ] && req_test="test-requirements-py3.txt"
+    pip3 wheel -r $req_run -r $req_test
+}
+
 alias open="xdg-open"
 alias rm="nocorrect rm -i"
 alias mv="nocorrect mv -i"
