@@ -56,6 +56,20 @@ pipwheel(){
     pip3 wheel -r $req_run -r $req_test
 }
 
+etox() {
+    zparseopts -D e+:=env
+    typeset -A helper
+    helper=($(seq 1 ${#env}))
+    for item in ${(@v)helper}; do
+        for e in "${(@s/,/)env[$item]}" ; do
+            .tox/$e/bin/"$@"
+        done
+    done
+
+}
+
+alias etox="nocorrect etox"
+
 castnow(){
     file="$(readlink -f $1)"
     ln -sf "$file" /tmp/castnow.link
