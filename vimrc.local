@@ -51,6 +51,12 @@ map P "0p
 map <F6> :w<CR>:!aspell -l en -c %<CR>:e %<CR>
 map <F7> :w<CR>:!aspell -l fr -c %<CR>:e %<CR>
 
+"imap <C-V> "+p
+"inoremap <F5> <ESC>:set paste<CR>gi<C-V>+<ESC>:set nopaste<CR>gi
+map <F4> :set paste<CR>"*p:set nopaste<CR>
+map <F5> :set paste<CR>"+p:set nopaste<CR>
+
+
 " For USE ligne in gentoo
 function SortLine()
     let line = getline('.')
