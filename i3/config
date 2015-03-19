@@ -29,25 +29,25 @@ floating_modifier $mod
 # start application
 bindsym $mod+Return exec i3-sensible-terminal
 bindsym $mod+b exec chromium
-bindsym $mod+c exec mate-terminal --hide-menubar --title 'gizmo.sileht.net' -e "ssh -tqxkAC gizmo screen -RDD"
+bindsym $mod+c exec mate-terminal --hide-menubar --title 'gizmo.sileht.net' -e "ssh -tqxkAC gizmo zsh -ilc 'sc'"
 bindsym $mod+Shift+v exec --no-startup-id /home/sileht/.bin/redtokclip
-bindsym $mod+l exec --no-startup-id mate-screensaver-command --lock
+bindsym $mod+Ctrl+l exec --no-startup-id mate-screensaver-command --lock
 
 # kill focused window
 bindsym $mod+Shift+a kill
 
 # start dmenu (a program launcher)
-#bindsym $mod+d exec dmenu_run
+bindsym $mod+d exec dmenu_run
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
-bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
+#bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 
 # change focus
-#bindsym $mod+j focus left
-#bindsym $mod+k focus down
-#bindsym $mod+l focus up
-#bindsym $mod+m focus right
+bindsym $mod+j focus left
+bindsym $mod+k focus down
+bindsym $mod+l focus up
+bindsym $mod+m focus right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Left focus left
@@ -118,11 +118,13 @@ bindsym $mod+Shift+ccedilla move container to workspace 9
 bindsym $mod+Shift+agrave move container to workspace 10
 
 # reload the configuration file
-bindsym $mod+Shift+c reload
+#bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
 #bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+bindsym $mod+Shift+e exec "mate-session-save --logout"
+bindsym $mod+Shift+z exec "mate-session-save --shutdown-dialog"
 
 # resize window (you can also use the mouse for that)
 mode "resize" {

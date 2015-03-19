@@ -19,7 +19,8 @@ status.register("battery",
                         #"{percentage_design:.2f}% "
                         "{remaining:%E%hh:%Mm}"),
                 alert=True, alert_percentage=5,
-                status={"DIS": "↓", "CHR": "↑", "FULL": "="}
+                status={"DIS": "↓", "CHR": "↑", "FULL": "="},
+                not_present_text="",
                 )
 
 #status.register("mpd",
