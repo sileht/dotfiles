@@ -13,6 +13,7 @@ typeset -gU path cdpath fpath manpath fignore
 
 # http://xanana.ucsc.edu/~wgscott/wordpress_new/wordpress/?p=12
 typeset -ga preexec_functions
+typeset -ga postcmd_functions
 typeset -ga precmd_functions
 typeset -ga chpwd_functions
 typeset -ga periodic_functions

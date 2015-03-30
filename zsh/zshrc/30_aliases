@@ -26,8 +26,11 @@ ban(){
 alias idletask='schedtool -D -n 19 -e ionice -c 3'
 alias batchtask='schedtool -B -n 1 -e ionice -n 1'
 
-s() { pwd >| ~/.saved_dir; }
-i() { cd "$(cat ~/.saved_dir)"; }
+function s() { pwd >| ~/.saved_dir; }
+function i() { cd "$(cat ~/.saved_dir)"; }
+i
+postcmd_functions+=s
+chpwd_functions+=s
 
 get_vbox_process(){
     echo $(ps xaf | grep VBox | grep -v grep | awk '{print $1}')
