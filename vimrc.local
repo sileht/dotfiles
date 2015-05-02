@@ -57,6 +57,20 @@ map <F4> :set paste<CR>"*p:set nopaste<CR>
 map <F5> :set paste<CR>"+p:set nopaste<CR>
 
 
+let g:IgnoreChange=0
+"autocmd! FileChangedRO * nested
+"    \ let s:IgnoreChange=1 |
+"    \ call system("p4 edit " . expand("%")) |
+"    \ set noreadonly
+autocmd! FileChangedShell *
+    \ if 1 == g:IgnoreChange |
+    \   let v:fcs_choice="" |
+    \   let g:IgnoreChange=0 |
+    \ else |
+    \   let v:fcs_choice="ask" |
+    \ endif
+cmap w!! let g:IgnoreChange=1<CR>:w !sudo tee % >/dev/null
+
 " For USE ligne in gentoo
 function SortLine()
     let line = getline('.')
