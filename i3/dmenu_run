@@ -1,0 +1,26 @@
+#!/bin/sh
+
+export PATH=$PATH:/sbin:/usr/sbin:~/.bin:~/.local/bin/:~/logiciel/bin:/opt/vagrant/bin
+
+if [ -d ~/logiciel ] ; then
+    for i in ~/logiciel/*/bin ; do
+        export PATH=$PATH:$i
+    done
+fi
+
+
+cachedir=${XDG_CACHE_HOME:-"$HOME/.cache"}
+if [ -d "$cachedir" ]; then
+	cache=$cachedir/dmenu_run
+else
+	cache=$HOME/.dmenu_cache # if no xdg dir, fall back to dotfile in ~
+fi
+
+(
+	IFS=:
+	if stest -dqr -n "$cache" $PATH; then
+        stest -flx $PATH | sed -e 's/^.*/&\n:&/g' | sort | uniq | tee "$cache" | dmenu "$@"
+	else
+		dmenu "$@" < "$cache"
+    fi
+) | sed -e 's/^:/sudo /g' | ${SHELL:-"/bin/sh"} &
