@@ -36,6 +36,7 @@ bindsym $mod+b exec chromium
 bindsym $mod+c exec mate-terminal --hide-menubar --title 'gizmo.sileht.net' -e "ssh -tqxkAC gizmo zsh -ilc 'sc'"
 bindsym $mod+Shift+v exec --no-startup-id /home/sileht/.bin/redtokclip
 bindsym $mod+Ctrl+l exec --no-startup-id mate-screensaver-command --lock
+bindsym $mod+x exec --no-startup-id caja -n --no-desktop 
 
 # kill focused window
 bindsym $mod+Shift+a kill
