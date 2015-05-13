@@ -1,4 +1,5 @@
 #!/home/sileht/.i3/venv/bin/python
+import socket
 
 from i3pystatus import Status
 
@@ -10,7 +11,15 @@ status.register("weather", format="{current_temp}",
                 location_code="FRXX0099:1:FR")
 status.register("network", interface="wlan0",
                 format_up="{essid} {quality:.1f}%",)
-status.register("runwatch", name="VPN", path="/var/run/openvpn/redhat.pid")
+
+if socket.gethostname() == "bob":
+    status.register("runwatch", name="VPN", path="/var/run/openvpn/redhat.pid")
+else:
+    status.register("shell",
+                    color="#00FF00",
+                    error_color="#FF0000",
+                    command=("nmcli -m t -f TYPE c s --active | "
+                             "tr 'a-z' 'A-Z'| grep VPN || (echo VPN;false)"))
 status.register("load", format="⚙:{avg5}")
 status.register("pulseaudio", format="♪ {volume}",)
 status.register("battery",

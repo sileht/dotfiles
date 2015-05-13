@@ -43,9 +43,15 @@ castnow(){
     set +x
 }
 
-alias novpn='sudo systemctl stop openvpn@redhat;sudo systemctl stop openvpn@enovance;'
-alias vpneno='sudo systemctl stop openvpn@redhat; sudo systemctl start openvpn@enovance'
-alias vpnrh='sudo systemctl stop openvpn@enovance; sudo systemctl restart openvpn@redhat'
+if [ "$HOST" = "bob" ]; then
+    alias novpn='sudo systemctl stop openvpn@redhat;sudo systemctl stop openvpn@enovance;'
+    alias vpneno='sudo systemctl stop openvpn@redhat; sudo systemctl start openvpn@enovance'
+    alias vpnrh='sudo systemctl stop openvpn@enovance; sudo systemctl restart openvpn@redhat'
+else
+    novpn(){ local activevpn="$(nmcli -t -f TYPE,NAME c s --active | sed -ne 's/vpn:\(.*\)/\1/gp')" ; [ "$activevpn" ] && nmcli c d "$activevpn" ; }
+    alias vpnrh='nmcli c u "Redhat UDP"'
+fi
+
 alias open="xdg-open"
 alias rm="nocorrect rm -i"
 alias mv="nocorrect mv -i"
@@ -74,9 +80,6 @@ alias pyclean='find . -type f -name "*.py[co]" -delete'
 alias etox="nocorrect etox"
 alias tox="rm .ropeproject -rf; tox"
 alias u="sudo -i -u"
-
-alias vpn="sudo systemctl restart openvpn@redhat"
-alias novpn="sudo systemctl stop openvpn@redhat"
 
 function of() { lsof -np "$1" }
 compdef _pids of
