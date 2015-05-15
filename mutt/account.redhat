@@ -1,0 +1,27 @@
+# vim:set ft=muttrc:
+
+
+set from = "sileht@redhat.com"
+set realname = "Mehdi Abaakouk"
+set signature = "~/.mutt/signature.redhat"
+
+## IMAP 
+set ssl_starttls=yes
+set imap_check_subscribed = yes
+set imap_list_subscribed = yes
+unset imap_passive
+
+#set hostname="zimbra.redhat.com"
+set folder="imaps://mail.corp.redhat.com/"
+#set folder="~/.maildir_redhat/"
+#mailboxes `echo -n "+ "; find ~/.maildir_redhat/ -maxdepth 1 -type d -printf "+'%f' "`
+set mbox_type=Maildir
+set spoolfile="+Inbox"
+set record="+Sent"
+set postponed="+Drafts"
+set trash="+Trash"
+
+set smtp_url="smtp://smtp.corp.redhat.com/"
+
+set pgp_autosign=no
+set pgp_sign_as=CEAAEBC8

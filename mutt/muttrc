@@ -9,7 +9,7 @@ set mime_forward_rest=yes
 set mbox_type=Maildir
 
 set my_account_sileht = "imaps://mail.sileht.net"
-set my_account_enovance = "imaps://zimbra.enovance.com"
+set my_account_redhat = "imaps://mail.corp.redhat.com"
 set my_account_ttnn = "imaps://common@mx1.tetaneutral.net"
 set my_account_ttnn_system = "imaps://system@mx1.tetaneutral.net"
 
@@ -18,12 +18,12 @@ account-hook '.' 'source ~/.mutt/account.reset'
 
 #folder-hook '.' 'source ~/.mutt/account.reset'
 folder-hook $my_account_sileht 'source ~/.mutt/account.sileht'
-folder-hook $my_account_enovance  'source ~/.mutt/account.enovance'
+folder-hook $my_account_redhat  'source ~/.mutt/account.redhat'
 folder-hook $my_account_ttnn 'source ~/.mutt/account.ttnn'
 folder-hook $my_account_ttnn_system 'source ~/.mutt/account.ttnn-system'
 
 account-hook $my_account_sileht 'source ~/.mutt/account.sileht'
-account-hook $my_account_enovance  'source ~/.mutt/account.enovance'
+account-hook $my_account_redhat  'source ~/.mutt/account.redhat'
 account-hook $my_account_ttnn 'source ~/.mutt/account.ttnn'
 account-hook $my_account_ttnn_system 'source ~/.mutt/account.ttnn-system'
 
@@ -32,7 +32,7 @@ source ~/.mutt/account.sileht
 set my_reset="<enter-command>source ~/.mutt/account.reset<enter>"
 
 macro index,pager <f2> "$my_reset<change-folder>$my_account_sileht/INBOX<enter>"
-macro index,pager <f3> "$my_reset<change-folder>$my_account_enovance/INBOX<enter>"
+macro index,pager <f3> "$my_reset<change-folder>$my_account_redhat/INBOX<enter>"
 macro index,pager <f4> "$my_reset<change-folder>$my_account_ttnn<enter>"
 macro index,pager <f5> "$my_reset<change-folder>$my_account_ttnn_system<enter>"
 
