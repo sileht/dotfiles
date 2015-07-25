@@ -1,1 +1,2 @@
-export LIBVIRT_DEFAULT_URI=lxc+ssh://root@ester/
+
+[ "$HOST" = "ester" ] && export LIBVIRT_DEFAULT_URI=lxc+ssh://root@ester/

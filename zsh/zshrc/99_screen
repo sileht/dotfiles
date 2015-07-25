@@ -17,8 +17,7 @@ fi
 
 
 alias screen='store_screen_data ; screen'
-alias scr="store_screen_data ; screen -RDD"
-alias sc="scr"
+alias sc="store_screen_data ; screen -RDD"
 
 kc(){
     eval $(keychain -q --eval --agents ssh --nogui --inherit any --ignore-missing id_rsa ~/.ssh/id_dsa_h1)
