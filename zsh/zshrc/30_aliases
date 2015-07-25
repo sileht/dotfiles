@@ -20,9 +20,11 @@ masq (){
     sudo iptables -t nat -A POSTROUTING -s "$1" ! -d "$1" -j MASQUERADE
 }
 ban(){
-    sudo iptables -A INPUT -s "$1" -j DROP
+    sudo iptables -I INPUT 1 -s "$1" -j DROP
 }
-
+unban(){
+    sudo iptables -D INPUT -s "$1" -j DROP
+}
 alias idletask='schedtool -D -n 19 -e ionice -c 3'
 alias batchtask='schedtool -B -n 1 -e ionice -n 1'
 
