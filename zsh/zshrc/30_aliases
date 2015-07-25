@@ -48,8 +48,8 @@ if [ "$HOST" = "bob" ]; then
     alias vpneno='sudo systemctl stop openvpn@redhat; sudo systemctl start openvpn@enovance'
     alias vpnrh='sudo systemctl stop openvpn@enovance; sudo systemctl restart openvpn@redhat'
 else
-    novpn(){ local activevpn="$(nmcli -t -f TYPE,NAME c s --active | sed -ne 's/vpn:\(.*\)/\1/gp')" ; [ "$activevpn" ] && nmcli c d "$activevpn" ; }
-    alias vpnrh='nmcli c u "Redhat UDP"'
+    novpn(){ local activevpn="$(nmcli -t -f TYPE,NAME c s --active | sed -ne 's/vpn:\(.*\)/\1/gp')" ; [ "$activevpn" ] && nmcli c d "$activevpn" && sudo systemctl restart dnsmasq ; }
+    alias vpnrh='nmcli c u "Redhat UDP" && sudo systemctl restart dnsmasq; '
 fi
 
 alias open="xdg-open"
