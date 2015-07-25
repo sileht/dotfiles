@@ -34,6 +34,7 @@ for_window [class="Nagstamon"] floating enable
 bindsym $mod+Return exec i3-sensible-terminal
 bindsym $mod+b exec chromium
 bindsym $mod+c exec mate-terminal --hide-menubar --title 'gizmo.sileht.net' -e "ssh -tqxkAC gizmo"
+bindsym $mod+d exec mate-terminal --hide-menubar --title 'gizmo.sileht.net' -e "mosh gizmo mutt"
 bindsym $mod+Shift+v exec --no-startup-id /home/sileht/.bin/redtokclip
 bindsym $mod+Ctrl+l exec --no-startup-id mate-screensaver-command --lock
 bindsym $mod+x exec --no-startup-id caja -n --no-desktop 
@@ -44,7 +45,6 @@ bindsym $mod+Shift+a kill
 # start dmenu (a program launcher)
 #bindsym $mod+r exec dmenu_run
 bindsym $mod+r exec ~/.i3/dmenu_run
-bindsym $mod+d exec ~/.i3/dmenu_run
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
