@@ -15,9 +15,8 @@ if [ -n "$WINDOW" ]; then
     preexec_functions+=update_screen_data
 fi
 
-
-alias screen='store_screen_data ; screen'
-alias sc="store_screen_data ; screen -RDD"
+screen() { store_screen_data ; /usr/bin/screen "$@" ; }
+alias sc="screen -RDD"
 
 kc(){
     eval $(keychain -q --eval --agents ssh --nogui --inherit any --ignore-missing id_rsa ~/.ssh/id_dsa_h1)
@@ -25,3 +24,8 @@ kc(){
 
 ident=$(ssh-add -l 2>/dev/null| awk '/phone/{print $3}')
 [ "$ident" != "phone" ] && kc
+
+
+if [ "$HOST" = "gizmo" -a "${TERM//screen}" == "$TERM" ]; then
+     screen -RDD ; exit 0
+fi
