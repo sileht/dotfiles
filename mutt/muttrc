@@ -79,8 +79,8 @@ set sort_aux=last-date-received # showing threads with youngest message last
 
 set auto_tag = yes
 
-
 set duplicate_threads = yes
+folder-hook "imaps://mail.sileht.net/zMailing" push "<delete-pattern>~d<space>>6m<enter>"
 folder-hook . push "<delete-pattern>~=<enter>"
 #folder-hook . push "<delete-pattern>~=<enter>$"
 folder-hook . 'set record="^"'
@@ -125,3 +125,6 @@ folder-hook ^imap 'set read_inc=100'
 
 set header_cache = "~/.mutt/cache/headers"
 set message_cachedir = "~/.mutt/cache/messages"
+
+# workaround: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=459739
+set maildir_header_cache_verify = no

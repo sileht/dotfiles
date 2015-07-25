@@ -20,17 +20,19 @@ macro pager b '<enter-command>toggle sidebar_visible<enter><redraw-screen>'
 
 macro index,pager \cv |urlview\n
 
-macro index,pager "S" "<save-message> \Cu=Junk\Cj" 
+#macro index,pager "S" "<save-message> \Cu=Junk\Cj" 
 
 macro index,pager \ci "<change-folder>=INBOX<enter>" "open INBOX"
 
 macro index,pager c "<change-folder>?<toggle-mailboxes>" "open a different folder"
 #macro index C "<copy-message>?<toggle-mailboxes>" "copy a message to a mailbox"
-macro index C "<save-message>?<toggle-mailboxes>" "move a message to a mailbox"
+#macro index C "<save-message>?<toggle-mailboxes>" "move a message to a mailbox"
 
-macro index,pager M "T.*\n;WN" "mark all messages as read"
+macro index,pager M "T.*\n;WN\cT.*\n" "mark all messages as read"
 
 macro compose A "<attach-message>?<toggle-mailboxes>" "attach message(s) to this message"
+
+#macro index,pager B "T~d >4m\nd$" "delete all messages older than 4 month"
 
 #macro index <F8> "<enter-command>unset wait_key<enter><shell-escape>~/.bin/mutt-notmuch --prompt search<enter><change-folder-readonly>~/.cache/mutt_results<enter>" "search mail (using notmuch)"
 #macro index <F9> "<enter-command>unset wait_key<enter><pipe-message>~/.bin/mutt-notmuch thread<enter><change-folder-readonly>~/.cache/mutt_results<enter><enter-command>set wait_key<enter>" "search and reconstruct owning thread (using notmuch)"
