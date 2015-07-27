@@ -1,7 +1,7 @@
 
 # Remap bounce-message function to "B"
 #bind index B bounce-message
-#
+
 bind index,pager \CP sidebar-prev
 bind index,pager \CN sidebar-next
 bind index,pager \CO sidebar-open
@@ -15,8 +15,10 @@ bind index,pager k previous-new
 bind index,pager j next-new
 bind index,pager p search-opposite
 
-macro index b '<enter-command>toggle sidebar_visible<enter><refresh>'
-macro pager b '<enter-command>toggle sidebar_visible<enter><redraw-screen>'
+bind index,pager <Esc><Tab> next-unread-mailbox
+
+macro index B '<enter-command>toggle sidebar_visible<enter><refresh>'
+macro pager B '<enter-command>toggle sidebar_visible<enter><redraw-screen>'
 
 macro index,pager \cv |urlview\n
 
@@ -31,10 +33,5 @@ macro index,pager c "<change-folder>?<toggle-mailboxes>" "open a different folde
 macro index,pager M "T~U\n;WN\cT~T\n" "mark all messages as read"
 
 macro compose A "<attach-message>?<toggle-mailboxes>" "attach message(s) to this message"
-
-#macro index,pager B "T~d >4m\nd$" "delete all messages older than 4 month"
-
-#macro index <F8> "<enter-command>unset wait_key<enter><shell-escape>~/.bin/mutt-notmuch --prompt search<enter><change-folder-readonly>~/.cache/mutt_results<enter>" "search mail (using notmuch)"
-#macro index <F9> "<enter-command>unset wait_key<enter><pipe-message>~/.bin/mutt-notmuch thread<enter><change-folder-readonly>~/.cache/mutt_results<enter><enter-command>set wait_key<enter>" "search and reconstruct owning thread (using notmuch)"
 
 # vim: ft=muttrc:

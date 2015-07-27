@@ -1,43 +1,18 @@
 #!/bin/bash
 
-REMOTEPATH=/home/sileht/.mutt/attachments/
-HTTPPATH='http://dl.sileht.net/mail/'
+FILENAME=$1
+MIMETYPE=$2
+REMOTE_DIR="/tmp"
+BASENAME=$(basename "${FILENAME}")
+REMOTE_FILE="${REMOTE_DIR}/${BASENAME}"
 
-FILENAME=$(echo $1 | grep -E -o '[^\/]+$')
+scp -P 62222 $FILENAME sileht@localhost:$REMOTE_FILE
 
-cp -f $1 $REMOTEPATH$FILENAME
-chmod 644 "$REMOTEPATH$FILENAME"
+COMMAND="chmod 600 '${REMOTE_FILE}' ; DISPLAY=:0 run-mailcap --action=view '"
+[ -n "${MIMETYPE}" -a "${MIMETYPE}" != "application/octet-stream" ] && COMMAND="${COMMAND}${MIMETYPE}:"
+COMMAND="${COMMAND}${REMOTE_FILE}' > /dev/null & sleep 2"
 
+ssh -p 62222 sileht@localhost "${COMMAND}"
 
 clear
-echo -e "\nCurrent attachements files:\n"
-for file in $REMOTEPATH/* ;do
-    echo $HTTPPATH$(basename $file)
-done
-echo -e "\nOpen $HTTPPATH$FILENAME to view the attachment.\n"
-echo -n "(D)elete* or (K)eep or (V)iew: "
-read -n 1 anwser
-case $anwser in
-    K|k)
-        ;;
-    V|v)
-        mime=$(file -b --mime-type "$REMOTEPATH$FILENAME")
-        case $mime in
-            image/*)
-                fim -t $REMOTEPATH$FILENAME
-                ;;
-            *)
-                echo "mimetype not supported"
-                ;;
-        esac
-        clear
-        ;;
-    *)
-
-        clear
-        echo "Removing file..."
-        rm -f "$REMOTEPATH$FILENAME"
-        ;;
-esac
-clear
-
+exit 0

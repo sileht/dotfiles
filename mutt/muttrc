@@ -34,9 +34,10 @@ set editor='vim + -c "set textwidth=72" -c "set wrap" -c "set spell spelllang=fr
 set folder=""
 set move = no                   # Stop asking to "move read messages to mbox"!
 set copy = yes                  # always save a copy of outgoing messages
-set delete = yes            # purge deleted messages without asking
+set delete = yes                # purge deleted messages without asking
 set edit_headers =yes           # let me edit the message header when composing
 set include = yes               # always include messages when replying
+set fast_reply=yes              #no prompting on reply
 set forward_quote = yes         # include original text on forward?
 set indent_string = "> "        # how to quote replied text
 set mail_check = 10             # how often to poll for new mail
@@ -54,10 +55,11 @@ set pgp_autosign=no
 set pgp_sign_as=CEAAEBC8
 
 set duplicate_threads = yes
-folder-hook "imaps://mail.sileht.net/zMailing" push "<delete-pattern>~d<space>>6m<enter>"
-folder-hook . push "<delete-pattern>~=<enter>"
+folder-hook "imaps://mail.sileht.net/ml-" push "<delete-pattern>~d<space>>6m<enter>"
+folder-hook "ml-" push "<delete-pattern>~=<enter>"
 #folder-hook . push "<delete-pattern>~=<enter>$"
 folder-hook . 'set record="^"'
+folder-hook . push '<sidebar-scroll-up>'
 
 set abort_nosubject = yes
 set metoo = no                  # remove my address when replying
