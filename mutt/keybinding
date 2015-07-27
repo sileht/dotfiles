@@ -20,7 +20,7 @@ macro pager b '<enter-command>toggle sidebar_visible<enter><redraw-screen>'
 
 macro index,pager \cv |urlview\n
 
-#macro index,pager "S" "<save-message> \Cu=Junk\Cj" 
+macro index,pager "S" "<save-message> \Cu=Junk\Cj" 
 
 macro index,pager \ci "<change-folder>=INBOX<enter>" "open INBOX"
 
@@ -28,7 +28,7 @@ macro index,pager c "<change-folder>?<toggle-mailboxes>" "open a different folde
 #macro index C "<copy-message>?<toggle-mailboxes>" "copy a message to a mailbox"
 #macro index C "<save-message>?<toggle-mailboxes>" "move a message to a mailbox"
 
-macro index,pager M "T.*\n;WN\cT.*\n" "mark all messages as read"
+macro index,pager M "T~U\n;WN\cT~T\n" "mark all messages as read"
 
 macro compose A "<attach-message>?<toggle-mailboxes>" "attach message(s) to this message"
 

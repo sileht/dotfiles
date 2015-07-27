@@ -2,26 +2,22 @@
 
 
 set from = "sileht@sileht.net"
+unalternates *
 alternates "^(theli48@gmail.com|.*mehdi.*@sileht.net|.*sileht.*@sileht.net)$
 set realname = "Mehdi Abaakouk"
 set signature = "~/.mutt/signature.local"
 
 ## IMAP 
-set ssl_starttls=no
-set imap_check_subscribed = yes
-set imap_list_subscribed = yes
-unset imap_passive
-
-#set hostname="mail.sileht.net"
+set ssl_starttls=yes
 set folder="imaps://mail.sileht.net"
-set spoolfile="+INBOX"
-set record="+Sent"
-set postponed="+Drafts"
-set trash="+Trash"
+set spoolfile="=INBOX"
+set record="=Sent"
+set postponed="=Drafts"
+set trash="=Trash"
 
+unmailboxes * 
+
+# SMTP
 set ssl_force_tls = yes
 set smtp_url="smtp://$imap_user@mail.sileht.net"
 set smtp_pass=$imap_pass
-
-set pgp_autosign=yes
-set pgp_sign_as=CEAAEBC8

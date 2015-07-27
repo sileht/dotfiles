@@ -8,40 +8,11 @@ set mime_forward=yes
 set mime_forward_rest=yes
 set mbox_type=Maildir
 
-set my_account_sileht = "imaps://mail.sileht.net"
-set my_account_redhat = "imaps://mail.corp.redhat.com"
-set my_account_ttnn = "imaps://common@mx1.tetaneutral.net"
-set my_account_ttnn_system = "imaps://system@mx1.tetaneutral.net"
-
-source ~/.mutt/password
-account-hook '.' 'source ~/.mutt/account.reset'
-
-#folder-hook '.' 'source ~/.mutt/account.reset'
-folder-hook $my_account_sileht 'source ~/.mutt/account.sileht'
-folder-hook $my_account_redhat  'source ~/.mutt/account.redhat'
-folder-hook $my_account_ttnn 'source ~/.mutt/account.ttnn'
-folder-hook $my_account_ttnn_system 'source ~/.mutt/account.ttnn-system'
-
-account-hook $my_account_sileht 'source ~/.mutt/account.sileht'
-account-hook $my_account_redhat  'source ~/.mutt/account.redhat'
-account-hook $my_account_ttnn 'source ~/.mutt/account.ttnn'
-account-hook $my_account_ttnn_system 'source ~/.mutt/account.ttnn-system'
-
-source ~/.mutt/account.sileht
-
-set my_reset="<enter-command>source ~/.mutt/account.reset<enter>"
-
-macro index,pager <f2> "$my_reset<change-folder>$my_account_sileht/INBOX<enter>"
-macro index,pager <f3> "$my_reset<change-folder>$my_account_redhat/INBOX<enter>"
-macro index,pager <f4> "$my_reset<change-folder>$my_account_ttnn<enter>"
-macro index,pager <f5> "$my_reset<change-folder>$my_account_ttnn_system<enter>"
-
 set ssl_starttls=yes
-
 set imap_idle="yes"
 set imap_keepalive = 300
-set imap_passive = no
-set imap_check_subscribed = yes    # Automatically poll subscribed mailboxes for new mail (new in 1.5.11)
+set imap_check_subscribed = no
+set imap_list_subscribed = no
 
 set mail_check = 60           # Reduce polling frequency to a sane level
 set timeout = 10              # And poll the current mailbox more often (not needed with IDLE in post 1.5.11)
@@ -79,6 +50,9 @@ set sort_aux=last-date-received # showing threads with youngest message last
 
 set auto_tag = yes
 
+set pgp_autosign=no
+set pgp_sign_as=CEAAEBC8
+
 set duplicate_threads = yes
 folder-hook "imaps://mail.sileht.net/zMailing" push "<delete-pattern>~d<space>>6m<enter>"
 folder-hook . push "<delete-pattern>~=<enter>"
@@ -96,13 +70,11 @@ set certificate_file="~/.mutt/certificates"
 
 # Contacts
 set alias_file = ".mutt/aliases"
-#set query_command="~/.bin/pc_query -m '%s'"
 set query_command="lbdbq '%s'"
 
 set sidebar_width=30
 set sidebar_visible=yes
 set sidebar_delim=' '
-set sidebar_sort=yes
 
 set pager_index_lines = 12 # Split-screen index/pager preview thing
 set pager_stop = yes       # Don't skip to next message at end of message
@@ -128,3 +100,11 @@ set message_cachedir = "~/.mutt/cache/messages"
 
 # workaround: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=459739
 set maildir_header_cache_verify = no
+
+macro index <f2> '<sync-mailbox><enter-command>source ~/.mutt/account.sileht.perso<enter><change-folder>!<enter>'
+macro index <f3> '<sync-mailbox><enter-command>source ~/.mutt/account.sileht.ml<enter><change-folder>!<enter>'
+macro index <f4> '<sync-mailbox><enter-command>source ~/.mutt/account.redhat<enter><change-folder>!<enter>'
+macro index <f5> '<sync-mailbox><enter-command>source ~/.mutt/account.ttnn<enter><change-folder>!<enter>'
+macro index <f6> '<sync-mailbox><enter-command>source ~/.mutt/account.ttnn-system<enter><change-folder>!<enter>'
+source ~/.mutt/password
+source ~/.mutt/account.sileht.perso
