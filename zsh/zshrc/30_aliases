@@ -90,7 +90,12 @@ etox() {
     done
 }
 
+utox() {
+	etox "$@" pip install -U -r requirements.txt -r test-requirements.txt
+}
+
 alias etox="nocorrect etox"
+alias utox="nocorrect utox"
 alias tox="rm .ropeproject -rf; tox"
 alias u="sudo -i -u"
 
