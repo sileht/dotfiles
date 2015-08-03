@@ -69,7 +69,7 @@ autocmd! FileChangedShell *
     \ else |
     \   let v:fcs_choice="ask" |
     \ endif
-cmap w!! let g:IgnoreChange=1<CR>:w !sudo tee % >/dev/null
+cmap w!! let g:IgnoreChange=1<CR>:w !sudo tee % >/dev/null<CR>:e!<CR>
 
 " For USE ligne in gentoo
 function SortLine()
