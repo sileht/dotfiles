@@ -1,3 +1,6 @@
 [submodule "spf13-vim-3"]
 	path = spf13-vim-3
 	url = https://github.com/spf13/spf13-vim.git
+[submodule "zsh-completions"]
+	path = zsh-completions
+	url = https://github.com/zsh-users/zsh-completions.git

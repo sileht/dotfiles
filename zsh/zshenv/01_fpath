@@ -8,6 +8,6 @@
 # Source repository: http://git.madduck.net/v/etc/zsh.git
 #
 
-fpath=($ZDOTDIR/func $fpath)
+fpath=($ZDOTDIR/func $fpath ~/.env/zsh-completions)
 
 # vim:ft=zsh
