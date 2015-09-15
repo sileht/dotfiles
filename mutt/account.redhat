@@ -15,7 +15,7 @@ set postponed="=Drafts"
 set trash="=Trash"
 
 unmailboxes * 
-mailboxes =INBOX =Drafts =Sent =Trash =Junk =Expenses =bugzilla =launchpad =reviews =ml-annonce =ml-cloud-strategy =ml-memo-list =ml-python-list =ml-rhos =ml-sales =ml-spinalstack =import-enovance.redhat
+mailboxes =INBOX =archives =Drafts =Sent =Trash =Junk =Expenses =bugzilla =launchpad =reviews =ml-rcip-eng =ml-rcip-paris =ml-annonce =ml-cloud-strategy =ml-memo-list =ml-python-list =ml-rhos =ml-sales =ml-spinalstack =import-enovance.redhat
 
 # SMTP
 set ssl_force_tls = no

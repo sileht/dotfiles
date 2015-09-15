@@ -6,17 +6,17 @@ bind index,pager \CP sidebar-prev
 bind index,pager \CN sidebar-next
 bind index,pager \CO sidebar-open
 
-macro index,pager \104 '<sidebar-prev><sidebar-open>'
-macro index,pager \103 '<sidebar-next><sidebar-open>'
-
-bind index,pager <tab> next-unread-mailbox
+#macro index,pager \104 '<sidebar-prev><sidebar-open>'
+#macro index,pager \103 '<sidebar-next><sidebar-open>'
+#bind index,pager \C<Tab> <next-unread-mailbox>
 
 bind index,pager k previous-new
 bind index,pager j next-new
 bind index,pager p search-opposite
+bind index <Right> collapse-thread
+bind index <Left> collapse-thread
 
-bind index,pager <Esc><Tab> next-unread-mailbox
-
+bind index,pager A next-unread-mailbox
 macro index B '<enter-command>toggle sidebar_visible<enter><refresh>'
 macro pager B '<enter-command>toggle sidebar_visible<enter><redraw-screen>'
 
@@ -28,10 +28,13 @@ macro index,pager \ci "<change-folder>=INBOX<enter>" "open INBOX"
 
 macro index,pager c "<change-folder>?<toggle-mailboxes>" "open a different folder"
 #macro index C "<copy-message>?<toggle-mailboxes>" "copy a message to a mailbox"
-#macro index C "<save-message>?<toggle-mailboxes>" "move a message to a mailbox"
+macro index,pager s "<save-message>?<toggle-mailboxes>" "move a message to a mailbox"
 
-macro index,pager M "T~U\n;WN\cT~T\n" "mark all messages as read"
+macro index,pager M "<Esc>VT~U\n;WN\cT~T\n<Esc>V" "mark all messages as read"
 
 macro compose A "<attach-message>?<toggle-mailboxes>" "attach message(s) to this message"
+
+macro index,pager <F7> ':color index green default "~p"<enter>'  'Highlight ON for answers to me'
+macro index,pager <F8> ':uncolor index green default "~p"<enter>'    'Highlight OFF for answers to me'
 
 # vim: ft=muttrc:

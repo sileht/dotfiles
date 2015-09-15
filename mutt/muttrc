@@ -44,10 +44,18 @@ set mail_check = 10             # how often to poll for new mail
 set mark_old = no               # i don't care about whether a message is old
 set narrow_tree = yes           # narrow threading trees
 set collapse_unread = no        # don't collapse threads with unread mails
+set strict_threads = yes
 set uncollapse_jump = yes       # jump to unread message when uncollapse
 set sort=threads
 set sort_browser=reverse-date # showing mbox list default to newest first
 set sort_aux=last-date-received # showing threads with youngest message last
+
+set sort_browser=date # showing mbox list default to newest first
+set sort_aux=reverse-last-date-received # showing threads with youngest message last
+
+# default
+# set index_format = "%4C %Z %{%b %d} %-15.15L (%<l?%4l&%4c>) %s"
+set index_format = "%4C %<M?+& > %Z %{%b %d} %-25.25L (%<l?%4l&%4c>) %s"
 
 set auto_tag = yes
 
@@ -60,6 +68,7 @@ folder-hook "ml-" push "<delete-pattern>~=<enter>"
 #folder-hook . push "<delete-pattern>~=<enter>$"
 folder-hook . 'set record="^"'
 folder-hook . push '<sidebar-scroll-up>'
+folder-hook . push '<collapse-all>'
 
 set abort_nosubject = yes
 set metoo = no                  # remove my address when replying
