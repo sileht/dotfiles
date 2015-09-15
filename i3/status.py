@@ -13,7 +13,10 @@ status.register("network", interface="wlan0",
                 format_up="{essid} {quality:.1f}%",)
 
 if socket.gethostname() == "bob":
-    status.register("runwatch", name="VPN", path="/var/run/openvpn/redhat.pid")
+    status.register("runwatch", name="VPN RH",
+                    path="/var/run/openvpn/redhat.pid")
+    status.register("runwatch", name="VPN TTNN",
+                    path="/var/run/fastd.home.pid")
 else:
     status.register("shell",
                     color="#00FF00",
@@ -31,7 +34,6 @@ status.register("battery",
                 status={"DIS": "↓", "CHR": "↑", "FULL": "="},
                 not_present_text="",
                 )
-
 #status.register("mpd",
 #                format="{title}{status}{album}",
 #                status={

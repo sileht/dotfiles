@@ -27,8 +27,11 @@ font pango:Ubuntu Mono 10
 floating_modifier $mod
 
 # Application floating
+#for_window [class="Nagstamon"] move scratchpad
+#bindsym $mod+Shift+Return scratchpad show
+#exec_always -no-startup-id i3-msg scratchpad show
 for_window [class="Nagstamon"] floating enable
-#for_window [class="^Chrome$" title=" - Chromium$"] border none
+for_window [class="pinentry"] floating enable
 
 # start application
 bindsym $mod+Return exec i3-sensible-terminal
