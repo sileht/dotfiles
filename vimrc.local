@@ -13,7 +13,7 @@ let g:pymode_lint_checkers = ['pyflakes' ,'pep8']
 let g:pymode_lint_sort = ['E','W', 'C','I']
 let g:pymode_lint_ignore = '' 
 """let g:pymode_lint_ignore = 'E0602 undefined name "_"' 
-let g:pymode_lint_ignore = 'E265'
+let g:pymode_lint_ignore = 'E265,W0621'
 
 let g:syntastic_python_checkers = ['flake8']
 "let g:syntastic_quiet_messages = { "regex":['\m\[invalid-name\]', '\m\[missing-docstring\]' ]}
@@ -56,6 +56,7 @@ map <F7> :w<CR>:!aspell -l fr -c %<CR>:e %<CR>
 map <F4> :set paste<CR>"*p:set nopaste<CR>
 map <F5> :set paste<CR>"+p:set nopaste<CR>
 
+autocmd BufWritePre,BufRead *.js :set tabstop=2 shiftwidth=2
 
 let g:IgnoreChange=0
 "autocmd! FileChangedRO * nested
