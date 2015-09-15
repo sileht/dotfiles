@@ -1,0 +1,4 @@
+
+source ~/.mutt/account.sileht
+
+mailboxes =INBOX =Drafts =Junk =Sent =Trash =perso-amap =perso-amis-famille =perso-archives =perso-appart =perso-compte-achat =perso-serveur =perso-swing =ttnn-hosting =ttnn-chili =ttnn-divers =ttnn-equipage =ttnn-fibercamp =ttnn-general =ttnn-labriqueinternet =ttnn-tech =Queue
