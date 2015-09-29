@@ -41,7 +41,7 @@ bindsym $mod+d exec mate-terminal --hide-menubar --title 'gizmo.sileht.net' -e "
 bindsym Print exec gnome-screenshot -i
 bindsym $mod+Shift+v exec --no-startup-id /home/sileht/.bin/redtokclip
 bindsym $mod+Ctrl+l exec --no-startup-id mate-screensaver-command --lock
-bindsym $mod+x exec --no-startup-id caja -n --no-desktop /home/sileht/
+bindsym $mod+x exec --no-startup-id pcmanfm /home/sileht/
 
 # kill focused window
 bindsym $mod+Shift+a kill
