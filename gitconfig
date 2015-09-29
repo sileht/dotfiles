@@ -9,6 +9,7 @@
     ci = commit
     co = checkout
     fp = format-patch
+    n = "!f() { git checkout origin/master -b \"sileht/$1\" ; } ; f"
     lg = log --graph --pretty=tformat:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%an %cr)%Creset' --abbrev-commit --date=relative
     lc = !git oneline ORIG_HEAD.. --stat --no-merges
     oneline = log --pretty=oneline --abbrev-commit --graph --decorate

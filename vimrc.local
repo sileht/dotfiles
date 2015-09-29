@@ -1,12 +1,4 @@
-Bundle 'L9'
-Bundle 'lbdbq'
-Bundle 'jmcantrell/vim-virtualenv'
-Bundle 'rodjek/vim-puppet'
-
 let g:indent_guides_enable_on_vim_startup = 0
-"let g:pyflakes_use_quickfix = 0
-"""let g:pymode_rope = 0
-"""let g:pymode_trim_whitespaces = 0
 let g:pymode_lint = 1
 let g:pymode_lint_unmodified = 1
 let g:pymode_lint_checkers = ['pyflakes' ,'pep8']

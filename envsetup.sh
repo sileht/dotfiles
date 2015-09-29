@@ -20,8 +20,8 @@ done
 [ "$reexec" ] && update=
 
 
-typeset -a flist="zsh vimrc.local vimrc.before.local screenrc zshenv wgetrc pythonrc.py mutt config/awesome gitconfig spf13-vim-3 lbdbrc gitignore-global ctags i3 config/dunst"
-typeset -a rlist="vimrc.before vimrc.bunbles.local"
+typeset -a flist="zsh vimrc.local vimrc.before.local vimrc.bundles.local screenrc zshenv wgetrc pythonrc.py mutt config/awesome gitconfig spf13-vim-3 lbdbrc gitignore-global ctags i3 config/dunst"
+typeset -a rlist=""
 
 setup_submodule() {
 	git submodule update --init spf13-vim-3
