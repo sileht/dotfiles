@@ -169,5 +169,5 @@ bar {
         status_command ~/.i3/status.py
         position          top
         workspace_buttons yes
-        font pango:Ubuntu Mono 12
+        font pango: Monospace 8
 }

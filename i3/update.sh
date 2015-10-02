@@ -12,7 +12,7 @@ cat > i3pystatus-reqs.txt <<EOF
 -e git+https://github.com/enkore/i3pystatus#egg=i3pystatus
 netifaces
 basiciw
-colour<0.1.0
+colour
 pywapi
 keyring
 psutil
