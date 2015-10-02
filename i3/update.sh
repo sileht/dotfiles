@@ -16,6 +16,7 @@ colour
 pywapi
 keyring
 psutil
+pip
 EOF
 
 cleanup(){
