@@ -17,6 +17,7 @@ pywapi
 keyring
 psutil
 pip
+paramiko
 EOF
 
 cleanup(){
@@ -24,5 +25,6 @@ cleanup(){
 }
 trap 'cleanup' EXIT
 
+ln -sf $here/livestatus.py $here/venv/src/i3pystatus/i3pystatus/
 $here/venv/bin/pip install -U --allow-unverified pywapi --allow-external pywapi -r i3pystatus-reqs.txt
 
