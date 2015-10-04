@@ -3,7 +3,7 @@
 from i3pystatus import Status
 
 status = Status(standalone=True)
-status.register("clock", format="%a %b %d, %H:%m")
+status.register("clock", format="%a %b %d, %H:%M")
 status.register("weather", format="{current_temp}",
                 colorize=True,
                 location_code="FRXX0099:1:FR")
