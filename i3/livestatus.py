@@ -3,6 +3,7 @@ from i3pystatus.core.util import internet, require
 
 from urllib.parse import urlparse
 import socket
+import webbrowser
 
 from paramiko import SSHClient, AutoAddPolicy
 
@@ -23,12 +24,15 @@ class Livestatus(IntervalModule):
                  "ssh://foo@foobar:222/var/lib/nagios/rw/live, "
                  "tcp://foobar:1324"
                  ")")),
+        ("web_url", "Location of check_MK multisite"),
         ("query", "Livestatus query"),
         ("separator_format", "Separator between query result"),
         ("item_format", "Format of one result"),
         ("max_items", "Maximun number of items to show"),
         "format",
     )
+
+    web_url = "http://nagioshost/"
     url = 'file:///var/lib/nagios/rw/live'
     query = """GET hosts
 Filter: state >= 1
@@ -39,6 +43,7 @@ ColumnHeaders: on
 
     """
 
+    on_leftclick = 'openurl'
     max_items = None
     color_maps = {"state": {"1": "#FF0000",
                             "2": "#FFFF00",
@@ -47,6 +52,9 @@ ColumnHeaders: on
     separator_format = ", "
     item_format = "{name}"
     format = "{count} hosts: {items}"
+
+    def openurl(self):
+        webbrowser.open_new_tab(self.web_url)
 
     def _read(self, method, initial):
         size = 16384
