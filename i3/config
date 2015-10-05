@@ -33,6 +33,7 @@ floating_modifier $mod
 #exec_always -no-startup-id i3-msg scratchpad show
 for_window [class="Nagstamon"] floating enable
 for_window [class="pinentry"] floating enable
+for_window [class="^.*"] border pixel 1
 
 # start application
 bindsym $mod+Return exec i3-sensible-terminal
