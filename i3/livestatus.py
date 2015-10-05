@@ -8,6 +8,12 @@ import webbrowser
 from paramiko import SSHClient, AutoAddPolicy
 
 
+class ConnectionFailure(Exception):
+    def __init__(self, msg):
+        self.msg = msg
+        super().__init__(msg)
+
+
 class Livestatus(IntervalModule):
     """
     This module gets the nagios status via livestatus
@@ -74,7 +80,7 @@ ColumnHeaders: on
                 try:
                     ip = socket.gethostbyname(ip)
                 except socket.gaierror:
-                    return {'error': 'resolv failure'}
+                    raise ConnectionFailure('resolv failure')
             location = (ip, url_parsed.port)
         else:
             location = url_parsed.path
@@ -86,7 +92,7 @@ ColumnHeaders: on
             s.sendall(query.encode('utf-8'))
             reply = self._read(s.recv, b'')
         except socket.error:
-            raise Exception('livestatus connection fails')
+            raise ConnectionFailure('disconnected')
         finally:
             if s is not None:
                 s.close()
@@ -140,18 +146,23 @@ ColumnHeaders: on
 
     @require(internet)
     def run(self):
-        items = self.parse_result(self.fetch_livestatus(
-            self.query.strip() + "\nColumnHeaders: on\n\n"))
-
-        if self.max_items:
-            items_subset = items[:self.max_items]
+        try:
+            items = self.parse_result(self.fetch_livestatus(
+                self.query.strip() + "\nColumnHeaders: on\n\n"))
+        except ConnectionFailure as e:
+            items = []
+            items_formatted = "<span color=\"#880808\">%s</span>" % e.msg
         else:
-            items_subset = items
-        items_formatted = self.separator_format.join(
-            [self.item_format.format(**r) for r in items_subset])
-        if not items:
-            items_formatted = "n/a"
-        elif self.max_items and items_subset != items:
-            items_formatted += ", ..."
+            if self.max_items:
+                items_subset = items[:self.max_items]
+            else:
+                items_subset = items
+            items_formatted = self.separator_format.join(
+                [self.item_format.format(**r) for r in items_subset])
+            if not items:
+                items_formatted = "n/a"
+            elif self.max_items and items_subset != items:
+                items_formatted += ", ..."
+
         self.output = {"markup": "pango", "full_text": self.format.format(
             count=len(items), items=items_formatted)}
