@@ -9,12 +9,9 @@ from paramiko import SSHClient, AutoAddPolicy
 
 class Livestatus(IntervalModule):
     """
-    This module gets the weather from weather.com.
-    First, you need to get the code for the location from www.weather.com
+    This module gets the nagios status via livestatus
 
     .. rubric:: Available formatters
-
-    * `{humidity}` — current humidity excluding percentage symbol
 
     """
 
@@ -29,6 +26,7 @@ class Livestatus(IntervalModule):
         ("query", "Livestatus query"),
         ("separator_format", "Separator between query result"),
         ("item_format", "Format of one result"),
+        ("max_items", "Maximun number of items to show"),
         "format",
     )
     url = 'file:///var/lib/nagios/rw/live'
@@ -41,6 +39,7 @@ ColumnHeaders: on
 
     """
 
+    max_items = None
     separator_format = ", "
     item_format = "{name}"
     format = "{count} hosts: {items}"
@@ -117,8 +116,17 @@ ColumnHeaders: on
     @require(internet)
     def run(self):
         items = self.parse_result(self.fetch_livestatus(
-            self.query.strip() + "\n"))
+            self.query.strip() + "\nColumnHeaders: on\n\n"))
+
+        if self.max_items:
+            items_subset = items[:self.max_items]
+        else:
+            items_subset = items
         items_formatted = self.separator_format.join(
-            [self.item_format.format(**r) for r in items])
+            [self.item_format.format(**r) for r in items_subset])
+        if not items:
+            items_formatted = "n/a"
+        elif self.max_items and items_subset != items:
+            items_formatted += ", ..."
         self.output = {"full_text": self.format.format(
             count=len(items), items=items_formatted)}
