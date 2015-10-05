@@ -40,6 +40,10 @@ ColumnHeaders: on
     """
 
     max_items = None
+    color_maps = {"state": {"1": "#FF0000",
+                            "2": "#FFFF00",
+                            "3": "#FFFFF0"}}
+
     separator_format = ", "
     item_format = "{name}"
     format = "{count} hosts: {items}"
@@ -55,10 +59,14 @@ ColumnHeaders: on
 
     def fetch_livestatus_from_socket(self, url_parsed, query):
         if url_parsed.scheme == "tcp":
+            ip = url_parsed.hostname
             try:
-                ip = socket.gethostbyname(url_parsed.hostname)
-            except socket.gaierror:
-                return {'error': 'resolv failure'}
+                socket.inet_aton(ip)
+            except socket.error:
+                try:
+                    ip = socket.gethostbyname(ip)
+                except socket.gaierror:
+                    return {'error': 'resolv failure'}
             location = (ip, url_parsed.port)
         else:
             location = url_parsed.path
@@ -74,6 +82,7 @@ ColumnHeaders: on
         finally:
             if s is not None:
                 s.close()
+
         return reply.decode("utf-8")
 
     def fetch_livestatus_from_ssh(self, url_parsed, query):
@@ -105,12 +114,20 @@ ColumnHeaders: on
 
     def parse_result(self, result):
         result = result.split("\n")
-        cols = result[0].split(";")
+        columns = result[0].split(";")
         parsed = []
         for row in result[1:]:
             if not row.strip():
                 continue
-            parsed.append(dict(zip(cols, row.split(";"))))
+            row_parts = row.split(";")
+            item = {}
+            for i, column in enumerate(columns):
+                item[column] = row_parts[i]
+                color_map = self.color_maps.get(column, {})
+                color = color_map.get(row_parts[i])
+                if color:
+                    item["%s_color" % column] = color
+            parsed.append(item)
         return parsed
 
     @require(internet)
@@ -128,5 +145,5 @@ ColumnHeaders: on
             items_formatted = "n/a"
         elif self.max_items and items_subset != items:
             items_formatted += ", ..."
-        self.output = {"full_text": self.format.format(
+        self.output = {"markup": "pango", "full_text": self.format.format(
             count=len(items), items=items_formatted)}
