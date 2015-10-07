@@ -1,0 +1,6 @@
+UnBundle 'AutoClose'
+UnBundle 'jiangmiao/auto-pairs'
+Bundle 'L9'
+Bundle 'lbdbq'
+Bundle 'jmcantrell/vim-virtualenv'
+Bundle 'rodjek/vim-puppet'
