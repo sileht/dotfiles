@@ -16,7 +16,8 @@ status.register("battery",
                 )
 status.register("mail",
                 hide_if_null=False,
-                backends=[imap.IMAP(host="mx1.sileht.net")])
+                backends=[imap.IMAP(host="mx1.sileht.net")],
+                format_plural="{unread} new emails")
 status.register("shell", command="/home/sileht/.i3/vpn-chk.sh",
                 hints={"markup": "pango"})
 
