@@ -78,8 +78,7 @@ cleanup_forced(){
 }
 
 setup_power_line(){
-    # sudo apt-get install fonts-powerline
-    [ -x "$(which fc-cache)" ] && fc-cache -vf ~/.fonts
+    dpkg -l | grep -q fonts-powerline || sudo apt-get install fonts-powerline
 }
 
 setup_spf13(){
