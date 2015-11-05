@@ -90,7 +90,17 @@ etox() {
     done
 }
 
+sshclean(){
+    for i in $1 $(dig +short $1 A; dig +short $1 AAAA); do 
+        ssh-keygen -R "[$i]:2222"
+    done
+}
+
 utox() {
+    grep ^http requirements.txt test-requirements.txt | while read tarball ; do
+        egg=$(echo $tarball | awk -F= '{print $2}')
+        find /data/pip_cache/wheels/ -name "${egg}-*" -delete
+    done
 	etox "$@" pip install -U pip -r requirements.txt -r test-requirements.txt
 }
 
