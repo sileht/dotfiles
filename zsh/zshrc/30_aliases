@@ -34,21 +34,12 @@ i
 postcmd_functions+=s
 chpwd_functions+=s
 
-castnow(){
-    file="$(readlink -f $1)"
-    ln -sf "$file" /tmp/castnow.link
-    if [ "${file##*.}" != "mp4" ]; then
-        opt="--tomp4"
-    fi
-    set -x
-    DEBUG=castnow* ~/logiciel/node/bin/castnow $opt /tmp/castnow.link
-    set +x
-}
+inw(){ Xephyr :1 & pid=$! ; DISPLAY=:1 $*; kill $pid ;}
 
 if [ "$HOST" = "bob" ]; then
-    alias novpn='sudo systemctl stop openvpn@redhat;sudo systemctl stop openvpn@enovance;'
-    alias vpneno='sudo systemctl stop openvpn@redhat; sudo systemctl start openvpn@enovance'
-    alias vpnrh='sudo systemctl stop openvpn@enovance; sudo systemctl restart openvpn@redhat'
+    alias novpn='sudo systemctl stop openvpn@redhat;sudo /etc/init.d/fastd stop;'
+    alias vpnrh='sudo systemctl restart openvpn@redhat'
+    alias vpnttnn='sudo /etc/init.d/fastd start'
 else
     novpn(){ local activevpn="$(nmcli -t -f TYPE,NAME c s --active | sed -ne 's/vpn:\(.*\)/\1/gp')" ; [ "$activevpn" ] && nmcli c d "$activevpn" && sudo systemctl restart dnsmasq ; }
     alias vpnrh='nmcli c u "Redhat UDP" && sudo systemctl restart dnsmasq; '
