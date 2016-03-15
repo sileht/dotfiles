@@ -10,11 +10,11 @@ autoload -U allopt
 alias allopt="allopt |less"
 
 mka () {
-	schedtool -B -n 1 -e ionice -n 1 make -j $(cat /proc/cpuinfo | grep "^processor" | wc -l) "$@"
+	time schedtool -B -n 1 -e ionice -n 1 make -j $(nproc) "$@"
 }
 
 imka () { 
-    schedtool -D -n 19 -e ionice -c 3 make -j $(cat /proc/cpuinfo | grep "^processor" | wc -l) "$@" 
+    time schedtool -D -n 19 -e ionice -c 3 make -j $(nproc) "$@" 
 }
 masq (){
     sudo iptables -t nat -A POSTROUTING -s "$1" ! -d "$1" -j MASQUERADE
@@ -37,7 +37,7 @@ chpwd_functions+=s
 inw(){ Xephyr :1 & pid=$! ; DISPLAY=:1 $*; kill $pid ;}
 
 if [ "$HOST" = "bob" ]; then
-    alias novpn='sudo systemctl stop openvpn@redhat;sudo /etc/init.d/fastd stop;'
+    alias novpn='sudo systemctl stop openvpn@redhat; sudo /etc/init.d/fastd stop; sudo rm /etc/dnsmasq.d/redhat.conf;sudo /etc/init.d/dnsmasq restart'
     alias vpnrh='sudo systemctl restart openvpn@redhat'
     alias vpnttnn='sudo /etc/init.d/fastd start'
 else
@@ -74,25 +74,36 @@ etox() {
     zparseopts -D e+:=env
     typeset -A helper
     helper=($(seq 1 ${#env}))
+    rootdir="."
+    [ ! -d "$rootdir/.tox" ] && rootdir=".."
+    [ ! -d "$rootdir/.tox" ] && rootdir="../.."
+    [ ! -d "$rootdir/.tox" ] && rootdir="../../.."
+    [ ! -d "$rootdir/.tox" ] && rootdir="../../../.."
     for item in ${(@v)helper}; do
         for e in "${(@s/,/)env[$item]}" ; do
-            .tox/$e/bin/"$@"
+            $rootdir/.tox/$e/bin/"$@"
         done
     done
 }
 
 sshclean(){
-    for i in $1 $(dig +short $1 A; dig +short $1 AAAA); do 
+    hostname=$(echo $1 | sed 's/\.t$/.tetenauetral.net/g')
+    for i in $hostname $(dig +short $hostname A; dig +short $hostname AAAA); do 
         ssh-keygen -R "[$i]:2222"
     done
 }
 
 utox() {
-    grep ^http requirements.txt test-requirements.txt | while read tarball ; do
-        egg=$(echo $tarball | awk -F= '{print $2}')
-        find /data/pip_cache/wheels/ -name "${egg}-*" -delete
+    find /data/pip_cache/ -name '*.dev*' -delete
+    zparseopts -D e+:=env
+    typeset -A helper
+    helper=($(seq 1 ${#env}))
+    for item in ${(@v)helper}; do
+        for e in "${(@s/,/)env[$item]}" ; do
+            etox -e $e "$@" pip install -U pip
+            etox -e $e "$@" pip install -U -e . $(tox --notest --showconfig | awk '/^\[testenv:'$e'\]$/{while ($1 != "deps") { getline ; }; print $0 ; }' | sed -e 's/\s*deps\s*=\s*\[\(.*\)\]/\1/g' | sed -e 's/, / /g')
+        done
     done
-	etox "$@" pip install -U pip -r requirements.txt -r test-requirements.txt
 }
 
 mtox(){
@@ -243,7 +254,7 @@ vit () {
   echo $tmpfile
 }
 p () {
-    cd ~/workspace/os_dev/stack/${1}*(/[0,1])
+    cd ~/workspace/os_dev/stack/*${1}*(/[0,1])
     s
 }
 

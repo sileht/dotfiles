@@ -42,6 +42,21 @@ map P "0p
 
 map <F6> :w<CR>:!aspell -l en -c %<CR>:e %<CR>
 map <F7> :w<CR>:!aspell -l fr -c %<CR>:e %<CR>
+" Spell Check
+let b:myLang=0
+let g:myLangList=["nospell", "en_us", "fr"]
+function! ToggleSpell()
+  let b:myLang=b:myLang+1
+  if b:myLang>=len(g:myLangList) | let b:myLang=0 | endif
+  if b:myLang==0
+    setlocal nospell
+  else
+    execute "setlocal spell spelllang=".get(g:myLangList, b:myLang)
+  endif
+  echo "spell checking language:" g:myLangList[b:myLang]
+endfunction
+
+nmap <silent> <F8> :call ToggleSpell()<CR>
 
 "imap <C-V> "+p
 "inoremap <F5> <ESC>:set paste<CR>gi<C-V>+<ESC>:set nopaste<CR>gi
@@ -64,8 +79,12 @@ autocmd! FileChangedShell *
     \ endif
 cmap w!! let g:IgnoreChange=1<CR>:w !sudo tee % >/dev/null<CR>:e!<CR>
 
+autocmd BufWritePre *.yaml :%s/\s\+$//e
+autocmd BufWritePre *.pyx :%s/\s\+$//e
+autocmd BufWritePre *.rst :%s/\s\+$//e
+
 " For USE ligne in gentoo
-function SortLine()
+function! SortLine()
     let line = getline('.')
     let l:words = split(split(line,' \')[0], ' ')
     let l:words = sort(l:words)

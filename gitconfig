@@ -18,6 +18,14 @@
     diffn = diff --name-status
     diffc = diff --cached
     diffs = diff --stat
+
+    diverge-commit = "!f() { git merge-base $(git show-upstream $@) ${1:-HEAD}; }; f"
+    review-branch = "!f() { git show ${1:-HEAD}:.gitreview | git config --get --file - gerrit.defaultbranch || echo master;}; f"
+    rework = "!git rebase -i $(git diverge-commit $@)"
+    show-upstream = "!f() { git rev-parse --symbolic-full-name --abbrev-ref ${1}@{u} 2>/dev/null || git rev-parse --symbolic-full-name --abbrev-ref $(git review-branch)@{u}; }; f"
+    fix-upstream = "!f() { git branch --set-upstream-to=$(git show-upstream) ; } ; f"
+    h = !git rework
+    reset-date = "!f() { LANG= GIT_COMMITTER_DATE=\"$(date)\" git commit --amend --no-edit --date \"$(date)\" ; }; f"
 [core]
 	excludesfile = ~/.gitignore-global
 [push]

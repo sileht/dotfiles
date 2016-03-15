@@ -137,9 +137,7 @@ bindsym $mod+Shift+z exec "mate-session-save --shutdown-dialog"
 # finds out, if available)
 bar {
     font pango:Monospace 8
-    output HDMI1
-    output HDMI2
-    output HDMI3
+    output VGA1
     output LVDS1
     status_command ~/.i3/status.py
     position          top
@@ -150,5 +148,5 @@ bar {
     tray_output none
     position          top
     workspace_buttons yes
-    output VGA1
+    output HDMI3
 }
