@@ -39,7 +39,7 @@ bindsym $mod+c exec mate-terminal --hide-menubar --title 'gizmo.sileht.net' -e "
 bindsym $mod+d exec mate-terminal --hide-menubar --title 'gizmo.sileht.net' -e "bash -c 'TERM=xterm-256color mosh -a gizmo mutt'"
 bindsym Print exec gnome-screenshot -i
 bindsym $mod+Shift+v exec --no-startup-id /home/sileht/.bin/redtokclip
-bindsym $mod+Ctrl+l exec --no-startup-id mate-screensaver-command --lock
+bindsym $mod+l exec --no-startup-id slock
 bindsym $mod+x exec --no-startup-id pcmanfm /home/sileht/
 
 # kill focused window
@@ -53,11 +53,11 @@ bindsym $mod+r exec ~/.i3/dmenu_run
 # installed.
 #bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 
-# change focus
-bindsym $mod+j focus left
-bindsym $mod+k focus down
-bindsym $mod+l focus up
-bindsym $mod+m focus right
+## change focus
+#bindsym $mod+j focus left
+#bindsym $mod+k focus down
+#bindsym $mod+l focus up
+#bindsym $mod+m focus right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Left focus left
