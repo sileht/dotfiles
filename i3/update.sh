@@ -18,6 +18,7 @@ keyring
 psutil
 pip
 paramiko
+keyrings.alt
 EOF
 
 cleanup(){

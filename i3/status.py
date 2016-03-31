@@ -2,22 +2,25 @@
 
 from i3pystatus import Status
 from i3pystatus.mail import imap
+from i3pystatus.weather import weathercom
 
 status = Status(standalone=True)
 status.register("clock", format="%a %b %d, %H:%M")
+status.register("xkblayout", layouts=["fr", "en"])
+#status.register("spotify")
 status.register("weather", format="{current_temp}",
-                colorize=True,
-                location_code="FRXX0099:1:FR")
+                colorize=True, backend=weathercom.Weathercom(
+                    location_code="FRXX0099:1:FR"))
 status.register("battery",
                 format="{status}{remaining:%E%hh:%Mm}",
                 alert=True, alert_percentage=5,
                 status={"DIS": "↓", "CHR": "↑", "FULL": "="},
                 not_present_text="",
                 )
-#status.register("mail",
-#                hide_if_null=False,
-#                backends=[imap.IMAP(host="mx1.sileht.net")],
-#                format_plural="{unread} new emails")
+status.register("mail",
+                hide_if_null=False,
+                backends=[imap.IMAP(host="mx1.sileht.net")],
+                format_plural="{unread} new emails")
 status.register("shell", command="/home/sileht/.i3/vpn-chk.sh",
                 hints={"markup": "pango"})
 
