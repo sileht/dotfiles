@@ -82,6 +82,12 @@ sshclean(){
     done
 }
 
+update-flash() {
+    sudo update-pepperflashplugin-nonfree --status
+    sudo update-pepperflashplugin-nonfree --install
+    sudo update-pepperflashplugin-nonfree --status
+}
+
 utox() {
     find /workspace/pip_cache/ -name '*.dev*' -delete
     zparseopts -D e+:=env
