@@ -10,6 +10,7 @@ dpkg -l libiw-dev >/dev/null 2>&1 || sudo apt-get install -y libiw-dev
 
 cat > i3pystatus-reqs.txt <<EOF
 -e git+https://github.com/enkore/i3pystatus@master#egg=i3pystatus
+pyanybar
 netifaces
 basiciw
 colour

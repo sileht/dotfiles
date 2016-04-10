@@ -46,15 +46,16 @@ zle -N zle_sudo zle_sudo
 bindkey "o" zle_sudo
 bindkey "" zle_sudo
 
-#autoload -U insert-files
-#zle -N insert-files
-#bindkey "f" insert-files ## C-x-f
+autoload -U insert-files
+zle -N insert-files
+bindkey "f" insert-files ## C-x-f
+bindkey "" insert-files ## C-x C-f
 
-#autoload -U predict-on
-#zle -N predict-on
-#zle -N predict-off
-#bindkey "" predict-on ## C-x C-z
-#bindkey "" predict-off ## C-z
+autoload -U predict-on
+zle -N predict-on
+zle -N predict-off
+bindkey "" predict-on ## C-x C-z
+bindkey "" predict-off ## C-z
 
 autoload -U edit-command-line # later bound to C-z e
 autoload -U zed # what, your shell can't edit files?

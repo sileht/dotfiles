@@ -3,7 +3,7 @@
 
 setopt auto_list # automatically list choices on an ambiguous completion
 setopt auto_menu # use menu after the second completion request
-#setopt rec_exact # recognise exact matches even if they're ambiguous
+setopt rec_exact # recognise exact matches even if they're ambiguous
 setopt always_to_end # move cursor to end of word being completed
 setopt correct  # try to correct the spelling if possible
 setopt correctall # correct all arguments, not just the command

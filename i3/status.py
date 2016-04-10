@@ -1,7 +1,7 @@
 #!/home/sileht/.i3/venv/bin/python
 
 from i3pystatus import Status
-from i3pystatus.mail import imap
+#from i3pystatus.mail import imap
 from i3pystatus.weather import weathercom
 
 status = Status(standalone=True)
@@ -11,16 +11,17 @@ status.register("xkblayout", layouts=["fr", "en"])
 status.register("weather", format="{current_temp}",
                 colorize=True, backend=weathercom.Weathercom(
                     location_code="FRXX0099:1:FR"))
-status.register("battery",
-                format="{status}{remaining:%E%hh:%Mm}",
-                alert=True, alert_percentage=5,
+status.register("battery", interval=60, alert_percentage=3,
+                # {bar}",
+                format="{status}{remaining:%E%hh:%Mm} {consumption}W",
+                alert=True,
                 status={"DIS": "↓", "CHR": "↑", "FULL": "="},
-                not_present_text="",
-                )
-status.register("mail",
-                hide_if_null=False,
-                backends=[imap.IMAP(host="mx1.sileht.net")],
-                format_plural="{unread} new emails")
+                not_present_text="")
+#status.register("anybar", color="#454545")
+#status.register("mail",
+#                hide_if_null=False,
+#                backends=[imap.IMAP(host="mx1.sileht.net")],
+#                format_plural="{unread} new emails")
 status.register("shell", command="/home/sileht/.i3/vpn-chk.sh",
                 hints={"markup": "pango"})
 

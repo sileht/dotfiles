@@ -9,27 +9,16 @@
 autoload -U allopt
 alias allopt="allopt |less"
 
-mka () {
-	time schedtool -B -n 1 -e ionice -n 1 make -j $(nproc) "$@"
-}
-
-imka () { 
-    time schedtool -D -n 19 -e ionice -c 3 make -j $(nproc) "$@" 
-}
-masq (){
-    sudo iptables -t nat -A POSTROUTING -s "$1" ! -d "$1" -j MASQUERADE
-}
-ban(){
-    sudo iptables -I INPUT 1 -s "$1" -j DROP
-}
-unban(){
-    sudo iptables -D INPUT -s "$1" -j DROP
-}
+mka () { time schedtool -B -n 1 -e ionice -n 1 make -j $(nproc) "$@" }
+imka () { time schedtool -D -n 19 -e ionice -c 3 make -j $(nproc) "$@" }
+masq (){ sudo iptables -t nat -A POSTROUTING -s "$1" ! -d "$1" -j MASQUERADE }
+ban(){ sudo iptables -I INPUT 1 -s "$1" -j DROP }
+unban(){ sudo iptables -D INPUT -s "$1" -j DROP }
 alias idletask='schedtool -D -n 19 -e ionice -c 3'
 alias batchtask='schedtool -B -n 1 -e ionice -n 1'
 
 function s() { pwd >| ~/.saved_dir; }
-function i() { cd "$(cat ~/.saved_dir)"; }
+function i() { p="$(cat ~/.saved_dir)"; [ -d $p ] && cd $p }
 i
 postcmd_functions+=s
 chpwd_functions+=s
@@ -121,8 +110,7 @@ ltox(){
 
 alias etox="nocorrect etox"
 alias utox="nocorrect utox"
-alias tox="rm .ropeproject -rf; tox"
-alias u="sudo -i -u"
+#alias tox="rm .ropeproject -rf; tox"
 
 function of() { lsof -np "$1" }
 compdef _pids of
@@ -194,27 +182,13 @@ function fwget(){
     fi
 }
 
-function rappel(){
-    timespec="$@"
-    if [ "${timespec[1]}" == "+" ]; then
-        timespec="now $timespec"
-    fi
-    echo -n "Sujet: " 
-    read title
-    at "$timespec" <<EOF
-mail -s '$title' sileht@sileht.net <<maileof
-$(cat)
-maileof
-EOF
-}
-
 # Service stuff
 alias invoke-rc.d="nocorrect sudo invoke-rc.d"
 alias service="nocorrect sudo service"
+alias systemctl="nocorrect sudo systemctl"
 compdef _service invoke-rc.d
 
 # CD STUFF
-function cdw(){ cd $(which "$@") }
 function cd () {
 if [[ -z $2 ]]; then
   if [[ -f $1 ]]; then

@@ -1,3 +1,0 @@
-
-
-export LD_LIBRARY_PATH="/home/sileht/logiciel/rust/lib;$LD_LIBRARY_PATH"
