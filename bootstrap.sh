@@ -2,25 +2,22 @@
 
 here=$(dirname $(readlink -f $0))
 
-COPY_OPTS="$@"
+INITIAL_OPTS="$@"
 OPTS=$(getopt -o feul -- "$@")
 eval set -- "$OPTS"
 
 while true ; do
     case "$1" in
-        -e) reexec=1 ;;
         -f) force=1 ;;
-        -u) update=1 ;;
-        -l) light=1 ;;
         --) shift; break;;
     esac
     shift
 done
-[ "$reexec" ] && update=
 
 
 typeset -a flist="zsh vimrc screenrc zshenv wgetrc pythonrc.py mutt config/awesome gitconfig lbdbrc gitignore-global ctags i3 config/dunst"
-typeset -a rlist=""
+typeset -a rlist="spf13-vim spf13-vim-3 vimrc.before vimrc.bundles vimrc.bundles.fork vimrc.fork notmuch-config vimrc.old"
+
 
 setup_env_link() {
     haserror=
@@ -85,19 +82,19 @@ setup_vim(){
  	curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
 		https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     fi
-    vim "+set nomore" +PlugUpgrade! +PlugInstall! +PlugClean! +PlugUpdate! +qall
+    vim "+set nomore" +PlugUpgrade +PlugInstall! +PlugClean! +PlugUpdate! +qall
 }
 
-do_update(){
-    git pull --rebase
-    exec $0 $COPY_OPTS -e
+maybe_do_update(){
+    [ "$BOOSTRAP_UPDATED" ] && return
+    git pull --rebase --recurse-submodules
+    export BOOSTRAP_UPDATED=1
+    exec $0 $INITIAL_OPTS
 }
 
-[ "$update" ] && do_update 
+maybe_do_update 
 cleanup_old_link
 [ "$force" ] &&  cleanup_forced
 setup_env_link
-if [ ! "$light" ]; then 
-    setup_power_line
-    setup_vim
-fi
+setup_power_line
+setup_vim
