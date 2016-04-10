@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 here=$(dirname $(readlink -f $0))
 
 COPY_OPTS="$@"
@@ -20,12 +19,8 @@ done
 [ "$reexec" ] && update=
 
 
-typeset -a flist="zsh vimrc.local vimrc.before.local vimrc.bundles.local screenrc zshenv wgetrc pythonrc.py mutt config/awesome gitconfig spf13-vim-3 lbdbrc gitignore-global ctags i3 config/dunst"
+typeset -a flist="zsh vimrc screenrc zshenv wgetrc pythonrc.py mutt config/awesome gitconfig lbdbrc gitignore-global ctags i3 config/dunst"
 typeset -a rlist=""
-
-setup_submodule() {
-	git submodule update --init spf13-vim-3
-}
 
 setup_env_link() {
     haserror=
@@ -81,13 +76,16 @@ setup_power_line(){
     dpkg -l | grep -q fonts-powerline || sudo apt-get install fonts-powerline
 }
 
-setup_spf13(){
-    if [ ! -d ~/.vim ] ; then
-        
-        TERM=xterm-256color sed -e '/BundleInstall/s/\.bundles//' ~/.spf13-vim-3/bootstrap.sh | bash
-    else
-        vim "+set nomore" +BundleInstall! +BundleClean +qall
+setup_vim(){
+    if [ ! -e ~/.vim/autoload/plug.vim ] ; then
+	if [ -d "~/.vim/bundle/" ]; then
+		rm -rf ~/.vim ~/.vimrc*
+                ln -sf ~/.env/vimrc .vimrc
+	fi
+ 	curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+		https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     fi
+    vim "+set nomore" +PlugUpgrade! +PlugInstall! +PlugClean! +PlugUpdate! +qall
 }
 
 do_update(){
@@ -98,9 +96,8 @@ do_update(){
 [ "$update" ] && do_update 
 cleanup_old_link
 [ "$force" ] &&  cleanup_forced
-setup_submodule
 setup_env_link
 if [ ! "$light" ]; then 
     setup_power_line
-    setup_spf13
+    setup_vim
 fi

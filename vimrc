@@ -1,169 +1,294 @@
+set nocompatible
 
+call plug#begin('~/.vim/plugged')
+" Style
+Plug 'morhetz/gruvbox'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'scrooloose/syntastic'
+Plug 'bling/vim-bufferline'
+" Homepage
+Plug 'mhinz/vim-startify'
+" Text navigation
+"Plug 'easymotion/vim-easymotion'
+Plug 'justinmk/vim-sneak'
+Plug 'mhinz/vim-signify'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
+" File/Tag browsing
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'tacahiroy/ctrlp-funky'
+Plug 'majutsushi/tagbar'
+Plug 'scrooloose/nerdtree'
+Plug 'Xuyuanp/nerdtree-git-plugin'
+" Language
+Plug 'klen/python-mode', { 'branch': 'develop' } " Python
+Plug 'davidhalter/jedi-vim'                      " Python
+Plug 'spf13/PIV'                                 " PHP
+Plug 'Rykka/riv.vim'                             " Rst
+Plug 'rodjek/vim-puppet'                         " Puppet
+Plug 'pangloss/vim-javascript'                   " Js
+Plug 'groenewege/vim-less'                       " Less
+Plug 'elzr/vim-json'                             " Json 
+Plug 'tpope/vim-rails'                           " Ruby
+Plug 'fatih/vim-go'                              " Go
+Plug 'tpope/vim-markdown'                        " Markdown
+"Plug 'saltstack/salt-vim'                        " Salt
+Plug 'amirh/HTML-AutoCloseTag'                   " HTML autoclose
+Plug 'hail2u/vim-css3-syntax'                    " Css
 
-set nocompatible 
-"set title         " Mets le fichier ouvert dans xterm title
-set nobackup       " No backup file
-set showcmd        " Show (partial) command in status line.
-set showmatch      " Show matching brackets.
-set ignorecase     " Do case insensitive matching
-set smartcase      " Do smart case matching
-set incsearch      " Incremental search
-set autowrite      " Automatically save before commands like :next and :make
-set hidden             " Hide buffers when they are abandoned
-"set mouse=a        " Enable mouse usage (all modes) in terminals
-"set mousehide
-"set nomousefocus
-"set mousemodel=extend
+call plug#end()
 
-set background=dark
-"highlight Pmenu      ctermbg=1 guibg=Red
-"highlight PmenuSel   ctermbg=2 ctermfg=4 guibg=Green
-
+scriptencoding utf-8
 syntax on
 filetype plugin indent on
-set modeline
 
-set iskeyword=@,48-57,_,192-255,.
-set isfname=@,48-57,/,.,-,_,+,,,#,$,%,~
-set wrap
+set clipboard=unnamed,unnamedplus
+set hidden                  " Allow buffer switching without saving
+set backup                  " Backups are nice ...
+set undofile                " So is persistent undo ...
+set undolevels=1000         " Maximum number of changes that can be undone
+set undoreload=10000        " Maximum number lines to save for undo on a buffer reload
+set backspace=indent,eol,start  " Backspace for dummies
+set linespace=0                 " No extra spaces between rows
+"set number                      " Line numbers on
+set showmatch                   " Show matching brackets/parenthesis
+set incsearch                   " Find as you type search
+"set hlsearch                    " Highlight search terms
+set winminheight=0              " Windows can be 0 line high
+"set ignorecase                  " Case insensitive search
+set smartcase                   " Case sensitive when uc present
+set wildmenu                    " Show list instead of just completing
+set wildmode=list:longest,full  " Command <Tab> completion, list matches, then longest common part, then all.
+set whichwrap=b,s,h,l,<,>,[,]   " Backspace and cursor keys wrap too
+set scrolljump=5                " Lines to scroll when cursor leaves screen
+set scrolloff=3                 " Minimum lines to keep above and below cursor
+"set list
+"set listchars=tab:›\ ,trail:•,extends:#,nbsp:. " Highlight problematic whitespace
+set textwidth=79
+set nowrap                      " Do not wrap long lines
+set autoindent                  " Indent at the same level of the previous line
+set shiftwidth=4                " Use indents of 4 spaces
+set expandtab                   " Tabs are spaces, not tabs
+set tabstop=4                   " An indentation every four columns
+set softtabstop=4               " Let backspace delete indent
+set nojoinspaces                " Prevents inserting two spaces after punctuation on a join (J)
+set splitright                  " Puts new vsplit windows to the right of the current
+set splitbelow                  " Puts new split windows to the bottom of the current
+"set matchpairs+=<:>             " Match, to be used with %
+set pastetoggle=<F12>           " pastetoggle (sane indentation on pastes)
+set nofoldenable                " No fold
 
-set laststatus=2
-set statusline=%<%n:%f%h%m%r%=%{&ff}\ %l,%c%V\ %P
+let mapleader = ","
+let g:mapleader = ","
 
-set ruler
-"set number
-""set matchtime=5
+" Paste last yank
+nnoremap P "0p
+" Yank from the cursor to the end of the line, to be consistent with C and D.
+nnoremap Y y$
+" Clean hlsearch on new search
+nmap <silent> <leader>/ :nohlsearch<CR>
 
-"" ** TAB SETTING **
-set preserveindent
-set softtabstop=4
-set shiftwidth=4
-set tabstop=4
-set expandtab
-set shiftround
-set autoindent
-"set textwidth=78
-"set colorcolumn=+1
-"set textwidth=0
+map <C-n> :NERDTreeToggle<CR>
+map <leader>e :NERDTreeFind<CR>
+nmap <leader>nt :NERDTreeFind<CR>
 
-"set wildmenu
-"set wildmode=list:full
+imap <silent> <Esc>OA <Up>
+imap <silent> <Esc>OB <Down>
+imap <silent> <Esc>OC <Right>
+imap <silent> <Esc>OD <Left>
+imap <silent> <Esc>OH <Home>
+imap <silent> <Esc>OF <End>
+imap <silent> <Esc>[5~ <PageUp>
+imap <silent> <Esc>[6~ <PageDown>]]
 
-" Open file in last read line
-if has("autocmd")
-  " Open file on 
-  au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
-    \| exe "normal g'\"" | endif
-"  au BufRead *.py set textwidth=78
-
-    au! BufRead,BufWrite,BufWritePost,BufNewFile *.org
-    au BufEnter *.org call org#SetOrgFileType()
-endif
-
-"match ErrorMsg '\%>80v.+'
-" **************
-" * KEYBINDING *
-" **************
-
-" Map key to toggle opt
-function MapToggle(key, opt)
-  let cmd = ':set '.a:opt.'! \| set '.a:opt."?\<CR>"
-  exec 'nnoremap '.a:key.' '.cmd
-  exec 'inoremap '.a:key." \<C-O>".cmd
-endfunction
-command -nargs=+ MapToggle call MapToggle(<f-args>)
-
-map!  
-
-noremap H :set hlsearch!<CR>
-
-" Q command to reformat paragraphs and list.
-nnoremap Q gq} 
-" W command to delete trailing white space and Dos-returns 
-" and to expand tabs to spaces.
-nnoremap W :%s/[\r \t]\+$//<CR>:set et<CR>:retab!<CR>
-
-" Display-altering option toggles
-MapToggle <F2> wrap
-MapToggle <F3> list
-map <F4> :call SortLine()
-
-map <F5> :call ChangeTextwitdth()
-"map <F6> :w<CR>:!aspell -c %<CR>:e %<CR>
 map <F6> :w<CR>:!aspell -l en -c %<CR>:e %<CR>
 map <F7> :w<CR>:!aspell -l fr -c %<CR>:e %<CR>
-map <F8> :call ChangeKeyword()
-MapToggle <F9> hlsearch
+nmap <silent> <F8> :call ToggleSpell()<CR>
+"nmap <C-e> :TagbarToggle<CR>
 
-" Behavior-altering option toggles
-MapToggle <F10> scrollbind
-MapToggle <F11> ignorecase
+nmap <leader>1 <Plug>AirlineSelectTab1
+nmap <leader>2 <Plug>AirlineSelectTab2
+nmap <leader>3 <Plug>AirlineSelectTab3
+nmap <leader>4 <Plug>AirlineSelectTab4
+nmap <leader>5 <Plug>AirlineSelectTab5
+nmap <leader>6 <Plug>AirlineSelectTab6
+nmap <leader>7 <Plug>AirlineSelectTab7
+nmap <leader>8 <Plug>AirlineSelectTab8
+nmap <leader>9 <Plug>AirlineSelectTab9
+nmap <leader>- <Plug>AirlineSelectPrevTab
+nmap <leader>+ <Plug>AirlineSelectNextTab
 
-" *****************
-" Some function ***
-" *****************
+nnoremap <C-e> :CtrlPFunky<Cr>
+" narrow the list down with a word under cursor
+nnoremap <C-E> :execute 'CtrlPFunky ' . expand('<cword>')<Cr>
 
-function ChangeKeyword()
-    if &iskeyword == "@,48-57,_,192-255,."
-        set iskeyword=@,48-57,_,192-255
-        echo "iskeyword=@,48-57,_,192-255"
-    else
-        set iskeyword=@,48-57,_,192-255,.
-        echo "iskeyword=@,48-57,_,192-255,."
+"""""""""""
+" On load "
+"""""""""""
+
+" Change cwd to file directory
+autocmd BufEnter * if bufname("") !~ "^\[A-Za-z0-9\]*://" | lcd %:p:h | endif
+
+" No ending space
+autocmd BufNewFile,BufRead *.yaml set filetype=yml
+autocmd BufNewFile,BufRead *.pyx set filetype=python
+autocmd BufWritePre *.yaml,*.pyx,*.rst call StripTrailingWhitespace()
+autocmd FileType c,cpp,java,go,php,javascript,puppet,python,rust,twig,xml,yml,perl,sql autocmd BufWritePre <buffer> call StripTrailingWhitespace()
+
+autocmd BufWritePre,BufRead *.js :set tabstop=2 shiftwidth=2
+
+" Restore cursor position
+function! ResCur()
+    if line("'\"") <= line("$")
+	silent! normal! g`"
+	return 1
     endif
 endfunction
+augroup resCur
+    autocmd!
+    autocmd BufWinEnter * call ResCur()
+augroup END
 
-function ChangeTextwitdth()
-    if &textwidth == "0"
-        set textwidth=78 
-        echo "textwidth=78"
-    else
-        set textwidth=0
-        echo "textwidth=0"
-    endif
+
+""""""""""
+" Themes "
+""""""""""
+set t_Co=256            " Enable 256 colors to stop the CSApprox warning and make xterm vim shine
+set background=dark
+let g:gruvbox_italic=1
+let g:gruvbox_contrast_dark="hard"
+colorscheme gruvbox
+
+set laststatus=2        " Show statusbar
+
+"""""""""""""""
+" Plug config "
+"""""""""""""""
+let g:airline_powerline_fonts = 1 
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#buffer_idx_mode = 1
+
+let g:sneak#streak = 1
+
+"let g:syntastic_html_tidy_exec = 'tidy5'
+let g:syntastic_python_checkers = ['flake8']
+"let g:syntastic_quiet_messages = { "regex":['\m\[invalid-name\]', '\m\[missing-docstring\]' ]}
+"let g:syntastic_quiet_messages = { "type": "style" }
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+let g:virtualenv_directory = '.tox/'
+let g:virtualenv_auto_activate = 1
+
+let NERDTreeShowBookmarks=1
+let NERDTreeIgnore=['\.py[cd]$', '\~$', '\.swo$', '\.swp$', '^\.git$', '^\.hg$', '^\.svn$', '\.bzr$']
+let NERDTreeChDirMode=0
+let NERDTreeQuitOnOpen=1
+let NERDTreeMouseMode=2
+let NERDTreeShowHidden=1
+let NERDTreeKeepTreeInNewTab=1
+let g:nerdtree_tabs_open_on_gui_startup=0
+
+let g:rubycomplete_buffer_loading = 1
+"let g:rubycomplete_classes_in_global = 1
+"let g:rubycomplete_rails = 1
+
+let g:pymode_lint = 1
+let g:pymode_lint_unmodified = 1
+let g:pymode_lint_checkers = ['pyflakes' ,'pep8']
+let g:pymode_lint_sort = ['E','W', 'C','I']
+let g:pymode_folding = 0
+let g:pymode_options = 0
+let g:pymode_lint_ignore = 'E265,W0621,E731'
+
+let g:pymode_trim_whitespaces = 0        " We already do this manually
+let g:pymode_options = 0                 " No options
+let g:pymode_rope = 0                    " No rope project
+let g:pymode_rope_lookup_project = 0     " I said no rope
+let g:pymode_rope_completion = 0         " Again
+let g:pymode_rope_complete_on_dot = 0    " And again
+
+
+let g:ctrlp_funky_matchtype = 'path'
+let g:ctrlp_funky_syntax_highlight = 1
+
+" Spell Check 
+let b:myLang=0
+let g:myLangList=["nospell", "en_us", "fr"]
+function! ToggleSpell()
+  let b:myLang=b:myLang+1
+  if b:myLang>=len(g:myLangList) | let b:myLang=0 | endif
+  if b:myLang==0
+    setlocal nospell
+  else
+    execute "setlocal spell spelllang=".get(g:myLangList, b:myLang)
+  endif
+  echo "spell checking language:" g:myLangList[b:myLang]
 endfunction
 
-" For USE ligne in gentoo
-function SortLine()
-    let line = getline('.')
-    let l:words = split(split(line,' \')[0], ' ')
-    let l:words = sort(l:words)
-    call setline(".", join(l:words, ' ').' \')
+
+" Sudo hack
+let g:IgnoreChange=0
+autocmd! FileChangedShell *
+    \ if 1 == g:IgnoreChange |
+    \   let v:fcs_choice="" |
+    \   let g:IgnoreChange=0 |
+    \ else |
+    \   let v:fcs_choice="ask" |
+    \ endif
+cmap w!! let g:IgnoreChange=1<CR>:w !sudo tee % >/dev/null<CR>:e!<CR>
+
+
+if has('python')
+python << pythoneof
+import vim
+import os
+import ConfigParser
+
+path = os.path.abspath(vim.eval('getcwd()'))
+home = os.path.abspath("~")
+
+# Load virtualenv && Read flake8 config from tox if available
+while True:
+    plist = [p for p in os.listdir(path)
+             if p in [ "tox.ini", ".tox", "venv", ".git", ".hg", ".vimrc"]]
+    if plist:
+        for venv in [".tox/py27", ".tox/py27-postgresql-file", 
+                     ".tox/py27-postgresql-ceph", ".tox/py27-mysql-file"]:
+            venvdir = os.path.join(path, venv)
+            if os.path.exists(venvdir):
+                vim.command("let g:pymode_virtualenv = 1")
+                vim.command("let g:pymode_virtualenv_path = '%s'" % venvdir)
+        if os.path.exists("%s/tox.ini"):
+            config = ConfigParser.ConfigParser()
+            config.read(['tox.ini'])
+            try:
+                ignore = config.get('flake8', 'ignore')
+            except (ConfigParser.NoOptionError, ConfigParser.NoSectionError):
+                pass
+            else:
+                vim.command("let g:pymode_lint_ignore += '%s'" % ignore)
+        break
+    
+    path = os.path.abspath(os.path.join(path, ".."))
+    if path == home:
+        break
+pythoneof
+endif
+
+
+function! StripTrailingWhitespace()
+    " Preparation: save last search, and cursor position.
+    let _s=@/
+    let l = line(".")
+    let c = col(".")
+    " do the business:
+    %s/\s\+$//e
+    " clean up: restore previous search history, and cursor position
+    let @/=_s
+    call cursor(l, c)
 endfunction
-
-" ******************
-" Some key maps  ***
-" ******************
-fun! CompleteEmails(findstart, base)
-    if a:findstart
-        let line = getline('.')
-        "locate the start of the word
-        let start = col('.') - 1
-        while start > 0 && line[start - 1] =~ '[^:,]'
-            let start -= 1
-        endwhile
-        return start
-    else
-        " find the addresses ustig the external tool
-        " the tools must give properly formated email addresses
-        let res = []
-        "let search_term = shellescape(substitute(@a:base,"^\\s\\+\\|\\s\\+$","","g"))
-        for m in split(system('pc_query -m "' . shellescape(a:base) . '"'),'\n')
-                call add(res, m)
-        endfor
-        return res
-    endif
-endfun
-
-fun! UserComplete(findstart, base)
-    " Fetch current line
-    let line = getline(line('.'))
-    " Is it a special line?
-    if line =~ '^\(To\|Cc\|Bcc\|From\|Reply-To\):'
-        return CompleteEmails(a:findstart, a:base)
-    endif
-endfun
-
-set completefunc=UserComplete
-
 
