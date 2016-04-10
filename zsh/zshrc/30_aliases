@@ -94,7 +94,7 @@ sshclean(){
 }
 
 utox() {
-    find /data/pip_cache/ -name '*.dev*' -delete
+    find /workspace/pip_cache/ -name '*.dev*' -delete
     zparseopts -D e+:=env
     typeset -A helper
     helper=($(seq 1 ${#env}))
