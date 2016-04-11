@@ -82,6 +82,8 @@ setup_vim(){
 maybe_do_update(){
     [ "$BOOSTRAP_UPDATED" ] && return
     git pull --rebase --recurse-submodules
+    git submodule init
+    git submodule update
     export BOOSTRAP_UPDATED=1
     exec $0 $INITIAL_OPTS
 }
