@@ -7,12 +7,11 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'scrooloose/syntastic'
 Plug 'bling/vim-bufferline'
+Plug 'mhinz/vim-signify'                " VCS diff
 " Homepage
 Plug 'mhinz/vim-startify'
 " Text navigation
-"Plug 'easymotion/vim-easymotion'
-Plug 'justinmk/vim-sneak'
-Plug 'mhinz/vim-signify'
+Plug 'easymotion/vim-easymotion'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 " File/Tag browsing
@@ -22,6 +21,7 @@ Plug 'majutsushi/tagbar'
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 " Language
+Plug 'tpope/vim-fugitive'                        " Git
 Plug 'klen/python-mode', { 'branch': 'develop' } " Python
 Plug 'davidhalter/jedi-vim'                      " Python
 Plug 'spf13/PIV'                                 " PHP
@@ -66,6 +66,7 @@ set scrolloff=3                 " Minimum lines to keep above and below cursor
 "set list
 "set listchars=tab:›\ ,trail:•,extends:#,nbsp:. " Highlight problematic whitespace
 set textwidth=79
+set colorcolumn=80
 set nowrap                      " Do not wrap long lines
 set autoindent                  " Indent at the same level of the previous line
 set shiftwidth=4                " Use indents of 4 spaces
@@ -78,6 +79,7 @@ set splitbelow                  " Puts new split windows to the bottom of the cu
 "set matchpairs+=<:>             " Match, to be used with %
 set pastetoggle=<F12>           " pastetoggle (sane indentation on pastes)
 set nofoldenable                " No fold
+set scrolloff=10                " Again no fold
 
 let mapleader = ","
 let g:mapleader = ","
@@ -118,6 +120,8 @@ nmap <leader>8 <Plug>AirlineSelectTab8
 nmap <leader>9 <Plug>AirlineSelectTab9
 nmap <leader>- <Plug>AirlineSelectPrevTab
 nmap <leader>+ <Plug>AirlineSelectNextTab
+nmap <S-left>  <Plug>AirlineSelectPrevTab
+nmap <S-right> <Plug>AirlineSelectNextTab
 
 nnoremap <C-e> :CtrlPFunky<Cr>
 " narrow the list down with a word under cursor
@@ -160,6 +164,7 @@ let g:gruvbox_italic=1
 let g:gruvbox_contrast_dark="hard"
 colorscheme gruvbox
 
+set cursorline
 set laststatus=2        " Show statusbar
 
 """""""""""""""
@@ -169,7 +174,7 @@ let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#buffer_idx_mode = 1
 
-let g:sneak#streak = 1
+let g:signify_update_on_focusgained = 1
 
 "let g:syntastic_html_tidy_exec = 'tidy5'
 let g:syntastic_python_checkers = ['flake8']
@@ -203,14 +208,12 @@ let g:pymode_lint_sort = ['E','W', 'C','I']
 let g:pymode_folding = 0
 let g:pymode_options = 0
 let g:pymode_lint_ignore = 'E265,W0621,E731'
-
 let g:pymode_trim_whitespaces = 0        " We already do this manually
 let g:pymode_options = 0                 " No options
 let g:pymode_rope = 0                    " No rope project
 let g:pymode_rope_lookup_project = 0     " I said no rope
 let g:pymode_rope_completion = 0         " Again
 let g:pymode_rope_complete_on_dot = 0    " And again
-
 
 let g:ctrlp_funky_matchtype = 'path'
 let g:ctrlp_funky_syntax_highlight = 1
