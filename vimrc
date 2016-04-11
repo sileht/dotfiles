@@ -37,7 +37,6 @@ Plug 'tpope/vim-markdown'                        " Markdown
 "Plug 'saltstack/salt-vim'                        " Salt
 Plug 'amirh/HTML-AutoCloseTag'                   " HTML autoclose
 Plug 'hail2u/vim-css3-syntax'                    " Css
-
 call plug#end()
 
 set encoding=utf8
@@ -46,14 +45,15 @@ syntax on
 filetype plugin indent on
 
 set clipboard=unnamed,unnamedplus
-set hidden                  " Allow buffer switching without saving
-set backup                  " Backups are nice ...
-set undofile                " So is persistent undo ...
-set undolevels=1000         " Maximum number of changes that can be undone
-set undoreload=10000        " Maximum number lines to save for undo on a buffer reload
+set hidden                      " Allow buffer switching without saving
+set backup                      " Backups are nice ...
+set undofile                    " So is persistent undo ...
+set undolevels=1000             " Maximum number of changes that can be undone
+set undoreload=10000            " Maximum number lines to save for undo on a buffer reload
 set backspace=indent,eol,start  " Backspace for dummies
 set linespace=0                 " No extra spaces between rows
-"set number                      " Line numbers on
+set number                      " Line numbers on
+set relativenumber              " 0 is current line
 set showmatch                   " Show matching brackets/parenthesis
 set incsearch                   " Find as you type search
 "set hlsearch                    " Highlight search terms
@@ -67,8 +67,6 @@ set scrolljump=5                " Lines to scroll when cursor leaves screen
 set scrolloff=3                 " Minimum lines to keep above and below cursor
 "set list
 "set listchars=tab:›\ ,trail:•,extends:#,nbsp:. " Highlight problematic whitespace
-set textwidth=79
-set colorcolumn=80
 set nowrap                      " Do not wrap long lines
 set autoindent                  " Indent at the same level of the previous line
 set shiftwidth=4                " Use indents of 4 spaces
@@ -82,6 +80,7 @@ set splitbelow                  " Puts new split windows to the bottom of the cu
 set pastetoggle=<F12>           " pastetoggle (sane indentation on pastes)
 set nofoldenable                " No fold
 set scrolloff=10                " Again no fold
+syn spell toplevel              " Spell rst issue https://github.com/Rykka/riv.vim/issues/8
 
 let mapleader = ","
 let g:mapleader = ","
@@ -133,16 +132,25 @@ nnoremap <C-E> :execute 'CtrlPFunky ' . expand('<cword>')<Cr>
 " On load "
 """""""""""
 
+" Add some missing filetype extentions
+autocmd BufNewFile,BufRead *.yaml set filetype=yml
+
 " Change cwd to file directory
 autocmd BufEnter * if bufname("") !~ "^\[A-Za-z0-9\]*://" | lcd %:p:h | endif
 
-" No ending space
-autocmd BufNewFile,BufRead *.yaml set filetype=yml
-autocmd BufNewFile,BufRead *.pyx set filetype=python
-autocmd BufWritePre *.yaml,*.pyx,*.rst call StripTrailingWhitespace()
-autocmd FileType c,cpp,java,go,php,javascript,puppet,python,rust,twig,xml,yml,perl,sql autocmd BufWritePre <buffer> call StripTrailingWhitespace()
+" Cut at 80 for some filetype
+autocmd FileType c,cpp,java,go,php,javascript,puppet,python,rst set colorcolumn=80
+autocmd FileType c,cpp,java,go,php,javascript,puppet,python,rst set textwidth=79
 
-autocmd BufWritePre,BufRead *.js :set tabstop=2 shiftwidth=2
+" No ending space
+autocmd FileType c,cpp,java,go,php,javascript,puppet,python,rst,rust,twig,xml,yml,perl,sql autocmd BufWritePre <buffer> call StripTrailingWhitespace()
+
+" Use en_us spell and completion per default for markdown and rst 
+autocmd FileType gitcommit,rst,mkd,markdown silent! call ToggleSpell()
+autocmd FileType gitcommit,rst,mkd,markdown set complete+=kspell
+
+" Dirty js format
+" autocmd BufWritePre,BufRead *.js :set tabstop=2 shiftwidth=2
 
 " Restore cursor position
 function! ResCur()
@@ -163,7 +171,9 @@ augroup END
 set t_Co=256            " Enable 256 colors to stop the CSApprox warning and make xterm vim shine
 set background=dark
 let g:gruvbox_italic=1
-let g:gruvbox_contrast_dark="hard"
+"let g:gruvbox_contrast_dark="hard"
+let g:gruvbox_improved_warnings=1
+let g:gruvbox_guisp_fallback='bg'
 colorscheme gruvbox
 
 set cursorline
@@ -178,17 +188,21 @@ let g:airline#extensions#tabline#buffer_idx_mode = 1
 
 let g:signify_update_on_focusgained = 1
 
-"let g:syntastic_html_tidy_exec = 'tidy5'
+let g:riv_global_leader ='<C-s>'
+let g:riv_disable_folding = 1
+
 let g:syntastic_python_checkers = ['flake8']
-"let g:syntastic_quiet_messages = { "regex":['\m\[invalid-name\]', '\m\[missing-docstring\]' ]}
-"let g:syntastic_quiet_messages = { "type": "style" }
+let g:syntastic_quiet_messages = {"regex": [ '\mUnknown interpreted text role "doc"' ]}
+let g:syntastic_python_flake8_quiet_messages = {"regex": [ 'W503', 'E402', 'E731']}
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
+let g:syntastic_check_on_wq = 1
+let g:syntastic_aggregate_errors = 1
+let g:syntastic_loc_list_height = 5
 
 let NERDTreeShowBookmarks=1
-let NERDTreeIgnore=['\.py[cd]$', '\~$', '\.swo$', '\.swp$', '^\.git$', '^\.hg$', '^\.svn$', '\.bzr$']
+let NERDTreeIgnore = ['\.py[cd]$', '\~$', '\.swo$', '\.swp$', '^\.git$', '^\.hg$', '^\.svn$', '\.bzr$']
 let NERDTreeChDirMode=0
 let NERDTreeQuitOnOpen=1
 let NERDTreeMouseMode=2
@@ -198,16 +212,11 @@ let g:nerdtree_tabs_open_on_gui_startup=0
 
 let g:rubycomplete_buffer_loading = 1
 
-let g:pymode_lint = 1
-let g:pymode_lint_unmodified = 1
-let g:pymode_lint_checkers = ['pyflakes' ,'pep8']
-let g:pymode_lint_sort = ['E','W', 'C','I']
-let g:pymode_folding = 0
-let g:pymode_options = 0
-let g:pymode_lint_ignore = 'E265,W0621,E731'
+let g:pymode_lint = 0                    " Use syntastic for now
+let g:pymode_folding = 0                 " No folding !
 let g:pymode_trim_whitespaces = 0        " We already do this manually
-let g:pymode_options = 0                 " No options
-let g:pymode_rope = 0                    " No rope project
+let g:pymode_options = 0                 " Don't override my options
+let g:pymode_rope = 0                    " No rope project I prefer jedi-vim
 let g:pymode_rope_lookup_project = 0     " I said no rope
 let g:pymode_rope_completion = 0         " Again
 let g:pymode_rope_complete_on_dot = 0    " And again
@@ -229,7 +238,6 @@ function! ToggleSpell()
   echo "spell checking language:" g:myLangList[b:myLang]
 endfunction
 
-
 " Sudo hack
 let g:IgnoreChange=0
 autocmd! FileChangedShell *
@@ -246,7 +254,6 @@ if has('python')
 python << pythoneof
 import vim
 import os
-import ConfigParser
 
 path = os.path.abspath(vim.eval('getcwd()'))
 home = os.path.abspath("~")
@@ -262,19 +269,13 @@ while True:
             if os.path.exists(venvdir):
                 vim.command("let g:pymode_virtualenv = 1")
                 vim.command("let g:pymode_virtualenv_path = '%s'" % venvdir)
-        if os.path.exists("%s/tox.ini"):
-            config = ConfigParser.ConfigParser()
-            config.read(['tox.ini'])
-            try:
-                ignore = config.get('flake8', 'ignore')
-            except (ConfigParser.NoOptionError, ConfigParser.NoSectionError):
-                pass
-            else:
-                vim.command("let g:pymode_lint_ignore += '%s'" % ignore)
+        if os.path.exists("%s/doc/source" % path):
+            vim.command("let g:riv_projects = [{'path': '%s/doc/source',}]" % 
+                        path)
         break
     
     path = os.path.abspath(os.path.join(path, ".."))
-    if path == home:
+    if path == home or path == "/":
         break
 pythoneof
 endif
