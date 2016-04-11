@@ -9,6 +9,7 @@ eval set -- "$OPTS"
 while true ; do
     case "$1" in
         -f) force=1 ;;
+        -U) BOOSTRAP_UPDATED=1 ;;
         --) shift; break;;
     esac
     shift
@@ -71,15 +72,13 @@ setup_power_line(){
 }
 
 setup_vim(){
-    if [ ! -e ~/.vim/autoload/plug.vim ] ; then
-	if [ -d "~/.vim/bundle/" ]; then
-		rm -rf ~/.vim ~/.vimrc*
-                ln -sf ~/.env/vimrc .vimrc
-	fi
- 	curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-		https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    if [ ! -e ~/.vim/autoload/plug.vim -a  -d "~/.vim/bundle/" ]; then
+        rm -rf ~/.vim ~/.vimrc*
+        ln -sf ~/.env/vimrc .vimrc
     fi
-    vim "+set nomore" +PlugUpgrade +PlugInstall! +PlugClean! +PlugUpdate! +qall
+    curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    vim "+set nomore" +PlugInstall! +PlugClean! +PlugUpdate! +qall
 }
 
 maybe_do_update(){
