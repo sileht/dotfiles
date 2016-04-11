@@ -37,6 +37,7 @@ Plug 'tpope/vim-markdown'                        " Markdown
 "Plug 'saltstack/salt-vim'                        " Salt
 Plug 'amirh/HTML-AutoCloseTag'                   " HTML autoclose
 Plug 'hail2u/vim-css3-syntax'                    " Css
+Plug 'breard-r/vim-dnsserial'                    " dns zones
 call plug#end()
 
 set encoding=utf8
