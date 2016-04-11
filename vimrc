@@ -8,6 +8,7 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'scrooloose/syntastic'
 Plug 'bling/vim-bufferline'
 Plug 'mhinz/vim-signify'                " VCS diff
+Plug 'ryanoasis/vim-devicons'
 " Homepage
 Plug 'mhinz/vim-startify'
 " Text navigation
@@ -39,6 +40,7 @@ Plug 'hail2u/vim-css3-syntax'                    " Css
 
 call plug#end()
 
+set encoding=utf8
 scriptencoding utf-8
 syntax on
 filetype plugin indent on
@@ -185,9 +187,6 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
-let g:virtualenv_directory = '.tox/'
-let g:virtualenv_auto_activate = 1
-
 let NERDTreeShowBookmarks=1
 let NERDTreeIgnore=['\.py[cd]$', '\~$', '\.swo$', '\.swp$', '^\.git$', '^\.hg$', '^\.svn$', '\.bzr$']
 let NERDTreeChDirMode=0
@@ -198,8 +197,6 @@ let NERDTreeKeepTreeInNewTab=1
 let g:nerdtree_tabs_open_on_gui_startup=0
 
 let g:rubycomplete_buffer_loading = 1
-"let g:rubycomplete_classes_in_global = 1
-"let g:rubycomplete_rails = 1
 
 let g:pymode_lint = 1
 let g:pymode_lint_unmodified = 1
