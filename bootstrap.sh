@@ -15,8 +15,12 @@ while true ; do
 done
 
 
-typeset -a flist="zsh vimrc screenrc zshenv wgetrc pythonrc.py mutt config/awesome gitconfig lbdbrc gitignore-global ctags i3 config/dunst"
-typeset -a rlist="spf13-vim spf13-vim-3 vimrc.before vimrc.bundles vimrc.bundles.fork vimrc.fork notmuch-config vimrc.old"
+typeset -a flist="zsh vimrc screenrc zshenv wgetrc pythonrc.py mutt
+config/awesome gitconfig lbdbrc gitignore-global ctags i3 config/dunst"
+
+typeset -a rlist="spf13-vim spf13-vim-3 vimrc.before vimrc.bundles
+vimrc.bundles.fork vimrc.fork notmuch-config vimrc.old vimrc.ori
+vimrc.before.local vimrc.bundles.local vimrc.local"
 
 
 setup_env_link() {
@@ -25,7 +29,7 @@ setup_env_link() {
         echo "* file $1 already exist (.$1 = $(readlink -f .$1))"
         haserror=1
     }
-    cd $HOME
+    pushd $HOME > /dev/null
     for f in $flist; do 
         [ -e ".$f" -a "$(readlink -f .$f)" != "$(readlink -f $HOME/.env/$f)" ] && error $f
     done
@@ -37,36 +41,29 @@ setup_env_link() {
             ln -sf ~/.env/$f .$f
         fi
     done
-    cd $here
+    popd > /dev/null
 }
 
 cleanup_old_link(){
-    haserror=
-    error(){
-        echo "* file $1 is not a link"
-        haserror=1
-    }
-    cd $HOME
+    set -x
+    pushd $HOME > /dev/null
     for f in $rlist; do
-        [ ! -e $f ] && continue
-        [ -L ".$f" ] && rm -f $f || error $f
+        [ -L ".$f" ] && rm -f .$f
     done
-    cd $here
+    set +x
+    popd > /dev/null
 }
 
 cleanup_forced(){
-    haserror=
     error(){
         echo "* file $1 is not a link"
-        haserror=1
     }
-    cd $HOME
+    pushd $HOME > /dev/null
     for f in $flist; do
-        [ ! -e $f ] && continue
         [ -L ".$f" ] && rm -f $f || error $f
     done
     rm -rf ~/.vim
-    cd $home
+    popd > /dev/null
 }
 
 setup_power_line(){
