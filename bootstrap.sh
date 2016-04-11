@@ -46,12 +46,10 @@ setup_env_link() {
 }
 
 cleanup_old_link(){
-    set -x
     pushd $HOME > /dev/null
     for f in $rlist; do
         [ -L ".$f" ] && rm -f .$f
     done
-    set +x
     popd > /dev/null
 }
 
