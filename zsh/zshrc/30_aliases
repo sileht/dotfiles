@@ -55,7 +55,7 @@ alias cal='cal -3'
 alias cmutt="find ~/.mutt/cache/headers/ -type f -exec tcbmgr optimize -nl {} \; ; mutt"
 #alias vim="TERM=xterm vim"
 alias vi="vim"
-alias svi="sudo -H vim" 
+alias svi="sudo -E vim" 
 alias psql="sudo -i -u postgres psql"
 alias pyclean='find . -type f -name "*.py[co]" -delete'
 

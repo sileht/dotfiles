@@ -10,10 +10,9 @@
     co = checkout
     fp = format-patch
     n = "!f() { git checkout origin/master -b \"sileht/$1\" ; } ; f"
-    lg = log --graph --pretty=tformat:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%an %cr)%Creset' --abbrev-commit --date=relative
+    lg = log --graph --pretty=cshort --abbrev-commit --date=relative
     lc = !git oneline ORIG_HEAD.. --stat --no-merges
     oneline = log --pretty=oneline --abbrev-commit --graph --decorate
-    fixup = "!f(){ msg=$(git show HEAD -s --pretty=tformat:'fixup! %s') ; git commit -m \"$msg\" \"$@\" && git rebase -i --autosquash HEAD^^ ; } ; f"
     who = shortlog -sne
     diffn = diff --name-status
     diffc = diff --cached
@@ -33,4 +32,11 @@
 [diff]
 	tool = vimdiff
 [branch]
-	autosetuprebase = always
+    autosetuprebase = always
+[pretty]
+    cmedium="format:%C(auto,yellow)commit %H%C(auto,reset)%nAuthor: %cn <%ce>%nDate:   %cd (%cr)%n%n%w(0,4,4)%s%n%+b"
+    cshort="tformat:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%an %cr)%Creset"
+[format]
+    pretty=cmedium
+[log]
+    date=local
