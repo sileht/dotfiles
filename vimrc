@@ -190,6 +190,8 @@ let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#buffer_idx_mode = 1
 
+let g:jedi#show_call_signatures = "2"    " workaround for https://github.com/davidhalter/jedi-vim/issues/493
+
 let g:signify_update_on_focusgained = 1
 
 let g:riv_global_leader ='<C-s>'
