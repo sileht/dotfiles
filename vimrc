@@ -15,6 +15,7 @@ Plug 'mhinz/vim-startify'
 Plug 'easymotion/vim-easymotion'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
+Plug 'myusuf3/numbers.vim'
 " File/Tag browsing
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'tacahiroy/ctrlp-funky'
@@ -106,6 +107,8 @@ imap <silent> <Esc>OF <End>
 imap <silent> <Esc>[5~ <PageUp>
 imap <silent> <Esc>[6~ <PageDown>]]
 
+nnoremap <F3> :NumbersToggle<CR>
+nnoremap <F4> :call NumbersOnOff()<CR>
 map <F6> :w<CR>:!aspell -l en -c %<CR>:e %<CR>
 map <F7> :w<CR>:!aspell -l fr -c %<CR>:e %<CR>
 nmap <silent> <F8> :call ToggleSpell()<CR>
@@ -195,12 +198,14 @@ let g:riv_disable_folding = 1
 let g:syntastic_python_checkers = ['flake8']
 let g:syntastic_quiet_messages = {"regex": [ '\mUnknown interpreted text role "doc"' ]}
 let g:syntastic_python_flake8_quiet_messages = {"regex": [ 'W503', 'E402', 'E731']}
+let g:syntastic_python_flake8_exec = '~/.bin/myflake8'
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 1
 let g:syntastic_aggregate_errors = 1
 let g:syntastic_loc_list_height = 5
+"let g:syntastic_debug = 3
 
 let NERDTreeShowBookmarks=1
 let NERDTreeIgnore = ['\.py[cd]$', '\~$', '\.swo$', '\.swp$', '^\.git$', '^\.hg$', '^\.svn$', '\.bzr$']
@@ -261,9 +266,10 @@ home = os.path.abspath("~")
 
 # Load virtualenv && Read flake8 config from tox if available
 while True:
-    plist = [p for p in os.listdir(path)
-             if p in [ "tox.ini", ".tox", "venv", ".git", ".hg", ".vimrc"]]
-    if plist:
+    rootfound = [p for p in os.listdir(path)
+                 if p in [ "tox.ini", ".tox", "venv", ".git", ".hg", ".vimrc"]]
+    if rootfound:
+        vim.command("let g:syntastic_python_flake8_args = '\"%s\"'" % path)
         for venv in [".tox/py27", ".tox/py27-postgresql-file", 
                      ".tox/py27-postgresql-ceph", ".tox/py27-mysql-file"]:
             venvdir = os.path.join(path, venv)
