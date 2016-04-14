@@ -1,0 +1,14 @@
+--- a/venv/lib/python3.4/site-packages/apiclient/base.py	2016-04-14 11:12:19.658937347 +0200
++++ b/venv/lib/python3.4/site-packages/apiclient/base.py	2016-04-14 11:12:56.575146600 +0200
+@@ -1,7 +1,10 @@
+ import json
+ 
+ from urllib3 import connection_from_url
+-from urllib import urlencode
++try:
++    from urllib import urlencode
++except ImportError:
++    from urllib.parse import urlencode
+ 
+ 
+ class APIClient(object):

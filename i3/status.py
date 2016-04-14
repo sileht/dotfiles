@@ -1,4 +1,5 @@
 #!/home/sileht/.i3/venv/bin/python
+# -*- coding: utf-8 -*-
 
 from i3pystatus import Status
 from i3pystatus.mail import imap
@@ -12,7 +13,7 @@ status.register("online",
                 color="#00ff00",
                 color_offline="#ff0000")
 status.register("clock", format="%a %b %d, %H:%M")
-status.register("xkblayout", layouts=["fr", "en"])
+status.register("xkblayout", layouts=["fr latin9", "us"])
 status.register("keyboard_locks", format="{caps}{num}",
                 caps_on="↑", caps_off="_",
                 num_on="❿", num_off="_")
@@ -36,6 +37,10 @@ status.register("mail",
                 backends=[imap.IMAP(host="mx1.sileht.net")],
                 format_plural="{unread} new emails",
                 on_leftclick="chromium https://m.sileht.net/")
+status.register("google_calendar",
+                credential_path="/home/sileht/.gcalcli_oauth",
+                on_leftclick="chromium {htmlLink}",
+                skip_recurring=False)
 status.register("shell", command="/home/sileht/.i3/vpn-chk.sh",
                 hints={"markup": "pango"})
 status.run()
