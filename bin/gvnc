@@ -1,0 +1,27 @@
+#!/bin/bash
+vm="$1"
+[ "${vm##*.}" == "t" ] && vm=${vm}etaneutral.net
+info=($(ssh openstack.tetaneutral.net -p 2222 -l root -- "mysql nova --skip-column-names --batch -e 'select host, uuid from instances where display_name=\"$vm\" and deleted=0;'"))
+
+if [ "${info[0]}" == "mysql" ]; then
+    echo "Error in mysql request"
+    exit 1
+fi
+
+hypervisor=${info[0]}.tetaneutral.net
+uuid=${info[1]}
+spice_port=$(ssh ${hypervisor} -p 2222 -l root virsh domdisplay ${uuid} | awk -F: '{print $3}')
+
+echo "$vm on $hypervisor port $spice_port"
+ssh -N $hypervisor -p 2222 -l root -L 5910:localhost:${spice_port} &
+pid=$!
+
+
+cleanup(){
+    kill $pid
+}
+
+trap cleanup EXIT
+
+sleep 2
+remote-viewer spice://localhost:5910/

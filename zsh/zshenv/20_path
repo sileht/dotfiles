@@ -1,6 +1,6 @@
 # zshenv/20_path
 
-export PATH=$PATH:/sbin:/usr/sbin:~/.bin:~/.local/bin/:~/logiciel/bin:/opt/vagrant/bin
+export PATH=$PATH:/sbin:/usr/sbin:~/.bin:~/.local/bin/:~/logiciel/bin:/opt/vagrant/bin:~/.env/bin
 
 if [ -d ~/logiciel ] ; then 
     for i in ~/logiciel/*/bin ; do 
