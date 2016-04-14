@@ -26,12 +26,12 @@ chpwd_functions+=s
 inw(){ Xephyr :1 & pid=$! ; DISPLAY=:1 $*; kill $pid ;}
 
 if [ "$HOST" = "bob" ]; then
-    alias novpn='sudo systemctl stop openvpn@redhat; sudo /etc/init.d/fastd stop; sudo rm /etc/dnsmasq.d/redhat.conf;sudo /etc/init.d/dnsmasq restart'
-    alias vpnrh='sudo systemctl restart openvpn@redhat'
+    function novpn() { sudo systemctl stop openvpn@redhat; sudo /etc/init.d/fastd stop; sudo rm /etc/dnsmasq.d/redhat.conf;sudo /etc/init.d/dnsmasq restart; }
+    function vpnrh() { sudo systemctl restart openvpn@redhat ;}
     alias vpnttnn='sudo /etc/init.d/fastd start'
 else
-    novpn(){ local activevpn="$(nmcli -t -f TYPE,NAME c s --active | sed -ne 's/vpn:\(.*\)/\1/gp')" ; [ "$activevpn" ] && nmcli c d "$activevpn" && sudo systemctl restart dnsmasq ; }
-    alias vpnrh='nmcli c u "Redhat UDP" && sudo systemctl restart dnsmasq; '
+    function novpn(){ local activevpn="$(nmcli -t -f TYPE,NAME c s --active | sed -ne 's/vpn:\(.*\)/\1/gp')" ; [ "$activevpn" ] && nmcli c d "$activevpn" && sudo systemctl restart dnsmasq ; }
+    function vpnrh(){ nmcli c u "Redhat UDP" && sudo systemctl restart dnsmasq; }
 fi
 
 alias open="xdg-open"
