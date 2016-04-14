@@ -65,10 +65,6 @@ cleanup_forced(){
     popd > /dev/null
 }
 
-setup_power_line(){
-    dpkg -l | grep -q fonts-powerline || sudo apt-get install fonts-powerline
-}
-
 setup_vim(){
     if [ ! -e ~/.vim/autoload/plug.vim -a  -d "~/.vim/bundle/" ]; then
         rm -rf ~/.vim ~/.vimrc*
@@ -77,6 +73,9 @@ setup_vim(){
     curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
         https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     vim "+set nomore" +PlugInstall! +PlugClean! +PlugUpdate! +qall
+}
+setup_i3pystatus(){
+    ~/.i3/update.sh
 }
 
 maybe_do_update(){
@@ -92,5 +91,5 @@ maybe_do_update
 cleanup_old_link
 [ "$force" ] &&  cleanup_forced
 setup_env_link
-setup_power_line
 setup_vim
+setup_i3pystatus
