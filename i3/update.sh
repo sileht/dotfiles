@@ -14,7 +14,6 @@ pyanybar
 netifaces
 basiciw
 colour
-pywapi
 keyring
 psutil
 pip
@@ -27,4 +26,4 @@ cleanup(){
 }
 trap 'cleanup' EXIT
 
-$here/venv/bin/pip install -U --allow-unverified pywapi --allow-external pywapi -r $here/i3pystatus-reqs.txt
+$here/venv/bin/pip install -U -r $here/i3pystatus-reqs.txt
