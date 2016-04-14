@@ -1,0 +1,16 @@
+i3pystatus
+apiclient
+google-api-python-client
+httplib2
+oauth2client
+pytz
+python-dateutil
+pyanybar
+netifaces
+basiciw
+colour
+keyring
+psutil
+pip
+paramiko
+keyrings.alt
