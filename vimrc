@@ -15,7 +15,6 @@ Plug 'mhinz/vim-startify'
 Plug 'easymotion/vim-easymotion'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
-Plug 'myusuf3/numbers.vim'
 " File/Tag browsing
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'tacahiroy/ctrlp-funky'
@@ -54,8 +53,8 @@ set undolevels=1000             " Maximum number of changes that can be undone
 set undoreload=10000            " Maximum number lines to save for undo on a buffer reload
 set backspace=indent,eol,start  " Backspace for dummies
 set linespace=0                 " No extra spaces between rows
-set number                      " Line numbers on
-set relativenumber              " 0 is current line
+"set number                      " Line numbers on
+"set relativenumber              " 0 is current line
 set showmatch                   " Show matching brackets/parenthesis
 set incsearch                   " Find as you type search
 "set hlsearch                    " Highlight search terms
@@ -107,8 +106,6 @@ imap <silent> <Esc>OF <End>
 imap <silent> <Esc>[5~ <PageUp>
 imap <silent> <Esc>[6~ <PageDown>]]
 
-nnoremap <F3> :NumbersToggle<CR>
-nnoremap <F4> :call NumbersOnOff()<CR>
 map <F6> :w<CR>:!aspell -l en -c %<CR>:e %<CR>
 map <F7> :w<CR>:!aspell -l fr -c %<CR>:e %<CR>
 nmap <silent> <F8> :call ToggleSpell()<CR>
