@@ -10,11 +10,11 @@ dpkg -l libiw-dev >/dev/null 2>&1 || sudo apt-get install -y libiw-dev
 
 cat > $here/i3pystatus-reqs.txt <<EOF
 git+https://github.com/enkore/i3pystatus@master#egg=i3pystatus
+apiclient
 google-api-python-client
 httplib2
 oauth2client
 pytz
-apiclient
 python-dateutil
 pyanybar
 netifaces
