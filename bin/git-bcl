@@ -1,15 +1,30 @@
 #!/bin/bash
 
 git fetch origin
-branches_to_delete="$((git branch --merged origin/master ; git branch --merged origin/stable/liberty ; git branch --merged origin/stable/kilo) | grep -v '\<master\>'; git branch -l | grep '^\s*review')"
+curbranch=$(git rev-parse --abbrev-ref HEAD)
+
+
+[ "$1" != "-q" ] && for branch in $(git branch -l | grep '^[ ]*sileht/'); do
+    echo "*Rebase $branch"
+    git checkout $branch
+    git pull --rebase origin master || git rebase --abort
+done
+
+branches_to_delete="$((
+    git branch --merged origin/master ; 
+    git branch --merged origin/stable/liberty ; 
+    git branch --merged origin/stable/kilo ;
+    git branch -l | grep '^\s*review' ;
+) 2>/dev/null | grep -v -e '\<master\>' -e '\<$curbranch\>' | sort -u ; )"
+
+git checkout $curbranch
 
 if [ ! "$branches_to_delete" ]; then
     echo "Nothing found..."
     exit 0
 fi
-echo $branches_to_delete
-for branch in $branches_to_delete; do 
-    git log -1 --pretty=tformat:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%an %cr)%Creset' --date=relative $branch
+for branch in "$branches_to_delete"; do 
+    echo "$branch: $(git log -1 --pretty=tformat:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%an %cr)%Creset' --date=relative $branch)"
 done
 
 read -p"Continue (Y/O/N)? " 
@@ -17,3 +32,4 @@ case $REPLY in
     Y|y|yes|Yes|YES|YEs|O) git branch -D $branches_to_delete ;;
     *) echo "Abandoning..." ;;
 esac
+
