@@ -11,6 +11,7 @@ Plug 'mhinz/vim-signify'                " VCS diff
 Plug 'ryanoasis/vim-devicons'
 " Homepage
 Plug 'mhinz/vim-startify'
+Plug '~/.vim/plugged/mynotes'
 " Text navigation
 Plug 'easymotion/vim-easymotion'
 Plug 'tpope/vim-surround'
@@ -25,6 +26,7 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'tpope/vim-fugitive'                        " Git
 Plug 'klen/python-mode', { 'branch': 'develop' } " Python
 Plug 'davidhalter/jedi-vim'                      " Python
+Plug 'ervandew/supertab'
 Plug 'spf13/PIV'                                 " PHP
 Plug 'Rykka/riv.vim'                             " Rst
 Plug 'rodjek/vim-puppet'                         " Puppet
@@ -45,7 +47,7 @@ scriptencoding utf-8
 syntax on
 filetype plugin indent on
 
-set clipboard=unnamed,unnamedplus
+"set clipboard=unnamed,unnamedplus
 set hidden                      " Allow buffer switching without saving
 set backup                      " Backups are nice ...
 set undofile                    " So is persistent undo ...
@@ -140,7 +142,7 @@ autocmd BufNewFile,BufRead *.yaml set filetype=yml
 autocmd BufEnter * if bufname("") !~ "^\[A-Za-z0-9\]*://" | lcd %:p:h | endif
 
 " Cut at 80 for some filetype
-autocmd FileType c,cpp,java,go,php,javascript,puppet,python,rst set colorcolumn=80
+"autocmd FileType c,cpp,java,go,php,javascript,puppet,python,rst set colorcolumn=80
 autocmd FileType c,cpp,java,go,php,javascript,puppet,python,rst set textwidth=79
 
 " No ending space
@@ -149,6 +151,9 @@ autocmd FileType c,cpp,java,go,php,javascript,puppet,python,rst,rust,twig,xml,ym
 " Use en_us spell and completion per default for markdown and rst 
 autocmd FileType gitcommit,rst,mkd,markdown silent! call ToggleSpell()
 autocmd FileType gitcommit,rst,mkd,markdown set complete+=kspell
+
+" No jedi-vim doc popup
+autocmd FileType python setlocal completeopt-=preview
 
 " Dirty js format
 " autocmd BufWritePre,BufRead *.js :set tabstop=2 shiftwidth=2
@@ -197,7 +202,7 @@ let g:riv_disable_folding = 1
 let g:syntastic_python_checkers = ['flake8']
 let g:syntastic_quiet_messages = {"regex": [ '\mUnknown interpreted text role "doc"' ]}
 let g:syntastic_python_flake8_quiet_messages = {"regex": [ 'W503', 'E402', 'E731']}
-let g:syntastic_python_flake8_exec = '~/.bin/myflake8'
+let g:syntastic_python_flake8_exec = 'myflake8'
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
@@ -225,9 +230,17 @@ let g:pymode_rope = 0                    " No rope project I prefer jedi-vim
 let g:pymode_rope_lookup_project = 0     " I said no rope
 let g:pymode_rope_completion = 0         " Again
 let g:pymode_rope_complete_on_dot = 0    " And again
+let g:pymode_doc = 0
+let g:pymode_breakpoint = 0
+let g:pymode_run = 0
+let g:pymode_motion = 1
+
 
 let g:ctrlp_funky_matchtype = 'path'
 let g:ctrlp_funky_syntax_highlight = 1
+
+command! Notes execute "help mynotes"
+command! Reload execute "source ~/.vimrc"
 
 " Spell Check 
 let b:myLang=0
