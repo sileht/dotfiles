@@ -8,6 +8,13 @@
 # Source repository: http://git.madduck.net/v/etc/zsh.git
 #
 
+if [[ "$PROFILE_STARTUP" == true ]]; then
+    # http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html
+    PS4=$'%D{%M%S%.} %N:%i> '
+    exec 3>&2 2>$HOME/.tmp/startlog.$$
+    setopt xtrace prompt_subst
+fi
+
 . $ZDOTDIR/logging
 . $ZDOTDIR/util
 
@@ -20,5 +27,11 @@ if [[ -o rcs ]]; then
 
   __do_debug && set +x || :
 fi
+# Entirety of my startup file... then
+if [[ "$PROFILE_STARTUP" == true ]]; then
+    unsetopt xtrace
+    exec 2>&3 3>&-
+fi
+
 
 # vim:ft=zsh

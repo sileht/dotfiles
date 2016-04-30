@@ -22,10 +22,7 @@ kc(){
     eval $(keychain -q --eval --agents ssh --nogui --inherit any --ignore-missing id_rsa ~/.ssh/id_dsa_h1)
 }
 
-ident=$(ssh-add -l 2>/dev/null| awk '/phone/{print $3}')
-[ "$ident" != "phone" ] && kc
-
-
 if [ "$HOST" = "gizmo" -a "${TERM//screen}" == "$TERM" ]; then
-     screen -RDD ; exit 0
+    kc
+    screen -RDD ; exit 0
 fi

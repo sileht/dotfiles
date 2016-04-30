@@ -25,6 +25,7 @@ status.register("updates",
 status.register("weather", format="{icon} {current_temp}°",
                 colorize=True, backend=weathercom.Weathercom(
                     location_code="FRXX0099:1:FR"))
+status.register("temp")
 status.register("cpu_usage_graph", graph_width=5)
 status.register("battery", interval=60, alert_percentage=3,
                 # {bar}",
