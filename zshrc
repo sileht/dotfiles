@@ -14,13 +14,22 @@ autoload -U colors ; colors # make color arrays available
 autoload -U zrecompile      # allow zwc file recompiling
 autoload -U allopt          # add command allopt to show all opts
 
-zrecompile ~/.zprofile ~/.zshenv ~/.zlogin ~/.zlogout ~/.zshrc ~/.env/zsh-completions/src/**/*(/N) | while read pre file post; do
+setopt extended_glob     # in order to use #, ~ and ^ for filename generation
+zrecompile ~/.zprofile ~/.zshenv ~/.zlogin ~/.zlogout ~/.zshrc ~/.env/zsh-completions/src/*~*.(zwc|old) | while read pre file post; do
     case "$post" in
       succeeded) rm -f "${file%:}".old;;
       *) :;;
     esac
   done
 
+
+zcompileall(){
+    for file in ~/.zprofile ~/.zshenv ~/.zlogin ~/.zlogout ~/.zshrc ~/.env/zsh-completions/src/*~*.(zwc|old) ; do
+        rm -f $file.zwc
+        rm -f $file.zwc.old
+        zcompile $file
+    done
+}
 
 ##########
 # SCREEN #
