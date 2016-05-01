@@ -1,5 +1,0 @@
-# vim:set ft=zsh:
-
-. $ZDOTDIR/sourcedir
-[ -d $ZDOTDIR/zshrc_$(hostname) ] && sourcedir $ZDOTDIR/zshrc_$(hostname)
-

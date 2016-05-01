@@ -13,6 +13,7 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'mhinz/vim-startify'
 Plug '~/.vim/plugged/mynotes'
 " Text navigation
+Plug 'junegunn/vim-easy-align'
 Plug 'easymotion/vim-easymotion'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
@@ -130,6 +131,11 @@ nmap <S-right> <Plug>AirlineSelectNextTab
 nnoremap <C-e> :CtrlPFunky<Cr>
 " narrow the list down with a word under cursor
 nnoremap <C-E> :execute 'CtrlPFunky ' . expand('<cword>')<Cr>
+
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
 
 """""""""""
 " On load "

@@ -16,12 +16,12 @@ while true ; do
 done
 
 
-typeset -a flist="zsh vimrc screenrc zshenv wgetrc pythonrc.py mutt
+typeset -a flist="zshrc zprofile zlogin zlogout zshenv vimrc screenrc wgetrc pythonrc.py mutt
 config/awesome gitconfig lbdbrc gitignore-global ctags i3 config/dunst"
 
 typeset -a rlist="spf13-vim spf13-vim-3 vimrc.before vimrc.bundles
 vimrc.bundles.fork vimrc.fork notmuch-config vimrc.old vimrc.ori
-vimrc.before.local vimrc.bundles.local vimrc.local"
+vimrc.before.local vimrc.bundles.local vimrc.local zsh"
 
 
 setup_env_link() {
