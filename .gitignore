@@ -4,3 +4,4 @@ mutt/cache
 mutt/password
 mutt/attachments
 i3/venv
+tmux/plugins/*

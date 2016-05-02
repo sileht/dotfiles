@@ -41,13 +41,14 @@ update_screen_data(){ [ -r $screen_data_file ] && source $screen_data_file ; }
 store_screen_data(){
     export | grep '\(GPG_AGENT_INFO\|DISPLAY\|XAUTHORITY\|SSH_AGENT_PID\|SSH_AUTH_SOCK\|GNOME_KEYRING_PID\|GNOME_KEYRING_SOCKET\)=' | sed -e 's/^/export /g' >| $screen_data_file
 }
-if [ -n "$WINDOW" ]; then
+if [ -n "$WINDOW" -o -n "$TMUX_PANE" ]; then
     # Update variable on each zsh in a screen
     update_screen_data
     add-zsh-hook preexec update_screen_data
 elif [ "$HOST" = "gizmo" ]; then
     kc
-    screen -RDD ; exit 0
+    #screen -RDD ; exit 0
+    tmux attach -d 2>/dev/null|| tmux new-session; exit 0
 fi
 
 
@@ -269,13 +270,19 @@ _title_set() {
   fi
 }
 
+_short_pwd(){
+}
 _cutted_line(){
     local line="$1" cut_at=${2:-15}
-    [ ${#line} -gt $cut_at ] && print -n "..."$line[${#line}-$cut_at,${#line}] || print -n $line
+    if [ ${#line} -gt $cut_at ]; then
+        print -n -- "…$line[${#line}-$cut_at,${#line}]"
+    else
+        print -n -- "$line"
+    fi
 }
 _title_precmd() {
   local pwd=${PWD/$HOME/"~"}
-  _title_set "$(_cutted_line \"$pwd\")" "["${pwd}"]"
+  _title_set "$(rtab.zsh -f)" "[$pwd]"
 }
 add-zsh-hook precmd _title_precmd
 
@@ -326,7 +333,8 @@ else
 fi
 
 alias Q='exec zsh'
-alias sc="screen -RDD"
+#alias sc="screen -RDD"
+function sc() { tmux attach -d 2>/dev/null || tmux new-session ; }
 alias open="xdg-open"
 alias rm="nocorrect rm -i"
 alias mv="nocorrect mv -i"
