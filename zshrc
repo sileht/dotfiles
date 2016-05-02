@@ -31,6 +31,10 @@ zcompileall(){
     done
 }
 
+source ~/.env/zsh-history-substring-search/zsh-history-substring-search.zsh
+source ~/.env/zsh-autosuggestions/zsh-autosuggestions.zsh
+source ~/.env/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
 ##########
 # SCREEN #
 ##########
@@ -97,7 +101,7 @@ setopt no_bgnice       # do not auto-nice background processes
 setopt nocaseglob
 setopt rmstarwait      # wait 10 seconds before querying for a rm which contains a *
 setopt noflow_control  # desactive ^S/^Q
-setopt printexitvalue  # show the exit-value if > 0
+#setopt printexitvalue  # show the exit-value if > 0
 setopt checkjobs       # do alert me of running jobs before exiting
 setopt no_bad_pattern  # don't bitch about bad patterns, just use them verbatim
 setopt no_nomatch      # don't bitch about no matches, just the glob character verbatim
@@ -113,9 +117,17 @@ zle -N self-insert url-quote-magic
 bindkey -e              # load emacs bindkeys
 bindkey " " magic-space # also do history expansion on space
 for map in emacs viins vicmd; do
-    bindkey -M "$map" "${terminfo[kpp]}" "up-line-or-history"
-    bindkey -M "$map" "${terminfo[knp]}" "down-line-or-history"
+    #bindkey -M "$map" "${terminfo[kpp]}" "up-line-or-history"
+    #bindkey -M "$map" "${terminfo[knp]}" "down-line-or-history"
+    bindkey -M "$map" "${terminfo[kcuu1]}" "history-substring-search-up"
+    bindkey -M "$map" "${terminfo[kcud1]}" "history-substring-search-down"
+    bindkey -M "$map" "${terminfo[kpp]}" "history-substring-search-up"
+    bindkey -M "$map" "${terminfo[knp]}" "history-substring-search-down"
 done; unset map
+bindkey -M emacs '^P' history-substring-search-up
+bindkey -M emacs '^N' history-substring-search-down
+bindkey -M vicmd 'k' history-substring-search-up
+bindkey -M vicmd 'j' history-substring-search-down
 
 autoload -U zed                           # what, your shell can't edit files?
 autoload -U select-word-style
@@ -214,119 +226,82 @@ zstyle -e ':completion:*:*:vim#:*:*' ignored-patterns \
 ##########
 setopt prompt_subst
 autoload -Uz vcs_info
-# set some colors
-for COLOR in RED GREEN YELLOW WHITE BLACK CYAN GREY BLUE; do
-    eval PR_$COLOR='%{$fg_no_bold[${(L)COLOR}]%}'         
-    eval PR_BRIGHT_$COLOR='%{$fg_bold[${(L)COLOR}]%}'
-done                                                 
-PR_RESET="${reset_color}"
+prompt_opts=(cr subst percent)
+zstyle ':vcs_info:*' check-for-changes true
+zstyle ':vcs_info:*' unstagedstr '¹'  # display ¹ if there are unstaged changes
+zstyle ':vcs_info:*' stagedstr '²'    # display ² if there are staged changes
+zstyle ':vcs_info:*' formats '%b%u%c'
+zstyle ':vcs_info:*' actionformats '%b(%a)'
 
-typeset -A color_hosts
-set -A color_hosts 'bob' $PR_GREEN 'billy' $PR_CYAN 'gizmo' $PR_YELLOW
+_prompt_main(){
+  RETVAL=$?
+  local symbols=() ref ref_color venv
+  [[ $RETVAL -ne 0 ]] && symbols+="%{%F{red}%}✘"
+  [[ $UID -eq 0 ]] && symbols+="%B%{%F{yellow}%}⚡%b"
+  [[ $(jobs -l | wc -l) -gt 0 ]] && symbols+="%F{white}⚙"
+  [ "$symbols" ] && symbols="$symbols "
 
-# set formats
-# %b - branchname
-# %u - unstagedstr (see below)
-# %c - stangedstr (see below)
-# %a - action (e.g. rebase-i)
-# %R - repository path
-# %S - path in the repository
+  ref="$vcs_info_msg_0_" 
+  if [[ -n "$ref" ]]; then
+    [[ "${ref/(¹|²|¹²)/}" == "$ref" ]] && ref_color=green || ref_color=yellow
+    [[ "${ref/.../}" == "$ref" ]] && ref=" $ref" || ref="✦ ${ref/.../}" 
+    ref="$ref "
+  fi
+  [ $VIRTUAL_ENV ] && venv="($(basename $VIRTUAL_ENV))"
 
-FMT_TYPE="${PR_WHITE}%s/"
-FMT_BRANCH="${PR_GREEN}%b%u%c" # e.g. master¹²
-FMT_ACTION="${PR_WHITE}/(${PR_CYAN}%a${PR_WHITE}%)"  # e.g. (rebase-i)
+  host_color=248
+  print    ""
+  print    "█ %B%F{$host_color}$USER%F{red}@%F{$host_color}$HOST%F{red}: %F{blue}%~%b%F{red}%b"
+  print -n "█ $symbols%F{$ref_color}$ref%F{yellow}$venv%(!.%F{yellow}.%F{green})➤ "
+}
+_prompt_precmd() {
+  vcs_info 'prompt'
+  PROMPT='%{%f%b%k%}$(_prompt_main)'
+  SPROMPT='zsh: correct %F{red}%R%f to %F{green}%r%f [Nyae]? '
+}
+precmd_functions+=_prompt_precmd
 
-# check-for-changes can be really slow.
-# you should disable it, if you work with large repositories    
-zstyle ':vcs_info:*:prompt:*' check-for-changes true
-zstyle ':vcs_info:*:prompt:*' unstagedstr '¹'  # display ¹ if there are unstaged changes
-zstyle ':vcs_info:*:prompt:*' stagedstr '²'    # display ² if there are staged changes
-zstyle ':vcs_info:*:prompt:*' actionformats " ${FMT_TYPE}${FMT_BRANCH}${FMT_ACTION}"
-zstyle ':vcs_info:*:prompt:*' formats       " ${FMT_TYPE}${FMT_BRANCH}"
-
-color_host_normal="$color_hosts[$(hostname -s)]"
-color_host_normal="${color_host_normal:=$PR_BLUE}"
-color_user_normal=$color_host_normal
-
-function title {
-	if [[ $TERM = screen* ]]; then 
-		#In screen this is %w
-		print -nR $'\033k'$1$'\033'\\ 
-	fi 
-	#In screen this is %h
-    if [[ $TERM != linux ]]; then
-    	print -nR $'\033]0;'$2$'\007'
-    else
-        print -nR $'\033]0;'$1' - '$2$'\007'
-    fi
+_title_set() {
+  if [[ $TERM = screen* ]]; then
+    #In screen this is %w
+    print -nR $'\033k'$1$'\033'\\
+  fi
+  #In screen this is %h
+  if [[ $TERM != linux ]]; then
+    print -nR $'\033]0;'$2$'\007'
+  else
+    print -nR $'\033]0;'$1' - '$2$'\007'
+  fi
 }
 
-path_cut_offset=15
-prompt_precmd () {
-    local prompt_line_1a prompt_line_1b prompt_line_2 prompt_padding rprompt_line_2 color_user color_host
-    color_user=$color_user_normal
-    color_host=$color_host_normal
-    [[ $USER = "root" ]] && color_user=$PR_BRIGHT_RED color_host=$PR_BRIGHT_RED
-
-    local user="${color_user}$USER" 
-    local host="${color_host}$(hostname)"
-    local coma="${PR_BRIGHT_RED}:"
-    local at="${PR_BRIGHT_RED}@"
-    local rpath="${PR_BRIGHT_BLUE}%~"
-    local opensep="${PR_BRIGHT_GREY}["
-    local closesep="${PR_BRIGHT_GREY}]"
-    local dollar="%(?,${PR_BRIGHT_GREEN},${PR_BRIGHT_RED})$"
-    local return_code="${PR_BRIGHT_WHITE}?:%(?,${PR_BRIGHT_WHITE},${PR_BRIGHT_RED})%?"
-    local njob="${PR_BRIGHT_WHITE}j:%j"
-
-    prompt_line_1a="${opensep}${user}${at}${host}${coma} ${rpath}${closesep}"
-    prompt_line_1b=""
-    [ -n "$vcs_info_msg_0_" ] && vcs_info_msg="${vcs_info_msg_0_}" || vcs_info_msg=""
-    prompt_line_2="${opensep}${njob} ${return_code}${vcs_info_msg}${closesep} ${dollar} ${PR_WHITE}"
-    rprompt_line_2="${PR_WHITE}"
-
-    local prompt_line_1a_width=${#${(S%%)prompt_line_1a//\%\{*\%\}}}
-    local prompt_line_1b_width=${#${(S%%)prompt_line_1b//\%\{*\%\}}}
-    local prompt_padding_size=$(( COLUMNS - prompt_line_1a_width - prompt_line_1b_width ))
-    eval "prompt_padding=\${(l:${prompt_padding_size}::${prompt_gfx_hyphen}:)_empty_zz}"
-    export PS1=$'\n'$prompt_line_1a$prompt_padding$prompt_line_1b$'\n'$prompt_line_2
-    export RPS1=$rprompt_line_2
-
-    local pwd=${PWD/$HOME/"~"}
-    [ ${#pwd} -gt $path_cut_offset ] && pwd="..."$pwd[${#pwd}-$path_cut_offset,${#pwd}]
-    win_title="["${PWD/$HOME/"~"}"]"
-    title "$pwd" "$win_title"
+_cutted_line(){
+    local line="$1" cut_at=${2:-15}
+    [ ${#line} -gt $cut_at ] && print -n "..."$line[${#line}-$cut_at,${#line}] || print -n $line
 }
+_title_precmd() {
+  local pwd=${PWD/$HOME/"~"}
+  _title_set "$(_cutted_line \"$pwd\")" "["${pwd}"]"
+}
+precmd_functions+=_title_precmd
 
-prompt_preexec () {
+_prompt_preexec() {
         emulate -L zsh
         local -a cmd
+        local pwd=${PWD/$HOME/"~"} arf
         cmd=(${(z)1})
         if [ "$cmd[1]" = "fg" ]; then 
             cmd=($(jobs | grep -v "continued" | sed 's,.*suspended *,,g' | head -n1 ))
         fi
-        arg=$cmd[2,-1]
-        if [ ${#arg} -gt $path_cut_offset ]
-        then
-                arg=" ..."$arg[${#arg}-$path_cut_offset,${#arg}]
-        else
-                arg=" "$arg
-        fi
-        print -nR "${PR_RESET}"
-        win_title="["$(pwd)"] "$cmd[1,-1]
-        title "$cmd[1]$arg" "$win_title"
+        arg=$(_cutted_line "$cmd[2,-1]")
+        print -nR "${reset_color}"
+        _title_set "$cmd[1] $arg" "["$PWD"] "$cmd[1,-1]
         if [ "$cmd[1]" = "scr" -o "$cmd[1]" = "sr" -o "$cmd[1]" = "sn" ]; then
-            print -nR "${PR_RESET}"
-            title "$cmd[1]$arg" "Other"
+            print -nR "${reset_color}"
+            _title "$cmd[1]$arg" "Other"
         fi
 }
+preexec_functions+=_prompt_preexec
 
-export SPROMPT="${PR_RESET}""zsh: corriger ${PR_BRIGHT_GREEN}"%R"${PR_RESET} en ${PR_BRIGHT_GREEN}"%r"${PR_RESET} ? (yNea)"
-
-function vcsinfo_precmd { vcs_info 'prompt'; }
-precmd_functions+=vcsinfo_precmd
-precmd_functions+=prompt_precmd
-preexec_functions+=prompt_preexec
 
 
 mka () { time schedtool -B -n 1 -e ionice -n 1 make -j $(nproc) "$@" }
