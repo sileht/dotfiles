@@ -236,23 +236,21 @@ zstyle ':vcs_info:*' actionformats '%b(%a)'
 _prompt_main(){
   RETVAL=$?
   local symbols=() ref ref_color venv
-  [[ $RETVAL -ne 0 ]] && symbols+="%{%F{red}%}✘"
-  [[ $UID -eq 0 ]] && symbols+="%B%{%F{yellow}%}⚡%b"
-  [[ $(jobs -l | wc -l) -gt 0 ]] && symbols+="%F{white}⚙"
-  [ "$symbols" ] && symbols="$symbols "
+  [[ $UID -eq 0 ]] && symbols+="%B%{%F{yellow}%}⚡%b "
+  [[ $(jobs -l | wc -l) -gt 0 ]] && symbols+="%F{white}⚙ "
+  [[ $RETVAL -ne 0 ]] && symbols+="%{%F{red}%}✘ "
 
   ref="$vcs_info_msg_0_" 
   if [[ -n "$ref" ]]; then
     [[ "${ref/(¹|²|¹²)/}" == "$ref" ]] && ref_color=green || ref_color=yellow
     [[ "${ref/.../}" == "$ref" ]] && ref=" $ref" || ref="✦ ${ref/.../}" 
-    ref="$ref "
   fi
   [ $VIRTUAL_ENV ] && venv="($(basename $VIRTUAL_ENV))"
 
   host_color=248
-  print    ""
-  print    "█ %B%F{$host_color}$USER%F{red}@%F{$host_color}$HOST%F{red}: %F{blue}%~%b%F{red}%b"
-  print -n "█ $symbols%F{$ref_color}$ref%F{yellow}$venv%(!.%F{yellow}.%F{green})➤ "
+  print    "%F{240}▄"
+  print    "%F{240}█ %B%F{$host_color}$USER%F{red}@%F{$host_color}$HOST%F{red}: %F{blue}%~%b%F{red}%b"
+  print -n "%F{240}█ $symbols%F{$ref_color}$ref%F{yellow}$venv%(!.%F{yellow}.%F{green})➤ ${reset_color}"
 }
 _prompt_precmd() {
   vcs_info 'prompt'
