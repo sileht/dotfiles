@@ -2,17 +2,13 @@
 
 # automatically remove duplicates from these arrays
 typeset -gU path cdpath fpath manpath fignore 
-typeset -ga preexec_functions
-typeset -ga postcmd_functions
-typeset -ga precmd_functions
-typeset -ga chpwd_functions
-typeset -ga periodic_functions
 
 autoload -U zargs           # smart xargs replacement
 autoload -U zmv             # programmable moving, copying, and linking
 autoload -U colors ; colors # make color arrays available
 autoload -U zrecompile      # allow zwc file recompiling
 autoload -U allopt          # add command allopt to show all opts
+autoload -Uz add-zsh-hook
 
 setopt extended_glob     # in order to use #, ~ and ^ for filename generation
 zrecompile ~/.zprofile ~/.zshenv ~/.zlogin ~/.zlogout ~/.zshrc ~/.env/zsh-completions/src/*~*.(zwc|old) | while read pre file post; do
@@ -31,9 +27,7 @@ zcompileall(){
     done
 }
 
-source ~/.env/zsh-history-substring-search/zsh-history-substring-search.zsh
 source ~/.env/zsh-autosuggestions/zsh-autosuggestions.zsh
-source ~/.env/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 ##########
 # SCREEN #
@@ -48,9 +42,9 @@ store_screen_data(){
     export | grep '\(GPG_AGENT_INFO\|DISPLAY\|XAUTHORITY\|SSH_AGENT_PID\|SSH_AUTH_SOCK\|GNOME_KEYRING_PID\|GNOME_KEYRING_SOCKET\)=' | sed -e 's/^/export /g' >| $screen_data_file
 }
 if [ -n "$WINDOW" ]; then
-    update_screen_data
     # Update variable on each zsh in a screen
-    preexec_functions+=update_screen_data
+    update_screen_data
+    add-zsh-hook preexec update_screen_data
 elif [ "$HOST" = "gizmo" ]; then
     kc
     screen -RDD ; exit 0
@@ -60,9 +54,10 @@ fi
 #########
 # WATCH #
 #########
-# this function is launched every $PERIODIC seconds
-periodic_functions+=rehash
-export PERIOD=30
+# this function is launched every $PERIOD seconds
+_rehash(){ rehash }
+add-zsh-hook periodic _rehash
+PERIOD=30
 watch=(notme)
 LOGCHECK=120
 REPORTTIME=5
@@ -87,7 +82,7 @@ setopt histverify         # when using ! cmds, confirm first
 ###############
 # Interactive #
 ###############
-setopt INTERACTIVE_COMMENTS
+setopt interactive_comments
 setopt auto_cd         # a commande like % /usr/local is equivalent to cd /usr/local
 setopt autopushd       # automatically append dirs to the push/pop list
 setopt pushdignoredups # and don't duplicate them
@@ -131,9 +126,6 @@ bindkey -M vicmd 'j' history-substring-search-down
 
 autoload -U zed                           # what, your shell can't edit files?
 autoload -U select-word-style
-autoload -U backward-kill-word-bash-match
-autoload -U edit-command-line             # later bound to C-z e
-select-word-style bash
 
 function backward-kill-word-bash-match(){
 	autoload backward-kill-word-match
@@ -141,9 +133,13 @@ function backward-kill-word-bash-match(){
 	backward-kill-word-match
 	select-word-style bash
 }
+autoload -U backward-kill-word-bash-match
 zle -N backward-kill-word-bash backward-kill-word-bash-match
-zle -N edit-command-line
 bindkey "" backward-kill-word-bash
+select-word-style bash
+
+autoload -U edit-command-line             # later bound to C-z e
+zle -N edit-command-line
 bindkey "" edit-command-line
 bindkey "e" edit-command-line
 
@@ -250,14 +246,15 @@ _prompt_main(){
   host_color=248
   print    "%F{240}▄"
   print    "%F{240}█ %B%F{$host_color}$USER%F{red}@%F{$host_color}$HOST%F{red}: %F{blue}%~%b%F{red}%b"
-  print -n "%F{240}█ $symbols%F{$ref_color}$ref%F{yellow}$venv%(!.%F{yellow}.%F{green})➤ ${reset_color}"
+  print -n "%F{240}█ $symbols%F{$ref_color}$ref%F{yellow}$venv%(!.%F{yellow}.%F{green})➤ %F{240}"
 }
+
 _prompt_precmd() {
   vcs_info 'prompt'
   PROMPT='%{%f%b%k%}$(_prompt_main)'
   SPROMPT='zsh: correct %F{red}%R%f to %F{green}%r%f [Nyae]? '
 }
-precmd_functions+=_prompt_precmd
+add-zsh-hook precmd _prompt_precmd
 
 _title_set() {
   if [[ $TERM = screen* ]]; then
@@ -280,7 +277,7 @@ _title_precmd() {
   local pwd=${PWD/$HOME/"~"}
   _title_set "$(_cutted_line \"$pwd\")" "["${pwd}"]"
 }
-precmd_functions+=_title_precmd
+add-zsh-hook precmd _title_precmd
 
 _prompt_preexec() {
         emulate -L zsh
@@ -298,7 +295,7 @@ _prompt_preexec() {
             _title "$cmd[1]$arg" "Other"
         fi
 }
-preexec_functions+=_prompt_preexec
+add-zsh-hook preexec _prompt_preexec
 
 
 
@@ -315,8 +312,7 @@ function s() { pwd >| /dev/shm/.saved_dir; }
 function i() { p="$(cat /dev/shm/.saved_dir 2>/dev/null)"; [ -d $p ] && cd $p }
 function p() { cd ~/workspace/os_dev/stack/*${1}*(/[0,1]) ; s }
 i
-postcmd_functions+=s
-chpwd_functions+=s
+add-zsh-hook chpwd s
 
 inw(){ Xephyr :1 & pid=$! ; DISPLAY=:1 $*; kill $pid ;}
 
@@ -496,6 +492,7 @@ alias etox="nocorrect etox"
 alias utox="nocorrect utox"
 #alias tox="rm .ropeproject -rf; tox"
 
-
+source ~/.env/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source ~/.env/zsh-history-substring-search/zsh-history-substring-search.zsh
 
 # vim:ft=zsh
