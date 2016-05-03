@@ -35,7 +35,8 @@ for_window [class="^.*"] border pixel 1
 # start application
 # bindsym $mod+Return exec i3-sensible-terminal
 bindsym $mod+Return exec mate-terminal --hide-menubar
-bindsym $mod+b exec chromium
+bindsym $mod+b exec chromium --profile-directory="Profile 1"
+bindsym $mod+Shift+b exec chromium --profile-directory=Default
 bindsym $mod+c exec mate-terminal --hide-menubar --title 'gizmo.sileht.net' -e "ssh -tqxkAC gizmo"
 #bindsym $mod+c exec mate-terminal --hide-menubar --title 'gizmo.sileht.net' -e "bash -c 'TERM=xterm-256color mosh -a gizmo'"
 bindsym $mod+d exec mate-terminal --hide-menubar --title 'gizmo.sileht.net' -e "bash -c 'TERM=xterm-256color mosh -a gizmo mutt'"
