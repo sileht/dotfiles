@@ -312,7 +312,12 @@ _prompt_main(){
   fi
   [ $VIRTUAL_ENV ] && venv="($(basename $VIRTUAL_ENV))"
 
-  host_color=248
+  case $HOST in
+      bob) host_color=2;;
+      billy) host_color=18;;
+      gizmo) host_color=215;;
+      *) host_color=248;;
+  esac
   print    "%F{240}▄"
   print    "%F{240}█ %B%F{$host_color}$USER%F{red}@%F{$host_color}$HOST%F{red}: %F{blue}%~%b%F{red}%b"
   print -n "%F{240}█ $symbols%F{$ref_color}$ref%F{yellow}$venv%(!.%F{yellow}.%F{green})➤ %F{240}"
