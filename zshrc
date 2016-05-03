@@ -35,7 +35,7 @@ source ~/.env/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 screen_data_file="$HOME/.var/screen_data.$(hostname)"
 
-screen() { store_screen_data ; /usr/bin/screen "$@" ; }
+tmux() { store_screen_data ; /usr/bin/tmux "$@" ; }
 kc(){ eval $(keychain -q --eval --agents ssh --nogui --inherit any --ignore-missing id_rsa ~/.ssh/id_dsa_h1) ; }
 update_screen_data(){ [ -r $screen_data_file ] && source $screen_data_file ; }
 store_screen_data(){
