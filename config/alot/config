@@ -1,0 +1,13 @@
+[accounts]
+    [[sileht]]
+        realname = Mehdi Abaakouk
+        address = sileht@sileht.net
+        alias_regexp = sileht.*@sileht.net
+        gpg_key = CEAAEBC8
+        sent_box = maildir:///home/sileht/.mail/sileht/Sent
+        draft_box = maildir:///home/sileht/.mail/sileht/Drafts
+        [[[abook]]]
+            type = shellcommand
+            command = notmuch_abook.py lookup
+            regexp = ^((?P<name>[^(\\s+\<)]*)\s+<)?(?P<email>[^@]+?@[^>]+)>?$
+

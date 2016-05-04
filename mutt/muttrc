@@ -55,18 +55,19 @@ set sort_aux=reverse-last-date-received # showing threads with youngest message 
 
 # default
 # set index_format = "%4C %Z %{%b %d} %-15.15L (%<l?%4l&%4c>) %s"
-set index_format = "%4C %<M?+& > %Z %{%b %d} %-25.25L (%<l?%4l&%4c>) %s"
+set index_format = "%4C %Z %{%b %d} %-15.15L (%<l?%4l&%4c>) %s"
+#set index_format = "%4C %<M?+& > %Z %{%b %d} %-25.25L (%<l?%4l&%4c>) %s"
 
 set auto_tag = yes
 
 set pgp_autosign=no
 set pgp_sign_as=CEAAEBC8
 
-set duplicate_threads = yes
-folder-hook "imaps://mail.sileht.net/ml-" push "<delete-pattern>~d<space>>6m<enter>"
-folder-hook "ml-" push "<delete-pattern>~=<enter>"
-#folder-hook . push "<delete-pattern>~=<enter>$"
-folder-hook . 'set record="^"'
+#set duplicate_threads = yes
+#folder-hook "imaps://mail.sileht.net/ml-" push "<delete-pattern>~d<space>>6m<enter>"
+#folder-hook "ml-" push "<delete-pattern>~=<enter>"
+##folder-hook . push "<delete-pattern>~=<enter>$"
+#folder-hook . 'set record="^"'
 folder-hook . push '<sidebar-scroll-up>'
 folder-hook . push '<collapse-all>'
 
@@ -112,10 +113,10 @@ set message_cachedir = "~/.mutt/cache/messages"
 # workaround: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=459739
 set maildir_header_cache_verify = no
 
-macro index <f2> '<sync-mailbox><enter-command>source ~/.mutt/account.sileht.perso<enter><change-folder>!<enter>'
-macro index <f3> '<sync-mailbox><enter-command>source ~/.mutt/account.sileht.ml<enter><change-folder>!<enter>'
-macro index <f4> '<sync-mailbox><enter-command>source ~/.mutt/account.redhat<enter><change-folder>!<enter>'
-macro index <f5> '<sync-mailbox><enter-command>source ~/.mutt/account.ttnn<enter><change-folder>!<enter>'
-macro index <f6> '<sync-mailbox><enter-command>source ~/.mutt/account.ttnn-system<enter><change-folder>!<enter>'
+#macro index <f2> '<sync-mailbox><enter-command>source ~/.mutt/account.sileht.perso<enter><change-folder>!<enter>'
+#macro index <f3> '<sync-mailbox><enter-command>source ~/.mutt/account.sileht.ml<enter><change-folder>!<enter>'
+#macro index <f4> '<sync-mailbox><enter-command>source ~/.mutt/account.redhat<enter><change-folder>!<enter>'
+#macro index <f5> '<sync-mailbox><enter-command>source ~/.mutt/account.ttnn<enter><change-folder>!<enter>'
+#macro index <f6> '<sync-mailbox><enter-command>source ~/.mutt/account.ttnn-system<enter><change-folder>!<enter>'
 source ~/.mutt/password
-source ~/.mutt/account.sileht.perso
+source ~/.mutt/account.sileht.notmuch

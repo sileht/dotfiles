@@ -24,6 +24,7 @@ Plug 'majutsushi/tagbar'
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 " Language
+Plug 'guyzmo/notmuch-abook'
 Plug 'tpope/vim-fugitive'                        " Git
 Plug 'klen/python-mode', { 'branch': 'develop' } " Python
 Plug 'davidhalter/jedi-vim'                      " Python
