@@ -8,16 +8,16 @@ set realname = "Mehdi Abaakouk"
 set signature = "~/.mutt/signature.local"
 
 ## IMAP 
-set ssl_starttls=yes
-set folder="imaps://mail.sileht.net"
+set ssl_starttls=no
+set folder="imap://mail.sileht.net"
 set spoolfile="=INBOX"
 set record="=Sent"
 set postponed="=Drafts"
 set trash="=Trash"
 
-unmailboxes * 
+#unmailboxes * 
 
 # SMTP
-set ssl_force_tls = yes
+set ssl_force_tls = no
 set smtp_url="smtp://$imap_user@mail.sileht.net"
 set smtp_pass=$imap_pass

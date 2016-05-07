@@ -10,6 +10,9 @@ bind index,pager \CO sidebar-open
 #macro index,pager \103 '<sidebar-next><sidebar-open>'
 #bind index,pager \C<Tab> <next-unread-mailbox>
 
+
+bind index F flag-message
+
 bind index,pager k previous-new
 bind index,pager j next-new
 bind index,pager p search-opposite

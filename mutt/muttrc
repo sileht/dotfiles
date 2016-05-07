@@ -1,6 +1,6 @@
 
+source ~/.mutt/mutt-colors-solarized-dark-256.muttrc
 source ~/.mutt/colors
-#source ~/.mutt/mutt-colors-solarized/mutt-colors-solarized-dark-256.muttrc
 source ~/.mutt/keybinding
 
 set hostname=sileht.net
@@ -11,12 +11,12 @@ set mbox_type=Maildir
 set ssl_starttls=yes
 set imap_idle="yes"
 set imap_keepalive = 300
-set imap_check_subscribed = no
-set imap_list_subscribed = no
+set imap_check_subscribed = yes
+set imap_list_subscribed = yes
 
 set mail_check = 60           # Reduce polling frequency to a sane level
 set timeout = 10              # And poll the current mailbox more often (not needed with IDLE in post 1.5.11)
-set net_inc = 5               # Display download progress every 5K
+set net_inc = 10              # Display download progress every 10K
 
 set my_tprot='t-prot -aelmtSsw -c --bigq=10,4 -Mmutt --pgp-move --spass -L$HOME/.mutt/mlfooters -A$HOME/.mutt/adfooters'
 set display_filter=$my_tprot
@@ -53,21 +53,18 @@ set sort_aux=last-date-received # showing threads with youngest message last
 set sort_browser=date # showing mbox list default to newest first
 set sort_aux=reverse-last-date-received # showing threads with youngest message last
 
-# default
-# set index_format = "%4C %Z %{%b %d} %-15.15L (%<l?%4l&%4c>) %s"
-set index_format = "%4C %Z %{%b %d} %-15.15L (%<l?%4l&%4c>) %s"
-#set index_format = "%4C %<M?+& > %Z %{%b %d} %-25.25L (%<l?%4l&%4c>) %s"
+set index_format="%4C %Z %E %s %> | %-20.20L | %{%y-%m-%d %H:%M} | (%?l?%4l&%4c?)  "
 
 set auto_tag = yes
 
 set pgp_autosign=no
 set pgp_sign_as=CEAAEBC8
 
-#set duplicate_threads = yes
-#folder-hook "imaps://mail.sileht.net/ml-" push "<delete-pattern>~d<space>>6m<enter>"
-#folder-hook "ml-" push "<delete-pattern>~=<enter>"
-##folder-hook . push "<delete-pattern>~=<enter>$"
-#folder-hook . 'set record="^"'
+set duplicate_threads = yes
+folder-hook "imaps://mail.sileht.net/zml-" push "<delete-pattern>~d<space>>6m<enter>"
+folder-hook "zml-" push "<delete-pattern>~=<enter>"
+#folder-hook . push "<delete-pattern>~=<enter>$"
+folder-hook . 'set record="^"'
 folder-hook . push '<sidebar-scroll-up>'
 folder-hook . push '<collapse-all>'
 
@@ -87,6 +84,7 @@ set query_command="lbdbq '%s'"
 set sidebar_width=30
 set sidebar_visible=yes
 set sidebar_delim=' '
+set sidebar_sort=yes
 
 set pager_index_lines = 12 # Split-screen index/pager preview thing
 set pager_stop = yes       # Don't skip to next message at end of message
@@ -104,8 +102,8 @@ unignore x-mailer: user-agent:
 # reorder them for skimmability:
 hdr_order Date: Subject: From: To: Cc:  Reply-To: Organization:
 folder-hook . set sort=threads   # Set threaded pager as default for all folders
-folder-hook . 'set read_inc=1000'
-folder-hook ^imap 'set read_inc=100' 
+folder-hook . 'set read_inc=100000'
+folder-hook ^imap 'set read_inc=10000' 
 
 set header_cache = "~/.mutt/cache/headers"
 set message_cachedir = "~/.mutt/cache/messages"
@@ -113,10 +111,9 @@ set message_cachedir = "~/.mutt/cache/messages"
 # workaround: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=459739
 set maildir_header_cache_verify = no
 
-#macro index <f2> '<sync-mailbox><enter-command>source ~/.mutt/account.sileht.perso<enter><change-folder>!<enter>'
-#macro index <f3> '<sync-mailbox><enter-command>source ~/.mutt/account.sileht.ml<enter><change-folder>!<enter>'
-#macro index <f4> '<sync-mailbox><enter-command>source ~/.mutt/account.redhat<enter><change-folder>!<enter>'
-#macro index <f5> '<sync-mailbox><enter-command>source ~/.mutt/account.ttnn<enter><change-folder>!<enter>'
-#macro index <f6> '<sync-mailbox><enter-command>source ~/.mutt/account.ttnn-system<enter><change-folder>!<enter>'
+macro index <f1> '<sync-mailbox><enter-command>source ~/.mutt/account.sileht<enter><change-folder>!<enter>'
+macro index <f2> '<sync-mailbox><enter-command>source ~/.mutt/account.redhat<enter><change-folder>!<enter>'
+macro index <f3> '<sync-mailbox><enter-command>source ~/.mutt/account.ttnn<enter><change-folder>!<enter>'
+macro index <f4> '<sync-mailbox><enter-command>source ~/.mutt/account.ttnn-system<enter><change-folder>!<enter>'
 source ~/.mutt/password
-source ~/.mutt/account.sileht.notmuch
+source ~/.mutt/account.sileht
