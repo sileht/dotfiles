@@ -161,6 +161,7 @@ autocmd FileType gitcommit,rst,mkd,markdown silent! call ToggleSpell()
 autocmd FileType gitcommit,rst,mkd,markdown set complete+=kspell
 
 " No more keypad!
+let g:HardMode_level = 'wannabe'
 autocmd VimEnter,BufNewFile,BufReadPost * silent! call HardMode()
 
 " No jedi-vim doc popup
