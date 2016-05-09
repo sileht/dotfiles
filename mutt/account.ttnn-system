@@ -1,5 +1,7 @@
 # vim:set ft=muttrc:
 
+unmailboxes *
+
 set from = "system@tetaneutral.net"
 unalternates *
 # alternates
@@ -13,9 +15,6 @@ set spoolfile="=INBOX"
 set record="=Sent"
 set postponed="=Drafts"
 set trash="=Trash"
-
-unmailboxes * 
-mailboxes =INBOX =Drafts =Sent =Trash =Junk =INBOX.arpwatch =INBOX.cron =INBOX.cron-apt
 
 # SMTP
 set ssl_force_tls = no

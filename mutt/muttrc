@@ -1,6 +1,6 @@
 
-source ~/.mutt/mutt-colors-solarized-dark-256.muttrc
-source ~/.mutt/colors
+#source ~/.mutt/mutt-colors-solarized-dark-256.muttrc
+source ~/.mutt/vombatidae.mutt
 source ~/.mutt/keybinding
 
 set hostname=sileht.net
@@ -11,109 +11,112 @@ set mbox_type=Maildir
 set ssl_starttls=yes
 set imap_idle="yes"
 set imap_keepalive = 300
-set imap_check_subscribed = yes
-set imap_list_subscribed = yes
+#set imap_check_subscribed = yes
+#set imap_list_subscribed = yes
 
+set sleep_time = 0
 set mail_check = 60           # Reduce polling frequency to a sane level
 set timeout = 10              # And poll the current mailbox more often (not needed with IDLE in post 1.5.11)
-set net_inc = 10              # Display download progress every 10K
+set net_inc = 5               # Display download progress every 5K
+#folder-hook . 'set read_inc=1000'
+folder-hook (^imap://mail.sileht.net) 'set read_inc=1000' 
+folder-hook (^imaps://mail.corp.redhat.com) 'set read_inc=200' 
 
 set my_tprot='t-prot -aelmtSsw -c --bigq=10,4 -Mmutt --pgp-move --spass -L$HOME/.mutt/mlfooters -A$HOME/.mutt/adfooters'
 set display_filter=$my_tprot
 
-macro generic \e0 ":unset display_filter\n" "Turn TOFU protection off"
-macro generic \e1 ":set display_filter='$my_tprot'\n" "Turn TOFU protection on"
-macro pager \e0 ":unset display_filter; exec exit\n:exec display-message\n" "Turn TOFU protection off"
-macro pager \e1 ":set display_filter='$my_tprot'; exec exit\n:exec display-message\n" "Turn TOFU protection on"
+macro generic ) ":unset display_filter\n" "Turn TOFU protection off"
+macro generic = ":set display_filter='$my_tprot'\n" "Turn TOFU protection on"
+macro pager ) ":unset display_filter; exec exit\n:exec display-message\n" "Turn TOFU protection off"
+macro pager = ":set display_filter='$my_tprot'; exec exit\n:exec display-message\n" "Turn TOFU protection on"
 
 # highlight TOFU protection:
 color body    brightmagenta   black   "^\\[---.*"
 color body    green           black   "^#v[-+]""]"
-set editor='vim + -c "set textwidth=72" -c "set wrap" -c "set spell spelllang=fr,en" -c "set nocp" -c "startinsert" -c "?^$"'
+#set editor='vim + -c "set textwidth=72" -c "set wrap" -c 'set fo+=aw' -c "set spell spelllang=fr,en" -c "set nocp" -c "startinsert" -c "?^$"'
+set editor='vim + '
 
 set folder=""
-set move = no                   # Stop asking to "move read messages to mbox"!
-set copy = yes                  # always save a copy of outgoing messages
-set delete = yes                # purge deleted messages without asking
-set edit_headers =yes           # let me edit the message header when composing
-set include = yes               # always include messages when replying
-set fast_reply=yes              #no prompting on reply
-set forward_quote = yes         # include original text on forward?
-set indent_string = "> "        # how to quote replied text
-set mail_check = 10             # how often to poll for new mail
-set mark_old = no               # i don't care about whether a message is old
-set narrow_tree = yes           # narrow threading trees
-set collapse_unread = no        # don't collapse threads with unread mails
+set move = no                           # Stop asking to "move read messages to mbox"!
+set copy = yes                          # always save a copy of outgoing messages
+set delete = yes                        # purge deleted messages without asking
+set edit_headers =yes                   # let me edit the message header when composing
+set include = yes                       # always include messages when replying
+set fast_reply=yes                      # no prompting on reply
+set forward_quote = yes                 # include original text on forward?
+set indent_string = "> "                # how to quote replied text
+set mail_check = 10                     # how often to poll for new mail
+set mark_old = no                       # i don't care about whether a message is old
+set narrow_tree = yes                   # narrow threading trees
+set collapse_unread = no                # don't collapse threads with unread mails
 set strict_threads = yes
-set uncollapse_jump = yes       # jump to unread message when uncollapse
+set uncollapse_jump = yes               # jump to unread message when uncollapse
 set sort=threads
-set sort_browser=reverse-date # showing mbox list default to newest first
-set sort_aux=last-date-received # showing threads with youngest message last
-
-set sort_browser=date # showing mbox list default to newest first
+folder-hook . set sort=threads          # Set threaded pager as default for all folders
+#set sort_browser=reverse-date           # showing mbox list default to newest first
+#set sort_aux=last-date-received         # showing threads with youngest message last
+set sort_browser=date                   # showing mbox list default to newest first
 set sort_aux=reverse-last-date-received # showing threads with youngest message last
 
-set index_format="%4C %Z %E %s %> | %-20.20L | %{%y-%m-%d %H:%M} | (%?l?%4l&%4c?)  "
+set text_flowed=yes
+
+set index_format="%4C %Z %-2E %-90s %> | %-20.20L | %{%y-%m-%d %H:%M} | (%?l?%4l&%4c?)  "
+set folder_format="%2C %t %N %8s %d %f" # what I settled on
+set pager_index_lines = 12              # Split-screen index/pager preview thing
+set pager_stop = yes                    # Don't skip to next message at end of message
+                                        # (avoids accidental setting as being read)
+set markers = no                        # no line wraparound marker (is "+" by default)
 
 set auto_tag = yes
+set abort_nosubject = yes
+set metoo = no                          # remove my address when replying
+
+set header_cache = "~/.mutt/cache/headers"
+set message_cachedir = "~/.mutt/cache/messages"
+#set maildir_header_cache_verify = no   # workaround: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=459739
 
 set pgp_autosign=no
 set pgp_sign_as=CEAAEBC8
 
+# Deleted duplicated mail
 set duplicate_threads = yes
-folder-hook "imaps://mail.sileht.net/zml-" push "<delete-pattern>~d<space>>6m<enter>"
-folder-hook "zml-" push "<delete-pattern>~=<enter>"
-#folder-hook . push "<delete-pattern>~=<enter>$"
+
 folder-hook . 'set record="^"'
-folder-hook . push '<sidebar-scroll-up>'
 folder-hook . push '<collapse-all>'
+#folder-hook . push '<sidebar-scroll-up>'
 
-set abort_nosubject = yes
-set metoo = no                  # remove my address when replying
 
-set folder_format="%2C %t %N %8s %d %f"  # what I settled on
-
-#auto_view text/html
+alternative_order text/plain text/html  # this helps with multipart messages
+auto_view text/html                     #if there is only html dump that
 set mailcap_path="~/.mutt/mailcap"
 set certificate_file="~/.mutt/certificates"
 
 # Contacts
-set alias_file = ".mutt/aliases"
-set query_command="lbdbq '%s'"
+set query_command= "khard email -p %s"
+#bind editor <Tab> complete-query
+#bind editor ^T    complete
 
-set sidebar_width=30
+# set sidebar_sort=yes
+set sidebar_width=32
 set sidebar_visible=yes
-set sidebar_delim=' '
-set sidebar_sort=yes
+set sidebar_delim='|'
+set sidebar_shortpath=yes
 
-set pager_index_lines = 12 # Split-screen index/pager preview thing
-set pager_stop = yes       # Don't skip to next message at end of message
-                           # (avoids accidental setting as being read)      
-set markers = no           # no line wraparound marker (is "+" by default)
 
-# You can show/hide headers (blacklisted and whitelisted). 
-# For example, if you only want to see a few headers:
+# Headers
 ignore *
 unignore Date: From: Organization: To: Cc: Reply-To: Subject:
 unignore x-mailing-list: posted-to:
 unignore x-mailer: user-agent:
-
-# If you're doing that for readability, you probably also want to 
-# reorder them for skimmability:
 hdr_order Date: Subject: From: To: Cc:  Reply-To: Organization:
-folder-hook . set sort=threads   # Set threaded pager as default for all folders
-folder-hook . 'set read_inc=100000'
-folder-hook ^imap 'set read_inc=10000' 
 
-set header_cache = "~/.mutt/cache/headers"
-set message_cachedir = "~/.mutt/cache/messages"
+#macro index <f1> '<sync-mailbox><refresh><enter-command>set sidebar_visible=no<enter><refresh><enter-command>source ~/.mutt/account.sileht<enter><refresh><enter-command>set sidebar_visible=yes<enter><refresh><change-folder>!<enter>'
+#macro index <f2> '<sync-mailbox><refresh><enter-command>set sidebar_visible=no<enter><refresh><enter-command>source ~/.mutt/account.redhat<enter><refresh><enter-command>set sidebar_visible=yes<enter><refresh><change-folder>!<enter>'
+macro index <f1> '<sync-mailbox><redraw-screen><enter-command>source ~/.mutt/account.sileht<enter><redraw-screen><change-folder>!<enter><enter-command>exec sidebar-scroll-up<enter>'
+macro index <f2> '<sync-mailbox><redraw-screen><enter-command>source ~/.mutt/account.redhat<enter><redraw-screen><change-folder>!<enter><enter-command>exec sidebar-scroll-up<enter>'
+macro index <f3> '<sync-mailbox><redraw-screen><enter-command>source ~/.mutt/account.ttnn<enter><redraw-screen><change-folder>!<enter><enter-command>exec sidebar-scroll-up<enter>'
+macro index <f4> '<sync-mailbox><redraw-screen><enter-command>source ~/.mutt/account.ttnn-system<enter><redraw-screen><change-folder>!<enter><enter-command>exec sidebar-scroll-up<enter>'
 
-# workaround: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=459739
-set maildir_header_cache_verify = no
-
-macro index <f1> '<sync-mailbox><enter-command>source ~/.mutt/account.sileht<enter><change-folder>!<enter>'
-macro index <f2> '<sync-mailbox><enter-command>source ~/.mutt/account.redhat<enter><change-folder>!<enter>'
-macro index <f3> '<sync-mailbox><enter-command>source ~/.mutt/account.ttnn<enter><change-folder>!<enter>'
-macro index <f4> '<sync-mailbox><enter-command>source ~/.mutt/account.ttnn-system<enter><change-folder>!<enter>'
 source ~/.mutt/password
-source ~/.mutt/account.sileht
+source ~/.mutt/account.`echo ${ACCOUNT:=sileht}`
+

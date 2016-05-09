@@ -17,6 +17,7 @@ Plug 'junegunn/vim-easy-align'
 Plug 'easymotion/vim-easymotion'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
+Plug 'wikitopian/hardmode'
 " File/Tag browsing
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'tacahiroy/ctrlp-funky'
@@ -24,7 +25,7 @@ Plug 'majutsushi/tagbar'
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 " Language
-Plug 'guyzmo/notmuch-abook'
+Plug 'caio/querycommandcomplete.vim'             " abook completion
 Plug 'tpope/vim-fugitive'                        " Git
 Plug 'klen/python-mode', { 'branch': 'develop' } " Python
 Plug 'davidhalter/jedi-vim'                      " Python
@@ -159,8 +160,21 @@ autocmd FileType c,cpp,java,go,php,javascript,puppet,python,rst,rust,twig,xml,ym
 autocmd FileType gitcommit,rst,mkd,markdown silent! call ToggleSpell()
 autocmd FileType gitcommit,rst,mkd,markdown set complete+=kspell
 
+" No more keypad!
+autocmd VimEnter,BufNewFile,BufReadPost * silent! call HardMode()
+
 " No jedi-vim doc popup
 autocmd FileType python setlocal completeopt-=preview
+
+let g:qcc_query_command='khard email'
+au BufRead /tmp/mutt* setlocal omnifunc=QueryCommandComplete
+au BufRead /tmp/mutt* setlocal textwidth=72
+au BufRead /tmp/mutt* setlocal wrap
+au BufRead /tmp/mutt* setlocal fo+=aw
+au BufRead /tmp/mutt* setlocal spell spelllang=fr,en
+au BufRead /tmp/mutt* setlocal nocp
+au BufRead /tmp/mutt* startinsert
+au BufRead /tmp/mutt* ?^$
 
 " Dirty js format
 " autocmd BufWritePre,BufRead *.js :set tabstop=2 shiftwidth=2

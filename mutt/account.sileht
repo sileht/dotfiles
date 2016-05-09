@@ -10,12 +10,40 @@ set signature = "~/.mutt/signature.local"
 ## IMAP 
 set ssl_starttls=no
 set folder="imap://mail.sileht.net"
-set spoolfile="=INBOX"
-set record="=Sent"
-set postponed="=Drafts"
-set trash="=Trash"
+set spoolfile="+Inbox"
+set record="+Sent"
+set postponed="+Drafts"
+set trash="+Trash"
 
-#unmailboxes * 
+folder-hook "imap://mail.sileht.net/zml-" push "<delete-pattern>~d<space>>3m<enter>"
+
+macro index,pager \ci "<change-folder>=Inbox<enter>" "open a different folder"
+
+unmailboxes *
+mailboxes \
+      imap://mail.sileht.net/Inbox \
+      imap://mail.sileht.net/Drafts \
+      imap://mail.sileht.net/Sent \
+      imap://mail.sileht.net/Trash \
+      imap://mail.sileht.net/Junk \
+      imap://mail.sileht.net/perso-appart \
+      imap://mail.sileht.net/perso-archives \
+      imap://mail.sileht.net/perso-compte-achat \
+      imap://mail.sileht.net/perso-serveur \
+      imap://mail.sileht.net/ttnn \
+      imap://mail.sileht.net/ttnn-hosting \
+      imap://mail.sileht.net/ttnn-services \
+      imap://mail.sileht.net/zml-ceph \
+      imap://mail.sileht.net/zml-check_mk \
+      imap://mail.sileht.net/zml-frnog \
+      imap://mail.sileht.net/zml-openwrt \
+      imap://mail.sileht.net/zml-os-interested \
+      imap://mail.sileht.net/zml-os-junk \
+      imap://mail.sileht.net/zml-os-other \
+      imap://mail.sileht.net/zml-os-releases \
+      imap://mail.sileht.net/zml-os-unknown \
+      imap://mail.sileht.net/zml-toulibre \
+
 
 # SMTP
 set ssl_force_tls = no

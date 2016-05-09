@@ -1,5 +1,0 @@
-METHODS="m_vcf m_muttalias m_inmail"
-VCF_FILES="/home/sileht/.mutt/sileht_contacts.vcf"
-
-MUTT_DIRECTORY="$HOME/.mutt"
-MUTTALIAS_FILES=".muttrc .mail_aliases muttrc aliases"

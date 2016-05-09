@@ -8,14 +8,46 @@ set signature = "~/.mutt/signature.redhat"
 
 ## IMAP 
 set ssl_starttls=yes
-set folder="imaps://mail.corp.redhat.com/"
+set folder="imaps://mail.corp.redhat.com"
 set spoolfile="=INBOX"
 set record="=Sent"
 set postponed="=Drafts"
 set trash="=Trash"
 
-unmailboxes * 
-mailboxes =INBOX =archives =Drafts =Sent =Trash =Junk =Expenses =bugzilla =launchpad =reviews =ml-rcip-eng =ml-rcip-paris =ml-annonce =ml-cloud-strategy =ml-memo-list =ml-python-list =ml-rhos =ml-sales =ml-spinalstack =import-enovance.redhat
+folder-hook "imaps://mail.corp.redhat.com/ml-memo-list" push "<delete-pattern>~d<space>>3m<enter>"
+folder-hook "imaps://mail.corp.redhat.com/ml-cloud-strategy" push "<delete-pattern>~d<space>>3m<enter>"
+folder-hook "imaps://mail.corp.redhat.com/bugzilla" push "<delete-pattern>~d<space>>3m<enter>"
+folder-hook "imaps://mail.corp.redhat.com/ml-rhos" push "<delete-pattern>~d<space>>3m<enter>"
+folder-hook "imaps://mail.corp.redhat.com/review-" push "<delete-pattern>~d<space>>1m<enter>"
+
+macro index,pager \ci "<change-folder>=INBOX<enter>" "open a different folder"
+
+unmailboxes *
+mailboxes \
+    imaps://mail.corp.redhat.com/INBOX \
+    imaps://mail.corp.redhat.com/Drafts \
+    imaps://mail.corp.redhat.com/Sent \
+    imaps://mail.corp.redhat.com/Trash \
+    imaps://mail.corp.redhat.com/Junk \
+    imaps://mail.corp.redhat.com/ceilo-team \
+    imaps://mail.corp.redhat.com/reviews-os \
+    imaps://mail.corp.redhat.com/reviews-rh \
+    imaps://mail.corp.redhat.com/bugzilla-me \
+    imaps://mail.corp.redhat.com/bugzilla \
+    imaps://mail.corp.redhat.com/launchpad \
+    imaps://mail.corp.redhat.com/ml-annonce \
+    imaps://mail.corp.redhat.com/ml-cloud-strategy \
+    imaps://mail.corp.redhat.com/ml-memo-list \
+    imaps://mail.corp.redhat.com/ml-python-list \
+    imaps://mail.corp.redhat.com/ml-rcip \
+    imaps://mail.corp.redhat.com/ml-rhos \
+    imaps://mail.corp.redhat.com/ml-rhos-prio \
+    imaps://mail.corp.redhat.com/ml-low-prio \
+    imaps://mail.corp.redhat.com/archives \
+    imaps://mail.corp.redhat.com/expenses \
+    imaps://mail.corp.redhat.com/meeting \
+    imaps://mail.corp.redhat.com/vie \
+
 
 # SMTP
 set ssl_force_tls = no
