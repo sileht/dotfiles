@@ -8,7 +8,6 @@ bind index,pager \CO sidebar-open
 
 #macro index,pager \104 '<sidebar-prev><sidebar-open>'
 #macro index,pager \103 '<sidebar-next><sidebar-open>'
-#bind index,pager \C<Tab> <next-unread-mailbox>
 
 bind index F flag-message
 
@@ -20,10 +19,13 @@ bind index <Left> collapse-thread
 bind index [C collapse-all
 bind index <Esc>D purge-message
 
+bind index,pager j next-new-then-unread
+bind index,pager <Esc>j next-unread-mailbox
 bind index,pager A next-unread-mailbox
 #macro index B '<enter-command>toggle sidebar_visible<enter><refresh>'
 #macro pager B '<enter-command>toggle sidebar_visible<enter><redraw-screen>'
 
+macro index,pager a ':<enter>'
 macro index,pager \cv |urlview\n
 
 macro index,pager c "<change-folder>?<toggle-mailboxes>" "open a different folder"
@@ -49,5 +51,6 @@ macro index,pager S "<enter-command>set my_old_resolve=\$resolve noresolve<enter
 <tag-prefix><save-message> \Cu=Junk\Cj" "read and move current message to spam"
 
 macro index,pager C "<pipe-message>khard add-email -a other<return>" "add the sender email address to khard"
+
 
 # vim: ft=muttrc:

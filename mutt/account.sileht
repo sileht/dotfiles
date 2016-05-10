@@ -46,6 +46,6 @@ mailboxes \
 
 
 # SMTP
-set ssl_force_tls = no
+set ssl_force_tls = yes
 set smtp_url="smtp://$imap_user@mail.sileht.net"
 set smtp_pass=$imap_pass
