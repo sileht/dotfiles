@@ -1,4 +1,5 @@
-i3pystatus
+#i3pystatus
+-e git+https://github.com/sileht/i3pystatus.git#egg=i3pystatus
 apiclient
 google-api-python-client
 httplib2
