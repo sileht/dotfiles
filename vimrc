@@ -25,6 +25,7 @@ Plug 'majutsushi/tagbar'
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 " Language
+Plug 'vim-scripts/spec.vim'                      " .spec
 Plug 'caio/querycommandcomplete.vim'             " abook completion
 Plug 'tpope/vim-fugitive'                        " Git
 Plug 'klen/python-mode', { 'branch': 'develop' } " Python
@@ -43,6 +44,7 @@ Plug 'tpope/vim-markdown'                        " Markdown
 Plug 'amirh/HTML-AutoCloseTag'                   " HTML autoclose
 Plug 'hail2u/vim-css3-syntax'                    " Css
 Plug 'breard-r/vim-dnsserial'                    " dns zones
+Plug 'leafgarland/typescript-vim'                " Typescript
 call plug#end()
 
 set encoding=utf8
@@ -161,8 +163,8 @@ autocmd FileType gitcommit,rst,mkd,markdown silent! call ToggleSpell()
 autocmd FileType gitcommit,rst,mkd,markdown set complete+=kspell
 
 " No more keypad!
-let g:HardMode_level = 'wannabe'
-autocmd VimEnter,BufNewFile,BufReadPost * silent! call HardMode()
+"let g:HardMode_level = 'wannabe'
+"autocmd VimEnter,BufNewFile,BufReadPost * silent! call HardMode()
 
 " No jedi-vim doc popup
 autocmd FileType python setlocal completeopt-=preview
@@ -222,9 +224,12 @@ let g:riv_global_leader ='<C-s>'
 let g:riv_disable_folding = 1
 
 let g:syntastic_python_checkers = ['flake8']
-let g:syntastic_quiet_messages = {"regex": [ '\mUnknown interpreted text role "doc"' ]}
 let g:syntastic_python_flake8_quiet_messages = {"regex": [ 'W503', 'E402', 'E731']}
 let g:syntastic_python_flake8_exec = 'myflake8'
+
+let g:syntastic_typescript_checks=['tsc', 'tslint']
+
+let g:syntastic_quiet_messages = {"regex": [ '\mUnknown interpreted text role "doc"' ]}
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1

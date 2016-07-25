@@ -38,10 +38,10 @@ status.register("mail",
                 backends=[imap.IMAP(host="mx1.sileht.net")],
                 format_plural="{unread} new emails",
                 on_leftclick="chromium https://m.sileht.net/")
-status.register("google_calendar",
-                credential_path="/home/sileht/.gcalcli_oauth",
-                on_leftclick="chromium {htmlLink}",
-                skip_recurring=False)
+# status.register("google_calendar",
+#                 credential_path="/home/sileht/.gcalcli_oauth",
+#                 on_leftclick="chromium {htmlLink}",
+#                 skip_recurring=False)
 status.register("shell", command="/home/sileht/.i3/vpn-chk.sh",
                 hints={"markup": "pango"},
                 on_leftclick="zsh -i -c 'vpnrh'",

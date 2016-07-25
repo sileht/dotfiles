@@ -7,23 +7,27 @@ curbranch=$(git rev-parse --abbrev-ref HEAD)
 [ "$1" != "-q" ] && for branch in $(git branch -l | grep '^[ ]*sileht/'); do
     echo "*Rebase $branch"
     git checkout $branch
-    git pull --rebase origin master || git rebase --abort
+    remote=$(git config branch.$(git name-rev --name-only HEAD).remote)
+    branch=$(git rev-parse --abbrev-ref --symbolic-full-name @{u} | sed "s/^$remote\///g")
+    git pull --rebase $remote $branch || git rebase --abort
 done
+
+git checkout $curbranch
 
 branches_to_delete="$((
     git branch --merged origin/master ; 
     git branch --merged origin/stable/liberty ; 
+    git branch --merged origin/stable/mitaka ; 
     git branch --merged origin/stable/kilo ;
     git branch -l | grep '^\s*review' ;
 ) 2>/dev/null | grep -v -e '\<master\>' -e '\<$curbranch\>' | sort -u ; )"
-
-git checkout $curbranch
 
 if [ ! "$branches_to_delete" ]; then
     echo "Nothing found..."
     exit 0
 fi
-for branch in "$branches_to_delete"; do 
+
+for branch in $branches_to_delete; do 
     echo "$branch: $(git log -1 --pretty=tformat:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%an %cr)%Creset' --date=relative $branch)"
 done
 
