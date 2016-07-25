@@ -113,6 +113,7 @@ imap <silent> <Esc>OF <End>
 imap <silent> <Esc>[5~ <PageUp>
 imap <silent> <Esc>[6~ <PageDown>]]
 
+
 map <F6> :w<CR>:!aspell -l en -c %<CR>:e %<CR>
 map <F7> :w<CR>:!aspell -l fr -c %<CR>:e %<CR>
 nmap <silent> <F8> :call ToggleSpell()<CR>
@@ -265,6 +266,10 @@ let g:pymode_motion = 1
 
 let g:ctrlp_funky_matchtype = 'path'
 let g:ctrlp_funky_syntax_highlight = 1
+
+
+let spec_chglog_packager = "Mehdi Abaakouk <sileht@redhat.com>"
+au FileType spec map <buffer> <F5> <Plug>AddChangelogEntry
 
 command! Notes execute "help mynotes"
 command! Reload execute "source ~/.vimrc"
