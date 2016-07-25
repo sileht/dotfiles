@@ -34,7 +34,7 @@
 [branch]
     autosetuprebase = always
 [pretty]
-    cmedium="format:%C(auto,yellow)commit %H%C(auto,reset)%nAuthor: %cn <%ce>%nDate:   %cd (%cr)%n%n%w(0,4,4)%s%n%+b"
+    cmedium="format:%C(auto,yellow)commit %H%C(auto,reset)%nAuthor: %an <%ae>%nCommitter: %cn <%ce>%nDate:   %cd (%cr)%n%n%w(0,4,4)%s%n%+b"
     cshort="tformat:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%an %cr)%Creset"
 [format]
     pretty=cmedium
