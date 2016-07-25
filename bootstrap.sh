@@ -92,4 +92,4 @@ cleanup_old_link
 [ "$force" ] &&  cleanup_forced
 setup_env_link
 setup_vim
-setup_i3pystatus
+[ "$DISPLAY" ] && setup_i3pystatus
