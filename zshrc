@@ -391,6 +391,8 @@ function cdt() { cd $(mktemp -td cdt.XXXXXXXX) ; pwd }
 function s() { pwd >| /dev/shm/.saved_dir; }
 function i() { p="$(cat /dev/shm/.saved_dir 2>/dev/null)"; [ -d $p ] && cd $p }
 function p() { cd ~/workspace/os_dev/stack/*${1}*(/[0,1]) ; s }
+function rh() { cd ~/workspace/os_dev/rh-stack/*${1}*(/[0,1]) ; s }
+function rdo() { cd ~/workspace/os_dev/rh-stack/rdo/*${1}*(/[0,1]) ; s }
 i
 add-zsh-hook chpwd s
 
