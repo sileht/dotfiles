@@ -7,24 +7,24 @@ from i3pystatus.updates import aptget
 from i3pystatus.weather import weathercom
 
 status = Status(standalone=True)
-status.register("online",
-                format_online="●",
-                format_offline="●",
-                color="#00ff00",
-                color_offline="#ff0000")
+#status.register("online",
+#                format_online="●",
+#                format_offline="●",
+#                color="#00ff00",
+#                color_offline="#ff0000")
 status.register("clock", format="%a %b %d, %H:%M")
 status.register("xkblayout", layouts=["fr oss", "us"])
 # status.register("keyboard_locks", format="{caps}{num}",
 #                 caps_on="↑", caps_off="_",
 #                 num_on="❿", num_off="_")
 # status.register("spotify")
-status.register("updates",
-                format="Updates: {count}",
-                format_no_updates="No updates",
-                backends=[aptget.AptGet()])
-status.register("weather", format="{icon} {current_temp}°",
-                colorize=True, backend=weathercom.Weathercom(
-                    location_code="FRXX0099:1:FR"))
+#status.register("updates",
+#                format="Updates: {count}",
+#                format_no_updates="No updates",
+#                backends=[aptget.AptGet()])
+#status.register("weather", format="{icon} {current_temp}°",
+#                colorize=True, backend=weathercom.Weathercom(
+#                    location_code="FRXX0099:1:FR"))
 status.register("temp")
 status.register("cpu_usage_graph", graph_width=5)
 status.register("battery", interval=60, alert_percentage=3,
