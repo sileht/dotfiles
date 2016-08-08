@@ -19,8 +19,8 @@ fi
 (
 	IFS=:
 	if stest -dqr -n "$cache" $PATH; then
-        stest -flx $PATH | sed -e 's/^.*/&\n:&/g' | sort | uniq | tee "$cache" | dmenu "$@"
+        stest -flx $PATH | sed -e 's/^.*/&\n:&/g' | sort | uniq | tee "$cache" | dmenu.xft "$@"
 	else
-		dmenu "$@" < "$cache"
+		dmenu.xft "$@" < "$cache"
     fi
 ) | sed -e 's/^:/gksudo /g' | ${SHELL:-"/bin/sh"} &
