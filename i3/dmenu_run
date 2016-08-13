@@ -23,4 +23,4 @@ fi
 	else
 		dmenu "$@" < "$cache"
     fi
-) | sed -e 's/^:/gksudo /g' | ${SHELL:-"/bin/sh"} &
+) | sed -e 's/^:/sudo /g' | ${SHELL:-"/bin/sh"} &
