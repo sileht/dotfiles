@@ -46,8 +46,8 @@ bindsym $mod+x exec --no-startup-id pcmanfm /home/sileht/
 # kill focused window
 bindsym $mod+Shift+a kill
 
-bindcode 248 exec "bash -c 'pkill acpi-als-daemon;acpi-als-daemon --stop-on-outside-change;'"
-exec_always "bash -c 'pkill  acpi-als-daemon;acpi-als-daemon --stop-on-outside-change;'"
+bindcode 248 exec --no-startup-id "bash -c 'pkill solard;solard --stop-on-outside-change -v;'"
+exec_always --no-startup-id "bash -c 'pkill solard;solard --stop-on-outside-change -v;'"
 
 # start dmenu (a program launcher)
 #bindsym $mod+r exec dmenu_run
