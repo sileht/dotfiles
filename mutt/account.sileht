@@ -36,7 +36,6 @@ mailboxes \
       imap://mail.sileht.net/zml-ceph \
       imap://mail.sileht.net/zml-check_mk \
       imap://mail.sileht.net/zml-frnog \
-      imap://mail.sileht.net/zml-openwrt \
       imap://mail.sileht.net/zml-os-interested \
       imap://mail.sileht.net/zml-os-junk \
       imap://mail.sileht.net/zml-os-other \

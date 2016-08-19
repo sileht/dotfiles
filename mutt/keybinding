@@ -43,7 +43,7 @@ macro compose A "<attach-message>?<toggle-mailboxes>" "attach message(s) to this
 macro index,pager <F7> ':color index green default "~p"<enter>'  'Highlight ON for answers to me'
 macro index,pager <F8> ':uncolor index green default "~p"<enter>'    'Highlight OFF for answers to me'
 
-macro index,pager d "<enter-command>set my_old_resolve=\$resolve noresolve<enter>\
+#macro index,pager d "<enter-command>set my_old_resolve=\$resolve noresolve<enter>\
 <tag-prefix><clear-flag>n<enter-command>set resolve=\$my_old_resolve<enter>\
 <tag-prefix><delete-message>" "read and delete current message"
 macro index,pager S "<enter-command>set my_old_resolve=\$resolve noresolve<enter>\
