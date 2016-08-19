@@ -363,7 +363,6 @@ alias apt-cache='noglob apt-cache'
 alias man="LANG=C man"
 alias df="df -h"
 alias diff='diff -rNu'
-alias mutt=mutt-patched
 alias cmutt="find ~/.mutt/cache/headers -type f -exec tcbmgr optimize -nl {} \;"
 alias vi="vim"
 alias svi="sudo -E vim" 
