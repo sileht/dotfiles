@@ -16,7 +16,7 @@ while true ; do
 done
 
 
-typeset -a flist="zshrc zprofile zlogin zlogout zshenv vimrc screenrc wgetrc pythonrc.py mutt
+typeset -a flist="zshrc zprofile zlogin zlogout zshenv vimrc screenrc wgetrc pythonrc.py mutt emacs.d spacemacs
 config/awesome gitconfig gitignore-global ctags i3 config/dunst tmux tmux.conf config/khard vdirsyncer"
 
 typeset -a rlist="spf13-vim spf13-vim-3 vimrc.before vimrc.bundles
