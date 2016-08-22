@@ -48,7 +48,7 @@ bindsym $mod+Shift+a kill
 
 bindcode 248 exec --no-startup-id "bash -c 'pkill solard;solard --stop-on-outside-change;'"
 exec_always --no-startup-id "bash -c 'pkill solard;solard --stop-on-outside-change;'"
-
+exec --no-startup-id pnmixer
 # start dmenu (a program launcher)
 #bindsym $mod+r exec dmenu_run
 bindsym $mod+r exec ~/.i3/dmenu_run -fn "Ubuntu Mono-12:NerdFontPlusFontAwesomePlusOcticonsPlusPomiconsMono"
