@@ -90,8 +90,13 @@ set nofoldenable                " No fold
 set scrolloff=10                " Again no fold
 syn spell toplevel              " Spell rst issue https://github.com/Rykka/riv.vim/issues/8
 
-let mapleader = ","
-let g:mapleader = ","
+set guioptions-=M  "remove menu bar
+set guioptions-=m  "remove menu bar
+set guioptions-=T  "remove toolbar
+
+
+let mapleader = " "
+let g:mapleader = " "
 
 " Paste last yank
 nnoremap P "0p

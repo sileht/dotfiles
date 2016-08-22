@@ -364,7 +364,8 @@ alias man="LANG=C man"
 alias df="df -h"
 alias diff='diff -rNu'
 alias cmutt="find ~/.mutt/cache/headers -type f -exec tcbmgr optimize -nl {} \;"
-alias vi="vim"
+alias vin="vim"
+alias vi="vim --servername sileht --remote-silent"
 alias svi="sudo -E vim" 
 alias psql="sudo -i -u postgres psql"
 alias pyclean='find . -type f -name "*.py[co]" -delete'
