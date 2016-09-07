@@ -19,6 +19,7 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'wikitopian/hardmode'
 " File/Tag browsing
+Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'tacahiroy/ctrlp-funky'
 Plug 'majutsushi/tagbar'
