@@ -27,6 +27,7 @@ export LESS
 export LESSHISTFILE=~/.var/less/history
 [[ -d ${LESSHISTFILE%/*} ]] || mkdir --parent ${LESSHISTFILE%/*}
 export PAGER=less
+export LESSOPEN='|lessfilter %s'
 
 export PYTHONSTARTUP="$HOME/.pythonrc.py"
 # terminator hack

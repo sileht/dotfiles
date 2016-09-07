@@ -5,4 +5,6 @@ mutt/password
 mutt/attachments
 i3/venv
 tmux/plugins/*
+tmux/sidebar
 vdirsyncer/status/*
+i3/i3pystatus/

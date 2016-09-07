@@ -370,6 +370,7 @@ alias svi="sudo -E vim"
 alias psql="sudo -i -u postgres psql"
 alias pyclean='find . -type f -name "*.py[co]" -delete'
 alias getaptkey='sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com'
+alias more=less
 
 function of() { lsof -np "$1" }
 compdef _pids of
