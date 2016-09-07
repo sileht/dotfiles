@@ -21,6 +21,9 @@ folder-hook "imaps://mail.corp.redhat.com/ml-rhos" push "<delete-pattern>~d<spac
 folder-hook "imaps://mail.corp.redhat.com/review-" push "<delete-pattern>~d<space>>1m<enter>"
 
 macro index,pager \ci "<change-folder>=INBOX<enter>" "open a different folder"
+#macro index,pager a "<enter-command>set my_old_resolve=\$resolve noresolve<enter>\
+#<tag-prefix><clear-flag>n<enter-command>set resolve=\$my_old_resolve<enter>\
+#<tag-prefix><save-message> \Cu=archives\Cj" "read and archive current message"
 
 unmailboxes *
 mailboxes \

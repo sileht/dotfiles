@@ -60,8 +60,8 @@ set sort_aux=reverse-last-date-received # showing threads with youngest message 
 
 set text_flowed=yes
 
-set index_format="%4C %Z %-2E %-90s %*  | %-20.20L | %{%y-%m-%d %H:%M} | (%?l?%4l&%4c?)  "
-set folder_format="%2C %t %N %8s %d %f" # what I settled on
+set index_format="%Z %s %*   %E | %-20.20L | %{%d/%m %H:%M} | %?l?%4l&%4c? "
+set folder_format="%4N %f" # what I settled on
 set pager_index_lines = 12              # Split-screen index/pager preview thing
 set pager_stop = yes                    # Don't skip to next message at end of message
                                         # (avoids accidental setting as being read)
@@ -97,7 +97,7 @@ set query_command= "khard email -p %s"
 #bind editor ^T    complete
 
 # set sidebar_sort=yes
-set sidebar_width=32
+set sidebar_width=22
 set sidebar_visible=yes
 set sidebar_divider_char='|'
 set sidebar_format="%B%*  %N"
