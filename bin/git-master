@@ -1,0 +1,7 @@
+#!/bin/bash
+
+if [ "$(git rev-parse --verify -q master)" ]; then 
+    git checkout master
+else
+    git checkout -b master origin/master
+fi
