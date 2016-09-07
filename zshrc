@@ -365,13 +365,19 @@ alias df="df -h"
 alias diff='diff -rNu'
 alias cmutt="find ~/.mutt/cache/headers -type f -exec tcbmgr optimize -nl {} \;"
 alias vin="vim"
-alias vi="vim --servername sileht --remote-silent"
 alias svi="sudo -E vim" 
 alias psql="sudo -i -u postgres psql"
 alias pyclean='find . -type f -name "*.py[co]" -delete'
 alias getaptkey='sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com'
 alias more=less
 
+function vi() {
+    if [ -e "$1" ]; then
+        vim --servername sileht --remote-silent "$@" 
+    else 
+        vim --servername sileht 
+    fi
+}
 function of() { lsof -np "$1" }
 compdef _pids of
 

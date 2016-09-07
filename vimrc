@@ -9,9 +9,6 @@ Plug 'scrooloose/syntastic'
 Plug 'bling/vim-bufferline'
 Plug 'mhinz/vim-signify'                " VCS diff
 Plug 'ryanoasis/vim-devicons'
-" Homepage
-Plug 'mhinz/vim-startify'
-Plug '~/.vim/plugged/mynotes'
 " Text navigation
 Plug 'junegunn/vim-easy-align'
 Plug 'easymotion/vim-easymotion'
@@ -95,6 +92,9 @@ set guioptions-=M  "remove menu bar
 set guioptions-=m  "remove menu bar
 set guioptions-=T  "remove toolbar
 
+" https://www.johnhawthorn.com/2012/09/vi-escape-delays/
+set timeoutlen=1000
+set ttimeoutlen=0
 
 let mapleader = " "
 let g:mapleader = " "

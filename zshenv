@@ -20,6 +20,8 @@ export QUILT_PATCH_OPTS="--reject-format=unified"
 export EDITOR=vim
 export VISUAL=vim
 
+KEYTIMEOUT=1
+
 # Less config
 eval `lesspipe 2>/dev/null`
 LESS='--quit-if-one-screen --no-init --hilite-search --jump-target=0.5 --SILENT --raw-control-chars'
