@@ -93,8 +93,8 @@ set guioptions-=m  "remove menu bar
 set guioptions-=T  "remove toolbar
 
 " https://www.johnhawthorn.com/2012/09/vi-escape-delays/
-set timeoutlen=1000
-set ttimeoutlen=0
+"set timeoutlen=1000
+"set ttimeoutlen=0
 
 let mapleader = " "
 let g:mapleader = " "
