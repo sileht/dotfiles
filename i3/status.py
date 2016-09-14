@@ -12,8 +12,9 @@ status = Status(standalone=True)
 #                format_offline="●",
 #                color="#00ff00",
 #                color_offline="#ff0000")
+status.register("pulseaudio")
 status.register("clock", format="%a %b %d, %H:%M")
-status.register("xkblayout", layouts=["fr oss", "us"])
+status.register("xkblayout", layouts=["fr", "us"])
 # status.register("keyboard_locks", format="{caps}{num}",
 #                 caps_on="↑", caps_off="_",
 #                 num_on="❿", num_off="_")
