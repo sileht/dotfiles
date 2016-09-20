@@ -472,6 +472,8 @@ update-flash() {
     sudo update-pepperflashplugin-nonfree --status
 }
 
+alias tox="eatmydata tox"
+
 etox() {
     zparseopts -D e+:=env
     typeset -A helper
