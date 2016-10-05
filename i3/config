@@ -160,7 +160,7 @@ bindsym $mod+Shift+z exec "mate-session-save --shutdown-dialog"
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-    font pango:Ubuntu Mono:style=Regular,NerdFontPlusFontAwesomePlusOcticonsPlusPomiconsMono 8 
+    font pango:UbuntuMonoDerivativePowerline:style=Regular 8 
     output VGA1
     output LVDS1
     output DP1
@@ -174,7 +174,7 @@ bar {
     workspace_buttons yes
 }
 bar {
-    font pango:Ubuntu Mono:style=Regular,NerdFontPlusFontAwesomePlusOcticonsPlusPomiconsMono 8 
+    font pango:UbuntuMonoDerivativePowerline:style=Regular 8 
     tray_output none
     position          top
     workspace_buttons yes

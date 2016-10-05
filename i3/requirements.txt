@@ -16,3 +16,4 @@ pip
 paramiko
 keyrings.alt
 imaplib2
+pyalsaaudio
