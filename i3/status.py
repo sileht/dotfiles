@@ -11,15 +11,16 @@ status.register("clock", format="%a %b %d, %H:%M")
 
 status.register("pulseaudio",
                 on_leftclick="change_sink",
+                on_middleclick="pavucontrol -t 1",
                 sink="alsa_output.pci-0000_00_1b.0.analog-stereo",
                 color_muted="#AAAAAA",
                 format="🔊: {volume}{selected}")
 status.register("pulseaudio",
                 on_leftclick="change_sink",
+                on_middleclick="pavucontrol -t 1",
                 sink="alsa_output.usb-06f8_USB_Audio-00.analog-stereo",
                 color_muted="#AAAAAA",
                 format="🎧: {volume}{selected}")
-#status.register("xkblayout", layouts=["fr", "us"])
 status.register("temp")
 status.register("cpu_usage_graph", graph_width=5)
 status.register("battery", interval=60, alert_percentage=3,
@@ -54,6 +55,7 @@ status.register("shell", command="/home/sileht/.i3/vpn-chk.sh",
 # status.register("weather", format="{icon} {current_temp}°",
 #                colorize=True, backend=weathercom.Weathercom(
 #                    location_code="FRXX0099:1:FR"))
+# status.register("xkblayout", layouts=["fr", "us"])
 
 
 status.run()
