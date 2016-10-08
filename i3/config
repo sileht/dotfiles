@@ -30,6 +30,7 @@ floating_modifier $mod
 
 # Application floating
 for_window [class="pinentry"] floating enable
+for_window [class="Pavucontrol"] floating enable
 for_window [class="^.*"] border pixel 1
 
 # start application
