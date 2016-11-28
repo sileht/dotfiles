@@ -29,6 +29,7 @@ Plug 'tpope/vim-fugitive'                        " Git
 Plug 'klen/python-mode', { 'branch': 'develop' } " Python
 Plug 'davidhalter/jedi-vim'                      " Python
 Plug 'ervandew/supertab'
+Plug 'godlygeek/tabular'
 Plug 'spf13/PIV'                                 " PHP
 Plug 'Rykka/riv.vim'                             " Rst
 Plug 'rodjek/vim-puppet'                         " Puppet
