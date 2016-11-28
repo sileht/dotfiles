@@ -18,9 +18,16 @@ status.register("pulseaudio",
 status.register("pulseaudio",
                 on_leftclick="change_sink",
                 on_middleclick="pavucontrol -t 1",
-                sink="alsa_output.usb-06f8_USB_Audio-00.analog-stereo",
+                sink=("alsa_output.usb-C-Media_Electronics_Inc._USB_Advanced_"
+                      "Audio_Device-00.analog-stereo"),
                 color_muted="#AAAAAA",
                 format="🎧: {volume}{selected}")
+status.register("pulseaudio",
+                on_leftclick="change_sink",
+                on_middleclick="pavucontrol -t 1",
+                sink="bluez_sink.C0_7A_A5_00_9F_1A",
+                color_muted="#AAAAAA",
+                format="📡: {volume}{selected}")
 status.register("temp")
 status.register("cpu_usage_graph", graph_width=5)
 status.register("battery", interval=60, alert_percentage=3,
