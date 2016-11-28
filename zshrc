@@ -479,14 +479,16 @@ etox() {
     zparseopts -D e+:=env
     typeset -A helper
     helper=($(seq 1 ${#env}))
-    rootdir="."
+    rootdir="$(pwd)"
     [ ! -d "$rootdir/.tox" ] && rootdir=".."
     [ ! -d "$rootdir/.tox" ] && rootdir="../.."
     [ ! -d "$rootdir/.tox" ] && rootdir="../../.."
     [ ! -d "$rootdir/.tox" ] && rootdir="../../../.."
     for item in ${(@v)helper}; do
         for e in "${(@s/,/)env[$item]}" ; do
+            export VIRTUAL_ENV=$rootdir/.tox/$e 
             $rootdir/.tox/$e/bin/"$@"
+            unset VIRTUAL_ENV
         done
     done
 }
