@@ -24,7 +24,9 @@
     show-upstream = "!f() { git rev-parse --symbolic-full-name --abbrev-ref ${1}@{u} 2>/dev/null || git rev-parse --symbolic-full-name --abbrev-ref $(git review-branch)@{u}; }; f"
     fix-upstream = "!f() { git branch --set-upstream-to=$(git show-upstream) ; } ; f"
     h = !git rework
+    where = "!f() { git bisect start HEAD $(git diverge-commit); git bisect run $@; }; f"
     reset-date = "!f() { LANG= GIT_COMMITTER_DATE=\"$(date)\" git commit --amend --no-edit --date \"$(date)\" ; }; f"
+    libvirt-review = send-email --cover-letter --no-chain-reply-to --annotate --to=libvir-list@redhat.com master
 [core]
 	excludesfile = ~/.gitignore-global
 [push]
@@ -40,3 +42,8 @@
     pretty=cmedium
 [log]
     date=local
+[sendemail]
+	smtpEncryption = tls
+	smtpServer = mail.sileht.net
+	smtpUser = sileht@sileht.net
+	smtpServerPort = 25
