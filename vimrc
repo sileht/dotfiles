@@ -232,7 +232,7 @@ let g:riv_global_leader ='<C-s>'
 let g:riv_disable_folding = 1
 
 let g:syntastic_python_checkers = ['flake8']
-let g:syntastic_python_flake8_quiet_messages = {"regex": [ 'W503', 'E402', 'E731']}
+let g:syntastic_python_flake8_quiet_messages = {"regex": [ 'W503', 'E402', 'E731', 'H301']}
 let g:syntastic_python_flake8_exec = 'myflake8'
 
 let g:syntastic_typescript_checks=['tsc', 'tslint']
