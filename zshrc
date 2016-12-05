@@ -484,13 +484,19 @@ etox() {
     [ ! -d "$rootdir/.tox" ] && rootdir="../.."
     [ ! -d "$rootdir/.tox" ] && rootdir="../../.."
     [ ! -d "$rootdir/.tox" ] && rootdir="../../../.."
+    export OLDPATH=$PATH
     for item in ${(@v)helper}; do
         for e in "${(@s/,/)env[$item]}" ; do
             export VIRTUAL_ENV=$rootdir/.tox/$e 
+            export PATH="$rootdir/.tox/$e/bin:$OLDPATH"
+            echo "enter to: $VIRTUAL_ENV ($PATH)"
             $rootdir/.tox/$e/bin/"$@"
             unset VIRTUAL_ENV
         done
     done
+    export PATH=$OLDPATH
+    unset OLDPATH
+    unset VIRTUAL_ENV
 }
 
 alias pipnodev="find /workspace/pip_cache/ -name '*.dev*' -delete"
