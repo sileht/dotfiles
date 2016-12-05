@@ -493,8 +493,9 @@ etox() {
     done
 }
 
+alias pipnodev="find /workspace/pip_cache/ -name '*.dev*' -delete"
 utox() {
-    find /workspace/pip_cache/ -name '*.dev*' -delete
+    pipnodev
     zparseopts -D e+:=env
     typeset -A helper
     helper=($(seq 1 ${#env}))
