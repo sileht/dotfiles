@@ -8,17 +8,17 @@ set signature = "~/.mutt/signature.redhat"
 
 ## IMAP 
 set ssl_starttls=yes
-set folder="imaps://mail.corp.redhat.com"
+set folder="imap://redhat@mail.sileht.net"
 set spoolfile="=INBOX"
 set record="=Sent"
 set postponed="=Drafts"
 set trash="=Trash"
 
-folder-hook "imaps://mail.corp.redhat.com/ml-memo-list" push "<delete-pattern>~d<space>>3m<enter>"
-folder-hook "imaps://mail.corp.redhat.com/ml-cloud-strategy" push "<delete-pattern>~d<space>>3m<enter>"
-folder-hook "imaps://mail.corp.redhat.com/bugzilla" push "<delete-pattern>~d<space>>3m<enter>"
-folder-hook "imaps://mail.corp.redhat.com/ml-rhos" push "<delete-pattern>~d<space>>3m<enter>"
-folder-hook "imaps://mail.corp.redhat.com/review-" push "<delete-pattern>~d<space>>1m<enter>"
+folder-hook "imap://redhat@mail.sileht.net/ml-memo-list" push "<delete-pattern>~d<space>>3m<enter>"
+folder-hook "imap://redhat@mail.sileht.net/ml-cloud-strategy" push "<delete-pattern>~d<space>>3m<enter>"
+folder-hook "imap://redhat@mail.sileht.net/bugzilla" push "<delete-pattern>~d<space>>3m<enter>"
+folder-hook "imap://redhat@mail.sileht.net/ml-rhos" push "<delete-pattern>~d<space>>3m<enter>"
+folder-hook "imap://redhat@mail.sileht.net/review-" push "<delete-pattern>~d<space>>1m<enter>"
 
 macro index,pager \ci "<change-folder>=INBOX<enter>" "open a different folder"
 #macro index,pager a "<enter-command>set my_old_resolve=\$resolve noresolve<enter>\
@@ -27,26 +27,26 @@ macro index,pager \ci "<change-folder>=INBOX<enter>" "open a different folder"
 
 unmailboxes *
 mailboxes \
-    imaps://mail.corp.redhat.com/INBOX \
-    imaps://mail.corp.redhat.com/Drafts \
-    imaps://mail.corp.redhat.com/Sent \
-    imaps://mail.corp.redhat.com/Trash \
-    imaps://mail.corp.redhat.com/Junk \
-    imaps://mail.corp.redhat.com/ceilo-team \
-    imaps://mail.corp.redhat.com/reviews-os \
-    imaps://mail.corp.redhat.com/reviews-rh \
-    imaps://mail.corp.redhat.com/bugzilla-me \
-    imaps://mail.corp.redhat.com/bugtracker \
-    imaps://mail.corp.redhat.com/ml-memo-list \
-    imaps://mail.corp.redhat.com/ml-paris \
-    imaps://mail.corp.redhat.com/ml-rhos-dev \
-    imaps://mail.corp.redhat.com/ml-rhos-tech \
-    imaps://mail.corp.redhat.com/ml-rhos-prio \
-    imaps://mail.corp.redhat.com/ml-rhos-pgm \
-    imaps://mail.corp.redhat.com/ml-low-prio \
-    imaps://mail.corp.redhat.com/ml-tech \
-    imaps://mail.corp.redhat.com/archives \
-    imaps://mail.corp.redhat.com/vie \
+    imap://redhat@mail.sileht.net/INBOX \
+    imap://redhat@mail.sileht.net/Drafts \
+    imap://redhat@mail.sileht.net/Sent \
+    imap://redhat@mail.sileht.net/Trash \
+    imap://redhat@mail.sileht.net/Junk \
+    imap://redhat@mail.sileht.net/ceilo-team \
+    imap://redhat@mail.sileht.net/reviews-os \
+    imap://redhat@mail.sileht.net/reviews-rh \
+    imap://redhat@mail.sileht.net/bugzilla-me \
+    imap://redhat@mail.sileht.net/bugtracker \
+    imap://redhat@mail.sileht.net/ml-memo-list \
+    imap://redhat@mail.sileht.net/ml-paris \
+    imap://redhat@mail.sileht.net/ml-rhos-dev \
+    imap://redhat@mail.sileht.net/ml-rhos-tech \
+    imap://redhat@mail.sileht.net/ml-rhos-prio \
+    imap://redhat@mail.sileht.net/ml-rhos-pgm \
+    imap://redhat@mail.sileht.net/ml-low-prio \
+    imap://redhat@mail.sileht.net/ml-tech \
+    imap://redhat@mail.sileht.net/archives \
+    imap://redhat@mail.sileht.net/vie \
 
 
 # SMTP
