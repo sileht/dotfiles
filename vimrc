@@ -10,6 +10,8 @@ Plug 'bling/vim-bufferline'
 Plug 'mhinz/vim-signify'                " VCS diff
 Plug 'tpope/vim-fugitive'               " GIT
 Plug 'ryanoasis/vim-devicons'
+Plug 'eugen0329/vim-esearch'
+Plug 'Shougo/vimproc.vim', {'do' : 'make'}
 " Text navigation
 Plug 'junegunn/vim-easy-align'
 Plug 'easymotion/vim-easymotion'
@@ -37,12 +39,13 @@ Plug 'pangloss/vim-javascript',       {'for': 'js'}
 Plug 'groenewege/vim-less',           {'for': 'less'}
 Plug 'elzr/vim-json',                 {'for': 'json'}
 Plug 'tpope/vim-rails',               {'for': 'rb'}
-Plug 'fatih/vim-go',                  {'for': 'go'}
-Plug 'tpope/vim-markdown',            {'for': 'md'}
-"Plug 'saltstack/salt-vim'                        " Salt
+Plug 'fatih/vim-go',                  {'for': 'go', 'do': ':GoInstallBinaries'}
+Plug 'tpope/vim-markdown',            {'for': 'markdown'}
+Plug 'racer-rust/vim-racer'           " rust
+"Plug 'saltstack/salt-vim'            " Salt
 Plug 'vim-scripts/HTML-AutoCloseTag', {'for': ['html', 'xml']}
 Plug 'hail2u/vim-css3-syntax',        {'for': 'css'}
-Plug 'breard-r/vim-dnsserial'                    " dns zones
+Plug 'breard-r/vim-dnsserial'         " dns zones
 Plug 'leafgarland/typescript-vim',    {'for': ['ts', 'ts.d']}
 call plug#end()
 
