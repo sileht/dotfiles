@@ -40,7 +40,7 @@ Plug 'tpope/vim-rails'                           " Ruby
 Plug 'fatih/vim-go'                              " Go
 Plug 'tpope/vim-markdown'                        " Markdown
 "Plug 'saltstack/salt-vim'                        " Salt
-Plug 'amirh/HTML-AutoCloseTag'                   " HTML autoclose
+Plug 'vim-scripts/HTML-AutoCloseTag'             " HTML autoclose
 Plug 'hail2u/vim-css3-syntax'                    " Css
 Plug 'breard-r/vim-dnsserial'                    " dns zones
 Plug 'leafgarland/typescript-vim'                " Typescript
