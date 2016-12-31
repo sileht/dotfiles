@@ -12,6 +12,12 @@ status.register("clock", format="%a %b %d, %H:%M")
 status.register("pulseaudio",
                 on_leftclick="change_sink",
                 on_middleclick="pavucontrol -t 1",
+                sink="alsa_output.pci-0000_00_1f.3.analog-stereo",
+                color_muted="#AAAAAA",
+                format="🔊: {volume}{selected}")
+status.register("pulseaudio",
+                on_leftclick="change_sink",
+                on_middleclick="pavucontrol -t 1",
                 sink="alsa_output.pci-0000_00_1b.0.analog-stereo",
                 color_muted="#AAAAAA",
                 format="🔊: {volume}{selected}")
