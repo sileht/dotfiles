@@ -26,7 +26,7 @@
     h = !git rework
     where = "!f() { git bisect start HEAD $(git diverge-commit); git bisect run $@; }; f"
     reset-date = "!f() { LANG= GIT_COMMITTER_DATE=\"$(date)\" git commit --amend --no-edit --date \"$(date)\" ; }; f"
-    libvirt-review = send-email --cover-letter --no-chain-reply-to --annotate --to=libvir-list@redhat.com master
+    libvirt-review = send-email --cover-letter --no-chain-reply-to --annotate --to=libvir-list@redhat.com origin/master
 [core]
 	excludesfile = ~/.gitignore-global
 [push]
@@ -43,7 +43,8 @@
 [log]
     date=local
 [sendemail]
-	smtpEncryption = tls
+    smtpSslCertPath = /etc/ssl/certs/
+    smtpEncryption = tls
 	smtpServer = mail.sileht.net
 	smtpUser = sileht@sileht.net
 	smtpServerPort = 25
