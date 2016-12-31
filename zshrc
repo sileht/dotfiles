@@ -488,10 +488,9 @@ etox() {
     for item in ${(@v)helper}; do
         for e in "${(@s/,/)env[$item]}" ; do
             export VIRTUAL_ENV=$rootdir/.tox/$e 
-            export PATH="$rootdir/.tox/$e/bin:$OLDPATH"
-            echo "enter to: $VIRTUAL_ENV ($PATH)"
-            $rootdir/.tox/$e/bin/"$@"
-            unset VIRTUAL_ENV
+            source $VIRTUAL_ENV/bin/activate
+            $*
+            deactivate
         done
     done
     export PATH=$OLDPATH
