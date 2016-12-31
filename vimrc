@@ -8,6 +8,7 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'scrooloose/syntastic'
 Plug 'bling/vim-bufferline'
 Plug 'mhinz/vim-signify'                " VCS diff
+Plug 'tpope/vim-fugitive'               " GIT
 Plug 'ryanoasis/vim-devicons'
 " Text navigation
 Plug 'junegunn/vim-easy-align'
@@ -23,27 +24,26 @@ Plug 'majutsushi/tagbar'
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 " Language
-Plug 'vim-scripts/spec.vim'                      " .spec
-Plug 'caio/querycommandcomplete.vim'             " abook completion
-Plug 'tpope/vim-fugitive'                        " Git
-Plug 'klen/python-mode', { 'branch': 'develop' } " Python
-Plug 'davidhalter/jedi-vim'                      " Python
+Plug 'vim-scripts/spec.vim',          {'for': 'spec'}
+Plug 'caio/querycommandcomplete.vim'  " abook completion
+Plug 'klen/python-mode',              {'for': 'py'}
+Plug 'davidhalter/jedi-vim',          {'for': 'py'}
 Plug 'ervandew/supertab'
 Plug 'godlygeek/tabular'
-Plug 'spf13/PIV'                                 " PHP
-Plug 'Rykka/riv.vim'                             " Rst
-Plug 'rodjek/vim-puppet'                         " Puppet
-Plug 'pangloss/vim-javascript'                   " Js
-Plug 'groenewege/vim-less'                       " Less
-Plug 'elzr/vim-json'                             " Json 
-Plug 'tpope/vim-rails'                           " Ruby
-Plug 'fatih/vim-go'                              " Go
-Plug 'tpope/vim-markdown'                        " Markdown
+Plug 'spf13/PIV',                     {'for': 'php'}
+Plug 'Rykka/riv.vim',                 {'for': 'rst'}
+Plug 'rodjek/vim-puppet',             {'for': 'pp'}
+Plug 'pangloss/vim-javascript',       {'for': 'js'}
+Plug 'groenewege/vim-less',           {'for': 'less'}
+Plug 'elzr/vim-json',                 {'for': 'json'}
+Plug 'tpope/vim-rails',               {'for': 'rb'}
+Plug 'fatih/vim-go',                  {'for': 'go'}
+Plug 'tpope/vim-markdown',            {'for': 'md'}
 "Plug 'saltstack/salt-vim'                        " Salt
-Plug 'vim-scripts/HTML-AutoCloseTag'             " HTML autoclose
-Plug 'hail2u/vim-css3-syntax'                    " Css
+Plug 'vim-scripts/HTML-AutoCloseTag', {'for': ['html', 'xml']}
+Plug 'hail2u/vim-css3-syntax',        {'for': 'css'}
 Plug 'breard-r/vim-dnsserial'                    " dns zones
-Plug 'leafgarland/typescript-vim'                " Typescript
+Plug 'leafgarland/typescript-vim',    {'for': ['ts', 'ts.d']}
 call plug#end()
 
 set encoding=utf8
