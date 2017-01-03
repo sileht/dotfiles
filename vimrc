@@ -190,6 +190,14 @@ au BufRead /tmp/mutt* setlocal nocp
 au BufRead /tmp/mutt* startinsert
 au BufRead /tmp/mutt* ?^$
 
+
+" libvirt C style
+autocmd BufWritePre,BufRead *.c setlocal smartindent cindent cinoptions=(0,:0,l1,t0,L3
+autocmd BufWritePre,BufRead *.h setlocal smartindent cindent cinoptions=(0,:0,l1,t0,L3
+"au FileType make setlocal noexpandtab tapstop=8
+"au BufRead,BufNewFile *.am setlocal noexpandtab tapstop=8
+match ErrorMsg /\s\+$\| \+\ze\t/
+
 " Dirty js format
 " autocmd BufWritePre,BufRead *.js :set tabstop=2 shiftwidth=2
 
