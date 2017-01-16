@@ -16,7 +16,7 @@ set $mod Mod4
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
 #font pango:Monospace 8
-font pango:UbuntuMonoDerivativePowerline:style=Regular 8 
+font pango:UbuntuMonoDerivativePowerline:style=Regular 8
 
 # Before i3 v4.8, we used to recommend this one as the default:
 # font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
@@ -36,11 +36,13 @@ for_window [class="^.*"] border pixel 1
 
 # start application
 # bindsym $mod+Return exec i3-sensible-terminal
-bindsym $mod+Return exec mate-terminal --hide-menubar
+# bindsym $mod+Return exec mate-terminal --hide-menubar
+# bindsym $mod+Return exec alacritty
+bindsym $mod+Return exec urxvt
 bindsym $mod+b exec chromium --profile-directory=Default
-bindsym $mod+c exec mate-terminal --hide-menubar --title 'gizmo.sileht.net' -e "ssh -tqxkAC gizmo"
-#bindsym $mod+c exec mate-terminal --hide-menubar --title 'gizmo.sileht.net' -e "bash -c 'TERM=xterm-256color mosh -a gizmo'"
-bindsym $mod+d exec mate-terminal --hide-menubar --title 'gizmo.sileht.net' -e "bash -c 'TERM=xterm-256color mosh -a gizmo mutt'"
+bindsym $mod+c exec urxvt -title 'gizmo.sileht.net' -fade 0 -e ssh -tqxkAC gizmo
+# bindsym $mod+c exec mate-terminal --hide-menubar --title 'gizmo.sileht.net' -e "bash -c 'TERM=xterm-256color mosh -a gizmo'"
+# bindsym $mod+d exec mate-terminal --hide-menubar --title 'gizmo.sileht.net' -e "bash -c 'TERM=xterm-256color mosh -a gizmo mutt'"
 bindsym Print exec gnome-screenshot -i
 bindsym $mod+Shift+v exec --no-startup-id /home/sileht/.bin/redtokclip
 bindsym $mod+l exec --no-startup-id slock
@@ -50,6 +52,8 @@ bindsym $mod+Shift+a kill
 
 bindcode 248 exec --no-startup-id "bash -c 'pkill solard;solard --stop-on-outside-change;'"
 exec_always --no-startup-id "bash -c 'pkill solard;solard --stop-on-outside-change;'"
+
+exec_always --no-startup-id ~/.bin/gcal-remind
 
 # start dmenu (a program launcher)
 #bindsym $mod+r exec dmenu_run

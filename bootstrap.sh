@@ -17,12 +17,13 @@ done
 
 
 typeset -a flist="zshrc zprofile zlogin zlogout zshenv vimrc screenrc wgetrc
-pythonrc.py mutt emacs.d spacemacs.d config/awesome gitconfig gitignore-global
-ctags i3 config/dunst tmux tmux.conf config/khard vdirsyncer"
+pythonrc.py mutt config/awesome gitconfig gitignore-global
+ctags i3 config/dunst tmux tmux.conf config/khard vdirsyncer Xresources"
 
 typeset -a rlist="spf13-vim spf13-vim-3 vimrc.before vimrc.bundles
-vimrc.bundles.fork vimrc.fork notmuch-config vimrc.old vimrc.ori
-vimrc.before.local vimrc.bundles.local vimrc.local zsh lbdbrc spacemacs" 
+vimrc.bundles.fork vimrc.fork notmuch-config vimrc.old vimrc.ori specemacs.d
+emacs.d vimrc.before.local vimrc.bundles.local vimrc.local zsh lbdbrc
+spacemacs"
 
 
 setup_env_link() {
