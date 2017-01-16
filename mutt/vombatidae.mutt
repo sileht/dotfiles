@@ -93,4 +93,4 @@ color header		color29     	color233    '^reply-to:'
 #color index	green black '~h "^content-type: *multipart/(signed|encrypted)"'
 
 color sidebar_new color39 color234
-color progress      color230        color234
+color progress      color234        color230
