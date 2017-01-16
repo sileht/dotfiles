@@ -80,6 +80,16 @@ setup_i3pystatus(){
     ~/.i3/update.sh
 }
 
+setup_fonts(){
+    mkdir -p ~/.local/share/fonts
+    name="UbuntuMonoNerdFonts.ttf"
+    dest="/home/sileht/.local/share/fonts/${name}"
+    if [[ ! -e "${dest}" || "$(find $dest -mtime +30)" ]]; then
+        curl -q "https://raw.githubusercontent.com/ryanoasis/nerd-fonts/master/patched-fonts/UbuntuMono/Regular/complete/Ubuntu%20Mono%20derivative%20Powerline%20Nerd%20Font%20Complete.ttf" -o "${dest}"
+        fc-cache -fv
+    fi
+}
+
 maybe_do_update(){
     [ "$BOOSTRAP_UPDATED" ] && return
     git pull --rebase --recurse-submodules
@@ -94,4 +104,7 @@ cleanup_old_link
 [ "$force" ] &&  cleanup_forced
 setup_env_link
 setup_vim
-[ "$DISPLAY" ] && setup_i3pystatus
+if [ "$DISPLAY" == ":0" ]; then
+    setup_fonts
+    setup_i3pystatus
+fi

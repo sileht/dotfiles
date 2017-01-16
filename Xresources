@@ -29,8 +29,8 @@ URxvt.fading:      10
 ! URxvt.allow_bold:       false
 URxvt.depth: 0
 URxvt.intensityStyles:  false
-URxvt.font: xft:Ubuntu Mono derivative Powerline Nerd Font Plus Font Awesome Plus Font Linux Mono Windows Compatible:size=10
-URxvt.boldFont: xft:Ubuntu Mono derivative Powerline Nerd Font Plus Font Awesome Plus Font Linux Mono Windows Compatible:bold:size=10
+URxvt.font: xft:UbuntuMonoDerivativePowerline Nerd Font:size=10
+URxvt.boldFont: xft:UbuntuMonoDerivativePowerline Nerd Font:bold:size=10
 
 URxvt.scrollBar:         false
 URxvt.scrollTtyOutput:   false
