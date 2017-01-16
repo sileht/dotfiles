@@ -33,12 +33,12 @@ setup_env_link() {
         haserror=1
     }
     pushd $HOME > /dev/null
-    for f in $flist; do 
+    for f in $flist; do
         [ -e ".$f" -a "$(readlink -f .$f)" != "$(readlink -f $HOME/.env/$f)" ] && error $f
     done
     [ -n "$haserror" ] && exit 1
 
-    for f in $flist; do 
+    for f in $flist; do
         if [ ! -e ".$f" ] ; then
             mkdir -p $(dirname .$f)
             ln -sf ~/.env/$f .$f
@@ -89,7 +89,7 @@ maybe_do_update(){
     exec $0 $INITIAL_OPTS
 }
 
-maybe_do_update 
+maybe_do_update
 cleanup_old_link
 [ "$force" ] &&  cleanup_forced
 setup_env_link
