@@ -359,7 +359,6 @@ alias mkdir='nocorrect mkdir'
 [ ${UID} -eq 0 ] && alias sudo="" || alias sudo="nocorrect sudo"
 alias wget='noglob wget'
 alias curl='noglob curl'
-alias apt-cache='noglob apt-cache'
 alias man="LANG=C man"
 alias df="df -h"
 alias diff='diff -rNu'
@@ -367,7 +366,7 @@ alias cmutt="find ~/.mutt/cache/headers -type f -exec tcbmgr optimize -nl {} \;"
 alias vi="vim"
 alias vid="vim --servername sileht"
 alias vir="vim --servername sileht --remote-silent"
-alias svi="sudo -E vim" 
+alias svi="sudo -E vim"
 alias psql="sudo -i -u postgres psql"
 alias pyclean='find . -type f -name "*.py[co]" -delete'
 alias getaptkey='sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com'
