@@ -372,6 +372,7 @@ alias psql="sudo -i -u postgres psql"
 alias pyclean='find . -type f -name "*.py[co]" -delete'
 alias getaptkey='sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com'
 alias more=less
+alias weechat='LD_PRELOAD=/home/sileht/source/weechat_emojy/libwcwidth.so /usr/bin/weechat'
 function gcal() { gcalcli --military --monday -w $(($(tput cols)/8)) "$@"; }
 
 function of() { lsof -np "$1" }
