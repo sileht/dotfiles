@@ -23,8 +23,10 @@ URxvt.color13:    #AD7FA8
 URxvt.color14:    #34E2E2
 URxvt.color15:    #EEEEEC
 
+URxvt*skipBuiltinGlyphs:    true
 URxvt.buffered: false
 URxvt.transparent: true
+URxvt.savelines:  254
 URxvt.shading:     10
 URxvt.fading:      10
 ! URxvt.allow_bold:       false
@@ -39,6 +41,14 @@ URxvt.scrollWithBuffer:  true
 URxvt.scrollTtyKeypress: true
 URxvt*letterSpace: -1
 
-URxvt.perl-ext-common: default,matcher
+URxvt.perl-ext-common: default,matcher,selection-to-clipboard,clipboard-osc
 URxvt.url-launcher: /usr/bin/xdg-open
 URxvt.matcher.button: 1
+URxvt.iso14755: false
+URxvt.iso14755_52: false
+URxvt.keysym.C-C:   perl:clipboard:copy
+URxvt.keysym.C-V:   perl:clipboard:paste
+URxvt.keysym.C-A-V: perl:clipboard:paste_escaped
+
+!URxvt.colorUL: #4682B4
+!URxvt.matcher.rend.0: Uline Bold fg5
