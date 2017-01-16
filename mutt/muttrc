@@ -1,5 +1,4 @@
 
-#source ~/.mutt/mutt-colors-solarized-dark-256.muttrc
 source ~/.mutt/vombatidae.mutt
 source ~/.mutt/keybinding
 
@@ -21,9 +20,9 @@ set sleep_time = 0
 set mail_check = 60           # Reduce polling frequency to a sane level
 set timeout = 10              # And poll the current mailbox more often (not needed with IDLE in post 1.5.11)
 set net_inc = 5               # Display download progress every 5K
-#folder-hook . 'set read_inc=1000'
-folder-hook (^imap://mail.sileht.net) 'set read_inc=1000' 
-folder-hook (^imaps://mail.corp.redhat.com) 'set read_inc=200' 
+folder-hook . 'set read_inc=1000'
+#folder-hook (^imap://mail.sileht.net) 'set read_inc=1000'
+#folder-hook (^imaps://mail.corp.redhat.com) 'set read_inc=200'
 
 set my_tprot='t-prot -aelmtSsw -c --bigq=10,4 -Mmutt --pgp-move --spass -L$HOME/.mutt/mlfooters -A$HOME/.mutt/adfooters'
 set display_filter=$my_tprot
@@ -34,8 +33,9 @@ macro pager ) ":unset display_filter; exec exit\n:exec display-message\n" "Turn 
 macro pager = ":set display_filter='$my_tprot'; exec exit\n:exec display-message\n" "Turn TOFU protection on"
 
 # highlight TOFU protection:
-color body    brightmagenta   black   "^\\[---.*"
-color body    green           black   "^#v[-+]""]"
+#color body    brightmagenta   black   "^\\[---.*"
+#color body    green           black   "^#v[-+]""]"
+
 #set editor='vim + -c "set textwidth=72" -c "set wrap" -c 'set fo+=aw' -c "set spell spelllang=fr,en" -c "set nocp" -c "startinsert" -c "?^$"'
 set editor='vim + '
 
@@ -83,6 +83,7 @@ set pgp_sign_as=CEAAEBC8
 
 # Deleted duplicated mail
 set duplicate_threads = yes
+folder-hook . push "<delete-pattern>~=<enter>"
 
 folder-hook . 'set record="^"'
 folder-hook . push '<collapse-all>'
@@ -100,11 +101,13 @@ set query_command= "khard email -p %s"
 #bind editor ^T    complete
 
 # set sidebar_sort=yes
+# set sidebar_on_right=yes
 set sidebar_width=22
 set sidebar_visible=yes
 set sidebar_divider_char='|'
-set sidebar_format="%B%*  %N"
 set sidebar_short_path=yes
+set sidebar_format='%B%?F? [%F]?%*   %?N?%N/?%S'
+set mail_check_stats
 
 # Headers
 ignore *

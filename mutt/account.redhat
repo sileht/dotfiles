@@ -14,6 +14,8 @@ set record="=Sent"
 set postponed="=Drafts"
 set trash="=Trash"
 
+folder-hook "imap://redhat@mail.sileht.net/Trash" push "<delete-pattern>~d<space>>3m<enter>"
+folder-hook "imap://redhat@mail.sileht.net/ml-annonce" push "<delete-pattern>~d<space>>3m<enter>"
 folder-hook "imap://redhat@mail.sileht.net/ml-memo-list" push "<delete-pattern>~d<space>>3m<enter>"
 folder-hook "imap://redhat@mail.sileht.net/ml-cloud-strategy" push "<delete-pattern>~d<space>>3m<enter>"
 folder-hook "imap://redhat@mail.sileht.net/bugzilla" push "<delete-pattern>~d<space>>3m<enter>"
@@ -38,13 +40,17 @@ mailboxes \
     imap://redhat@mail.sileht.net/bugzilla-me \
     imap://redhat@mail.sileht.net/bugtracker \
     imap://redhat@mail.sileht.net/ml-memo-list \
-    imap://redhat@mail.sileht.net/ml-paris \
     imap://redhat@mail.sileht.net/ml-rhos-dev \
     imap://redhat@mail.sileht.net/ml-rhos-tech \
     imap://redhat@mail.sileht.net/ml-rhos-prio \
     imap://redhat@mail.sileht.net/ml-rhos-pgm \
+    imap://redhat@mail.sileht.net/ml-cloud-strategy \
     imap://redhat@mail.sileht.net/ml-low-prio \
     imap://redhat@mail.sileht.net/ml-tech \
+    imap://redhat@mail.sileht.net/ml-python-list \
+    imap://redhat@mail.sileht.net/ml-annonce \
+    imap://redhat@mail.sileht.net/ml-paris \
+    imap://redhat@mail.sileht.net/ml-zzz-other \
     imap://redhat@mail.sileht.net/archives \
     imap://redhat@mail.sileht.net/vie \
 

@@ -19,8 +19,10 @@ set postponed="+Drafts"
 set trash="+Trash"
 
 folder-hook "imap://sileht@mail.sileht.net/zml-" push "<delete-pattern>~d<space>>3m<enter>"
+folder-hook "imap://sileht@mail.sileht.net/Trash" push "<delete-pattern>~d<space>>3m<enter>"
 
 macro index,pager \ci "<change-folder>=Inbox<enter>" "open a different folder"
+
 #macro index,pager a "<enter-command>set my_old_resolve=\$resolve noresolve<enter>\
 #<tag-prefix><clear-flag>n<enter-command>set resolve=\$my_old_resolve<enter>\
 #<tag-prefix><save-message> \Cu=perso-archives\Cj" "read and archive current message"
@@ -40,6 +42,8 @@ mailboxes \
       imap://sileht@mail.sileht.net/ttnn \
       imap://sileht@mail.sileht.net/ttnn-hosting \
       imap://sileht@mail.sileht.net/ttnn-services \
+      imap://sileht@mail.sileht.net/ttnn-system \
+      imap://sileht@mail.sileht.net/zml-ci-bots \
       imap://sileht@mail.sileht.net/zml-ceph \
       imap://sileht@mail.sileht.net/zml-check_mk \
       imap://sileht@mail.sileht.net/zml-frnog \

@@ -92,4 +92,5 @@ color header		color29     	color233    '^reply-to:'
 #mono index	bold '~h "^content-type: *(multipart/(mixed|signed|encrypted)|application/)"'
 #color index	green black '~h "^content-type: *multipart/(signed|encrypted)"'
 
-#color sidebar_new color39 color234 
+color sidebar_new color39 color234
+color progress      color230        color234
