@@ -28,17 +28,17 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
 " Language
 Plug 'vim-scripts/spec.vim',          {'for': 'spec'}
 Plug 'caio/querycommandcomplete.vim'  " abook completion
-Plug 'klen/python-mode',              {'for': 'py'}
-Plug 'davidhalter/jedi-vim',          {'for': 'py'}
+Plug 'klen/python-mode',              {'for': 'python'}
+Plug 'davidhalter/jedi-vim',          {'for': 'python'}
 Plug 'ervandew/supertab'
 Plug 'godlygeek/tabular'
 Plug 'spf13/PIV',                     {'for': 'php'}
 Plug 'Rykka/riv.vim',                 {'for': 'rst'}
-Plug 'rodjek/vim-puppet',             {'for': 'pp'}
-Plug 'pangloss/vim-javascript',       {'for': 'js'}
+Plug 'rodjek/vim-puppet',             {'for': 'puppet'}
+Plug 'pangloss/vim-javascript',       {'for': 'javascript'}
 Plug 'groenewege/vim-less',           {'for': 'less'}
 Plug 'elzr/vim-json',                 {'for': 'json'}
-Plug 'tpope/vim-rails',               {'for': 'rb'}
+Plug 'tpope/vim-rails',               {'for': 'ruby'}
 Plug 'fatih/vim-go',                  {'for': 'go', 'do': ':GoInstallBinaries'}
 Plug 'tpope/vim-markdown',            {'for': 'markdown'}
 Plug 'racer-rust/vim-racer'           " rust
