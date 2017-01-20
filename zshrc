@@ -339,7 +339,7 @@ add-zsh-hook chpwd s
 inw(){ Xephyr :1 & pid=$! ; DISPLAY=:1 $*; kill $pid ;}
 
 if [ "$HOST" = "bob" ]; then
-    function novpn() { sudo systemctl stop openvpn@redhat; sudo /etc/init.d/fastd stop; sudo rm /etc/dnsmasq.d/redhat.conf;sudo /etc/init.d/dnsmasq restart; }
+    function novpn() { sudo systemctl stop openvpn@redhat; sudo /etc/init.d/fastd stop; }
     function vpnrh() { sudo systemctl restart openvpn@redhat ;}
     alias vpnttnn='sudo /etc/init.d/fastd start'
 else
