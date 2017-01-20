@@ -43,7 +43,7 @@ URxvt*letterSpace: -1
 
 URxvt.perl-ext-common: default,matcher,selection-to-clipboard,clipboard-osc
 URxvt.url-launcher: /usr/bin/xdg-open
-URxvt.matcher.button: 1
+URxvt.matcher.button: C1
 URxvt.iso14755: false
 URxvt.iso14755_52: false
 URxvt.keysym.C-C:   perl:clipboard:copy
