@@ -31,7 +31,6 @@ export LESSHISTFILE=~/.var/less/history
 export PAGER=less
 export LESSOPEN='|lessfilter %s'
 
-export PYTHONSTARTUP="$HOME/.pythonrc.py"
 # terminator hack
 [ "$TERM" = "xterm" ] && export TERM=xterm-256color
 export MOSH_PREDICTION_DISPLAY=always
