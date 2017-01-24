@@ -11,19 +11,7 @@
 
 set $mod Mod4
 
-# Font for window titles. Will also be used by the bar unless a different font
-# is used in the bar {} block below.
-# This font is widely installed, provides lots of unicode glyphs, right-to-left
-# text rendering and scalability on retina/hidpi displays (thanks to pango).
-#font pango:Monospace 8
 font pango:UbuntuMonoDerivativePowerline Nerd Font:style=Regular 8
-
-# Before i3 v4.8, we used to recommend this one as the default:
-# font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
-# The font above is very space-efficient, that is, it looks good, sharp and
-# clear in small sizes. However, its unicode glyph coverage is limited, the old
-# X core fonts rendering does not support right-to-left and this being a bitmap
-# font, it doesn’t scale on retina/hidpi displays.
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -35,14 +23,12 @@ for_window [class="VirtualBox"] floating enable
 for_window [class="^.*"] border pixel 1
 
 # start application
-# bindsym $mod+Return exec i3-sensible-terminal
-# bindsym $mod+Return exec mate-terminal --hide-menubar
+bindsym $mod+Return exec mate-terminal --hide-menubar
 # bindsym $mod+Return exec alacritty
-bindsym $mod+Return exec urxvt
 bindsym $mod+b exec chromium --profile-directory=Default
-bindsym $mod+c exec urxvt -title 'gizmo.sileht.net' -fade 0 -e ssh -tqxkAC gizmo
-# bindsym $mod+c exec mate-terminal --hide-menubar --title 'gizmo.sileht.net' -e "bash -c 'TERM=xterm-256color mosh -a gizmo'"
-# bindsym $mod+d exec mate-terminal --hide-menubar --title 'gizmo.sileht.net' -e "bash -c 'TERM=xterm-256color mosh -a gizmo mutt'"
+bindsym $mod+c exec mate-terminal --hide-menubar --title 'gizmo.sileht.net' -e "ssh -tqxkAC gizmo"
+#bindsym $mod+c exec mate-terminal --hide-menubar --title 'gizmo.sileht.net' -e "bash -c 'TERM=xterm-256color mosh -a gizmo'"
+#bindsym $mod+d exec mate-terminal --hide-menubar --title 'gizmo.sileht.net' -e "bash -c 'TERM=xterm-256color mosh -a gizmo mutt'"
 bindsym Print exec gnome-screenshot -i
 bindsym $mod+Shift+v exec --no-startup-id /home/sileht/.bin/redtokclip
 bindsym $mod+l exec --no-startup-id slock
