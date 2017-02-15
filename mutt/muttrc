@@ -51,6 +51,7 @@ set indent_string = "> "                # how to quote replied text
 set mail_check = 10                     # how often to poll for new mail
 set mark_old = no                       # i don't care about whether a message is old
 set narrow_tree = yes                   # narrow threading trees
+set nowait_key
 set collapse_unread = no                # don't collapse threads with unread mails
 set strict_threads = yes
 set uncollapse_jump = yes               # jump to unread message when uncollapse
@@ -63,7 +64,7 @@ set sort_aux=reverse-last-date-received # showing threads with youngest message 
 
 set text_flowed=yes
 
-set index_format="%Z %s %*   %E | %-20.20L | %{%d/%m %H:%M} | %?l?%4l&%4c? "
+set index_format="%Z| %s%?J? [%J]?%*   %E | %-20.20L | %{%d/%m %H:%M} | %?l?%4l&%4c? "
 set folder_format="%4N %f" # what I settled on
 set pager_index_lines = 12              # Split-screen index/pager preview thing
 set pager_stop = yes                    # Don't skip to next message at end of message
@@ -74,8 +75,8 @@ set auto_tag = yes
 set abort_nosubject = yes
 set metoo = no                          # remove my address when replying
 
-set header_cache = "~/.mutt/cache/headers"
-set message_cachedir = "~/.mutt/cache/messages"
+#set header_cache = "~/.mutt/cache/headers"
+#set message_cachedir = "~/.mutt/cache/messages"
 #set maildir_header_cache_verify = no   # workaround: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=459739
 
 set pgp_autosign=no

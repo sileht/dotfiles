@@ -49,5 +49,6 @@ macro index,pager S "<enter-command>set my_old_resolve=\$resolve noresolve<enter
 
 macro index,pager C "<pipe-message>khard add-email -a other<return>" "add the sender email address to khard"
 
+bind index,pager y imap-edit-keywords
 
 # vim: ft=muttrc:

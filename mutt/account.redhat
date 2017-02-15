@@ -1,8 +1,8 @@
 # vim:set ft=muttrc:
 
-set from = "sileht@redhat.com"
+set from = "mabaakou@redhat.com"
 unalternates *
-alternates "^(mabaakou|mehdi.abaakouk)@redhat.com"
+alternates "^(sileht|mabaakou|mehdi.abaakouk)@redhat.com"
 set realname = "Mehdi Abaakouk"
 set signature = "~/.mutt/signature.redhat"
 
@@ -45,7 +45,6 @@ mailboxes \
     imap://redhat@mail.sileht.net/ml-rhos-prio \
     imap://redhat@mail.sileht.net/ml-rhos-pgm \
     imap://redhat@mail.sileht.net/ml-cloud-strategy \
-    imap://redhat@mail.sileht.net/ml-low-prio \
     imap://redhat@mail.sileht.net/ml-tech \
     imap://redhat@mail.sileht.net/ml-python-list \
     imap://redhat@mail.sileht.net/ml-annonce \
