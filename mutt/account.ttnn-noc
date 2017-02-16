@@ -14,7 +14,7 @@ set folder="imaps://noc@mx1.tetaneutral.net/"
 set spoolfile="=INBOX"
 set record="=Sent"
 set postponed="=Drafts"
-set trash="INBOX.Trash"
+set trash="=Trash"
 
 # SMTP
 set ssl_force_tls = no
