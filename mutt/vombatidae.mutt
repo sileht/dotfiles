@@ -56,7 +56,7 @@ color quoted9       color138     color234
 # color body          green default  "(^| )_[-a-z0-9_]+_[,.?]?[ \n]"
 color index_label  color202  color234
 color index_tags  color202  color234
-color index_keywords  color202  color234
+color index_imap_keywords  color202  color234
 color index  color202  color234  ~F # Flagged
 color index  color39   color234  ~N # New
 color index  color39   color234  ~O # Old

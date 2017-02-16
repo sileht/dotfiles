@@ -2,15 +2,15 @@
 
 unmailboxes *
 
-set from = "common@tetaneutral.net"
+set from = "adhesion@tetaneutral.net"
 unalternates *
 #alternates 
-set realname = "Mehdi Abaakouk"
+set realname = "Mehdi Abaakouk for tetaneutral.net"
 set signature = 
 
 ## IMAP 
 set ssl_starttls=yes
-set folder="imaps://common@mx1.tetaneutral.net/"
+set folder="imaps://adhesion@mx1.tetaneutral.net/"
 set spoolfile="=INBOX"
 set record="=Sent"
 set postponed="=Drafts"
@@ -18,5 +18,5 @@ set trash="INBOX.Trash"
 
 # SMTP
 set ssl_force_tls = no
-set smtp_url="smtp://common@mx1.tetaneutral.net"
+set smtp_url="smtp://adhesion@mx1.tetaneutral.net"
 set smtp_pass=$imap_pass

@@ -75,9 +75,8 @@ set auto_tag = yes
 set abort_nosubject = yes
 set metoo = no                          # remove my address when replying
 
-#set header_cache = "~/.mutt/cache/headers"
-#set message_cachedir = "~/.mutt/cache/messages"
-#set maildir_header_cache_verify = no   # workaround: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=459739
+set header_cache = "~/.mutt/cache/headers"
+set message_cachedir = "~/.mutt/cache/messages"
 
 set pgp_autosign=no
 set pgp_sign_as=CEAAEBC8
@@ -121,8 +120,8 @@ hdr_order Date: Subject: From: To: Cc:  Reply-To: Organization:
 #macro index <f2> '<sync-mailbox><refresh><enter-command>set sidebar_visible=no<enter><refresh><enter-command>source ~/.mutt/account.redhat<enter><refresh><enter-command>set sidebar_visible=yes<enter><refresh><change-folder>!<enter>'
 macro index <f1> '<sync-mailbox><redraw-screen><enter-command>source ~/.mutt/account.sileht<enter><redraw-screen><change-folder>!<enter><enter-command>exec sidebar-scroll-up<enter>'
 macro index <f2> '<sync-mailbox><redraw-screen><enter-command>source ~/.mutt/account.redhat<enter><redraw-screen><change-folder>!<enter><enter-command>exec sidebar-scroll-up<enter>'
-macro index <f3> '<sync-mailbox><redraw-screen><enter-command>source ~/.mutt/account.ttnn<enter><redraw-screen><change-folder>!<enter><enter-command>exec sidebar-scroll-up<enter>'
-macro index <f4> '<sync-mailbox><redraw-screen><enter-command>source ~/.mutt/account.ttnn-system<enter><redraw-screen><change-folder>!<enter><enter-command>exec sidebar-scroll-up<enter>'
+macro index <f3> '<sync-mailbox><redraw-screen><enter-command>source ~/.mutt/account.ttnn-common<enter><redraw-screen><change-folder>!<enter><enter-command>exec sidebar-scroll-up<enter>'
+macro index <f4> '<sync-mailbox><redraw-screen><enter-command>source ~/.mutt/account.ttnn-question<enter><redraw-screen><change-folder>!<enter><enter-command>exec sidebar-scroll-up<enter>'
 
 source ~/.mutt/password
 source ~/.mutt/account.`echo ${ACCOUNT:=sileht}`

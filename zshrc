@@ -362,7 +362,7 @@ alias curl='noglob curl'
 alias man="LANG=C man"
 alias df="df -h"
 alias diff='diff -rNu'
-alias cmutt="find ~/.mutt/cache/headers -type f -exec tcbmgr optimize -nl {} \;"
+alias optimutt="find ~/.mutt/cache/headers -type f -exec tcbmgr optimize -nl {} \;"
 alias vi="vim"
 alias vid="vim --servername sileht"
 alias vir="vim --servername sileht --remote-silent"

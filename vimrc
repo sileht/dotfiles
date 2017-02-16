@@ -167,7 +167,7 @@ autocmd BufEnter * if bufname("") !~ "^\[A-Za-z0-9\]*://" | lcd %:p:h | endif
 autocmd FileType c,cpp,java,go,php,javascript,puppet,python,rst set textwidth=79
 
 " No ending space
-autocmd FileType c,cpp,java,go,php,javascript,puppet,python,rst,rust,twig,xml,yml,perl,sql autocmd BufWritePre <buffer> call StripTrailingWhitespace()
+"autocmd FileType c,cpp,java,go,php,javascript,puppet,python,rst,rust,twig,xml,yml,perl,sql autocmd BufWritePre <buffer> call StripTrailingWhitespace()
 
 " Use en_us spell and completion per default for markdown and rst 
 autocmd FileType gitcommit,rst,mkd,markdown silent! call ToggleSpell()
@@ -241,6 +241,8 @@ let g:signify_update_on_focusgained = 1
 
 let g:riv_global_leader ='<C-s>'
 let g:riv_disable_folding = 1
+
+let g:syntastic_c_checkers = []
 
 let g:syntastic_python_checkers = ['flake8']
 let g:syntastic_python_flake8_quiet_messages = {"regex": [ 'W503', 'E402', 'E731', 'H301']}
