@@ -25,6 +25,13 @@ vimrc.bundles.fork vimrc.fork notmuch-config vimrc.old vimrc.ori specemacs.d
 emacs.d vimrc.before.local vimrc.bundles.local vimrc.local zsh lbdbrc
 pythonrc.py spacemacs Xresources"
 
+ensure_pkgs() {
+    for name in "$@"; do
+        if [ -x $(which apt) ]; then
+            [ ! -f /var/lib/dpkg/info/${name}.list -a ! -f /var/lib/dpkg/info/${name}:amd64.list ] && sudo apt -y install ${name}
+        fi
+    done
+}
 
 setup_env_link() {
     haserror=
@@ -100,7 +107,8 @@ maybe_do_update(){
 }
 
 setup_st(){
-   (cd st && make)
+    ensure_pkgs libxft-dev libxext-dev libfontconfig1-dev libxrender-dev libx11-dev
+    (cd st && make)
 }
 
 maybe_do_update
