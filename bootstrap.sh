@@ -99,12 +99,17 @@ maybe_do_update(){
     exec $0 $INITIAL_OPTS
 }
 
+setup_st(){
+   (cd st && make)
+}
+
 maybe_do_update
 cleanup_old_link
 [ "$force" ] &&  cleanup_forced
 setup_env_link
 setup_vim
 if [ "$DISPLAY" == ":0" ]; then
+    setup_st
     setup_fonts
     setup_i3pystatus
 fi

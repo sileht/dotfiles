@@ -16,3 +16,6 @@
 [submodule "tmux/plugins/tpm"]
 	path = tmux/plugins/tpm
 	url = https://github.com/tmux-plugins/tpm
+[submodule "st"]
+	path = st
+	url = git@github.com:sileht/st.git

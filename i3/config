@@ -23,14 +23,13 @@ for_window [class="VirtualBox"] floating enable
 for_window [class="^.*"] border pixel 1
 
 # start application
-bindsym $mod+Return exec ~/.bin/st
-# bindsym $mod+Return exec mate-terminal --hide-menubar
-# bindsym $mod+Return exec alacritty
+bindsym $mod+Return exec st
 bindsym $mod+b exec chromium --profile-directory=Default
-#bindsym $mod+c exec mate-terminal --hide-menubar --title 'gizmo.sileht.net' -e "ssh -tqxkAC gizmo"
-bindsym $mod+c exec ~/.bin/st -t 'gizmo.sileht.net' -e ssh -tqxkAC gizmo
-#bindsym $mod+c exec mate-terminal --hide-menubar --title 'gizmo.sileht.net' -e "bash -c 'TERM=xterm-256color mosh -a gizmo'"
-#bindsym $mod+d exec mate-terminal --hide-menubar --title 'gizmo.sileht.net' -e "bash -c 'TERM=xterm-256color mosh -a gizmo mutt'"
+bindsym $mod+c exec st -t 'gizmo.sileht.net' -e ssh -tqxkAC gizmo
+bindsym $mod+Shift+c exec st -t 'gizmo.sileht.net' -e mosh -a gizmo
+bindsym $mod+d exec st -t 'gizmo.sileht.net' -e ssh -tqxkAC gizmo mutt
+bindsym $mod+Shift+d exec st -t 'gizmo.sileht.net' -e mosh -a gizmo mutt
+
 bindsym Print exec gnome-screenshot -i
 bindsym $mod+Shift+v exec --no-startup-id /home/sileht/.bin/redtokclip
 bindsym $mod+l exec --no-startup-id slock
