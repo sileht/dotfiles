@@ -1,14 +1,5 @@
 #!/bin/sh
 
-export PATH=$PATH:/sbin:/usr/sbin:~/.bin:~/.local/bin/:~/logiciel/bin:/opt/vagrant/bin:~/.cargo/bin
-
-if [ -d ~/logiciel ] ; then
-    for i in ~/logiciel/*/bin ; do
-        export PATH=$PATH:$i
-    done
-fi
-
-
 cachedir=${XDG_CACHE_HOME:-"$HOME/.cache"}
 if [ -d "$cachedir" ]; then
 	cache=$cachedir/dmenu_run

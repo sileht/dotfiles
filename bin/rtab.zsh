@@ -58,8 +58,8 @@ while [[ $1 == -* ]]; do
 done
 
 typeset -a tree expn
-typeset result part dir=${1-$PWD}
-typeset -i i
+typeset result part dir="${1-$PWD}"
+typeset -i index
 
 [[ -d $dir ]] || return 0
 
@@ -87,9 +87,9 @@ tree=(${(s:/:)dir})
     expn=(a b)
     part=''
     i=0
-    until [[ (( ${#expn} == 1 )) || $dir = $expn || $i -gt 99 ]]  do
+    until [[ (( ${#expn} == 1 )) || $dir = $expn || $index -gt 99 ]]  do
       (( i++ ))
-      part+=$dir[$i]
+      part+=$dir[$index]
       #expn=($(echo ${part}*(/)))
       expn=($(echo ${part}*(-/)))
       (( short )) && break

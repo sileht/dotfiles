@@ -4,7 +4,9 @@ fpath=($fpath ~/.env/zsh-completions/src)
 
 export ZVARDIR=$HOME/.var/zsh
 export TMPDIR=/tmp
-export PATH=$PATH:/sbin:/usr/sbin:~/.bin:~/.local/bin/:/opt/vagrant/bin:~/.env/bin
+
+# Source PATH
+source ~/.xsessionrc
 
 export DEBEMAIL=sileht@sileht.net
 export DEBFULLNAME='Mehdi Abaakouk'
