@@ -13,6 +13,7 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'eugen0329/vim-esearch'
 Plug 'Shougo/vimproc.vim', {'do' : 'make'}
 " Text navigation
+Plug 'nacitar/terminalkeys.vim'
 Plug 'junegunn/vim-easy-align'
 Plug 'easymotion/vim-easymotion'
 Plug 'tpope/vim-surround'
@@ -114,21 +115,17 @@ map <C-n> :NERDTreeToggle<CR>
 map <leader>e :NERDTreeFind<CR>
 nmap <leader>nt :NERDTreeFind<CR>
 
-imap <silent> <Esc>OA <Up>
-imap <silent> <Esc>OB <Down>
-imap <silent> <Esc>OC <Right>
-imap <silent> <Esc>OD <Left>
-imap <silent> <Esc>OH <Home>
-imap <silent> <Esc>OF <End>
-imap <silent> <Esc>[5~ <PageUp>
-imap <silent> <Esc>[6~ <PageDown>]]
-
-
 map <F6> :w<CR>:!aspell -l en -c %<CR>:e %<CR>
 map <F7> :w<CR>:!aspell -l fr -c %<CR>:e %<CR>
 nmap <silent> <F8> :call ToggleSpell()<CR>
 "nmap <C-e> :TagbarToggle<CR>
 
+" http://snk.tuxfamily.org/log/vim-256color-bce.html
+" Disable Background Color Erase (BCE) so that color schemes
+" work properly when Vim is used inside tmux and GNU screen.
+if &term =~ '256color'
+  set t_ut=
+endif
 nmap <leader>1 <Plug>AirlineSelectTab1
 nmap <leader>2 <Plug>AirlineSelectTab2
 nmap <leader>3 <Plug>AirlineSelectTab3
