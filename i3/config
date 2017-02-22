@@ -23,10 +23,12 @@ for_window [class="VirtualBox"] floating enable
 for_window [class="^.*"] border pixel 1
 
 # start application
-bindsym $mod+Return exec mate-terminal --hide-menubar
+bindsym $mod+Return exec ~/.bin/st
+# bindsym $mod+Return exec mate-terminal --hide-menubar
 # bindsym $mod+Return exec alacritty
 bindsym $mod+b exec chromium --profile-directory=Default
-bindsym $mod+c exec mate-terminal --hide-menubar --title 'gizmo.sileht.net' -e "ssh -tqxkAC gizmo"
+#bindsym $mod+c exec mate-terminal --hide-menubar --title 'gizmo.sileht.net' -e "ssh -tqxkAC gizmo"
+bindsym $mod+c exec ~/.bin/st -t 'gizmo.sileht.net' -e ssh -tqxkAC gizmo
 #bindsym $mod+c exec mate-terminal --hide-menubar --title 'gizmo.sileht.net' -e "bash -c 'TERM=xterm-256color mosh -a gizmo'"
 #bindsym $mod+d exec mate-terminal --hide-menubar --title 'gizmo.sileht.net' -e "bash -c 'TERM=xterm-256color mosh -a gizmo mutt'"
 bindsym Print exec gnome-screenshot -i
@@ -36,10 +38,11 @@ bindsym $mod+x exec --no-startup-id pcmanfm /home/sileht/
 # kill focused window
 bindsym $mod+Shift+a kill
 
-bindcode 248 exec --no-startup-id "bash -c 'pkill solard;solard --stop-on-outside-change;'"
-exec_always --no-startup-id "bash -c 'pkill solard;solard --stop-on-outside-change;'"
+exec_always --no-startup-id compton
+#bindcode 248 exec --no-startup-id "bash -c 'pkill solard;solard --stop-on-outside-change;'"
+#exec_always --no-startup-id "bash -c 'pkill solard;solard --stop-on-outside-change;'"
 
-exec_always --no-startup-id ~/.bin/gcal-remind
+#exec_always --no-startup-id ~/.bin/gcal-remind
 
 # start dmenu (a program launcher)
 #bindsym $mod+r exec dmenu_run
