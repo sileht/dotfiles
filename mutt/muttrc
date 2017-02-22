@@ -38,6 +38,7 @@ macro pager = ":set display_filter='$my_tprot'; exec exit\n:exec display-message
 
 #set editor='vim + -c "set textwidth=72" -c "set wrap" -c 'set fo+=aw' -c "set spell spelllang=fr,en" -c "set nocp" -c "startinsert" -c "?^$"'
 set editor='vim + '
+set charset = "utf-8"
 
 set folder=""
 set move = no                           # Stop asking to "move read messages to mbox"!
@@ -63,8 +64,12 @@ set sort_browser=date                   # showing mbox list default to newest fi
 set sort_aux=reverse-last-date-received # showing threads with youngest message last
 
 set text_flowed=yes
+set duplicate_threads = no              # Do it only for some account
 
-set index_format="%Z| %s%?J? [%J]?%*   %E | %-20.20L | %{%d/%m %H:%M} | %?l?%4l&%4c? "
+#set hidden_tags=Junk,NonJunk,nonjunk,junk,\$Forwarded,\$label1,\$label2,\$label3,\$label4
+tag-formats "telemetry" "GT" "toto" "GO"
+#set index_format="%Z| %s |%J/%g| %?g? # %GT %GO?%*  %E | %-20.20L | %{%d/%m %H:%M} | %?l?%4l&%4c? "
+set index_format="%Z| %s %?g?[%g] ?%*  %E | %-20.20L | %{%d/%m %H:%M} | %?l?%4l&%4c? "
 set folder_format="%4N %f" # what I settled on
 set pager_index_lines = 12              # Split-screen index/pager preview thing
 set pager_stop = yes                    # Don't skip to next message at end of message
@@ -75,15 +80,11 @@ set auto_tag = yes
 set abort_nosubject = yes
 set metoo = no                          # remove my address when replying
 
-set header_cache = "~/.mutt/cache/headers"
-set message_cachedir = "~/.mutt/cache/messages"
+#set header_cache = "~/.mutt/cache/headers"
+#set message_cachedir = "~/.mutt/cache/messages"
 
 set pgp_autosign=no
 set pgp_sign_as=CEAAEBC8
-
-# Deleted duplicated mail
-set duplicate_threads = yes
-folder-hook . push "<delete-pattern>~=<enter>"
 
 folder-hook . 'set record="^"'
 folder-hook . push '<collapse-all>'

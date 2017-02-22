@@ -56,12 +56,22 @@ color quoted9       color138     color234
 # color body          green default  "(^| )_[-a-z0-9_]+_[,.?]?[ \n]"
 color index_label  color202  color234
 color index_tags  color202  color234
-color index_imap_keywords  color202  color234
+color index_tag  color39  color234 "toto"
+color index_tag  color202  color234 "telemetry"
 color index  color202  color234  ~F # Flagged
 color index  color39   color234  ~N # New
 color index  color39   color234  ~O # Old
 color index  color229  color22   ~T # Tagged
 color index  color240  color234  ~D # Deleted
+
+#tag-transforms "telemetry2"   "🍝 🐁 " \
+#               "telemetry" "TELEMETRY" \
+#                "toto" "↻ "
+#                "unread"  "u"   \
+#                "telemetry"    "➥ what !"  \
+#                "todo"    "T"   \
+#                "deleted" "DEL" \
+#                "invites" "CAL"
 
 # ---
 

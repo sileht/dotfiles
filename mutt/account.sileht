@@ -28,6 +28,10 @@ macro index,pager \ci "<change-folder>=Inbox<enter>" "open a different folder"
 #<tag-prefix><save-message> \Cu=perso-archives\Cj" "read and archive current message"
 
 
+# Deleted duplicated mail
+set duplicate_threads = yes
+folder-hook . push "<delete-pattern>~=<enter>"
+
 unmailboxes *
 mailboxes \
       imap://sileht@mail.sileht.net/Inbox \
@@ -35,8 +39,8 @@ mailboxes \
       imap://sileht@mail.sileht.net/Sent \
       imap://sileht@mail.sileht.net/Trash \
       imap://sileht@mail.sileht.net/Junk \
+      imap://sileht@mail.sileht.net/Archive \
       imap://sileht@mail.sileht.net/perso-appart \
-      imap://sileht@mail.sileht.net/perso-archives \
       imap://sileht@mail.sileht.net/perso-compte-achat \
       imap://sileht@mail.sileht.net/perso-serveur \
       imap://sileht@mail.sileht.net/ttnn \
@@ -53,6 +57,11 @@ mailboxes \
       imap://sileht@mail.sileht.net/zml-os-releases \
       imap://sileht@mail.sileht.net/zml-os-unknown \
       imap://sileht@mail.sileht.net/zml-toulibre \
+#      /home/sileht/mutt_notmuch_test
+
+#set virtual_spoolfile=yes
+#set nm_default_uri = "notmuch:///home/sileht/mutt_notmuch_test/"
+#virtual-mailboxes "NOTMUCH TEST" "notmuch://?query=tag:inbox"
 
 
 # SMTP

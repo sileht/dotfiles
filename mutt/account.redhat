@@ -27,6 +27,10 @@ macro index,pager \ci "<change-folder>=INBOX<enter>" "open a different folder"
 #<tag-prefix><clear-flag>n<enter-command>set resolve=\$my_old_resolve<enter>\
 #<tag-prefix><save-message> \Cu=archives\Cj" "read and archive current message"
 
+# Deleted duplicated mail
+set duplicate_threads = yes
+folder-hook . push "<delete-pattern>~=<enter>"
+
 unmailboxes *
 mailboxes \
     imap://redhat@mail.sileht.net/INBOX \
