@@ -20,7 +20,7 @@ set sleep_time = 0
 set mail_check = 60           # Reduce polling frequency to a sane level
 set timeout = 10              # And poll the current mailbox more often (not needed with IDLE in post 1.5.11)
 set net_inc = 5               # Display download progress every 5K
-folder-hook . 'set read_inc=1000'
+folder-hook . 'set read_inc=0'
 #folder-hook (^imap://mail.sileht.net) 'set read_inc=1000'
 #folder-hook (^imaps://mail.corp.redhat.com) 'set read_inc=200'
 
@@ -76,12 +76,14 @@ set pager_stop = yes                    # Don't skip to next message at end of m
                                         # (avoids accidental setting as being read)
 set markers = no                        # no line wraparound marker (is "+" by default)
 
-set auto_tag = yes
-set abort_nosubject = yes
+set auto_tag = yes                      # Apply action on tagged message (index only)
+set abort_nosubject = yes               # Don't send mail without subject
 set metoo = no                          # remove my address when replying
 
-#set header_cache = "~/.mutt/cache/headers"
-#set message_cachedir = "~/.mutt/cache/messages"
+set maildir_header_cache_verify = no
+set header_cache = "~/.mutt/cache/headers"
+set message_cachedir = "~/.mutt/cache/messages"
+
 
 set pgp_autosign=no
 set pgp_sign_as=CEAAEBC8
@@ -98,8 +100,8 @@ set certificate_file="~/.mutt/certificates"
 
 # Contacts
 set query_command= "khard email -p %s"
-#bind editor <Tab> complete-query
-#bind editor ^T    complete
+bind editor <Tab> complete-query
+bind editor ^T    complete
 
 # set sidebar_sort=yes
 # set sidebar_on_right=yes

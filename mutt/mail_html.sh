@@ -1,6 +1,7 @@
 #!/bin/bash
 
-charset=$1
+echo
+#charset=$1
 #file=$2
 #shift
 #elinks -dump 1 -dump-color-mode 3 -dump-charset $charset "$file"

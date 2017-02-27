@@ -25,13 +25,13 @@ export VISUAL=vim
 KEYTIMEOUT=1
 
 # Less config
-eval `lesspipe 2>/dev/null`
-LESS='--quit-if-one-screen --no-init --hilite-search --jump-target=0.5 --SILENT --raw-control-chars'
-export LESS
+export LESS='--quit-if-one-screen --no-init --hilite-search --jump-target=0.5 --SILENT --raw-control-chars'
 export LESSHISTFILE=~/.var/less/history
 [[ -d ${LESSHISTFILE%/*} ]] || mkdir --parent ${LESSHISTFILE%/*}
 export PAGER=less
-export LESSOPEN='|lessfilter %s'
+export LESSCOLOR=always
+export LESSCOLORIZER="highlight -O ansi"
+export LESSOPEN="|lesspipe %s"
 
 # terminator hack
 [ "$TERM" = "xterm" ] && export TERM=xterm-256color
