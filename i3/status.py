@@ -34,8 +34,8 @@ status.register("pulseaudio",
                 sink="bluez_sink.C0_7A_A5_00_9F_1A",
                 color_muted="#AAAAAA",
                 format="📡: {volume}{selected}")
-status.register("temp")
 status.register("cpu_usage_graph", graph_width=5)
+status.register("temp")
 status.register("battery", interval=60, alert_percentage=3,
                 # {bar}",
                 format="{status}{remaining:%E%hh:%Mm} {consumption}W",
