@@ -21,6 +21,7 @@ bind index <Esc>D purge-message
 bind index,pager j next-new-then-unread
 bind index,pager <Esc>j next-unread-mailbox
 bind index,pager a next-unread-mailbox
+bind index,pager A next-unread-mailbox
 
 #macro index,pager a ':<enter>'
 #macro index,pager \cv |urlview\n
@@ -39,7 +40,7 @@ macro index,pager M "<tag-pattern>~N|~O<enter>\
 macro index,pager <F7> ':color index green default "~p"<enter>'  'Highlight ON for answers to me'
 macro index,pager <F8> ':uncolor index green default "~p"<enter>'    'Highlight OFF for answers to me'
 
-macro index,pager A "<enter-command>set my_old_resolve=\$resolve noresolve<enter>\
+macro index,pager Z "<enter-command>set my_old_resolve=\$resolve noresolve<enter>\
 <tag-prefix><clear-flag>n<enter-command>set resolve=\$my_old_resolve<enter>\
 <tag-prefix><save-message>=Archive<enter>" "read and move current message to Archive"
 macro index,pager S "<enter-command>set my_old_resolve=\$resolve noresolve<enter>\

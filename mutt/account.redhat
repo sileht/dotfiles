@@ -38,6 +38,7 @@ mailboxes \
     imap://redhat@mail.sileht.net/Sent \
     imap://redhat@mail.sileht.net/Trash \
     imap://redhat@mail.sileht.net/Junk \
+    imap://redhat@mail.sileht.net/Archives \
     imap://redhat@mail.sileht.net/ceilo-team \
     imap://redhat@mail.sileht.net/reviews-os \
     imap://redhat@mail.sileht.net/reviews-rh \
@@ -54,7 +55,6 @@ mailboxes \
     imap://redhat@mail.sileht.net/ml-annonce \
     imap://redhat@mail.sileht.net/ml-paris \
     imap://redhat@mail.sileht.net/ml-zzz-other \
-    imap://redhat@mail.sileht.net/archives \
     imap://redhat@mail.sileht.net/vie \
 
 

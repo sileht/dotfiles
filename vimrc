@@ -184,7 +184,7 @@ au BufRead /tmp/mutt* setlocal wrap
 au BufRead /tmp/mutt* setlocal fo+=aw
 au BufRead /tmp/mutt* setlocal spell spelllang=fr,en
 au BufRead /tmp/mutt* setlocal nocp
-au BufRead /tmp/mutt* startinsert
+"au BufRead /tmp/mutt* startinsert
 au BufRead /tmp/mutt* ?^$
 
 

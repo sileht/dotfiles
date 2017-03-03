@@ -43,7 +43,8 @@ set include = yes                       # always include messages when replying
 set fast_reply=yes                      # no prompting on reply
 set forward_quote = yes                 # include original text on forward?
 set indent_string = "> "                # how to quote replied text
-set mail_check = 10                     # how often to poll for new mail
+set mail_check = 20                     # how often to poll for new mail
+#set mail_check = 1                     # how often to poll for new mail
 set mark_old = no                       # i don't care about whether a message is old
 set narrow_tree = yes                   # narrow threading trees
 set nowait_key
@@ -64,7 +65,7 @@ set duplicate_threads = no              # Do it only for some account
 #
 set hidden_tags=Junk,NonJunk,nonjunk,junk,\$Forwarded,\$label1,\$label2,\$label3,\$label4
 #tag-formats "telemetry" "GT"
-tag-transforms "telemetry" "⌬ " "tele" ⫷"
+tag-transforms "telemetry" "⌬ " "oslo" "⛁ "
 set index_format=" [%Z] %{%b-%d %H:%M} | %-20.20L | %?M?➘ ?%s %?g?/ %g ?%* (%?l?%l&%c?)"
 
 set folder_format="%4N %f"              # what I settled on
@@ -78,8 +79,8 @@ set abort_nosubject = yes               # Don't send mail without subject
 set metoo = no                          # remove my address when replying
 
 
-#set debug_file = "/home/sileht/.mutt/log"
-#set debug_level = 0
+set debug_file = "/home/sileht/.mutt/log"
+set debug_level = 0
 set maildir_header_cache_verify = no
 set header_cache = "~/.mutt/cache/headers"
 set message_cachedir = "~/.mutt/cache/messages"
@@ -93,7 +94,6 @@ folder-hook . 'set record="^"'
 folder-hook . push '<collapse-all>'
 #folder-hook . push '<sidebar-scroll-up>'
 
-#alternative_order text/html text/plain  # this helps with multipart messages
 alternative_order text/plain text/html  # this helps with multipart messages
 auto_view text/html                     #if there is only html dump that
 
