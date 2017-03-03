@@ -64,15 +64,6 @@ color index  color39   color234  ~O # Old
 color index  color229  color22   ~T # Tagged
 color index  color240  color234  ~D # Deleted
 
-#tag-transforms "telemetry2"   "🍝 🐁 " \
-#               "telemetry" "TELEMETRY" \
-#                "toto" "↻ "
-#                "unread"  "u"   \
-#                "telemetry"    "➥ what !"  \
-#                "todo"    "T"   \
-#                "deleted" "DEL" \
-#                "invites" "CAL"
-
 # ---
 
 #mono body  reverse    '^(subject):.*'

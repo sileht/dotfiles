@@ -28,7 +28,7 @@ Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 " Language
 Plug 'vim-scripts/spec.vim',          {'for': 'spec'}
-Plug 'caio/querycommandcomplete.vim'  " abook completion
+"Plug 'caio/querycommandcomplete.vim'  " abook completion
 Plug 'klen/python-mode',              {'for': 'python'}
 Plug 'davidhalter/jedi-vim',          {'for': 'python'}
 Plug 'ervandew/supertab'
@@ -177,8 +177,8 @@ autocmd FileType gitcommit,rst,mkd,markdown set complete+=kspell
 " No jedi-vim doc popup
 autocmd FileType python setlocal completeopt-=preview
 
-let g:qcc_query_command='khard email'
-au BufRead /tmp/mutt* setlocal omnifunc=QueryCommandComplete
+let g:qcc_query_command='~/.mutt/editor-email-query'
+au BufRead /tmp/mutt* setlocal omnifunc=QueryCommandComplete "<C-X><C-O> 
 au BufRead /tmp/mutt* setlocal textwidth=72
 au BufRead /tmp/mutt* setlocal wrap
 au BufRead /tmp/mutt* setlocal fo+=aw
