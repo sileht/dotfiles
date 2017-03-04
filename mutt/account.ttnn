@@ -3,7 +3,7 @@
 set from = "${my_ttnn_user}@tetaneutral.net"
 unalternates *
 set realname = "Mehdi Abaakouk for tetaneutral.net"
-unset signature
+set signature = "~/.mutt/signature.ttnn"
 
 set folder="imaps://${my_ttnn_user}@mx1.tetaneutral.net/"
 set smtp_url="smtp://${my_ttnn_user}@mx1.tetaneutral.net"
