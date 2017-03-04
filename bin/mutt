@@ -1,0 +1,13 @@
+#!/bin/bash
+
+case $1 in
+    rmutt) ACCOUNT=redhat;;
+    amutt) ACCOUNT=ttnn ; TTNN_USER=adhesion;;
+    cmutt) ACCOUNT=ttnn ; TTNN_USER=common;;
+    smutt) ACCOUNT=ttnn ; TTNN_USER=system;;
+    nmutt) ACCOUNT=ttnn ; TTNN_USER=noc;;
+esac
+
+m="/home/sileht/source/neomutt/neomutt/mutt"
+[ ! -x $m ] && m="/usr/bin/mutt"
+exec $m "$@"
