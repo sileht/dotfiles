@@ -67,7 +67,7 @@ macro generic = ":set display_filter='$my_tprot'\n" "Turn TOFU protection on"
 macro pager ) ":unset display_filter; exec exit\n:exec display-message\n" "Turn TOFU protection off"
 macro pager = ":set display_filter='$my_tprot'; exec exit\n:exec display-message\n" "Turn TOFU protection on"
 
-set duplicate_threads = no              # Do it only for some account
+set duplicate_threads = no              # Do it only for some accounts
 folder-hook . push "<delete-pattern>~=<enter>"
 
 set hidden_tags=Junk,NonJunk,nonjunk,junk,\$Forwarded,\$label1,\$label2,\$label3,\$label4
@@ -99,9 +99,9 @@ alternative_order text/plain text/html  # this helps with multipart messages
 auto_view text/html                     #if there is only html dump that
 
 # Contacts
-set query_command= "khard email -p %s"
-#bind editor <Tab> complete-query
-#bind editor ^T    complete
+set query_command = "khard email -p %s"
+bind editor <Tab> complete-query
+bind editor ^T    complete
 
 set sidebar_width=22
 set sidebar_visible=yes
@@ -117,12 +117,10 @@ unignore x-mailer: user-agent:
 unignore X-Gerrit-ChangeURL:
 hdr_order Date: Subject: From: To: Cc:  Reply-To: Organization:
 
-set my_ttnn_user=`echo ${TTNN_USER:=adhesion}`
+set my_ttnn_user=`echo ${TTNN_USER}`
 set my_account=`echo ${ACCOUNT:=sileht}`
 source ~/.mutt/password
 source ~/.mutt/account.$my_account
-
-set my_dont_care=`tmux rename-window -t${TMUX_PANE} "mutt[${ACCOUNT:=sileht}]"`
 
 set spoolfile="=INBOX"
 set record="=Sent"

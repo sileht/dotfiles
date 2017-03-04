@@ -13,9 +13,7 @@ set smtp_url="smtp://$imap_user@mail.sileht.net"
 folder-hook "imap://sileht@mail.sileht.net/zml-" push "<delete-pattern>~d<space>>3m<enter>"
 folder-hook "imap://sileht@mail.sileht.net/Trash" push "<delete-pattern>~d<space>>3m<enter>"
 
-# Deleted duplicated mail
 set duplicate_threads = yes
-folder-hook . push "<delete-pattern>~=<enter>"
 
 unmailboxes *
 mailboxes \

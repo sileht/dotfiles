@@ -8,6 +8,8 @@ set signature = "~/.mutt/signature.ttnn"
 set folder="imaps://${my_ttnn_user}@mx1.tetaneutral.net/"
 set smtp_url="smtp://${my_ttnn_user}@mx1.tetaneutral.net"
 
+set duplicate_threads = no
+
 unmailboxes *
 mailboxes \
     =INBOX \

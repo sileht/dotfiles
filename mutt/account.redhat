@@ -17,7 +17,6 @@ folder-hook "imap://redhat@mail.sileht.net/bugzilla" push "<delete-pattern>~d<sp
 folder-hook "imap://redhat@mail.sileht.net/ml-rhos" push "<delete-pattern>~d<space>>3m<enter>"
 folder-hook "imap://redhat@mail.sileht.net/review-" push "<delete-pattern>~d<space>>1m<enter>"
 
-# Deleted duplicated mail
 set duplicate_threads = yes
 
 unmailboxes *
