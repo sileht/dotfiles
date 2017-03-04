@@ -22,6 +22,8 @@ bind index,pager j next-new-then-unread
 bind index,pager <Esc>j next-unread-mailbox
 bind index,pager a next-unread-mailbox
 bind index,pager A next-unread-mailbox
+bind index <esc>L limit
+bind index l limit-current-thread
 
 #macro index,pager a ':<enter>'
 #macro index,pager \cv |urlview\n

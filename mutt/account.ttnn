@@ -1,0 +1,19 @@
+# vim:set ft=muttrc:
+
+set from = "${my_ttnn_user}@tetaneutral.net"
+unalternates *
+set realname = "Mehdi Abaakouk for tetaneutral.net"
+unset signature
+
+set folder="imaps://${my_ttnn_user}@mx1.tetaneutral.net/"
+set smtp_url="smtp://${my_ttnn_user}@mx1.tetaneutral.net"
+
+unmailboxes *
+mailboxes \
+    =INBOX \
+    =Drafts \
+    =Sent \
+    =Trash \
+    =Junk \
+
+

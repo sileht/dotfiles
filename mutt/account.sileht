@@ -7,26 +7,11 @@ alternates "^(theli48@gmail.com|.*mehdi.*@sileht.net|.*sileht.*@sileht.net)$
 set realname = "Mehdi Abaakouk"
 set signature = "~/.mutt/signature.local"
 
-# SSL
-set ssl_starttls = yes
-set ssl_force_tls = yes
-
-## IMAP 
 set folder="imap://sileht@mail.sileht.net"
-set spoolfile="+Inbox"
-set record="+Sent"
-set postponed="+Drafts"
-set trash="+Trash"
+set smtp_url="smtp://$imap_user@mail.sileht.net"
 
 folder-hook "imap://sileht@mail.sileht.net/zml-" push "<delete-pattern>~d<space>>3m<enter>"
 folder-hook "imap://sileht@mail.sileht.net/Trash" push "<delete-pattern>~d<space>>3m<enter>"
-
-macro index,pager \ci "<change-folder>=Inbox<enter>" "open a different folder"
-
-#macro index,pager a "<enter-command>set my_old_resolve=\$resolve noresolve<enter>\
-#<tag-prefix><clear-flag>n<enter-command>set resolve=\$my_old_resolve<enter>\
-#<tag-prefix><save-message> \Cu=perso-archives\Cj" "read and archive current message"
-
 
 # Deleted duplicated mail
 set duplicate_threads = yes
@@ -34,30 +19,30 @@ folder-hook . push "<delete-pattern>~=<enter>"
 
 unmailboxes *
 mailboxes \
-      imap://sileht@mail.sileht.net/Inbox \
-      imap://sileht@mail.sileht.net/Drafts \
-      imap://sileht@mail.sileht.net/Sent \
-      imap://sileht@mail.sileht.net/Trash \
-      imap://sileht@mail.sileht.net/Junk \
-      imap://sileht@mail.sileht.net/Archive \
-      imap://sileht@mail.sileht.net/perso-appart \
-      imap://sileht@mail.sileht.net/perso-compte-achat \
-      imap://sileht@mail.sileht.net/perso-serveur \
-      imap://sileht@mail.sileht.net/ttnn \
-      imap://sileht@mail.sileht.net/ttnn-hosting \
-      imap://sileht@mail.sileht.net/ttnn-services \
-      imap://sileht@mail.sileht.net/ttnn-system \
-      imap://sileht@mail.sileht.net/zml-ci-bots \
-      imap://sileht@mail.sileht.net/zml-ceph \
-      imap://sileht@mail.sileht.net/zml-neomutt \
-      imap://sileht@mail.sileht.net/zml-check_mk \
-      imap://sileht@mail.sileht.net/zml-frnog \
-      imap://sileht@mail.sileht.net/zml-os-interested \
-      imap://sileht@mail.sileht.net/zml-os-junk \
-      imap://sileht@mail.sileht.net/zml-os-other \
-      imap://sileht@mail.sileht.net/zml-os-releases \
-      imap://sileht@mail.sileht.net/zml-os-unknown \
-      imap://sileht@mail.sileht.net/zml-toulibre \
+      =INBOX \
+      =Drafts \
+      =Sent \
+      =Trash \
+      =Junk \
+      =Archive \
+      =perso-appart \
+      =perso-compte-achat \
+      =perso-serveur \
+      =ttnn \
+      =ttnn-hosting \
+      =ttnn-services \
+      =ttnn-system \
+      =zml-ci-bots \
+      =zml-ceph \
+      =zml-neomutt \
+      =zml-check_mk \
+      =zml-frnog \
+      =zml-os-interested \
+      =zml-os-junk \
+      =zml-os-other \
+      =zml-os-releases \
+      =zml-os-unknown \
+      =zml-toulibre \
 
 #      notmuch://?query=tag:inbox
 
@@ -70,8 +55,3 @@ mailboxes \
 #set nm_default_uri = "notmuch:///home/sileht/mutt_notmuch_test/"
 #virtual-mailboxes "INBOX" "notmuch://?query=tag:inbox"
 #virtual-mailboxes "ALL" "notmuch://?query=!tag:inbox"
-
-
-# SMTP
-set smtp_url="smtp://$imap_user@mail.sileht.net"
-set smtp_pass=$imap_pass

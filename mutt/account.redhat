@@ -6,13 +6,8 @@ alternates "^(sileht|mabaakou|mehdi.abaakouk)@redhat.com"
 set realname = "Mehdi Abaakouk"
 set signature = "~/.mutt/signature.redhat"
 
-## IMAP 
-set ssl_starttls=yes
 set folder="imap://redhat@mail.sileht.net"
-set spoolfile="=INBOX"
-set record="=Sent"
-set postponed="=Drafts"
-set trash="=Trash"
+set smtp_url="smtp://smtp.corp.redhat.com/"
 
 folder-hook "imap://redhat@mail.sileht.net/Trash" push "<delete-pattern>~d<space>>3m<enter>"
 folder-hook "imap://redhat@mail.sileht.net/ml-annonce" push "<delete-pattern>~d<space>>3m<enter>"
@@ -22,43 +17,31 @@ folder-hook "imap://redhat@mail.sileht.net/bugzilla" push "<delete-pattern>~d<sp
 folder-hook "imap://redhat@mail.sileht.net/ml-rhos" push "<delete-pattern>~d<space>>3m<enter>"
 folder-hook "imap://redhat@mail.sileht.net/review-" push "<delete-pattern>~d<space>>1m<enter>"
 
-macro index,pager \ci "<change-folder>=INBOX<enter>" "open a different folder"
-#macro index,pager a "<enter-command>set my_old_resolve=\$resolve noresolve<enter>\
-#<tag-prefix><clear-flag>n<enter-command>set resolve=\$my_old_resolve<enter>\
-#<tag-prefix><save-message> \Cu=archives\Cj" "read and archive current message"
-
 # Deleted duplicated mail
 set duplicate_threads = yes
-folder-hook . push "<delete-pattern>~=<enter>"
 
 unmailboxes *
 mailboxes \
-    imap://redhat@mail.sileht.net/INBOX \
-    imap://redhat@mail.sileht.net/Drafts \
-    imap://redhat@mail.sileht.net/Sent \
-    imap://redhat@mail.sileht.net/Trash \
-    imap://redhat@mail.sileht.net/Junk \
-    imap://redhat@mail.sileht.net/Archives \
-    imap://redhat@mail.sileht.net/ceilo-team \
-    imap://redhat@mail.sileht.net/reviews-os \
-    imap://redhat@mail.sileht.net/reviews-rh \
-    imap://redhat@mail.sileht.net/bugzilla-me \
-    imap://redhat@mail.sileht.net/bugtracker \
-    imap://redhat@mail.sileht.net/ml-memo-list \
-    imap://redhat@mail.sileht.net/ml-rhos-dev \
-    imap://redhat@mail.sileht.net/ml-rhos-tech \
-    imap://redhat@mail.sileht.net/ml-rhos-prio \
-    imap://redhat@mail.sileht.net/ml-rhos-pgm \
-    imap://redhat@mail.sileht.net/ml-cloud-strategy \
-    imap://redhat@mail.sileht.net/ml-tech \
-    imap://redhat@mail.sileht.net/ml-python-list \
-    imap://redhat@mail.sileht.net/ml-annonce \
-    imap://redhat@mail.sileht.net/ml-paris \
-    imap://redhat@mail.sileht.net/ml-zzz-other \
-    imap://redhat@mail.sileht.net/vie \
-
-
-# SMTP
-set ssl_force_tls = no
-set smtp_url="smtp://smtp.corp.redhat.com/"
-set smtp_pass=""
+    =INBOX \
+    =Drafts \
+    =Sent \
+    =Trash \
+    =Junk \
+    =Archives \
+    =ceilo-team \
+    =reviews-os \
+    =reviews-rh \
+    =bugzilla-me \
+    =bugtracker \
+    =ml-memo-list \
+    =ml-rhos-dev \
+    =ml-rhos-tech \
+    =ml-rhos-prio \
+    =ml-rhos-pgm \
+    =ml-cloud-strategy \
+    =ml-tech \
+    =ml-python-list \
+    =ml-annonce \
+    =ml-paris \
+    =ml-zzz-other \
+    =vie
