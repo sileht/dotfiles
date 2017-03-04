@@ -7,28 +7,26 @@ source ~/.mutt/crypto
 source ~/.mutt/keybinding
 
 set charset = "utf-8"
-set hostname=sileht.net
-set mbox_type=Maildir
-set xterm_set_titles=yes
-# Always tls
-set ssl_starttls = yes
-#set ssl_force_tls = yes
-set ssl_force_tls = no
+set hostname = sileht.net
+set mbox_type = Maildir
+set xterm_set_titles = yes
 
-set imap_idle="yes"
+set ssl_starttls = yes
+set imap_idle = yes
 set imap_keepalive = 600
 
-set sleep_time = 0
-set timeout = 10              # And poll the current mailbox more often (not needed with IDLE in post 1.5.11)
 set net_inc = 5               # Display download progress every 5K
-set read_inc=0
+set read_inc = 0
+set read_inc = 0
 folder-hook . 'set read_inc=0'
 #folder-hook (^imap://mail.sileht.net) 'set read_inc=1000'
 
 set editor='vim + '                     # email editing option are set into vimrc with /tmp/mutt_* catcher
 set edit_headers =yes                   # let me edit the message header when composing
 
+# Don't bother me with stupid question
 set move = no                           # Stop asking to "move read messages to mbox"!
+set sleep_time = 0                      # Don't wait on notification
 set copy = yes                          # always save a copy of outgoing messages
 set delete = yes                        # purge deleted messages without asking
 # reply
@@ -41,7 +39,6 @@ set mime_forward_rest=yes               # forward everything and more
 set indent_string = "> "                # how to quote replied text
 
 set mail_check = 20                     # how often to poll for new mail
-set mail_check = 1                      # how often to poll for new mail
 set mail_check_stats = yes              # Get stats about new mail, needed by sidebar
 set mail_check_recent = no              # Use New flag and not last visited date
 
@@ -51,7 +48,6 @@ set narrow_tree = yes                   # narrow threading trees
 set nowait_key
 set collapse_unread = no                # don't collapse threads with unread mails
 set strict_threads = yes
-# set hide_thread_subject = no            # Allow show subject
 set uncollapse_new = yes                # open threads when new mail
 set uncollapse_jump = yes               # jump to unread message when uncollapse
 set status_on_top = yes                 # status bar on top
@@ -71,19 +67,12 @@ macro generic = ":set display_filter='$my_tprot'\n" "Turn TOFU protection on"
 macro pager ) ":unset display_filter; exec exit\n:exec display-message\n" "Turn TOFU protection off"
 macro pager = ":set display_filter='$my_tprot'; exec exit\n:exec display-message\n" "Turn TOFU protection on"
 
-
-
-
 set duplicate_threads = no              # Do it only for some account
 folder-hook . push "<delete-pattern>~=<enter>"
 
-#set index_format="%Z| %s |%J/%g| %?g? # %GT %GO?%*  %E | %-20.20L | %{%d/%m %H:%M} | %?l?%4l&%4c? "
-#
 set hidden_tags=Junk,NonJunk,nonjunk,junk,\$Forwarded,\$label1,\$label2,\$label3,\$label4
-#tag-formats "telemetry" "GT"
 tag-transforms "telemetry" "⌬ " "oslo" "⛁ "
 set index_format=" [%Z] %{%b-%d %H:%M} | %-20.20L | %?M?➘ ?%s %?g?/ %g ?%* (%?l?%l&%c?)"
-
 set folder_format="%4N %f"              # what I settled on
 
 set pager_index_lines = 10              # Split-screen index/pager preview thing
@@ -103,9 +92,8 @@ set message_cachedir = "~/.mutt/cache/messages"
 set mailcap_path = "~/.mutt/mailcap"      # override system mailcap
 set certificate_file = "~/.mutt/certificates"
 
-folder-hook . 'set record="^"'
-folder-hook . push '<collapse-all>'
-#folder-hook . push '<sidebar-scroll-up>'
+folder-hook . 'set record="^"'                    # Put sent mail into current folder
+folder-hook . push '<collapse-all>'               # No open old threads
 
 alternative_order text/plain text/html  # this helps with multipart messages
 auto_view text/html                     #if there is only html dump that
@@ -115,8 +103,6 @@ set query_command= "khard email -p %s"
 #bind editor <Tab> complete-query
 #bind editor ^T    complete
 
-# set sidebar_sort=yes
-# set sidebar_on_right=yes
 set sidebar_width=22
 set sidebar_visible=yes
 set sidebar_divider_char='|'
@@ -126,29 +112,24 @@ set sidebar_format='%B%?F? [%F]?%*   %?N?%N/?%S'
 # Headers
 ignore *
 unignore Date: From: Organization: To: Cc: Reply-To: Subject:
-unignore x-mailing-list: posted-to:
+unignore x-mailing-list: posted-to: x-beenthere:
 unignore x-mailer: user-agent:
 unignore X-Gerrit-ChangeURL:
 hdr_order Date: Subject: From: To: Cc:  Reply-To: Organization:
 
-macro index <f1> '<sync-mailbox><redraw-screen><enter-command>source ~/.mutt/account.sileht<enter><redraw-screen><change-folder>!<enter><enter-command>exec sidebar-scroll-up<enter>'
-macro index <f2> '<sync-mailbox><redraw-screen><enter-command>source ~/.mutt/account.redhat<enter><redraw-screen><change-folder>!<enter><enter-command>exec sidebar-scroll-up<enter>'
-macro index <f3> '<sync-mailbox><redraw-screen><enter-command>set my_ttnn_user=adhesion<enter><enter-command>source ~/.mutt/account.ttnn<enter><redraw-screen><change-folder>!<enter><enter-command>exec sidebar-scroll-up<enter>'
-macro index <f4> '<sync-mailbox><redraw-screen><enter-command>set my_ttnn_user=common<enter><enter-command>source ~/.mutt/account.ttnn<enter><redraw-screen><change-folder>!<enter><enter-command>exec sidebar-scroll-up<enter>'
-
-# default account settings
-set folder=""
-
-source ~/.mutt/password
 set my_ttnn_user=`echo ${TTNN_USER:=adhesion}`
-source ~/.mutt/account.`echo ${ACCOUNT:=sileht}`
+set my_account=`echo ${ACCOUNT:=sileht}`
+source ~/.mutt/password
+source ~/.mutt/account.$my_account
 
-folder-hook . 'set spoolfile="=INBOX"'
-folder-hook . 'set record="=Sent"'
-folder-hook . 'set postponed="=Drafts"'
-folder-hook . 'set trash="=Trash"'
+set my_dont_care=`tmux rename-window -t${TMUX_PANE} "mutt[${ACCOUNT:=sileht}]"`
 
 set spoolfile="=INBOX"
 set record="=Sent"
 set postponed="=Drafts"
 set trash="=Trash"
+
+#macro index <f1> '<sync-mailbox><redraw-screen><enter-command>source ~/.mutt/account.sileht<enter><redraw-screen><change-folder>!<enter><enter-command>exec sidebar-scroll-up<enter>'
+#macro index <f2> '<sync-mailbox><redraw-screen><enter-command>source ~/.mutt/account.redhat<enter><redraw-screen><change-folder>!<enter><enter-command>exec sidebar-scroll-up<enter>'
+#macro index <f3> '<sync-mailbox><redraw-screen><enter-command>set my_ttnn_user=adhesion<enter><enter-command>source ~/.mutt/account.ttnn<enter><redraw-screen><change-folder>!<enter><enter-command>exec sidebar-scroll-up<enter>'
+#macro index <f4> '<sync-mailbox><redraw-screen><enter-command>set my_ttnn_user=common<enter><enter-command>source ~/.mutt/account.ttnn<enter><redraw-screen><change-folder>!<enter><enter-command>exec sidebar-scroll-up<enter>'
