@@ -1,1 +1,0 @@
-/home/sileht/.vim/plugged/notmuch-abook/pythonx/notmuch_abook.py

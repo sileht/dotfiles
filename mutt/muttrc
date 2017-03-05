@@ -1,6 +1,8 @@
 
 set debug_file = "/home/sileht/.mutt/log"
 set debug_level = 0
+set hide_thread_subject = no
+set tmpdir = "~/.mutt/cache/tmp"
 
 source ~/.mutt/vombatidae.mutt
 source ~/.mutt/crypto
@@ -56,8 +58,8 @@ folder-hook . set sort=threads          # Set threaded pager as default for all 
 set sort_browser=date                   # showing mbox list default to newest first
 set sort_aux=reverse-last-date-received # showing threads with youngest message last
 
-# Message display
-set my_tprot='t-prot -aelmtSsw -c --bigq=10,4 -Mmutt --pgp-move --spass -L$HOME/.mutt/mlfooters -A$HOME/.mutt/adfooters'
+# Message display --bigq=10,4 
+set my_tprot='t-prot -cmekatlSsw --bigq -Mmutt --pgp-move-vrf --pgp-short -L$HOME/.mutt/mlfooters -A$HOME/.mutt/adfooters'
 set display_filter=$my_tprot
 set skip_quoted_offset = 3
 set text_flowed=yes
@@ -72,7 +74,7 @@ folder-hook . push "<delete-pattern>~=<enter>"
 
 set hidden_tags=Junk,NonJunk,nonjunk,junk,\$Forwarded,\$label1,\$label2,\$label3,\$label4
 tag-transforms "telemetry" "⌬ " "oslo" "⛁ "
-set index_format=" [%Z] %{%b-%d %H:%M} | %-20.20L | %?M?➘ ?%s %?g?/ %g ?%* (%?l?%l&%c?)"
+set index_format="[%Z] %{%b-%d %H:%M} | %-20.20L | %?M?➘ ?%s %?g?/ %g ?%* (%?l?%l&%c?)" # %X attachements utilise le réseau pour imap...
 set folder_format="%4N %f"              # what I settled on
 
 set pager_index_lines = 10              # Split-screen index/pager preview thing
@@ -103,18 +105,18 @@ set query_command = "khard email -p %s"
 bind editor <Tab> complete-query
 bind editor ^T    complete
 
-set sidebar_width=22
-set sidebar_visible=yes
-set sidebar_divider_char='|'
-set sidebar_short_path=yes
-set sidebar_format='%B%?F? [%F]?%*   %?N?%N/?%S'
+set sidebar_width = 22
+set sidebar_visible = yes
+set sidebar_divider_char = ' '
+set sidebar_short_path = yes
+set sidebar_format = '%B%?F? [%F]?%*   %?N?%N/?%S'
 
 # Headers
 ignore *
 unignore Date: From: Organization: To: Cc: Reply-To: Subject:
 unignore x-mailing-list: posted-to: x-beenthere:
 unignore x-mailer: user-agent:
-unignore X-Gerrit-ChangeURL:
+unignore X-Gerrit-ChangeURL: X-Github-URL:
 hdr_order Date: Subject: From: To: Cc:  Reply-To: Organization:
 
 set my_ttnn_user=`echo ${TTNN_USER}`

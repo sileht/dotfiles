@@ -11,11 +11,6 @@ set smtp_url="smtp://${my_ttnn_user}@mx1.tetaneutral.net"
 set duplicate_threads = no
 
 unmailboxes *
-mailboxes \
-    =INBOX \
-    =Drafts \
-    =Sent \
-    =Trash \
-    =Junk \
+mailboxes =INBOX =Drafts =Sent =Trash =Junk
 
 

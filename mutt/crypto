@@ -12,6 +12,9 @@ set pgp_verify_key_command="gpg --no-verbose --batch --fingerprint --check-sigs 
 set pgp_list_pubring_command="gpg --no-verbose --batch --with-colons --list-keys %r"
 set pgp_list_secring_command="gpg --no-verbose --batch --with-colons --list-secret-keys %r"
 
+#set pgp_getkeys_command="gpg --batch --quiet --no-verbose --recv-keys %r &>/dev/null "
+#set pgp_getkeys_command="gpg --batch --quiet --no-verbose --search %r"
+
 set pgp_autosign=yes
 set pgp_sign_as=0xCEAAEBC8
 set postpone_encrypt_as=0xCEAAEBC8

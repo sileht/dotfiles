@@ -6,7 +6,7 @@ case "$(basename $0)" in
     cmutt) export ACCOUNT=ttnn TTNN_USER=common;;
     smutt) export ACCOUNT=ttnn TTNN_USER=system;;
     nmutt) export ACCOUNT=ttnn TTNN_USER=noc;;
-    *) export ACCOUNT=sileht;
+    *) [ ! "$ACCOUNT" ] && export ACCOUNT=sileht;;
 esac
 
 TITLE=${ACCOUNT}
