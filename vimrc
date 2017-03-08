@@ -11,7 +11,6 @@ Plug 'morhetz/gruvbox'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 "Plug 'scrooloose/syntastic' replace by noemake
-Plug 'neomake/neomake'
 Plug 'bling/vim-bufferline'
 Plug 'mhinz/vim-signify'                " VCS diff
 Plug 'tpope/vim-fugitive'               " GIT
@@ -33,9 +32,12 @@ Plug 'majutsushi/tagbar'
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 " Language
+if has('nvim')
+Plug 'neomake/neomake'
 Plug 'Shougo/deoplete.nvim',          { 'do': ':UpdateRemotePlugins' }
 Plug 'zchee/deoplete-jedi',           {'for': 'python'}
 Plug 'zchee/deoplete-go',             {'for': 'go'}
+endif
 "Plug 'davidhalter/jedi-vim',          {'for': 'python'} replaced by deoplete-jedi
 Plug 'vim-scripts/spec.vim',          {'for': 'spec'}
 Plug 'Vimjas/vim-python-pep8-indent', {'for': 'python'}
@@ -65,10 +67,11 @@ Plug 'mattn/calendar-vim'
 Plug 'tpope/vim-speeddating'
 Plug 'chrisbra/NrrwRgn'
 Plug 'vim-scripts/utl.vim'
-Plug 'Shougo/dein.vim'
 call plug#end()
 
+if has('nvim')
 call deoplete#enable()
+endif
 
 set encoding=utf8
 scriptencoding utf-8
