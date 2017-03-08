@@ -70,9 +70,10 @@ set encoding=utf8
 scriptencoding utf-8
 syntax on
 filetype plugin indent on
-"set shell=/bin/sh
+set shell=/bin/sh
 
 "set clipboard=unnamed,unnamedplus
+set mouse=
 set hidden                      " Allow buffer switching without saving
 set backup                      " Backups are nice ...
 set undofile                    " So is persistent undo ...
