@@ -48,6 +48,14 @@ Plug 'vim-scripts/HTML-AutoCloseTag', {'for': ['html', 'xml']}
 Plug 'hail2u/vim-css3-syntax',        {'for': 'css'}
 Plug 'breard-r/vim-dnsserial'         " dns zones
 Plug 'leafgarland/typescript-vim',    {'for': ['ts', 'ts.d']}
+" Org Mode
+Plug 'jceb/vim-orgmode'
+Plug 'vim-scripts/SyntaxRange'
+Plug 'mattn/calendar-vim'
+Plug 'tpope/vim-speeddating'
+Plug 'chrisbra/NrrwRgn'
+Plug 'vim-scripts/utl.vim'
+Plug 'Shougo/dein.vim'
 call plug#end()
 
 set encoding=utf8
@@ -103,6 +111,10 @@ set guioptions-=T  "remove toolbar
 
 let mapleader = " "
 let g:mapleader = " "
+let maplocalleader = ","
+let g:maplocalleader = ","
+
+let g:org_agenda_files = ['~/org/index.org']
 
 " Paste last yank
 nnoremap P "0p

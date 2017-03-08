@@ -15,27 +15,21 @@
 #  color message        color230      color234
 
 # --- slightly less yellow text colors ---
-color normal    color253  color234 # mod
-# color normal    color253  color233 # mod
-#  color normal    color253  default # mod
-color indicator      color230       color238
-color status         color101       color16
-#  color tree           color113        color234
-#  color tree           color173        color234
-color tree           color208        color234
-color signature      color102        color234
-color message        color253        color234
-color attachment  color117        color234
-color error          color30        color234
-color tilde          color130       color235
+color normal         color248   color234
+color tree           color248   color234
+color indicator      color0     color136
+color status         color234   color234 'nono.*nono'
+#color status         red   red '(New|Del|Flag):[0-9]+'
+color status         brightcolor255   color244
+#color status         color255   color234
+color signature      color102   color234
+color message        color253   color234
+color attachment     color117   color234
+color error          color208    color234
+color tilde          color130   color235
 
 color search       color100     default
 color markers      color138     default
-
-#  mono bold          reverse
-#  color bold         color173 color191
-#  mono underline     reverse
-#  color underline    color48  color191
 
 color quoted        color107     color234             # quoted text
 color quoted1       color66      color234
@@ -55,31 +49,30 @@ color quoted9       color138     color234
 # color body          red   default  "(^| )\\*[-a-z0-9*]+\\*[,.?]?[ \n]"
 # color body          green default  "(^| )_[-a-z0-9_]+_[,.?]?[ \n]"
 color index_label  color202  color234
-color index_tags  color202  color234
-color index_tag  color39  color234 "toto"
-color index_tag  color202  color234 "telemetry"
-color index  color202  color234  ~F # Flagged
-color index  color39   color234  ~N # New
-color index  color39   color234  ~O # Old
-color index  color229  color22   ~T # Tagged
-color index  color240  color234  ~D # Deleted
+color index_tags   color202  color234
+#color index_tag    color202  color234 "telemetry"
+color index        color248  color234  ~A # All
+color index        color202  color234  ~F # Flagged
+color index        color33   color234  ~N # New
+color index        color33   color234  ~O # Old
+color index        color229  color22   ~T # Tagged
+color index        color240  color234  ~D # Deleted
 
-# ---
-
-#mono body  reverse    '^(subject):.*'
-#color body  brightwhite magenta  '^(subject):.*'
-#mono body  reverse    '[[:alpha:]][[:alnum:]-]+:'
-#color body  black cyan  '[[:alpha:]][[:alnum:]-]+:'
+# color sidebar_spoolfile color48   color234
+color sidebar_ordinary  color248  color234
+color sidebar_new       color33   color234
+color sidebar_divider   color248  color234
+color progress          color234  color248
 
 # --- header ---
 
-color hdrdefault  color30       color233
-color header      color132      color233    '^date:'
-color header      color153      color233    '^(to|cc|bcc):'
-color header      color120      color233    '^from:'
-color header      color178      color233    '^subject:'
-color header      color31       color233    '^user-agent:'
-color header      color29       color233    '^reply-to:'
+color hdrdefault  color30       color234
+color header      color132      color234    '^date:'
+color header      color131      color234    '^(to|cc|bcc):'
+color header      color31       color234    '^from:'
+color header      color136      color234    '^subject:'
+color header      color31       color234    '^user-agent:'
+color header      color29       color234    '^reply-to:'
 
 #color header  magenta default '^(status|lines|date|received|sender|references):'
 #color header  magenta default '^(pr|mime|x-|user|return|content-)[^:]*:'
@@ -96,5 +89,17 @@ color header      color29       color233    '^reply-to:'
 #mono index  bold '~h "^content-type: *(multipart/(mixed|signed|encrypted)|application/)"'
 #color index  green black '~h "^content-type: *multipart/(signed|encrypted)"'
 
-color sidebar_new color39 color234
-color progress      color234        color230
+# gpg
+
+color body          color160        color0        "(BAD signature)"
+color body          color37         color0        "(Good signature)"
+
+# emojy
+
+color body          color245        color0        "[;:][-o][)/(|]"    # emoticons
+color body          color245        color0        "[;:][)(|]"         # emoticons
+color body          color245        color0        "[*]?((N)?ACK|CU|LOL|SCNR|BRB|BTW|CWYL|\
+                                                     |FWIW|vbg|GD&R|HTH|HTHBE|IMHO|IMNSHO|\
+                                                     |IRL|RTFM|ROTFL|ROFL|YMMV)[*]?"
+color body          color245        color0        "[ ][*][^*]*[*][ ]?" # more emoticon?
+color body          color245        color0        "[ ]?[*][^*]*[*][ ]" # more emoticon?
