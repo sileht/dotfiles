@@ -1,5 +1,9 @@
 set nocompatible
 
+" Temp hack for https://github.com/neovim/neovim/issues/3211
+map <F1> <del>
+map! <F1> <del>
+
 call plug#begin('~/.vim/plugged')
 
 " Style
