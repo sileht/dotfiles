@@ -342,6 +342,8 @@ alias man="LANG=C man"
 alias df="df -h"
 alias diff='diff -rNu'
 alias optimutt="find ~/.mutt/cache/headers -type f -exec tcbmgr optimize -nl {} \;"
+
+[ ! -x "$(which nvim)" ] && nvim="/usr/bin/vim"
 alias vi="nvim"
 alias vid="nvim --servername sileht"
 alias vir="nvim --servername sileht --remote-silent"

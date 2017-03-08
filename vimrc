@@ -217,7 +217,9 @@ au BufRead /tmp/mutt* setlocal nocp
 au BufRead /tmp/mutt* ?^$
 
 " make on save
+if has('nvim')
 au! BufWritePost * Neomake
+endif
 
 " libvirt C style
 autocmd BufWritePre,BufRead *.c setlocal smartindent cindent cinoptions=(0,:0,l1,t0,L3
