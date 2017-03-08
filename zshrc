@@ -29,27 +29,6 @@ zcompileall(){
 
 source ~/.env/zsh-autosuggestions/zsh-autosuggestions.zsh
 
-##########
-# SCREEN #
-##########
-
-screen_data_file="$HOME/.var/screen_data.$(hostname)"
-
-tmux() { store_screen_data ; /usr/bin/tmux "$@" ; }
-kc(){ eval $(keychain -q --eval --agents ssh --nogui --inherit any --ignore-missing id_rsa ~/.ssh/id_dsa_h1) ; }
-update_screen_data(){ [ -r $screen_data_file ] && source $screen_data_file ; }
-store_screen_data(){
-    export | grep '\(GPG_AGENT_INFO\|DISPLAY\|XAUTHORITY\|SSH_AGENT_PID\|SSH_AUTH_SOCK\|GNOME_KEYRING_PID\|GNOME_KEYRING_SOCKET\)=' | sed -e 's/^/export /g' >| $screen_data_file
-}
-if [ -n "$WINDOW" -o -n "$TMUX_PANE" ]; then
-    # Update variable on each zsh in a screen
-    update_screen_data
-    add-zsh-hook preexec update_screen_data
-elif [ "$HOST" = "gizmo" ]; then
-    kc
-    #screen -RDD ; exit 0
-    tmux attach -d 2>/dev/null|| tmux new-session; exit 0
-fi
 
 
 #########
@@ -596,5 +575,25 @@ bindkey -M vicmd 'j' history-substring-search-down
 unfunction bind2maps
 
 
+##########
+# SCREEN #
+##########
+
+screen_data_file="$HOME/.var/screen_data.$(hostname)"
+
+tmux() { store_screen_data ; /usr/bin/tmux "$@" ; }
+kc(){ eval $(keychain -q --eval --agents ssh --nogui --inherit any --ignore-missing id_rsa ~/.ssh/id_dsa_h1) ; }
+update_screen_data(){ [ -r $screen_data_file ] && source $screen_data_file ; }
+store_screen_data(){
+    export | grep '\(GPG_AGENT_INFO\|DISPLAY\|XAUTHORITY\|SSH_AGENT_PID\|SSH_AUTH_SOCK\|GNOME_KEYRING_PID\|GNOME_KEYRING_SOCKET\)=' | sed -e 's/^/export /g' >| $screen_data_file
+}
+if [ -n "$WINDOW" -o -n "$TMUX_PANE" ]; then
+    # Update variable on each zsh in a screen
+    update_screen_data
+    add-zsh-hook preexec update_screen_data
+elif [ "$HOST" = "gizmo" ]; then
+    kc
+    sc
+fi
 
 # vim:ft=zsh

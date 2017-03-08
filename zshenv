@@ -33,8 +33,6 @@ export LESSCOLOR=always
 export LESSCOLORIZER="highlight -O ansi"
 export LESSOPEN="|lesspipe %s"
 
-# terminator hack
-[ "$TERM" = "xterm" ] && export TERM=xterm-256color
 export MOSH_PREDICTION_DISPLAY=always
 export VAGRANT_DEFAULT_PROVIDER=lxc
 
