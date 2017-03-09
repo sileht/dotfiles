@@ -24,9 +24,9 @@ bind index,pager a next-unread-mailbox
 bind index,pager A next-unread-mailbox
 bind index <esc>L limit
 bind index l limit-current-thread
+macro index,pager \cv <pipe-entry>urlview<enter>
 
 #macro index,pager a ':<enter>'
-#macro index,pager \cv |urlview\n
 
 #macro index,pager c "<change-folder>?<toggle-mailboxes>" "open a different folder"
 macro index,pager s "<save-message>?<toggle-mailboxes>" "move a message to a mailbox"

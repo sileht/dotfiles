@@ -206,8 +206,8 @@ autocmd FileType gitcommit,rst,mkd,markdown set complete+=kspell
 " No jedi-vim doc popup
 autocmd FileType python setlocal completeopt-=preview
 
-let g:qcc_query_command='~/.mutt/editor-email-query'
-au BufRead /tmp/mutt* setlocal omnifunc=QueryCommandComplete "<C-X><C-O> 
+"let g:qcc_query_command='~/.mutt/editor-email-query'
+"au BufRead /tmp/mutt* setlocal omnifunc=QueryCommandComplete "<C-X><C-O> 
 au BufRead /tmp/mutt* setlocal textwidth=72
 au BufRead /tmp/mutt* setlocal wrap
 au BufRead /tmp/mutt* setlocal fo+=aw
