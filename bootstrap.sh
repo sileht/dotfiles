@@ -81,7 +81,11 @@ setup_vim(){
     fi
     curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
         https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-    nvim "+set nomore" +PlugInstall! +PlugClean! +PlugUpdate! +qall
+    if [ -x "$(which nvim)" ]; then
+        nvim "+set nomore" +PlugInstall! +PlugClean! +PlugUpdate! +qall
+    else
+        vim "+set nomore" +PlugInstall! +PlugClean! +PlugUpdate! +qall
+    fi
 }
 setup_i3pystatus(){
     ~/.i3/update.sh
