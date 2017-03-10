@@ -10,13 +10,12 @@ call plug#begin('~/.vim/plugged')
 Plug 'morhetz/gruvbox'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-"Plug 'scrooloose/syntastic' replace by noemake
+Plug 'scrooloose/syntastic'
 Plug 'bling/vim-bufferline'
 Plug 'mhinz/vim-signify'                " VCS diff
 Plug 'tpope/vim-fugitive'               " GIT
 Plug 'ryanoasis/vim-devicons'
 Plug 'eugen0329/vim-esearch'
-"Plug 'Shougo/vimproc.vim', {'do' : 'make'}
 " Text navigation
 Plug 'nacitar/terminalkeys.vim'
 Plug 'junegunn/vim-easy-align'
@@ -33,16 +32,19 @@ Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'Xuyuanp/nerdtree-git-plugin', { 'on':  'NERDTreeToggle' }
 " Language
 if has('nvim')
-Plug 'neomake/neomake'
-Plug 'Shougo/deoplete.nvim',          { 'do': ':UpdateRemotePlugins' }
-Plug 'zchee/deoplete-jedi',           {'for': 'python'}
-Plug 'zchee/deoplete-go',             {'for': 'go'}
-endif
-"Plug 'davidhalter/jedi-vim',          {'for': 'python'} replaced by deoplete-jedi
-Plug 'vim-scripts/spec.vim',          {'for': 'spec'}
-Plug 'Vimjas/vim-python-pep8-indent', {'for': 'python'}
-Plug 'klen/python-mode',              {'for': 'python'}
 Plug 'ervandew/supertab'
+
+Plug 'Shougo/deoplete.nvim',          { 'do': ':UpdateRemotePlugins' }
+Plug 'zchee/deoplete-go',             {'for': 'go'}
+Plug 'zchee/deoplete-jedi',           {'for': 'python'}
+else
+Plug 'fatih/vim-go',                  {'for': 'go', 'do': ':GoInstallBinaries'}
+Plug 'davidhalter/jedi-vim',          {'for': 'python'}
+endif
+Plug 'Vimjas/vim-python-pep8-indent', {'for': 'python'}
+Plug 'hdima/python-syntax',           {'for': 'python'}
+
+Plug 'vim-scripts/spec.vim',          {'for': 'spec'}
 Plug 'godlygeek/tabular'
 Plug 'spf13/PIV',                     {'for': 'php'}
 Plug 'Rykka/riv.vim',                 {'for': 'rst'}
@@ -51,7 +53,6 @@ Plug 'pangloss/vim-javascript',       {'for': 'javascript'}
 Plug 'groenewege/vim-less',           {'for': 'less'}
 Plug 'elzr/vim-json',                 {'for': 'json'}
 Plug 'tpope/vim-rails',               {'for': 'ruby'}
-"Plug 'fatih/vim-go',                  {'for': 'go', 'do': ':GoInstallBinaries'} " replaced by 'zchee/deoplete-go'
 Plug 'tpope/vim-markdown',            {'for': 'markdown'}
 Plug 'racer-rust/vim-racer'           " rust
 "Plug 'saltstack/salt-vim'            " Salt
@@ -122,9 +123,8 @@ set guioptions-=M  "remove menu bar
 set guioptions-=m  "remove menu bar
 set guioptions-=T  "remove toolbar
 
-" https://www.johnhawthorn.com/2012/09/vi-escape-delays/
-"set timeoutlen=1000
-"set ttimeoutlen=0
+set ttimeout
+set ttimeoutlen=50
 
 let mapleader = " "
 let g:mapleader = " "
@@ -217,11 +217,6 @@ au BufRead /tmp/mutt* setlocal nocp
 "au BufRead /tmp/mutt* startinsert
 au BufRead /tmp/mutt* ?^$
 
-" make on save
-if has('nvim')
-au! BufWritePost * Neomake
-endif
-
 " libvirt C style
 autocmd BufWritePre,BufRead *.c setlocal smartindent cindent cinoptions=(0,:0,l1,t0,L3
 autocmd BufWritePre,BufRead *.h setlocal smartindent cindent cinoptions=(0,:0,l1,t0,L3
@@ -262,7 +257,7 @@ set laststatus=2        " Show statusbar
 """""""""""""""
 " Plug config "
 """""""""""""""
-let g:airline_powerline_fonts = 1 
+let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#buffer_idx_mode = 1
 
@@ -272,10 +267,6 @@ let g:signify_update_on_focusgained = 1
 
 let g:riv_global_leader ='<C-s>'
 let g:riv_disable_folding = 1
-
-
-let b:neomake_python_enabled_makers = ['flake8']
-let g:neomake_open_list = 2
 
 let g:syntastic_c_checkers = []
 
@@ -289,9 +280,10 @@ let g:syntastic_quiet_messages = {"regex": [ '\mUnknown interpreted text role "d
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 1
+let g:syntastic_check_on_wq = 0
 let g:syntastic_aggregate_errors = 1
 let g:syntastic_loc_list_height = 5
+
 "let g:syntastic_debug = 3
 
 let NERDTreeShowBookmarks=1
@@ -305,21 +297,7 @@ let g:nerdtree_tabs_open_on_gui_startup=0
 
 let g:rubycomplete_buffer_loading = 1
 
-let g:pymode_options = 0                 " Don't override my options
-let g:pymode_lint = 0                    " Use syntastic for now
-let g:pymode_indent = 0                  " I use Vimjas/vim-python-pep8-indent
-let g:pymode_folding = 0                 " No folding !
-let g:pymode_trim_whitespaces = 0        " We already do this manually
-let g:pymode_rope = 0                    " No rope project I prefer jedi-vim
-let g:pymode_rope_lookup_project = 0     " I said no rope
-let g:pymode_rope_completion = 0         " Again
-let g:pymode_rope_complete_on_dot = 0    " And again
-let g:pymode_doc = 0
-let g:pymode_breakpoint = 0
-let g:pymode_run = 0
-let g:pymode_debug = 0
-let g:pymode_motion = 1
-
+let python_highlight_all = 1
 
 let g:ctrlp_funky_matchtype = 'path'
 let g:ctrlp_funky_syntax_highlight = 1
@@ -378,10 +356,7 @@ while True:
                      ".tox/py27"]:
             venvdir = os.path.join(path, venv)
             if os.path.exists(venvdir):
-                vim.command("let g:pymode_virtualenv = 1")
-                vim.command("let g:pymode_virtualenv_path = '%s'" % venvdir)
-                loader = '%s/bin/activate_this.py' % venvdir
-                execfile(loader, dict(__file__=loader))
+                vim.command("let g:deoplete#sources#jedi#python_path = '%s/bin/python'" % venvdir)
                 break
         if os.path.exists("%s/doc/source" % path):
             vim.command("let g:riv_projects = [{'path': '%s/doc/source',}]" %

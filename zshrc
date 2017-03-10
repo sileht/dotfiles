@@ -469,7 +469,10 @@ etox() {
     export OLDPATH=$PATH
     for item in ${(@v)helper}; do
         for e in "${(@s/,/)env[$item]}" ; do
-            export VIRTUAL_ENV=$rootdir/.tox/$e 
+            export VIRTUAL_ENV=$rootdir/.tox/$e
+            if [ ! -d "$VIRTUAL_ENV" ] ; then
+                tox -e$e --notest
+            fi
             source $VIRTUAL_ENV/bin/activate
             $*
             deactivate
