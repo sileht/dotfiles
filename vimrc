@@ -30,10 +30,9 @@ Plug 'tacahiroy/ctrlp-funky'
 Plug 'majutsushi/tagbar'
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'Xuyuanp/nerdtree-git-plugin', { 'on':  'NERDTreeToggle' }
+Plug 'ervandew/supertab'
 " Language
 if has('nvim')
-Plug 'ervandew/supertab'
-
 Plug 'Shougo/deoplete.nvim',          { 'do': ':UpdateRemotePlugins' }
 Plug 'zchee/deoplete-go',             {'for': 'go'}
 Plug 'zchee/deoplete-jedi',           {'for': 'python'}
