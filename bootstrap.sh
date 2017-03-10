@@ -77,7 +77,7 @@ cleanup_forced(){
 setup_vim(){
     if [ ! -e ~/.vim/autoload/plug.vim -o -d "~/.vim/bundle/" ]; then
         rm -rf ~/.vim ~/.vimrc*
-        ln -sf ~/.env/vimrc .vimrc
+        ln -sf ~/.env/vimrc ~/.vimrc
         mkdir ~/.vim
         ln -sf ~/.vimrc ~/.vim/init.vim
         ln -sf ~/.vim ~/.config/nvim
