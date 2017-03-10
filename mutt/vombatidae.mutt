@@ -58,6 +58,8 @@ color index        color33   color234  ~O # Old
 color index        color229  color22   ~T # Tagged
 color index        color240  color234  ~D # Deleted
 
+color body          color202        color234        "(cotyledon|oslo.messaging|gnocchi|tooz|ceilometer|aodh|panko)"
+
 # color sidebar_spoolfile color48   color234
 color sidebar_ordinary  color248  color234
 color sidebar_new       color33   color234
@@ -85,6 +87,7 @@ color header      color29       color234    '^reply-to:'
 #color header  white default  '^reply'
 #color header  brightwhite default  '^(resent)'
 # color header  brightwhite default  '^from:'
+
 
 #mono index  bold '~h "^content-type: *(multipart/(mixed|signed|encrypted)|application/)"'
 #color index  green black '~h "^content-type: *multipart/(signed|encrypted)"'
