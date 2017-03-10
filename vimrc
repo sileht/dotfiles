@@ -29,8 +29,8 @@ Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'tacahiroy/ctrlp-funky'
 Plug 'majutsushi/tagbar'
-Plug 'scrooloose/nerdtree'
-Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+Plug 'Xuyuanp/nerdtree-git-plugin', { 'on':  'NERDTreeToggle' }
 " Language
 if has('nvim')
 Plug 'neomake/neomake'
@@ -205,6 +205,7 @@ autocmd FileType gitcommit,rst,mkd,markdown set complete+=kspell
 
 " No jedi-vim doc popup
 autocmd FileType python setlocal completeopt-=preview
+autocmd FileType python silent! call LoadVenv()
 
 "let g:qcc_query_command='~/.mutt/editor-email-query'
 "au BufRead /tmp/mutt* setlocal omnifunc=QueryCommandComplete "<C-X><C-O> 
@@ -357,6 +358,7 @@ autocmd! FileChangedShell *
 cmap w!! let g:IgnoreChange=1<CR>:w !sudo tee % >/dev/null<CR>:e!<CR>
 
 
+function! LoadVenv()
 if has('python')
 python << pythoneof
 import vim
@@ -371,12 +373,16 @@ while True:
                  if p in [ "tox.ini", ".tox", "venv", ".git", ".hg", ".vimrc"]]
     if rootfound:
         vim.command("let g:syntastic_python_flake8_args = '\"%s\"'" % path)
-        for venv in [".tox/py27", ".tox/py27-postgresql-file",
-                     ".tox/py27-postgresql-ceph", ".tox/py27-mysql-file"]:
+        for venv in [".tox/py27-postgresql-file",
+                     ".tox/py27-postgresql-ceph", ".tox/py27-mysql-file",
+                     ".tox/py27"]:
             venvdir = os.path.join(path, venv)
             if os.path.exists(venvdir):
                 vim.command("let g:pymode_virtualenv = 1")
                 vim.command("let g:pymode_virtualenv_path = '%s'" % venvdir)
+                loader = '%s/bin/activate_this.py' % venvdir
+                execfile(loader, dict(__file__=loader))
+                break
         if os.path.exists("%s/doc/source" % path):
             vim.command("let g:riv_projects = [{'path': '%s/doc/source',}]" %
                         path)
@@ -387,6 +393,7 @@ while True:
         break
 pythoneof
 endif
+endfunction
 
 " Use system python for neovim itself
 let g:python_host_prog = '/usr/bin/python'
