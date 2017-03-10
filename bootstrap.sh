@@ -75,9 +75,13 @@ cleanup_forced(){
 }
 
 setup_vim(){
-    if [ ! -e ~/.vim/autoload/plug.vim -a  -d "~/.vim/bundle/" ]; then
+    if [ ! -e ~/.vim/autoload/plug.vim -o -d "~/.vim/bundle/" ]; then
         rm -rf ~/.vim ~/.vimrc*
         ln -sf ~/.env/vimrc .vimrc
+        mkdir ~/.vim
+        ln -sf ~/.vimrc ~/.vim/init.vim
+        ln -sf ~/.vim ~/.config/nvim
+        ln -sf ~/.vim ~/.local/share/nvim
     fi
     curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
         https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
