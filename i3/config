@@ -22,6 +22,7 @@ for_window [class="Pavucontrol"] floating enable
 for_window [class="VirtualBox"] floating enable
 for_window [class="Conky"] floating enable
 for_window [class="^.*"] border pixel 1
+for_window [class=".*"] no_focus
 
 # start application
 bindsym $mod+Return exec st
