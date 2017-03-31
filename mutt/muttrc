@@ -73,7 +73,7 @@ set pager_stop         = yes                        # Don't skip to next message
 tag-transforms      "telemetry" "⌬ " "oslo" "⛁ " "ttnn" "♨ "
 set hidden_tags   = Junk,NonJunk,nonjunk,junk,\$Forwarded,\$label1,\$label2,\$label3,\$label4
 set index_format  = "[%Z] %{%b-%d %H:%M} | %-20.20L | %?M?➘ ?%s %?g?/ %g ?%* (%?l?%l&%c?)"
-set folder_format = "%4N %f"
+set folder_format = "      %-20f"
 set pager_format  = "nono %* nono"
 
 # Sidebar
@@ -82,6 +82,7 @@ set sidebar_visible      = yes
 set sidebar_divider_char = ' '
 set sidebar_short_path   = yes
 set sidebar_format       = '%B%?F? [%F]?%*   %?N?%N/?%S'
+#set sidebar_new_mail_only = yes
 
 # Message display
 alternative_order text/plain text/html              # this helps with multipart messages

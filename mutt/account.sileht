@@ -14,6 +14,7 @@ folder-hook "imap://sileht@mail.sileht.net/zml-" push "<delete-pattern>~d<space>
 folder-hook "imap://sileht@mail.sileht.net/Trash" push "<delete-pattern>~d<space>>3m<enter>"
 
 set duplicate_threads = yes
+set crypt_autosign    = yes
 
 unmailboxes *
 mailboxes =INBOX =Drafts =Sent =Trash =Junk \

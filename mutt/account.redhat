@@ -18,6 +18,7 @@ folder-hook "imap://redhat@mail.sileht.net/ml-rhos" push "<delete-pattern>~d<spa
 folder-hook "imap://redhat@mail.sileht.net/review-" push "<delete-pattern>~d<space>>1m<enter>"
 
 set duplicate_threads = yes
+set crypt_autosign    = no
 
 unmailboxes *
 mailboxes =INBOX =Drafts =Sent =Trash =Junk \

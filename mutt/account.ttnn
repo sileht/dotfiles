@@ -9,6 +9,7 @@ set folder="imaps://${my_ttnn_user}@mx1.tetaneutral.net/"
 set smtp_url="smtp://${my_ttnn_user}@mx1.tetaneutral.net"
 
 set duplicate_threads = no
+set crypt_autosign    = no
 
 unmailboxes *
 mailboxes =INBOX =Drafts =Sent =Trash =Junk

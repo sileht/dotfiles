@@ -57,8 +57,8 @@ color index        color33   color234  ~N # New
 color index        color33   color234  ~O # Old
 color index        color229  color22   ~T # Tagged
 color index        color240  color234  ~D # Deleted
-
-color body          color202        color234        "(cotyledon|oslo.messaging|gnocchi|tooz|ceilometer|aodh|panko)"
+color index        color240  color234  ~D # Deleted
+color index        color255  color234  "~s '(action required|last call)'"
 
 # color sidebar_spoolfile color48   color234
 color sidebar_ordinary  color248  color234
@@ -92,10 +92,9 @@ color header      color29       color234    '^reply-to:'
 #mono index  bold '~h "^content-type: *(multipart/(mixed|signed|encrypted)|application/)"'
 #color index  green black '~h "^content-type: *multipart/(signed|encrypted)"'
 
-# gpg
+# tag
 
-color body          color160        color0        "(BAD signature)"
-color body          color37         color0        "(Good signature)"
+color body          color202        color234        "(cotyledon|oslo.messaging|gnocchi|tooz|ceilometer|aodh|panko|telemetry|grafana)"
 
 # emojy
 
@@ -106,3 +105,29 @@ color body          color245        color0        "[*]?((N)?ACK|CU|LOL|SCNR|BRB|
                                                      |IRL|RTFM|ROTFL|ROFL|YMMV)[*]?"
 color body          color245        color0        "[ ][*][^*]*[*][ ]?" # more emoticon?
 color body          color245        color0        "[ ]?[*][^*]*[*][ ]" # more emoticon?
+
+
+
+# Color if the attachment is autoviewed
+color   attach_headers     brightgreen     default        "Autoview"
+
+# Color only the brackets around the headers
+color   attach_headers     brightyellow    default        "^\\[--"
+color   attach_headers     brightyellow    default        "--]$"
+
+# Color the mime type and the size
+color   attach_headers     green           default        "Type: [a-z]+/[a-z0-9\-]+"
+color   attach_headers     green           default        "Size: [0-9\.]+[KM]"
+
+# Color GPGME signature checks
+color   body     brightgreen     default        "Good signature from.*"
+color   body     brightred       default        "Bad signature from.*"
+color   body     brightred       default        "BAD signature from.*"
+color   body     brightred       default        "Note: This key has expired!"
+color   body     brightmagenta   default        "Problem signature from.*"
+color   body     brightmagenta   default        "WARNING: This key is not certified with a trusted signature!"
+color   body     brightmagenta   default        "         There is no indication that the signature belongs to the owner."
+color   body     brightmagenta   default        "can't handle these multiple signatures"
+color   body     brightmagenta   default        "signature verification suppressed"
+color   body     brightmagenta   default        "invalid node with packet of type"
+
