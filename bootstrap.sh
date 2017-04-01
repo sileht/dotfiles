@@ -96,13 +96,24 @@ setup_i3pystatus(){
 }
 
 setup_fonts(){
-    mkdir -p ~/.local/share/fonts
+    update_fc=
+    fontdir="/home/sileht/.local/share/fonts"
+    mkdir -p $fontdir
     name="UbuntuMonoNerdFonts.ttf"
-    dest="/home/sileht/.local/share/fonts/${name}"
+    dest="${fontdir}/${name}"
     if [[ ! -e "${dest}" || "$(find $dest -mtime +30)" ]]; then
         curl -q "https://raw.githubusercontent.com/ryanoasis/nerd-fonts/master/patched-fonts/UbuntuMono/Regular/complete/Ubuntu%20Mono%20derivative%20Powerline%20Nerd%20Font%20Complete.ttf" -o "${dest}"
-        fc-cache -fv
+        update_fc=1
     fi
+
+    name="iosevka-pack-1.12.0.zip"
+    dest="${fontdir}/${name}"
+    if [[ ! -e "${dest}" || "$(find $dest -mtime +30)" ]]; then
+        curl -q https://github.com/be5invis/Iosevka/releases/download/v1.12.0/$name -L -o "${dest}"
+        update_fc=1
+        ( cd $fontdir && unzip ${name} )
+    fi
+    [ "$update_fc" ] && fc-cache -fv
 }
 
 maybe_do_update(){
