@@ -497,19 +497,6 @@ utox() {
     done
 }
 
-mtox(){
-    targets=($({ echo -e 'py27\npy34' ; sed -n '/testenv/s/\[testenv:\(.*\)\]/\1/gp' tox.ini }| sort -u))
-    PS3='Please enter your choice: '
-    select opt in "${targets[@]}"; do
-        LATEST_TOX_CMD=("-e$opt" "$@")
-        tox -e$opt "$@"
-        break
-    done
-}
-ltox(){
-    tox $LATEST_TOX_CMD
-}
-
 alias etox="nocorrect etox"
 alias utox="nocorrect utox"
 #alias tox="rm .ropeproject -rf; tox"
