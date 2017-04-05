@@ -22,7 +22,7 @@ for_window [class="Pavucontrol"] floating enable
 for_window [class="VirtualBox"] floating enable
 for_window [class="Conky"] floating enable
 for_window [class="^.*"] border pixel 1
-no_focus [class=".*"]
+# no_focus [class="Chromium"]
 
 # start application
 bindsym $mod+Return exec st
