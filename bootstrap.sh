@@ -119,7 +119,7 @@ maybe_do_update(){
 
 setup_st(){
     ensure_pkgs libxft-dev libxext-dev libfontconfig1-dev libxrender-dev libx11-dev
-    (cd st && make && tic -sx st.info)
+    (cd st && make clean && make && tic -sx st.info)
 }
 
 maybe_do_update
