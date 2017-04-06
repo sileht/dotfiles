@@ -1,7 +1,7 @@
 [[ ! -o rcs ]] && return
 
 # automatically remove duplicates from these arrays
-typeset -gU path cdpath fpath manpath fignore 
+typeset -gU path cdpath fpath manpath fignore
 
 autoload -U zargs           # smart xargs replacement
 autoload -U zmv             # programmable moving, copying, and linking
@@ -28,6 +28,7 @@ zcompileall(){
 }
 
 source ~/.env/zsh-autosuggestions/zsh-autosuggestions.zsh
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=58"
 
 
 
