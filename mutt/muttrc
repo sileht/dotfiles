@@ -1,5 +1,4 @@
 
-set debug_file = "/home/sileht/.mutt/log"
 set debug_level = 0
 
 source ~/.mutt/vombatidae.mutt
