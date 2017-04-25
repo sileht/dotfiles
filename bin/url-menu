@@ -1,0 +1,3 @@
+#!/bin/bash
+
+xurls | tac | awk '!x[$0]++' | dmenu -l 25 | xargs -r xdg-open
