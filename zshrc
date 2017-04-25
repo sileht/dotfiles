@@ -444,9 +444,22 @@ fi
 }
 
 sshclean(){
-    hostname=$(echo $1 | sed 's/\.t$/.tetenauetral.net/g')
-    for i in $hostname $(dig +short $hostname A; dig +short $hostname AAAA); do 
+    hostname=$(echo $1 | sed 's/\.t$/.tetaneutral.net/g')
+    for i in $hostname $(getent ahosts $hostname | awk '{print $1}' | sort -u); do
+        ssh-keygen -R "$i"
         ssh-keygen -R "[$i]:2222"
+    done
+}
+
+sshrefresh(){
+    sshclean "$1"
+    hostname=$(echo $1 | sed 's/\.t$/.tetaneutral.net/g')
+    for i in $hostname $(getent ahosts $hostname | awk '{print $1}' | sort -u); do
+        new=$(ssh-keyscan -H "$i")
+        if [ -z "$new" ]; then
+            new=$(ssh-keyscan -p 2222 -H "$i")
+        fi
+        [ "$new" ] && echo "$new" >> /home/sileht/.ssh/known_hosts
     done
 }
 
