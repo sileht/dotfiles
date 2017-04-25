@@ -11,6 +11,8 @@ set smtp_url="smtp://${my_ttnn_user}@mx1.tetaneutral.net"
 set duplicate_threads = no
 set crypt_autosign    = no
 
+macro index,pager M ":<enter>"
+
 unmailboxes *
 mailboxes =INBOX =Drafts =Sent =Trash =Junk
 
