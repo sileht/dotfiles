@@ -1,3 +1,7 @@
 export PATH="$HOME/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/games:/usr/games"
 [ -d $HOME/logiciel ] && for i in $HOME/logiciel/*/bin ; do export PATH=$PATH:$i ; done
 export PATH="$HOME/.bin:$HOME/.env/bin:$HOME/.cargo/bin:$PATH"
+
+for d in $HOME/.gem/ruby/*/bin; do
+    export PATH="$PATH:$d"
+done

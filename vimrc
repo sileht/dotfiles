@@ -117,6 +117,7 @@ set pastetoggle=<F12>           " pastetoggle (sane indentation on pastes)
 set nofoldenable                " No fold
 set scrolloff=10                " Again no fold
 syn spell toplevel              " Spell rst issue https://github.com/Rykka/riv.vim/issues/8
+set nohlsearch
 
 set guioptions-=M  "remove menu bar
 set guioptions-=m  "remove menu bar
