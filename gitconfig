@@ -8,6 +8,7 @@
     st = status
     ci = commit
     co = checkout
+    t = town
     fp = format-patch
     n = "!f() { git checkout origin/master -b \"sileht/$1\" ; } ; f"
     lg = log --graph --pretty=cshort --abbrev-commit --date=relative
