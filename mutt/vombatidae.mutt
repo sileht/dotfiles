@@ -51,6 +51,12 @@ color quoted9       color138     color234
 color index_label  color202  color234
 color index_tags   color202  color234
 #color index_tag    color202  color234 "telemetry"
+
+#color index_author red color234 ~N
+#color index_number blue color234
+#color index_subject cyan color234 '.*'
+#color index_size green color234
+
 color index        color248  color234  ~A # All
 color index        color202  color234  ~F # Flagged
 color index        color33   color234  ~N # New
@@ -130,4 +136,5 @@ color   body     brightmagenta   default        "         There is no indication
 color   body     brightmagenta   default        "can't handle these multiple signatures"
 color   body     brightmagenta   default        "signature verification suppressed"
 color   body     brightmagenta   default        "invalid node with packet of type"
+
 

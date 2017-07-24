@@ -82,10 +82,12 @@ set sidebar_divider_char = ' '
 set sidebar_short_path   = yes
 set sidebar_format       = '%B%?F? [%F]?%*   %?N?%N/?%S'
 #set sidebar_new_mail_only = yes
+#set sidebar_sort_method  = new
 
 # Message display
 alternative_order text/plain text/html              # this helps with multipart messages
-auto_view text/html                                 # if there is only html dump that
+auto_view text/html                                 # if there is only html dump that 
+auto_view text/x-diff
 set my_tprot           = 't-prot -cmekatlSsw --bigq -Mmutt --pgp-move-vrf --pgp-short -L$HOME/.mutt/mlfooters -A$HOME/.mutt/adfooters'
 set display_filter     = $my_tprot
 set skip_quoted_offset = 3
@@ -101,7 +103,7 @@ ignore *
 unignore From: Organization: To: Cc: Reply-To: Subject:
 unignore x-mailing-list: posted-to: x-beenthere:
 unignore x-mailer: user-agent:
-unignore X-Gerrit-ChangeURL: X-Github-URL:
+unignore X-Gerrit-ChangeURL: X-Github-URL: List-Archive:
 hdr_order Subject: From: To: Cc:  Reply-To: Organization:
 
 # Contacts

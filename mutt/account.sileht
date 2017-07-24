@@ -23,10 +23,13 @@ mailboxes =INBOX =Drafts =Sent =Trash =Junk \
       =perso-compte-achat \
       =perso-serveur \
       =ttnn \
+      =ttnn-ca \
       =ttnn-hosting \
       =ttnn-services \
       =ttnn-system \
-      =zml-ci-bots \
+      =code-gnocchi \
+      =code-openstack \
+      =code-other \
       =zml-ceph \
       =zml-neomutt \
       =zml-check_mk \

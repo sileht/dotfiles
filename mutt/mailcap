@@ -1,3 +1,4 @@
+text/x-diff; cat '%s'; copiousoutput; 
 text/html; ~/.mutt/print_html.sh %{charset} %s; copiousoutput; nametemplate=%s.html
 text/*; ~/.mutt/transfert_attachment.sh %s
 application/*; ~/.mutt/transfert_attachment.sh %s

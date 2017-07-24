@@ -39,4 +39,5 @@ mailboxes =INBOX =Drafts =Sent =Trash =Junk \
     =ml-annonce \
     =ml-paris \
     =ml-zzz-other \
-    =vie
+    =vie \
+    =meeting
