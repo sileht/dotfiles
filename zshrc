@@ -382,6 +382,8 @@ alias zln='zmv -L'
 
 hash -d doc=/usr/share/doc
 hash -d log=/var/log
+hash -d s=~/workspace/os_dev/stack
+hash -d g=~s/gnocchi/
 
 # LS stuff
 # Remove bold for image/audio/video and archive, generated with :
