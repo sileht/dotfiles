@@ -5,11 +5,10 @@
     ui = auto
 
 [alias]
-    st = status
-    ci = commit
-    co = checkout
-    t = town
-    fp = format-patch
+    #p = "!f() { git t ${1:-master} && git pull --rebase; }; f"
+    pr = pull-request
+    p = "!f() {if [ -f .gitreview ]; then git-review $* ; else git pull-request $* ; fi ; } ; f"
+    t = "!f() { git branch --set-upstream-to=origin/${1:-master}; }; f"
     n = "!f() { git checkout origin/master -b \"sileht/$1\" ; } ; f"
     lg = log --graph --pretty=cshort --abbrev-commit --date=relative
     lc = !git oneline ORIG_HEAD.. --stat --no-merges
@@ -49,3 +48,7 @@
 	smtpServer = mail.sileht.net
 	smtpUser = sileht@sileht.net
 	smtpServerPort = 25
+#[github]
+#	user = sileht
+[ghi]
+	token = 5a11ef2bf6c4a867f6cc8b1813dc70264345d6ae

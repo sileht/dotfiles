@@ -2,9 +2,9 @@ conky.config = {
 	background = false,
 	border_width = 0,
 	cpu_avg_samples = 2,
-	default_color = 'white',
-	default_outline_color = 'white',
-	default_shade_color = 'white',
+	default_color = 'black',
+	default_outline_color = 'black',
+	default_shade_color = 'black',
 	draw_borders = false,
 	draw_graph_borders = true,
 	draw_outline = false,
@@ -36,5 +36,5 @@ conky.config = {
 };
 
 conky.text = [[
-${execpi 300 gcalcli --conky agenda}
+${execpi 300 gcalcli --conky agenda --nocolor}
 ]];

@@ -22,9 +22,9 @@ Plug 'junegunn/vim-easy-align'
 Plug 'easymotion/vim-easymotion'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
-Plug 'wikitopian/hardmode'
+"Plug 'wikitopian/hardmode'
 " File/Tag browsing
-Plug 'tmux-plugins/vim-tmux-focus-events'
+"Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'tacahiroy/ctrlp-funky'
 Plug 'majutsushi/tagbar'
@@ -61,12 +61,12 @@ Plug 'breard-r/vim-dnsserial'         " dns zones
 Plug 'leafgarland/typescript-vim',    {'for': ['ts', 'ts.d']}
 
 " Org Mode
-Plug 'jceb/vim-orgmode'
-Plug 'vim-scripts/SyntaxRange'
-Plug 'mattn/calendar-vim'
-Plug 'tpope/vim-speeddating'
-Plug 'chrisbra/NrrwRgn'
-Plug 'vim-scripts/utl.vim'
+"Plug 'jceb/vim-orgmode'
+"Plug 'vim-scripts/SyntaxRange'
+"Plug 'mattn/calendar-vim'
+"Plug 'tpope/vim-speeddating'
+"Plug 'chrisbra/NrrwRgn'
+"Plug 'vim-scripts/utl.vim'
 call plug#end()
 
 if has('nvim')

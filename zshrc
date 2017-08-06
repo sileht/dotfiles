@@ -384,6 +384,7 @@ hash -d log=/var/log
 hash -d s=~/workspace/os_dev/stack
 hash -d g=~s/gnocchi/
 
+
 # LS stuff
 # Remove bold for image/audio/video and archive, generated with :
 #  dircolors | sed 's/\(\*\.[^=]*=\)01/\100/g'
@@ -518,6 +519,7 @@ alias utox="nocorrect utox"
 
 source ~/.env/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source ~/.env/zsh-history-substring-search/zsh-history-substring-search.zsh
+source ~/.env/z.sh
 
 typeset -A key
 key=(
