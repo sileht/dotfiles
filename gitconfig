@@ -50,5 +50,3 @@
 	smtpServerPort = 25
 #[github]
 #	user = sileht
-[ghi]
-	token = 5a11ef2bf6c4a867f6cc8b1813dc70264345d6ae
