@@ -605,7 +605,7 @@ if [ -n "$WINDOW" -o -n "$TMUX_PANE" ]; then
     add-zsh-hook preexec update_screen_data
 elif [ "$HOST" = "gizmo" ]; then
     is_mosh || kc
-    # sc ; exit 0;
+    sc ; exit 0;
 fi
 
 # vim:ft=zsh
