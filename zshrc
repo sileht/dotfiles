@@ -354,7 +354,6 @@ alias psql="sudo -i -u postgres psql"
 alias pyclean='find . -type f -name "*.py[co]" -delete'
 alias getaptkey='sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com'
 alias more=less
-alias weechat="printf '\033[?1h\033=' >/dev/tty ; LD_PRELOAD=/home/sileht/source/weechat_emojy/libwcwidth.so /usr/bin/weechat"
 function gcal() { gcalcli --military --monday -w $(($(tput cols)/8)) "$@"; }
 
 function of() { lsof -np "$1" }
@@ -589,6 +588,9 @@ unfunction bind2maps
 
 screen_data_file="$HOME/.var/screen_data.$(hostname)"
 
+
+is_mosh() { [ "$(readlink -f /proc/$PPID/exe)" == "/usr/bin/mosh-server" ] && return 0 || return 1 ;}
+
 tmux() { store_screen_data ; /usr/bin/tmux "$@" ; }
 kc(){ eval $(keychain -q --eval --agents ssh --nogui --inherit any --ignore-missing id_rsa ~/.ssh/id_dsa_h1) ; }
 update_screen_data(){ [ -r $screen_data_file ] && source $screen_data_file ; }
@@ -600,8 +602,8 @@ if [ -n "$WINDOW" -o -n "$TMUX_PANE" ]; then
     update_screen_data
     add-zsh-hook preexec update_screen_data
 elif [ "$HOST" = "gizmo" ]; then
-    kc
-    sc ; exit 0;
+    is_mosh || kc
+    # sc ; exit 0;
 fi
 
 # vim:ft=zsh
