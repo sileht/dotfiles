@@ -344,7 +344,12 @@ alias df="df -h"
 alias diff='diff -rNu'
 alias optimutt="find ~/.mutt/cache/headers -type f -exec tcbmgr optimize -nl {} \;"
 
-[ ! -x "$(which nvim)" ] && alias nvim="/usr/bin/vim"
+if [ ! -x "$(which nvim)" ] ; then
+    alias nvim="/usr/bin/vim"
+else
+    # NOTE(sileht): workaround https://github.com/neovim/neovim/issues/5895
+    alias nvim="TERM=screen-256color /usr/bin/nvim"
+fi
 alias vi="nvim"
 alias vid="nvim --servername sileht"
 alias vir="nvim --servername sileht --remote-silent"
