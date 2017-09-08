@@ -58,7 +58,7 @@ Plug 'racer-rust/vim-racer'           " rust
 Plug 'vim-scripts/HTML-AutoCloseTag', {'for': ['html', 'xml']}
 Plug 'hail2u/vim-css3-syntax',        {'for': 'css'}
 Plug 'breard-r/vim-dnsserial'         " dns zones
-Plug 'leafgarland/typescript-vim',    {'for': ['ts', 'ts.d']}
+Plug 'leafgarland/typescript-vim',    {'for': 'typescript'}
 
 " Org Mode
 "Plug 'jceb/vim-orgmode'
