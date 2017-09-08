@@ -22,6 +22,7 @@ mailboxes =INBOX =Drafts =Sent =Trash =Junk \
       =perso-appart \
       =perso-compte-achat \
       =perso-serveur \
+      =amap \
       =ttnn \
       =ttnn-ca \
       =ttnn-hosting \

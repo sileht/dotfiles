@@ -33,6 +33,7 @@ mailboxes =INBOX =Drafts =Sent =Trash =Junk \
     =ml-rhos-tech \
     =ml-rhos-prio \
     =ml-rhos-pgm \
+    =ml-rhos-ci \
     =ml-cloud-strategy \
     =ml-tech \
     =ml-python-list \
