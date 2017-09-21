@@ -70,8 +70,10 @@ set pager_stop         = yes                        # Don't skip to next message
 
 # Formats
 tag-transforms      "telemetry" "⌬ " "oslo" "⛁ " "ttnn" "♨ "
+tag-formats  "ttnn" Gt"
 set hidden_tags   = Junk,NonJunk,nonjunk,junk,\$Forwarded,\$label1,\$label2,\$label3,\$label4
-set index_format  = "[%Z] %{%b-%d %H:%M} | %-20.20L | %?M?➘ ?%s %?g?/ %g ?%* (%?l?%l&%c?)"
+# set index_format  = "[%Z] %{%b-%d %H:%M} | %-20.20L | %?M?➘ ?%s [g:%g/G:%Gt/J:%J]%*  %?X?📎&? (%?l?%l&%c?)"
+set index_format  = "[%Z] %{%b-%d %H:%M} | %-20.20L | %?M?➘ ?%s %?g?/ %g ?%*  %?X?📎&? (%?l?%l&%c?)"
 set folder_format = "      %-20f"
 set pager_format  = "nono %* nono"
 
@@ -122,6 +124,11 @@ set crypt_use_pka            = yes                  # get gpg by dns/dnssec
 set pgp_sign_as              = 0xCEAAEBC8
 set postpone_encrypt_as      = 0xCEAAEBC8
 set postpone_encrypt         = yes
+
+attachments   +A */.*
+attachments   -A text/x-vcard application/pgp.*
+attachments   -A application/x-pkcs7-.*
+
 
 # Accounts
 set my_ttnn_user=`echo ${TTNN_USER}`

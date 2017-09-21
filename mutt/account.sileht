@@ -42,13 +42,11 @@ mailboxes =INBOX =Drafts =Sent =Trash =Junk \
       =zml-os-unknown \
       =zml-toulibre \
 
-#      notmuch://?query=tag:inbox
-
 #unmailboxes *
 #mailboxes \
- #     /home/sileht/mutt_notmuch_test \
- #     /home/sileht/mutt_notmuch_test/.test
-
+#      /home/sileht/mutt_notmuch_test \
+#      /home/sileht/mutt_notmuch_test/.test
+#
 #set virtual_spoolfile=yes
 #set nm_default_uri = "notmuch:///home/sileht/mutt_notmuch_test/"
 #virtual-mailboxes "INBOX" "notmuch://?query=tag:inbox"
