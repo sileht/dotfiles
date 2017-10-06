@@ -356,7 +356,7 @@ alias vir="nvim --servername sileht --remote-silent"
 alias vim="nvim"
 alias svi="sudo -E vim"
 alias psql="sudo -i -u postgres psql"
-alias pyclean='find . -type f -name "*.py[co]" -delete'
+alias pyclean='find . \( -type f -name "*.py[co]" \) -o \( -type d -name __pycache__ \) ! -path "./.tox*" -delete'
 alias getaptkey='sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com'
 alias more=less
 function gcal() { gcalcli --military --monday -w $(($(tput cols)/8)) "$@"; }
