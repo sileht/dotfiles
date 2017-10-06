@@ -31,6 +31,7 @@ Plug 'majutsushi/tagbar'
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'Xuyuanp/nerdtree-git-plugin', { 'on':  'NERDTreeToggle' }
 Plug 'ervandew/supertab'
+Plug 'tpope/vim-commentary'
 " Language
 if has('nvim')
 Plug 'Shougo/deoplete.nvim',          { 'do': ':UpdateRemotePlugins' }
@@ -220,6 +221,10 @@ au BufRead /tmp/mutt* ?^$
 " libvirt C style
 autocmd BufWritePre,BufRead *.c setlocal smartindent cindent cinoptions=(0,:0,l1,t0,L3
 autocmd BufWritePre,BufRead *.h setlocal smartindent cindent cinoptions=(0,:0,l1,t0,L3
+
+" neomutt
+autocmd BufWritePre,BufRead *.c setlocal shiftwidth=2 expandtab tabstop=2 softtabstop=2
+autocmd BufWritePre,BufRead *.h setlocal shiftwidth=2 expandtab tabstop=2 softtabstop=2
 "au FileType make setlocal noexpandtab tapstop=8
 "au BufRead,BufNewFile *.am setlocal noexpandtab tapstop=8
 match ErrorMsg /\s\+$\| \+\ze\t/
