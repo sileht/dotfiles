@@ -100,9 +100,10 @@ setup_fonts(){
     fontdir="/home/sileht/.local/share/fonts"
     mkdir -p $fontdir
     name="UbuntuMonoNerdFonts.ttf"
+    url="https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/UbuntuMono/Regular/complete/Ubuntu%20Mono%20Nerd%20Font%20Complete.ttf?raw=true"
     dest="${fontdir}/${name}"
     if [[ ! -e "${dest}" || "$(find $dest -mtime +30)" ]]; then
-        curl -q "https://raw.githubusercontent.com/ryanoasis/nerd-fonts/master/patched-fonts/UbuntuMono/Regular/complete/Ubuntu%20Mono%20derivative%20Powerline%20Nerd%20Font%20Complete.ttf" -o "${dest}"
+        curl -L -q "$url" -o "${dest}"
         update_fc=1
     fi
     [ "$update_fc" ] && fc-cache -fv
