@@ -11,7 +11,7 @@
 
 set $mod Mod4
 
-font pango:UbuntuMonoDerivativePowerline Nerd Font:style=Regular 8
+font pango:UbuntuMono Nerd Font:style=Regular 11
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod

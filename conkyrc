@@ -10,7 +10,7 @@ conky.config = {
 	draw_outline = false,
 	draw_shades = false,
 	use_xft = true,
-	font = 'UbuntuMonoDerivativePowerline Nerd Font:size=8',
+	font = 'UbuntuMono Nerd Font:size=8',
 	gap_x = 5,
 	gap_y = 5,
 	minimum_width = 5,
