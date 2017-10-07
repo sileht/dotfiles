@@ -1,5 +1,5 @@
 
-set debug_level = 0
+set debug_level = 1
 
 source ~/.mutt/vombatidae.mutt
 source ~/.mutt/keybinding
@@ -24,7 +24,7 @@ set read_inc          = 0
 #folder-hook . 'set read_inc=0'
 
 
-# Mail check
+## Mail check
 set mail_check        = 20                          # how often to poll for new mail
 set mail_check_stats  = yes                         # Get stats about new mail, needed by sidebar
 set mail_check_recent = no                          # Use New flag and not last visited date
@@ -72,26 +72,28 @@ set pager_stop         = yes                        # Don't skip to next message
 tag-transforms      "telemetry" "⌬ " "oslo" "⛁ " "ttnn" "♨ "
 tag-formats  "ttnn" Gt"
 set hidden_tags   = Junk,NonJunk,nonjunk,junk,\$Forwarded,\$label1,\$label2,\$label3,\$label4
+set index_format  = "[%Z] %{%b-%d %H:%M} | %-20.20L | %?M?➘ ?%s %?g?/ %g ?%* (%?l?%l&%c?)"
+set index_format  = "[%Z] %{%b-%d %H:%M} | %-20.20L | %?M?➘ ?%s %?g?/ %g ?%*  %?X?📎&? (%?l?%lL %c&%c?)"
 # set index_format  = "[%Z] %{%b-%d %H:%M} | %-20.20L | %?M?➘ ?%s [g:%g/G:%Gt/J:%J]%*  %?X?📎&? (%?l?%l&%c?)"
-set index_format  = "[%Z] %{%b-%d %H:%M} | %-20.20L | %?M?➘ ?%s %?g?/ %g ?%*  %?X?📎&? (%?l?%l&%c?)"
 set folder_format = "      %-20f"
 set pager_format  = "nono %* nono"
 
 # Sidebar
-set sidebar_width        = 22
-set sidebar_visible      = yes
-set sidebar_divider_char = ' '
-set sidebar_short_path   = yes
-set sidebar_format       = '%B%?F? [%F]?%*   %?N?%N/?%S'
+set sidebar_width         = 28
+set sidebar_visible       = yes
+set sidebar_divider_char  = ' '
+set sidebar_short_path    = yes
+set sidebar_format        = '%B%?F? [%F]?%*   %?N?%N/?%S'
+set sidebar_sort_method   = unsorted
+#set sidebar_next_new_wrap = yes
 #set sidebar_new_mail_only = yes
-#set sidebar_sort_method  = new
 
 # Message display
 alternative_order text/plain text/html              # this helps with multipart messages
 auto_view text/html                                 # if there is only html dump that 
 auto_view text/x-diff
 set my_tprot           = 't-prot -cmekatlSsw --bigq -Mmutt --pgp-move-vrf --pgp-short -L$HOME/.mutt/mlfooters -A$HOME/.mutt/adfooters'
-set display_filter     = $my_tprot
+# set display_filter     = $my_tprot
 set skip_quoted_offset = 3
 set text_flowed        = yes
 set markers            = no                         # no line wraparound marker (is "+" by default)

@@ -1,6 +1,8 @@
 text/x-diff; cat '%s'; copiousoutput; 
-text/html; ~/.mutt/print_html.sh %{charset} %s; copiousoutput; nametemplate=%s.html
+text/html; ~/.env/bin/html2term %s
+#  ~/.mutt/print_html.sh %{charset} %s; copiousoutput; nametemplate=%s.html
 text/*; ~/.mutt/transfert_attachment.sh %s
 application/*; ~/.mutt/transfert_attachment.sh %s
-image/*; ~/.mutt/transfert_attachment.sh %s
+image/*; img2sixel -w auto -h 1024 %s 
+# ~/.mutt/transfert_attachment.sh %s
 audio/*; ~/.mutt/transfert_attachment.sh %s

@@ -15,6 +15,8 @@ folder-hook "imap://sileht@mail.sileht.net/Trash" push "<delete-pattern>~d<space
 
 set duplicate_threads = yes
 set crypt_autosign    = yes
+# set imap_check_subscribed = yes
+# set sidebar_sort_method  = alpha
 
 unmailboxes *
 mailboxes =INBOX =Drafts =Sent =Trash =Junk \
@@ -42,12 +44,4 @@ mailboxes =INBOX =Drafts =Sent =Trash =Junk \
       =zml-os-unknown \
       =zml-toulibre \
 
-#unmailboxes *
-#mailboxes \
-#      /home/sileht/mutt_notmuch_test \
-#      /home/sileht/mutt_notmuch_test/.test
-#
-#set virtual_spoolfile=yes
-#set nm_default_uri = "notmuch:///home/sileht/mutt_notmuch_test/"
-#virtual-mailboxes "INBOX" "notmuch://?query=tag:inbox"
-#virtual-mailboxes "ALL" "notmuch://?query=!tag:inbox"
+# virtual-mailboxes "TEST" "$folder/INBOX?search="imap://?query=tag:inbox"
