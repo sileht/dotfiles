@@ -7,7 +7,8 @@ map! <F1> <del>
 call plug#begin('~/.vim/plugged')
 
 " Style
-Plug 'morhetz/gruvbox'
+" Plug 'morhetz/gruvbox'
+Plug 'dracula/vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'scrooloose/syntastic'
@@ -254,7 +255,8 @@ let g:gruvbox_italic=1
 "let g:gruvbox_contrast_dark="hard"
 let g:gruvbox_improved_warnings=1
 let g:gruvbox_guisp_fallback='bg'
-colorscheme gruvbox
+" colorscheme gruvbox
+colorscheme dracula
 
 set cursorline
 set laststatus=2        " Show statusbar
