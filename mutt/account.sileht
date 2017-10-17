@@ -8,7 +8,7 @@ set realname = "Mehdi Abaakouk"
 set signature = "~/.mutt/signature.local"
 
 set folder="imap://sileht@mail.sileht.net"
-set smtp_url="smtp://sileht@mail.sileht.net"
+set smtp_url="smtp://sileht@mx1.sileht.net"
 
 folder-hook "imap://sileht@mail.sileht.net/zml-" push "<delete-pattern>~d<space>>6m<enter>"
 folder-hook "imap://sileht@mail.sileht.net/Trash" push "<delete-pattern>~d<space>>3m<enter>"

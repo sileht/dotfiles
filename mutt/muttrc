@@ -89,11 +89,14 @@ set sidebar_sort_method   = unsorted
 #set sidebar_new_mail_only = yes
 
 # Message display
-alternative_order text/plain text/html              # this helps with multipart messages
-auto_view text/html                                 # if there is only html dump that 
+alternative_order text/plain
+# alternative_order text/plain text/html
+# alternative_order text/html text/plain
+# auto_view text/html
 auto_view text/x-diff
+auto_view text/x-patch
 set my_tprot           = 't-prot -cmekatlSsw --bigq -Mmutt --pgp-move-vrf --pgp-short -L$HOME/.mutt/mlfooters -A$HOME/.mutt/adfooters'
-# set display_filter     = $my_tprot
+set display_filter     = $my_tprot
 set skip_quoted_offset = 3
 set text_flowed        = yes
 set markers            = no                         # no line wraparound marker (is "+" by default)
@@ -107,8 +110,9 @@ ignore *
 unignore From: Organization: To: Cc: Reply-To: Subject:
 unignore x-mailing-list: posted-to: x-beenthere:
 unignore x-mailer: user-agent:
+unignore tags
 unignore X-Gerrit-ChangeURL: X-Github-URL: List-Archive:
-hdr_order Subject: From: To: Cc:  Reply-To: Organization:
+hdr_order Subject: From: To: Cc:  Reply-To: Organization: tags
 
 # Contacts
 set query_command = "khard email -p %s"
