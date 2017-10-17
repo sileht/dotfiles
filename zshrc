@@ -525,7 +525,7 @@ alias utox="nocorrect utox"
 
 source ~/.env/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source ~/.env/zsh-history-substring-search/zsh-history-substring-search.zsh
-source ~/.env/z.sh
+# source ~/.env/z.sh
 
 typeset -A key
 key=(
