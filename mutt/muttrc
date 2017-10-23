@@ -1,5 +1,5 @@
 
-set debug_level = 1
+set debug_level = 3
 
 source ~/.mutt/vombatidae.mutt
 source ~/.mutt/keybinding
@@ -92,11 +92,11 @@ set sidebar_sort_method   = unsorted
 alternative_order text/plain
 # alternative_order text/plain text/html
 # alternative_order text/html text/plain
-# auto_view text/html
+auto_view text/html
 auto_view text/x-diff
 auto_view text/x-patch
-set my_tprot           = 't-prot -cmekatlSsw --bigq -Mmutt --pgp-move-vrf --pgp-short -L$HOME/.mutt/mlfooters -A$HOME/.mutt/adfooters'
-set display_filter     = $my_tprot
+# set my_tprot           = 't-prot -cmekatlSsw --bigq -Mmutt --pgp-move-vrf --pgp-short -L$HOME/.mutt/mlfooters -A$HOME/.mutt/adfooters'
+# set display_filter     = $my_tprot
 set skip_quoted_offset = 3
 set text_flowed        = yes
 set markers            = no                         # no line wraparound marker (is "+" by default)
@@ -115,7 +115,7 @@ unignore X-Gerrit-ChangeURL: X-Github-URL: List-Archive:
 hdr_order Subject: From: To: Cc:  Reply-To: Organization: tags
 
 # Contacts
-set query_command = "khard email -p %s"
+set query_command = "khard email --parsable %s"
 bind editor <Tab> complete-query
 bind editor ^T    complete
 

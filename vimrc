@@ -4,6 +4,13 @@ set nocompatible
 map <F1> <del>
 map! <F1> <del>
 
+" Add some missing filetype extentions
+autocmd BufNewFile,BufRead *.yaml set filetype=yml
+autocmd BufNewFile,BufRead *.j2	  set filetype=jinja
+autocmd BufNewFile,BufRead *mutt-* set filetype=mail
+" Special type
+autocmd BufNewFile,BufRead rest.j2	  set filetype=rst
+
 call plug#begin('~/.vim/plugged')
 
 " Style
@@ -60,6 +67,9 @@ Plug 'vim-scripts/HTML-AutoCloseTag', {'for': ['html', 'xml']}
 Plug 'hail2u/vim-css3-syntax',        {'for': 'css'}
 Plug 'breard-r/vim-dnsserial'         " dns zones
 Plug 'leafgarland/typescript-vim',    {'for': 'typescript'}
+
+Plug 'dbeniamine/vim-mail',           {'for': 'mail'}
+Plug 'chrisbra/CheckAttach',          {'for': 'mail'}
 
 " Org Mode
 "Plug 'jceb/vim-orgmode'
@@ -183,9 +193,6 @@ nmap ga <Plug>(EasyAlign)
 " On load "
 """""""""""
 
-" Add some missing filetype extentions
-autocmd BufNewFile,BufRead *.yaml set filetype=yml
-
 " Change cwd to file directory
 autocmd BufEnter * if bufname("") !~ "^\[A-Za-z0-9\]*://" | lcd %:p:h | endif
 
@@ -196,9 +203,9 @@ autocmd FileType c,cpp,java,go,php,javascript,puppet,python,rst set textwidth=79
 " No ending space
 "autocmd FileType c,cpp,java,go,php,javascript,puppet,python,rst,rust,twig,xml,yml,perl,sql autocmd BufWritePre <buffer> call StripTrailingWhitespace()
 
-" Use en_us spell and completion per default for markdown and rst 
-autocmd FileType gitcommit,rst,mkd,markdown silent! call ToggleSpell()
-autocmd FileType gitcommit,rst,mkd,markdown set complete+=kspell
+" Use en_us spell and completion per default for markdown and rst
+autocmd FileType gitcommit,rst,mkd,markdown,jinja silent! call ToggleSpell()
+autocmd FileType gitcommit,rst,mkd,markdown,jinja set complete+=kspell
 
 " No more keypad!
 "let g:HardMode_level = 'wannabe'
@@ -208,15 +215,13 @@ autocmd FileType gitcommit,rst,mkd,markdown set complete+=kspell
 autocmd FileType python setlocal completeopt-=preview
 autocmd FileType python silent! call LoadVenv()
 
-"let g:qcc_query_command='~/.mutt/editor-email-query'
-"au BufRead /tmp/mutt* setlocal omnifunc=QueryCommandComplete "<C-X><C-O> 
-au BufRead /tmp/mutt* setlocal textwidth=72
-au BufRead /tmp/mutt* setlocal wrap
-au BufRead /tmp/mutt* setlocal fo+=aw
-au BufRead /tmp/mutt* setlocal spell spelllang=fr,en
-au BufRead /tmp/mutt* setlocal nocp
-"au BufRead /tmp/mutt* startinsert
-au BufRead /tmp/mutt* ?^$
+" Mail
+let g:VimMailSpellLangs=['fr', 'en', 'sp']
+let g:VimMailClient="true"
+let g:VimMailStartFlags="SA"
+let g:VimMailContactSyncCmd="true"
+let g:VimMailContactQueryCmd="/home/sileht/.env/bin/vim-mail-contact-query"
+autocmd FileType mail setlocal completeopt+=preview
 
 " libvirt C style
 autocmd BufWritePre,BufRead *.c setlocal smartindent cindent cinoptions=(0,:0,l1,t0,L3
@@ -232,17 +237,19 @@ match ErrorMsg /\s\+$\| \+\ze\t/
 " Dirty js format
 " autocmd BufWritePre,BufRead *.js :set tabstop=2 shiftwidth=2
 
-" Restore cursor position
-function! ResCur()
-    if line("'\"") <= line("$")
-	silent! normal! g`"
-	return 1
-    endif
-endfunction
-augroup resCur
-    autocmd!
-    autocmd BufWinEnter * call ResCur()
-augroup END
+"" Restore cursor position
+"if (&ft!='mail')
+"    function! ResCur()
+"        if line("'\"") <= line("$")
+"        silent! normal! g`"
+"        return 1
+"        endif
+"    endfunction
+"    augroup resCur
+"        autocmd!
+"        autocmd BufWinEnter * call ResCur()
+"    augroup END
+"endif
 
 
 """"""""""
