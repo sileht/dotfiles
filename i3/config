@@ -26,7 +26,8 @@ for_window [class="^.*"] border pixel 1
 
 # start application
 bindsym $mod+Return exec st
-bindsym $mod+b exec chromium --profile-directory=Default
+# bindsym $mod+b exec /home/sileht/logiciel/firefox/firefox
+bindsym $mod+b exec chromium  #--profile-directory=Default
 bindsym $mod+c exec st -t 'gizmo.sileht.net' -e ssh -tqxkAC gizmo
 bindsym $mod+Shift+c exec st -t 'gizmo.sileht.net' -e mosh -a gizmo
 bindsym $mod+d exec st -t 'gizmo.sileht.net' -e ssh -tqxkAC gizmo mutt
@@ -42,8 +43,8 @@ bindsym $mod+Shift+a kill
 #bindsym XF86Launch1 exec --no-startup-id "bash -c 'pkill solard;solard --stop-on-outside-change --show-notifications;'"
 #exec_always --no-startup-id "bash -c 'pkill solard;solard --stop-on-outside-change --show-notifications;'"
 
-exec_always --no-startup-id "bash -c 'pkill compton; compton"
-exec_always --no-startup-id "bash -c 'pkill conky; conky'"
+#exec_always --no-startup-id "bash -c 'pkill compton; compton"
+#exec_always --no-startup-id "bash -c 'pkill conky; conky'"
 
 # start dmenu (a program launcher)
 #bindsym $mod+r exec dmenu_run
@@ -65,11 +66,11 @@ bindsym $mod+Down focus down
 bindsym $mod+Up focus up
 bindsym $mod+Right focus right
 
-# move focused window
-bindsym $mod+Shift+j move left
-bindsym $mod+Shift+k move down
-bindsym $mod+Shift+l move up
-bindsym $mod+Shift+m move right
+## move focused window
+#bindsym $mod+Shift+j move left
+#bindsym $mod+Shift+k move down
+#bindsym $mod+Shift+l move up
+#bindsym $mod+Shift+m move right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Shift+Left move left
@@ -149,6 +150,9 @@ bindsym $mod+Shift+agrave move container to workspace 10
 
 # reload the configuration file
 #bindsym $mod+Shift+c reload
+bindsym $mod+Shift+h move workspace to output left
+bindsym $mod+Shift+l move workspace to output right
+
 bindsym $mod+Shift+e mode "resize"
 bindsym $mod+Shift+r restart
 bindsym $mod+Shift+z exec "mate-session-save --shutdown-dialog"

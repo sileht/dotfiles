@@ -35,5 +35,5 @@ git cherry-pick -x $ref
 #    GIT_EDITOR="sed -ie '/Change-Id/d'" git commit --amend -a
 #fi
 #GIT_EDITOR="sed -ie '/Change-Id/a(cherry picked from commit $changeid)'" git commit --amend -a
-git-review
+[ -f ".gitreview" ] && git-review || git pr
 git checkout $ref

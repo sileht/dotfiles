@@ -307,10 +307,11 @@ unban(){ sudo iptables -D INPUT -s "$1" -j DROP }
 alias idletask='schedtool -D -n 19 -e ionice -c 3'
 alias batchtask='schedtool -B -n 1 -e ionice -n 1'
 
-function cdt() { cd $(mktemp -td cdt.XXXXXXXX) ; pwd }
+function cdt() { cd $(mktemp -td cdt.$(date '+%Y%m%d-%H%M%S').XXXXXXXX) ; pwd }
 function s() { pwd >| /dev/shm/.saved_dir; }
 function i() { p="$(cat /dev/shm/.saved_dir 2>/dev/null)"; [ -d $p ] && cd $p }
 function p() { cd ~/workspace/os_dev/stack/*${1}*(/[0,1]) ; s }
+function g() { cd ~/workspace/gnocchi/*${1}*(/[0,1]) ; s }
 function rh() { cd ~/workspace/os_dev/rh-stack/*${1}*(/[0,1]) ; s }
 function rdo() { cd ~/workspace/os_dev/rh-stack/rdo/*${1}*(/[0,1]) ; s }
 i
@@ -377,7 +378,7 @@ alias grep='grep --color=auto'
 alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
 function sgrep(){ grep "$@" --color=always| egrep -v '(binaire|\.svn|\.git)' ; } 
-function g(){ grep --color=always "$@" | more }
+# function g(){ grep --color=always "$@" | more }
 
 # ZSH STUFF
 alias zmv="nocorrect noglob zmv"

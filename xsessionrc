@@ -5,3 +5,5 @@ export PATH="$HOME/.bin:$HOME/.env/bin:$HOME/.cargo/bin:$PATH"
 [ -d $HOME/.gem/ruby ] && for d in $HOME/.gem/ruby/*/bin; do
     export PATH="$PATH:$d"
 done
+
+[ "$DISPLAY" = ":0" ] && [ "$(lsmod | grep vboxvideo)" ] && { xset s off ; xset -dpms;}

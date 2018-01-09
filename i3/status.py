@@ -53,7 +53,6 @@ status.register("pulseaudio",
 status.register("cpu_usage_graph", graph_width=5)
 status.register("mem_bar")
 status.register("battery", interval=60, alert_percentage=3,
-                # {bar}",
                 format="{status}{remaining:%E%hh:%Mm} {consumption}W",
                 alert=True,
                 status={"DIS": "↓", "CHR": "↑", "FULL": "="},
