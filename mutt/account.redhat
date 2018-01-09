@@ -6,7 +6,7 @@ alternates "^(sileht|mabaakou|mehdi.abaakouk)@redhat.com"
 set realname = "Mehdi Abaakouk"
 set signature = "~/.mutt/signature.redhat"
 
-set folder = "imap://redhat@mail.sileht.net"
+set folder = "imap://redhat@mail.sileht.net/"
 set smtp_url = "smtp://smtp.corp.redhat.com/"
 
 folder-hook "imap://redhat@mail.sileht.net/Trash" push "<delete-pattern>~d<space>>3m<enter>"
@@ -41,4 +41,8 @@ mailboxes =INBOX =Drafts =Sent =Trash =Junk \
     =ml-paris \
     =ml-zzz-other \
     =vie \
-    =meeting
+    =meeting \
+    =tags.ttnn \
+    =tags.telemetry \
+
+

@@ -73,7 +73,7 @@ tag-transforms      "telemetry" "⌬ " "oslo" "⛁ " "ttnn" "♨ "
 tag-formats  "ttnn" Gt"
 set hidden_tags   = Junk,NonJunk,nonjunk,junk,\$Forwarded,\$label1,\$label2,\$label3,\$label4
 set index_format  = "[%Z] %{%b-%d %H:%M} | %-20.20L | %?M?➘ ?%s %?g?/ %g ?%* (%?l?%l&%c?)"
-set index_format  = "[%Z] %{%b-%d %H:%M} | %-20.20L | %?M?➘ ?%s %?g?/ %g ?%*  %?X?📎&? (%?l?%lL %c&%c?)"
+# set index_format  = "[%Z] %{%b-%d %H:%M} | %-20.20L | %?M?➘ ?%s %?g?/ %g ?%*  %?X?📎&? (%?l?%lL %c&%c?)"
 # set index_format  = "[%Z] %{%b-%d %H:%M} | %-20.20L | %?M?➘ ?%s [g:%g/G:%Gt/J:%J]%*  %?X?📎&? (%?l?%l&%c?)"
 set folder_format = "      %-20f"
 set pager_format  = "nono %* nono"

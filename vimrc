@@ -216,7 +216,7 @@ autocmd FileType python setlocal completeopt-=preview
 autocmd FileType python silent! call LoadVenv()
 
 " Mail
-let g:VimMailSpellLangs=['fr', 'en', 'sp']
+let g:VimMailSpellLangs=['fr', 'en']
 let g:VimMailClient="true"
 let g:VimMailStartFlags="SA"
 let g:VimMailContactSyncCmd="true"
@@ -238,18 +238,18 @@ match ErrorMsg /\s\+$\| \+\ze\t/
 " autocmd BufWritePre,BufRead *.js :set tabstop=2 shiftwidth=2
 
 "" Restore cursor position
-"if (&ft!='mail')
-"    function! ResCur()
-"        if line("'\"") <= line("$")
-"        silent! normal! g`"
-"        return 1
-"        endif
-"    endfunction
-"    augroup resCur
-"        autocmd!
-"        autocmd BufWinEnter * call ResCur()
-"    augroup END
-"endif
+if (&ft!='mail')
+    function! ResCur()
+        if line("'\"") <= line("$")
+        silent! normal! g`"
+        return 1
+        endif
+    endfunction
+    augroup resCur
+        autocmd!
+        autocmd BufWinEnter * call ResCur()
+    augroup END
+endif
 
 
 """"""""""

@@ -8,15 +8,15 @@ set realname = "Mehdi Abaakouk"
 set signature = "~/.mutt/signature.local"
 
 set folder="imap://sileht@mail.sileht.net"
-set smtp_url="smtp://sileht@mx1.sileht.net"
-
+set smtp_url="smtp://sileht@mx2.sileht.net"
 folder-hook "imap://sileht@mail.sileht.net/zml-" push "<delete-pattern>~d<space>>6m<enter>"
 folder-hook "imap://sileht@mail.sileht.net/Trash" push "<delete-pattern>~d<space>>3m<enter>"
 
 set duplicate_threads = yes
 set crypt_autosign    = yes
 # set imap_check_subscribed = yes
-# set sidebar_sort_method  = alpha
+#set imap_list_subscribed = yes
+#set sidebar_sort_method  = alpha
 
 unmailboxes *
 mailboxes =INBOX =Drafts =Sent =Trash =Junk \
@@ -43,5 +43,7 @@ mailboxes =INBOX =Drafts =Sent =Trash =Junk \
       =zml-os-releases \
       =zml-os-unknown \
       =zml-toulibre \
+      =tags.ttnn \
+      =tags.telemetry \
 
 # virtual-mailboxes "TEST" "$folder/INBOX?search="imap://?query=tag:inbox"

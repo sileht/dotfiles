@@ -5,8 +5,8 @@ unalternates *
 set realname = "Mehdi Abaakouk for tetaneutral.net"
 set signature = "~/.mutt/signature.ttnn"
 
-set folder="imaps://${my_ttnn_user}@mx1.tetaneutral.net/"
-set smtp_url="smtp://${my_ttnn_user}@mx1.tetaneutral.net"
+set folder="imaps://${my_ttnn_user}@mx3.tetaneutral.net/"
+set smtp_url="smtp://${my_ttnn_user}@mx3.tetaneutral.net"
 
 set duplicate_threads = no
 set crypt_autosign    = no
