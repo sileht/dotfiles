@@ -6,7 +6,7 @@
 
 [alias]
     #p = "!f() { git t ${1:-master} && git pull --rebase; }; f"
-    pr = pull-request
+    pr = pull-request --no-tag-previous-revision
     p = "!f() {if [ -f .gitreview ]; then git-review $* ; else git pull-request $* ; fi ; } ; f"
     t = "!f() { git branch --set-upstream-to=origin/${1:-master}; }; f"
     lg = log --graph --pretty=cshort --abbrev-commit --date=relative

@@ -409,7 +409,7 @@ unset _LS_OPTS
 
 # handy documentation lookup on Debian
 # from http://www.michael-prokop.at/computer/config/.zshrc
-doc() { cd /usr/share/doc/$1 && ls } 
+doc() { cd /usr/share/doc/$1 && ls }
 _doc() { _files -W /usr/share/doc -/ }
 compdef _doc doc
 
@@ -424,11 +424,11 @@ function fwget(){
     fi
 }
 
-# Service stuff
-alias service="nocorrect sudo service"
-alias systemctl="nocorrect sudo systemctl"
-compdef _service invoke-rc.d
-
+## Service stuff
+#alias service="nocorrect sudo service"
+#alias systemctl="nocorrect sudo systemctl"
+#compdef _service invoke-rc.d
+#
 # CD STUFF
 function cd () {
 if [[ -z $2 ]]; then
@@ -456,7 +456,9 @@ sshclean(){
     hostname=$(echo $1 | sed 's/\.t$/.tetaneutral.net/g')
     for i in $hostname $(getent ahosts $hostname | awk '{print $1}' | sort -u); do
         ssh-keygen -R "$i"
+        ssh-keygen -R "[$i]:22"
         ssh-keygen -R "[$i]:2222"
+        ssh-keygen -R "[$i]:22222"
     done
 }
 
