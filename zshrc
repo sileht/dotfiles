@@ -284,7 +284,7 @@ _prompt_preexec() {
         local -a cmd
         local pwd=${PWD/$HOME/"~"} arf
         cmd=(${(z)1})
-        if [ "$cmd[1]" = "fg" ]; then 
+        if [ "$cmd[1]" = "fg" ]; then
             cmd=($(jobs | grep -v "continued" | sed 's,.*suspended *,,g' | head -n1 ))
         fi
         arg=$(_cutted_line "$cmd[2,-1]")
@@ -297,8 +297,6 @@ _prompt_preexec() {
 }
 add-zsh-hook preexec _prompt_preexec
 
-
-
 mka () { time schedtool -B -n 1 -e ionice -n 1 make -j $(nproc) "$@" }
 imka () { time schedtool -D -n 19 -e ionice -c 3 make -j $(nproc) "$@" }
 masq (){ sudo iptables -t nat -A POSTROUTING -s "$1" ! -d "$1" -j MASQUERADE }
@@ -310,10 +308,10 @@ alias batchtask='schedtool -B -n 1 -e ionice -n 1'
 function cdt() { cd $(mktemp -td cdt.$(date '+%Y%m%d-%H%M%S').XXXXXXXX) ; pwd }
 function s() { pwd >| /dev/shm/.saved_dir; }
 function i() { p="$(cat /dev/shm/.saved_dir 2>/dev/null)"; [ -d $p ] && cd $p }
-function p() { cd ~/workspace/os_dev/stack/*${1}*(/[0,1]) ; s }
+function p() { cd ~/workspace/perso/*${1}*(/[0,1]) ; s }
+function o() { cd ~/workspace/openstack/*${1}*(/[0,1]) ; s }
+function m() { cd ~/workspace/mergify/*${1}*(/[0,1]) ; s }
 function g() { cd ~/workspace/gnocchi/*${1}*(/[0,1]) ; s }
-function rh() { cd ~/workspace/os_dev/rh-stack/*${1}*(/[0,1]) ; s }
-function rdo() { cd ~/workspace/os_dev/rh-stack/rdo/*${1}*(/[0,1]) ; s }
 i
 add-zsh-hook chpwd s
 

@@ -51,6 +51,7 @@ endif
 Plug 'Vimjas/vim-python-pep8-indent', {'for': 'python'}
 Plug 'hdima/python-syntax',           {'for': 'python'}
 
+Plug 'posva/vim-vue'
 Plug 'vim-scripts/spec.vim',          {'for': 'spec'}
 Plug 'godlygeek/tabular'
 Plug 'spf13/PIV',                     {'for': 'php'}
@@ -91,7 +92,7 @@ filetype plugin indent on
 set shell=/bin/sh
 
 "set clipboard=unnamed,unnamedplus
-set mouse=
+set mouse=r
 set hidden                      " Allow buffer switching without saving
 set backup                      " Backups are nice ...
 set undofile                    " So is persistent undo ...
