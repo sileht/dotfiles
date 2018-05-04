@@ -1,0 +1,16 @@
+#!/bin/bash
+
+name=$1
+branch=${2:-master}
+remote=${3:-origin}
+prefix=${4:-$USER}
+
+local_branch="$prefix/$name"
+[ "$branch" != "master" ] && local_branch=$local_branch-$branch
+
+branch_exists=$(git rev-parse --verify $local_branch 2>/dev/null)
+if [ "$branch_exists" ]; then
+    exec git checkout $local_branch
+else
+    exec git checkout $remote/$branch -b $local_branch
+fi
