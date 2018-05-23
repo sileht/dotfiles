@@ -1,6 +1,3 @@
-[submodule "spf13-vim-3"]
-	path = spf13-vim-3
-	url = https://github.com/spf13/spf13-vim.git
 [submodule "zsh-completions"]
 	path = zsh-completions
 	url = https://github.com/zsh-users/zsh-completions.git
@@ -15,7 +12,7 @@
 	url = https://github.com/zsh-users/zsh-history-substring-search.git
 [submodule "tmux/plugins/tpm"]
 	path = tmux/plugins/tpm
-	url = https://github.com/tmux-plugins/tpm
+	url = https://github.com/tmux-plugins/tpm.git
 [submodule "st"]
 	path = st
-	url = git@github.com:sileht/st.git
+	url = https://github.com/sileht/st.git
