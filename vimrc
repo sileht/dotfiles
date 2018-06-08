@@ -29,6 +29,7 @@ Plug 'junegunn/vim-easy-align'
 Plug 'easymotion/vim-easymotion'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-abolish'
 "Plug 'wikitopian/hardmode'
 " File/Tag browsing
 "Plug 'tmux-plugins/vim-tmux-focus-events'

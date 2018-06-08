@@ -5,6 +5,7 @@ fpath=($fpath ~/.env/zsh-completions/src)
 export ZVARDIR=$HOME/.var/zsh
 export TMPDIR=/tmp
 
+[ ! -d $ZVARDIR ] && mkdir -p $ZVARDIR
 # Source PATH
 source ~/.xsessionrc
 

@@ -307,11 +307,19 @@ alias batchtask='schedtool -B -n 1 -e ionice -n 1'
 
 function cdt() { cd $(mktemp -td cdt.$(date '+%Y%m%d-%H%M%S').XXXXXXXX) ; pwd }
 function s() { pwd >| /dev/shm/.saved_dir; }
-function i() { p="$(cat /dev/shm/.saved_dir 2>/dev/null)"; [ -d $p ] && cd $p }
-function p() { cd ~/workspace/perso/*${1}*(/[0,1]) ; s }
-function o() { cd ~/workspace/openstack/*${1}*(/[0,1]) ; s }
-function m() { cd ~/workspace/mergify/*${1}*(/[0,1]) ; s }
-function g() { cd ~/workspace/gnocchi/*${1}*(/[0,1]) ; s }
+function i() { sp="$(cat /dev/shm/.saved_dir 2>/dev/null)"; [ -d $sp ] && cd $sp }
+function p() {
+    local -a working_dirs=($(ls -1d ~/workspace/**/${1}*/.git/.. | sed -e 's@/\.git/\.\./@@g'))
+    if [ ${#working_dirs[@]} -eq 1 ] ; then
+        cd "${working_dirs}"
+    else
+        select wd in ${working_dirs[@]}; do
+            cd "$wd"
+            break
+        done
+    fi
+    s
+}
 i
 add-zsh-hook chpwd s
 
@@ -376,7 +384,7 @@ alias grep='grep --color=auto'
 alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
 function sgrep(){ grep "$@" --color=always| egrep -v '(binaire|\.svn|\.git)' ; } 
-# function g(){ grep --color=always "$@" | more }
+function g(){ grep --color=always "$@" | more }
 
 # ZSH STUFF
 alias zmv="nocorrect noglob zmv"

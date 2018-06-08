@@ -188,7 +188,7 @@ bar {
     output DP-1
     output eDP-1
     output DVI-D-0
-    output VGA-1
+    output VGA-2
     status_command ~/.i3/status.py
     position          top
     workspace_buttons yes
@@ -196,7 +196,7 @@ bar {
 bar {
     output HDMI-0
     output HDMI3
-    output VGA-2
+    output VGA-1
     tray_output none
     position          top
     workspace_buttons yes
