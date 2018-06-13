@@ -523,7 +523,7 @@ utox() {
     for item in ${(@v)helper}; do
         for e in "${(@s/,/)env[$item]}" ; do
             etox -e $e "$@" pip install -U pip
-            etox -e $e "$@" pip install -U -e . $(tox --notest --showconfig | awk '/^\[testenv:'$e'\]$/{while ($1 != "deps") { getline ; }; print $0 ; }' | sed -e 's/\s*deps\s*=\s*\[\(.*\)\]/\1/g' | sed -e 's/, / /g')
+            etox -e $e "$@" pip install -U --upgrade-strategy eager -e . $(tox --notest --showconfig | awk '/^\[testenv:'$e'\]$/{while ($1 != "deps") { getline ; }; print $0 ; }' | sed -e 's/\s*deps\s*=\s*\[\(.*\)\]/\1/g' | sed -e 's/, / /g')
         done
     done
 }
