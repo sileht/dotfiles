@@ -25,11 +25,17 @@ vimrc.bundles.fork vimrc.fork notmuch-config vimrc.old vimrc.ori specemacs.d
 emacs.d vimrc.before.local vimrc.bundles.local vimrc.local zsh lbdbrc
 pythonrc.py spacemacs Xresources"
 
-ensure_pkgs() {
+ensure_yum() {
+    [ ! -x $(which yum) ] && return
     for name in "$@"; do
-        if [ -x $(which apt) ]; then
-            [ ! -f /var/lib/dpkg/info/${name}.list -a ! -f /var/lib/dpkg/info/${name}:amd64.list ] && sudo apt -y install ${name}
-        fi
+         rpm -q $name > /dev/null || sudo yum install -y ${name}
+    done
+}
+
+ensure_apt() {
+    [ ! -x $(which apt) ] && return
+    for name in "$@"; do
+        [ ! -f /var/lib/dpkg/info/${name}.list -a ! -f /var/lib/dpkg/info/${name}:amd64.list ] && sudo apt -y install ${name}
     done
 }
 
@@ -119,7 +125,8 @@ maybe_do_update(){
 }
 
 setup_st(){
-    ensure_pkgs libxft-dev libxext-dev libfontconfig1-dev libxrender-dev libx11-dev
+    ensure_apt libxft-dev libxext-dev libfontconfig1-dev libxrender-dev libx11-dev
+    ensure_yum libXft-devel libXet-devel bfontconfig1-devel libXrender-devel libX11-devel
     (cd st && make clean && make && tic -sx st.info)
 }
 
