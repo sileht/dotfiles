@@ -234,6 +234,7 @@ _prompt_main(){
 
   case $HOST in
       bob) host_color=green;;
+      red) host_color=130;;
       billy) host_color=32;;
       gizmo) host_color=214;;
       *) host_color=242;;
