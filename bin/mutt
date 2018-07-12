@@ -14,4 +14,10 @@ TITLE=${ACCOUNT}
 
 tmux rename-window -t${TMUX_PANE} "mutt[$TITLE]"
 
-exec /home/sileht/source/neomutt/neomutt/neomutt "$@"
+possible_paths="/home/sileht/source/neomutt/neomutt/neomutt /home/sileht/workspace/source/neomutt/neomutt"
+
+for p in $possible_paths; do
+    [ -e "$p" ] && exec $p "$@"
+done
+echo "neomutt binary not found"
+exit 1
