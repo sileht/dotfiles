@@ -307,8 +307,8 @@ alias idletask='schedtool -D -n 19 -e ionice -c 3'
 alias batchtask='schedtool -B -n 1 -e ionice -n 1'
 
 function cdt() { cd $(mktemp -td cdt.$(date '+%Y%m%d-%H%M%S').XXXXXXXX) ; pwd }
-function s() { pwd >| /dev/shm/.saved_dir; }
-function i() { sp="$(cat /dev/shm/.saved_dir 2>/dev/null)"; [ -d $sp ] && cd $sp }
+function s() { pwd >| $ZVARDIR/.saved_dir; }
+function i() { sp="$(cat $ZVARDIR/.saved_dir 2>/dev/null)"; [ -d $sp ] && cd $sp }
 function p() {
     local -a working_dirs=($(ls -1d ~/workspace/**/${1}*/.git/.. | sed -e 's@/\.git/\.\./@@g'))
     if [ ${#working_dirs[@]} -eq 1 ] ; then
@@ -487,7 +487,10 @@ update-flash() {
     sudo update-pepperflashplugin-nonfree --status
 }
 
-alias tox="eatmydata tox"
+case $HOSTNAME in
+    red) alias tox="LD_PRELOAD=/usr/lib64/nosync/nosync.so tox";;
+    *) alias tox="eatmydata tox";;
+esac
 
 etox() {
     zparseopts -D e+:=env
@@ -648,3 +651,6 @@ elif [ "$HOST" = "gizmo" ]; then
 fi
 
 # vim:ft=zsh
+
+# added by travis gem
+[ -f /home/sileht/.travis/travis.sh ] && source /home/sileht/.travis/travis.sh
