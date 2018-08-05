@@ -48,3 +48,5 @@
 	smtpServerPort = 25
 #[github]
 #	user = sileht
+[credential]
+	helper = store
