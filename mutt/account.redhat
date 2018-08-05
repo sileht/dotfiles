@@ -29,6 +29,7 @@ mailboxes =INBOX =Drafts =Sent =Trash =Junk \
     =bugzilla-me \
     =bugtracker \
     =ml-memo-list \
+    =ml-rhos-annonce \
     =ml-rhos-dev \
     =ml-rhos-tech \
     =ml-rhos-prio \

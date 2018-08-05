@@ -25,6 +25,7 @@ mailboxes =INBOX =Drafts =Sent =Trash =Junk \
       =perso-compte-achat \
       =perso-serveur \
       =amap \
+      =mergify \
       =ttnn \
       =ttnn-ca \
       =ttnn-hosting \
@@ -35,7 +36,6 @@ mailboxes =INBOX =Drafts =Sent =Trash =Junk \
       =code-other \
       =zml-ceph \
       =zml-neomutt \
-      =zml-check_mk \
       =zml-frnog \
       =zml-os-interested \
       =zml-os-junk \

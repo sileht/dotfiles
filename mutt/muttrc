@@ -1,5 +1,6 @@
 
 set debug_level = 3
+set shell = "/bin/bash"
 
 source ~/.mutt/vombatidae.mutt
 source ~/.mutt/keybinding
@@ -70,7 +71,7 @@ set pager_stop         = yes                        # Don't skip to next message
 
 # Formats
 tag-transforms      "telemetry" "⌬ " "oslo" "⛁ " "ttnn" "♨ "
-tag-formats  "ttnn" Gt"
+# tag-formats  "ttnn" Gt"
 set hidden_tags   = Junk,NonJunk,nonjunk,junk,\$Forwarded,\$label1,\$label2,\$label3,\$label4
 set index_format  = "[%Z] %{%b-%d %H:%M} | %-20.20L | %?M?➘ ?%s %?g?/ %g ?%* (%?l?%l&%c?)"
 # set index_format  = "[%Z] %{%b-%d %H:%M} | %-20.20L | %?M?➘ ?%s %?g?/ %g ?%*  %?X?📎&? (%?l?%lL %c&%c?)"

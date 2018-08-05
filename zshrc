@@ -369,6 +369,7 @@ alias pyclean='find . \( -type f -name "*.py[co]" \) ! -path "./.tox*" -delete'
 alias getaptkey='sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com'
 alias more=less
 function gcal() { gcalcli --military --monday -w $(($(tput cols)/8)) "$@"; }
+alias did="vim +'normal Go' +'r!date' ~/did.txt"
 
 function of() { lsof -np "$1" }
 compdef _pids of
@@ -630,23 +631,17 @@ precmd_functions+=(__vte_osc7)
 # SCREEN #
 ##########
 
-screen_data_file="$HOME/.var/screen_data.$(hostname)"
-
-
 is_mosh() { [ "$(readlink -f /proc/$PPID/exe)" == "/usr/bin/mosh-server" ] && return 0 || return 1 ;}
 
-tmux() { store_screen_data ; /usr/bin/tmux "$@" ; }
-kc(){ eval $(keychain -q --eval --agents ssh --nogui --inherit any --ignore-missing id_rsa ~/.ssh/id_dsa_h1) ; }
-update_screen_data(){ [ -r $screen_data_file ] && source $screen_data_file ; }
-store_screen_data(){
-    export | grep '\(GPG_AGENT_INFO\|DISPLAY\|XAUTHORITY\|SSH_AGENT_PID\|SSH_AUTH_SOCK\|GNOME_KEYRING_PID\|GNOME_KEYRING_SOCKET\)=' | sed -e 's/^/export /g' >| $screen_data_file
+kc(){
+    keys="~/.ssh/id_ed25519 ~/.ssh/id_rsa_g1"
+    if [ "$SSH_AUTH_SOCK" -a "$(ssh-add -l | grep SHA256:zquiKav5vK2+H2qCnjCL6fgWOn3bNSPr+d6xJ8a3s8o)" ]; then
+        keys=""
+    fi
+    eval $(keychain -q --eval --agents ssh --nogui --inherit any --ignore-missing $keys)
 }
-if [ -n "$WINDOW" -o -n "$TMUX_PANE" ]; then
-    # Update variable on each zsh in a screen
-    update_screen_data
-    add-zsh-hook preexec update_screen_data
-elif [ "$HOST" = "gizmo" ]; then
-    is_mosh || kc
+is_mosh || kc
+if [ -z "$WINDOW" -a -z "$TMUX_PANE" -a "$HOST" == "gizmo" ]; then
     sc ; exit 0;
 fi
 

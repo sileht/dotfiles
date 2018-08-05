@@ -137,4 +137,6 @@ color   body     brightmagenta   default        "can't handle these multiple sig
 color   body     brightmagenta   default        "signature verification suppressed"
 color   body     brightmagenta   default        "invalid node with packet of type"
 
-
+# color menu color202        color234
+color menu default color234
+color menu_options brightgreen color234
