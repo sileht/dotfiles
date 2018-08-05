@@ -631,16 +631,6 @@ precmd_functions+=(__vte_osc7)
 # SCREEN #
 ##########
 
-is_mosh() { [ "$(readlink -f /proc/$PPID/exe)" == "/usr/bin/mosh-server" ] && return 0 || return 1 ;}
-
-kc(){
-    keys="~/.ssh/id_ed25519 ~/.ssh/id_rsa_g1"
-    if [ "$SSH_AUTH_SOCK" -a "$(ssh-add -l | grep SHA256:zquiKav5vK2+H2qCnjCL6fgWOn3bNSPr+d6xJ8a3s8o)" ]; then
-        keys=""
-    fi
-    eval $(keychain -q --eval --agents ssh --nogui --inherit any --ignore-missing $keys)
-}
-is_mosh || kc
 if [ -z "$WINDOW" -a -z "$TMUX_PANE" -a "$HOST" == "gizmo" ]; then
     sc ; exit 0;
 fi
