@@ -26,14 +26,14 @@ emacs.d vimrc.before.local vimrc.bundles.local vimrc.local zsh lbdbrc
 pythonrc.py spacemacs Xresources"
 
 ensure_yum() {
-    [ ! -x $(which yum) ] && return
+    [ -x "$(which yum)" ] || return
     for name in "$@"; do
          rpm -q $name > /dev/null || sudo yum install -y ${name}
     done
 }
 
 ensure_apt() {
-    [ ! -x $(which apt) ] && return
+    [ -x "$(which apt)" ] || return
     for name in "$@"; do
         [ ! -f /var/lib/dpkg/info/${name}.list -a ! -f /var/lib/dpkg/info/${name}:amd64.list ] && sudo apt -y install ${name}
     done
