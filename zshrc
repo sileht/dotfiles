@@ -264,8 +264,6 @@ _title_set() {
   fi
 }
 
-_short_pwd(){
-}
 _cutted_line(){
     local line="$1" cut_at=${2:-15}
     if [ ${#line} -gt $cut_at ]; then
@@ -276,8 +274,9 @@ _cutted_line(){
 }
 _title_precmd() {
   local pwd=${PWD/$HOME/"~"}
-  _title_set "$(rtab.zsh -f)" "[$pwd]"
+  _title_set "$(_cutted_line $pwd)" "[$pwd]"
 }
+
 add-zsh-hook precmd _title_precmd
 
 _prompt_preexec() {
