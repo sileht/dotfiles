@@ -43,7 +43,21 @@ mailboxes =INBOX =Drafts =Sent =Trash =Junk \
       =zml-os-releases \
       =zml-os-unknown \
       =zml-toulibre \
-      =tags.ttnn \
-      =tags.telemetry \
+
+folder-hook . unsubjectrx *
+folder-hook (^.*/zml-ceph) "subjectrx '\\[ceph-users\\] ' '%L%R'"
+folder-hook (^.*/zml-neomutt) "subjectrx '\\[neomutt-[^\]]*\\] ' '%L%R'"
+folder-hook (^.*/ttnn) "subjectrx '\\[tetaneutral\\] ' '%L%R'"
+folder-hook (^.*/ttnn) "subjectrx '\\[technique\\] ' '%L%R'"
+folder-hook (^.*/ttnn-ca) "subjectrx '\\[Tetaneutral-ca\\] ' '%L%R'"
+folder-hook (^.*/ttnn-services) "subjectrx '\\[Equipage-toulouse\\] ' '%L%R'"
+folder-hook (^.*/ttnn-services) "subjectrx '\\[tetaneutral.net\\] ' '%L%R'"
+folder-hook (^.*/ttnn-hosting) "subjectrx '\\[Equipage-hosting\\] ' '%L%R'"
+folder-hook (^.*/code-.*) "subjectrx '^Change in \([^\[]*\)\\[\([^\]]*\)\\]: ' '%L[%1@%2]: %R'"
+folder-hook (^.*/zml-frnog) "subjectrx '\\[FRnOG\\] ' '%L%R'"
+folder-hook (^.*/zml-os-) "subjectrx '\\[Openstack\\] ' '%L%R'"
+folder-hook (^.*/zml-os-) "subjectrx '\\[openstack-dev\\] ' '%L%R'"
+folder-hook (^.*/zml-toulibre) "subjectrx '\\[Toulibre\\] ' '%L%R'"
+folder-hook (^.*/zml-toulibre) "subjectrx '\\[Toulibre-orga\\] ' '%L[ORGA] %R'"
 
 # virtual-mailboxes "TEST" "$folder/INBOX?search="imap://?query=tag:inbox"

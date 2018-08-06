@@ -43,7 +43,11 @@ mailboxes =INBOX =Drafts =Sent =Trash =Junk \
     =ml-zzz-other \
     =vie \
     =meeting \
-    =tags.ttnn \
-    =tags.telemetry \
 
-
+folder-hook . unsubjectrx *
+folder-hook (^.*/ml-rhos-.*) "subjectrx '\\[rhos-announce\\] ' '%L%R'"
+folder-hook (^.*/ml-rhos-.*) "subjectrx '\\[rhos-dev\\] ' '%L%R'"
+folder-hook (^.*/ml-rhos-.*) "subjectrx '\\[openstack-program\\] ' '%L%R'"
+folder-hook (^.*/ml-rhos-.*) "subjectrx '\\[rhos-tech\\] ' '%L%R'"
+folder-hook (^.*/ml-rhos-.*) "subjectrx '\\[rhos-prio\\] ' '%L%R'"
+folder-hook (^.*/ml-rhos-.*) "subjectrx '\\[Infrared\\] ' '%L%R'"
