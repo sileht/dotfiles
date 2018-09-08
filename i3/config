@@ -28,10 +28,8 @@ for_window [class="^.*"] border pixel 1
 bindsym $mod+Return exec st
 # bindsym $mod+b exec /home/sileht/logiciel/firefox/firefox
 bindsym $mod+b exec chromium  #--profile-directory=Default
-bindsym $mod+c exec st -t 'gizmo.sileht.net' -e ssh -tqxkAC gizmo
+bindsym $mod+c exec st -t 'gizmo.sileht.net' -e zsh -i -c "ssh -tqxkAC gizmo"
 bindsym $mod+Shift+c exec st -t 'gizmo.sileht.net' -e mosh -a gizmo
-bindsym $mod+d exec st -t 'gizmo.sileht.net' -e ssh -tqxkAC gizmo mutt
-bindsym $mod+Shift+d exec st -t 'gizmo.sileht.net' -e mosh -a gizmo mutt
 
 bindsym Print exec gnome-screenshot -i
 bindsym $mod+Shift+v exec --no-startup-id /home/sileht/.bin/redtokclip
