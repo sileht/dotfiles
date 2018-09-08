@@ -225,10 +225,10 @@ _prompt_main(){
   [[ $(jobs -l | wc -l) -gt 0 ]] && symbols+="%F{white}⚙ "
   [[ $RETVAL -ne 0 ]] && symbols+="%{%F{red}%}✘ "
 
-  ref="$vcs_info_msg_0_" 
+  ref="$vcs_info_msg_0_"
   if [[ -n "$ref" ]]; then
     [[ "${ref/(¹|²|¹²)/}" == "$ref" ]] && ref_color=green || ref_color=yellow
-    [[ "${ref/.../}" == "$ref" ]] && ref=" $ref" || ref="✦ ${ref/.../}" 
+    [[ "${ref/.../}" == "$ref" ]] && ref=" $ref" || ref="✦ ${ref/.../}"
   fi
   [ $VIRTUAL_ENV ] && venv="($(basename $VIRTUAL_ENV))"
 
@@ -384,7 +384,7 @@ function sfind(){ find "$@" | egrep -v '(binaire|\.svn|\.git|\.bzr)' ; }
 alias grep='grep --color=auto'
 alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
-function sgrep(){ grep "$@" --color=always| egrep -v '(binaire|\.svn|\.git)' ; } 
+function sgrep(){ grep "$@" --color=always| egrep -v '(binaire|\.svn|\.git)' ; }
 function g(){ grep --color=always "$@" | more }
 
 # ZSH STUFF
@@ -431,11 +431,6 @@ function fwget(){
     fi
 }
 
-## Service stuff
-#alias service="nocorrect sudo service"
-#alias systemctl="nocorrect sudo systemctl"
-#compdef _service invoke-rc.d
-#
 # CD STUFF
 function cd () {
 if [[ -z $2 ]]; then
@@ -621,7 +616,7 @@ __vte_urlencode() (
 )
 
 __vte_osc7 () {
-  printf "\033]7;%s%s\a" "${HOSTNAME:-}" "$(__vte_urlencode "${PWD}")"
+  printf "\033]7;%s%s\a" "${HOST:-}" "$(__vte_urlencode "${PWD}")"
 }
 
 precmd_functions+=(__vte_osc7)
@@ -630,10 +625,22 @@ precmd_functions+=(__vte_osc7)
 # SCREEN #
 ##########
 
-if [ -z "$WINDOW" -a -z "$TMUX_PANE" -a "$HOST" == "gizmo" ]; then
-    sc ; exit 0;
-fi
+INSIDE_TMUX_SCREEN="$WINDOW$TMUX_PANE"
 
+update_ssh_agent(){
+    eval $(keychain -q --eval --agents ssh --nogui --inherit any  ~/.ssh/id_ed25519)
+}
+
+#is_mosh() { [ "$(readlink -f /proc/$PPID/exe)" = "/usr/bin/mosh-server" ] && return 0 || return 1 ;}
+if [ "$INSIDE_TMUX_SCREEN" ]; then
+    add-zsh-hook preexec update_ssh_agent
+    update_ssh_agent
+else
+    update_ssh_agent
+    if [ "$HOST" == "gizmo" ]; then
+        sc ; exit 0;
+    fi
+fi
 # vim:ft=zsh
 
 # added by travis gem
