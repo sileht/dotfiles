@@ -632,14 +632,11 @@ update_ssh_agent(){
 }
 
 #is_mosh() { [ "$(readlink -f /proc/$PPID/exe)" = "/usr/bin/mosh-server" ] && return 0 || return 1 ;}
+update_ssh_agent
 if [ "$INSIDE_TMUX_SCREEN" ]; then
     add-zsh-hook preexec update_ssh_agent
-    update_ssh_agent
-else
-    update_ssh_agent
-    if [ "$HOST" == "gizmo" ]; then
-        sc ; exit 0;
-    fi
+elif [ "$HOST" == "gizmo" ]; then
+    sc ; exit 0;
 fi
 # vim:ft=zsh
 
