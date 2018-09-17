@@ -17,7 +17,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'morhetz/gruvbox'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'scrooloose/syntastic'
+Plug 'w0rp/ale'
 Plug 'bling/vim-bufferline'
 Plug 'mhinz/vim-signify'                " VCS diff
 Plug 'tpope/vim-fugitive'               " GIT
@@ -283,23 +283,21 @@ let g:signify_update_on_focusgained = 1
 let g:riv_global_leader ='<C-s>'
 let g:riv_disable_folding = 1
 
-let g:syntastic_c_checkers = []
+" let g:ale_fix_on_save = 1
+let g:ale_open_list = 1
+let g:ale_list_window_size = 5
+let g:ale_linters = {
+\   'python': ['flake8'],
+\}
 
-let g:syntastic_python_checkers = ['flake8']
-let g:syntastic_python_flake8_quiet_messages = {"regex": [ 'W503', 'E402', 'E731', 'H301']}
-let g:syntastic_python_flake8_exec = 'myflake8'
+let b:ale_fixers = {
+\ 'python': ['autopep8'],
+\}
 
-let g:syntastic_typescript_checks=['tsc', 'tslint']
-
-let g:syntastic_quiet_messages = {"regex": [ '\mUnknown interpreted text role "doc"' ]}
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_aggregate_errors = 1
-let g:syntastic_loc_list_height = 5
-
-"let g:syntastic_debug = 3
+" ale: Load all plugins now. Plugins need to be added to runtimepath before helptags can be generated.
+packloadall
+" ale: Load all of the helptags now, after plugins have been loaded. All messages and errors will be ignored.
+silent! helptags ALL
 
 let NERDTreeShowBookmarks=1
 let NERDTreeIgnore = ['\.py[cd]$', '\~$', '\.swo$', '\.swp$', '^\.git$', '^\.hg$', '^\.svn$', '\.bzr$']
