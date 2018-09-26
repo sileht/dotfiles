@@ -22,6 +22,7 @@ export QUILT_PATCH_OPTS="--reject-format=unified"
 
 export EDITOR=vim
 export VISUAL=vim
+[ "$TTY" ] && export GPG_TTY=$TTY
 
 KEYTIMEOUT=1
 

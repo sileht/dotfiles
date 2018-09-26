@@ -628,7 +628,8 @@ precmd_functions+=(__vte_osc7)
 INSIDE_TMUX_SCREEN="$WINDOW$TMUX_PANE"
 
 update_ssh_agent(){
-    eval $(keychain -q --eval --agents gpg,ssh --nogui --inherit any ~/.ssh/id_ed25519)
+    # eval $(keychain --eval --agents ssh --nogui --inherit any ~/.ssh/id_ed25519)
+    ;
 }
 
 #is_mosh() { [ "$(readlink -f /proc/$PPID/exe)" = "/usr/bin/mosh-server" ] && return 0 || return 1 ;}
