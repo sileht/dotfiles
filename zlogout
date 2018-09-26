@@ -1,5 +1,6 @@
 [[ ! -o rcs ]] && return
 
+gpgconf --kill gpg-agent
 rm -f ${HOME}/.var/S.gpg-agent
 sudo -K 2>/dev/null || :
 clear
