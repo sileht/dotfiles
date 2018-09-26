@@ -143,7 +143,10 @@ cleanup_old_link
 setup_env_link
 setup_vim
 setup_st
-disable_gpg_crap
+case $HOSTNAME in
+    bob|billy) ;;
+    *) disable_gpg_crap
+esac
 if [ "$DISPLAY" == ":0" ]; then
     setup_fonts
     setup_i3pystatus
