@@ -639,7 +639,3 @@ if [ "$INSIDE_TMUX_SCREEN" ]; then
 elif [ "$HOST" == "gizmo" ]; then
     sc ; exit 0;
 fi
-# vim:ft=zsh
-
-# added by travis gem
-[ -f /home/sileht/.travis/travis.sh ] && source /home/sileht/.travis/travis.sh
