@@ -628,7 +628,7 @@ precmd_functions+=(__vte_osc7)
 INSIDE_TMUX_SCREEN="$WINDOW$TMUX_PANE"
 
 update_ssh_agent(){
-    gpg-connect-agent updatestartuptty /bye > /dev/null
+    # gpg-connect-agent updatestartuptty /bye > /dev/null
     # eval $(keychain --eval --agents ssh --nogui --inherit any ~/.ssh/id_ed25519)
     ;
 }
