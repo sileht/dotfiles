@@ -130,12 +130,18 @@ setup_st(){
     (cd st && make clean && make && tic -sx st.info)
 }
 
+disable_gpg_crap(){
+    # debian strech now starts agents with systemd. That can be fancy, but this break gpg-agent forwarding
+    systemctl --user mask gpg-agent.socket gpg-agent-ssh.socket gpg-agent-extra.socket gpg-agent-browser.socket dirmngr.socket gpg-agent.service
+}
+
 maybe_do_update
 cleanup_old_link
 [ "$force" ] &&  cleanup_forced
 setup_env_link
 setup_vim
 setup_st
+disable_gpg_crap
 if [ "$DISPLAY" == ":0" ]; then
     setup_fonts
     setup_i3pystatus
