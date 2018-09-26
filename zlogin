@@ -2,7 +2,9 @@ case $HOSTNAME in
     bob|gizmo);;
     *)
         gpgconf --create-socketdir
-        ln -s ${HOME}/.var/S.gpg-agent /run/user/1000/gnupg/S.gpg-agent
-        ln -s ${HOME}/.var/S.gpg-agent.ssh /run/user/1000/gnupg/S.gpg-agent.ssh
+        for f in /S.gpg-agent S.gpg-agent.ssh; do
+            dest="/run/user/1000/gnupg/$f"
+            [ ! -e "$dest" ] && ln -s ${HOME}/.var/$f /run/user/1000/gnupg/$f
+        done
         ;;
 esac
