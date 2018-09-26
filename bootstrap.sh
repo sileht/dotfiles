@@ -132,7 +132,9 @@ setup_st(){
 
 disable_gpg_crap(){
     # debian strech now starts agents with systemd. That can be fancy, but this break gpg-agent forwarding
-    systemctl --user mask gpg-agent.socket gpg-agent-ssh.socket gpg-agent-extra.socket gpg-agent-browser.socket dirmngr.socket gpg-agent.service
+    for action in stop disable mask; do
+        systemctl --user $action gpg-agent.socket gpg-agent-ssh.socket gpg-agent-extra.socket gpg-agent-browser.socket dirmngr.socket gpg-agent.service
+    done
 }
 
 maybe_do_update
