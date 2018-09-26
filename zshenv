@@ -39,4 +39,6 @@ export MOSH_PREDICTION_DISPLAY=always
 export VAGRANT_DEFAULT_PROVIDER=lxc
 
 export GEM_HOME=$HOME/.ruby-gems
+
+export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
 # vim:ft=zsh
