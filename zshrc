@@ -625,18 +625,6 @@ precmd_functions+=(__vte_osc7)
 # SCREEN #
 ##########
 
-INSIDE_TMUX_SCREEN="$WINDOW$TMUX_PANE"
-
-update_ssh_agent(){
-    # gpg-connect-agent updatestartuptty /bye > /dev/null
-    # eval $(keychain --eval --agents ssh --nogui --inherit any ~/.ssh/id_ed25519)
-    ;
-}
-
-#is_mosh() { [ "$(readlink -f /proc/$PPID/exe)" = "/usr/bin/mosh-server" ] && return 0 || return 1 ;}
-update_ssh_agent
-if [ "$INSIDE_TMUX_SCREEN" ]; then
-    add-zsh-hook preexec update_ssh_agent
-elif [ "$HOST" == "gizmo" ]; then
+if [ "$HOST" == "gizmo" ]; then
     sc ; exit 0;
 fi
