@@ -12,6 +12,8 @@
 set $mod Mod4
 
 font pango:UbuntuMono Nerd Font:style=Regular 8
+default_border pixel 3
+hide_edge_borders both
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -21,7 +23,7 @@ for_window [class="pinentry"] floating enable
 for_window [class="Pavucontrol"] floating enable
 for_window [class="VirtualBox"] floating enable
 for_window [class="Conky"] floating enable
-for_window [class="^.*"] border pixel 1
+#for_window [class="^.*"] border pixel 2
 # no_focus [class="Chromium"]
 
 # start application
@@ -190,6 +192,7 @@ bar {
     status_command ~/.i3/status.py
     position          top
     workspace_buttons yes
+    separator_symbol " | "
 }
 bar {
     output HDMI-0
@@ -199,4 +202,5 @@ bar {
     position          top
     workspace_buttons yes
     status_command ~/.i3/status-l.py
+    separator_symbol " | "
 }

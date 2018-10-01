@@ -71,4 +71,6 @@ status.register("shell", command="/home/sileht/.i3/vpn-chk.sh",
                 hints={"markup": "pango"},
                 on_leftclick="zsh -i -c 'vpnrh'",
                 on_rightclick="zsh -i -c 'novpn'")
+status.register("window_title")
+
 status.run()
