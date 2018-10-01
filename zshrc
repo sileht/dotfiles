@@ -618,9 +618,11 @@ precmd_functions+=(__vte_osc7)
 function sgpg(){
     gpg_run_path=$(gpgconf --list-dirs socketdir)
     if [ -L $gpg_run_path/S.gpg-agent ]; then
+        echo "* gpg-agent uses local systemd sockets"
         rm -rf $gpg_run_path
         systemctl --user start gpg-agent.socket gpg-agent-ssh.socket gpg-agent-extra.socket gpg-agent-browser.socket dirmngr.socket gpg-agent.service
     else
+        echo "* gpg-agent uses ssh forwarded sockets"
         systemctl --user stop gpg-agent.socket gpg-agent-ssh.socket gpg-agent-extra.socket gpg-agent-browser.socket dirmngr.socket gpg-agent.service
         rm -rf $gpg_run_path
         source ~/.zlogin
