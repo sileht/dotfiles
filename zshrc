@@ -392,9 +392,6 @@ alias zln='zmv -L'
 
 hash -d doc=/usr/share/doc
 hash -d log=/var/log
-hash -d s=~/workspace/os_dev/stack
-hash -d g=~s/gnocchi/
-
 
 # LS stuff
 # Remove bold for image/audio/video and archive, generated with :
@@ -618,6 +615,17 @@ __vte_osc7 () {
 
 precmd_functions+=(__vte_osc7)
 
+function sgpg(){
+    gpg_run_path=$(gpgconf --list-dirs socketdir)
+    if [ -L $gpg_run_path/S.gpg-agent ]; then
+        rm -rf $gpg_run_path
+        systemctl --user start gpg-agent.socket gpg-agent-ssh.socket gpg-agent-extra.socket gpg-agent-browser.socket dirmngr.socket gpg-agent.service
+    else
+        systemctl --user stop gpg-agent.socket gpg-agent-ssh.socket gpg-agent-extra.socket gpg-agent-browser.socket dirmngr.socket gpg-agent.service
+        rm -rf $gpg_run_path
+        source ~/.zlogin
+    fi
+}
 ##########
 # SCREEN #
 ##########
