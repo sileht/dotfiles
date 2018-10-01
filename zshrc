@@ -632,6 +632,7 @@ function sgpg(){
 # SCREEN #
 ##########
 
-if [ "$HOST" == "gizmo" ]; then
+INSIDE_TMUX_SCREEN="$WINDOW$TMUX_PANE"
+if [ "$HOST" == "gizmo" -a ! "$INSIDE_TMUX_SCREEN" ]; then
     sc ; exit 0;
 fi
