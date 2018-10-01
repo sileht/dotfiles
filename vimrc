@@ -43,12 +43,14 @@ Plug 'tpope/vim-commentary'
 " Language
 if has('nvim')
 Plug 'Shougo/deoplete.nvim',          { 'do': ':UpdateRemotePlugins' }
+else
+Plug 'Shougo/deoplete.nvim'
+Plug 'roxma/nvim-yarp'
+Plug 'roxma/vim-hug-neovim-rpc'
+endif
 Plug 'zchee/deoplete-go',             {'for': 'go'}
 Plug 'zchee/deoplete-jedi',           {'for': 'python'}
-else
-Plug 'fatih/vim-go',                  {'for': 'go', 'do': ':GoInstallBinaries'}
-Plug 'davidhalter/jedi-vim',          {'for': 'python'}
-endif
+
 Plug 'Vimjas/vim-python-pep8-indent', {'for': 'python'}
 Plug 'hdima/python-syntax',           {'for': 'python'}
 
@@ -81,10 +83,6 @@ Plug 'chrisbra/CheckAttach',          {'for': 'mail'}
 "Plug 'chrisbra/NrrwRgn'
 "Plug 'vim-scripts/utl.vim'
 call plug#end()
-
-if has('nvim')
-call deoplete#enable()
-endif
 
 set encoding=utf8
 scriptencoding utf-8
@@ -271,6 +269,8 @@ set laststatus=2        " Show statusbar
 """""""""""""""
 " Plug config "
 """""""""""""""
+let g:deoplete#enable_at_startup = 1
+
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#buffer_idx_mode = 1

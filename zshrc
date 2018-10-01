@@ -351,16 +351,13 @@ alias df="df -h"
 alias diff='diff -rNu'
 alias optimutt="find ~/.mutt/cache/headers -type f -exec tcbmgr optimize -nl {} \;"
 
-if [ ! -x "$(which nvim)" ] ; then
-    alias nvim="/usr/bin/vim"
-else
+if [ -x "$(which nvim)" ] ; then
     # NOTE(sileht): workaround https://github.com/neovim/neovim/issues/5895
-    alias nvim="TERM=screen-256color /usr/bin/nvim"
+    alias vim="TERM=screen-256color /usr/bin/nvim"
 fi
-alias vi="nvim"
-alias vid="nvim --servername sileht"
-alias vir="nvim --servername sileht --remote-silent"
-alias vim="nvim"
+alias vi="vim"
+alias vid="vim --servername sileht"
+alias vir="vim --servername sileht --remote-silent"
 alias svi="sudo -E vim"
 alias psql="sudo -i -u postgres psql"
 # alias pyclean='find . \( -type f -name "*.py[co]" \) -o \( -type d -path "*__pycache__*" \) ! -path "./.tox*" -delete"'
