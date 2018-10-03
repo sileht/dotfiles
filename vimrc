@@ -25,21 +25,21 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'eugen0329/vim-esearch'
 " Text navigation
 Plug 'nacitar/terminalkeys.vim'
-Plug 'junegunn/vim-easy-align'
-Plug 'easymotion/vim-easymotion'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-abolish'
+"Plug 'junegunn/vim-easy-align'
+"Plug 'easymotion/vim-easymotion'
+"Plug 'tpope/vim-surround'
+"Plug 'tpope/vim-repeat'
+"Plug 'tpope/vim-abolish'
 "Plug 'wikitopian/hardmode'
 " File/Tag browsing
 "Plug 'tmux-plugins/vim-tmux-focus-events'
-Plug 'ctrlpvim/ctrlp.vim'
-Plug 'tacahiroy/ctrlp-funky'
-Plug 'majutsushi/tagbar'
-Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
-Plug 'Xuyuanp/nerdtree-git-plugin', { 'on':  'NERDTreeToggle' }
-Plug 'ervandew/supertab'
-Plug 'tpope/vim-commentary'
+"Plug 'ctrlpvim/ctrlp.vim'
+"Plug 'tacahiroy/ctrlp-funky'
+"Plug 'majutsushi/tagbar'
+"Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+"Plug 'Xuyuanp/nerdtree-git-plugin', { 'on':  'NERDTreeToggle' }
+"Plug 'ervandew/supertab'
+"Plug 'tpope/vim-commentary'
 " Language
 if has('nvim')
 Plug 'Shougo/deoplete.nvim',          { 'do': ':UpdateRemotePlugins' }
@@ -48,29 +48,32 @@ Plug 'Shougo/deoplete.nvim'
 Plug 'roxma/nvim-yarp'
 Plug 'roxma/vim-hug-neovim-rpc'
 endif
+Plug 'Shougo/neosnippet'
+Plug 'Shougo/neosnippet-snippets'
 Plug 'zchee/deoplete-go',             {'for': 'go'}
 Plug 'zchee/deoplete-jedi',           {'for': 'python'}
 
 Plug 'Vimjas/vim-python-pep8-indent', {'for': 'python'}
 Plug 'hdima/python-syntax',           {'for': 'python'}
 
-Plug 'posva/vim-vue'
-Plug 'vim-scripts/spec.vim',          {'for': 'spec'}
-Plug 'godlygeek/tabular'
-Plug 'spf13/PIV',                     {'for': 'php'}
-Plug 'Rykka/riv.vim',                 {'for': 'rst'}
-Plug 'rodjek/vim-puppet',             {'for': 'puppet'}
-Plug 'pangloss/vim-javascript',       {'for': 'javascript'}
-Plug 'groenewege/vim-less',           {'for': 'less'}
-Plug 'elzr/vim-json',                 {'for': 'json'}
-Plug 'tpope/vim-rails',               {'for': 'ruby'}
-Plug 'tpope/vim-markdown',            {'for': 'markdown'}
-Plug 'racer-rust/vim-racer'           " rust
-"Plug 'saltstack/salt-vim'            " Salt
-Plug 'vim-scripts/HTML-AutoCloseTag', {'for': ['html', 'xml']}
-Plug 'hail2u/vim-css3-syntax',        {'for': 'css'}
-Plug 'breard-r/vim-dnsserial'         " dns zones
-Plug 'leafgarland/typescript-vim',    {'for': 'typescript'}
+"Plug 'godlygeek/tabular'
+"
+"Plug 'posva/vim-vue'
+"Plug 'vim-scripts/spec.vim',          {'for': 'spec'}
+"Plug 'spf13/PIV',                     {'for': 'php'}
+"Plug 'Rykka/riv.vim',                 {'for': 'rst'}
+"Plug 'rodjek/vim-puppet',             {'for': 'puppet'}
+"Plug 'pangloss/vim-javascript',       {'for': 'javascript'}
+"Plug 'groenewege/vim-less',           {'for': 'less'}
+"Plug 'elzr/vim-json',                 {'for': 'json'}
+"Plug 'tpope/vim-rails',               {'for': 'ruby'}
+"Plug 'tpope/vim-markdown',            {'for': 'markdown'}
+"Plug 'racer-rust/vim-racer'           " rust
+""Plug 'saltstack/salt-vim'            " Salt
+"Plug 'vim-scripts/HTML-AutoCloseTag', {'for': ['html', 'xml']}
+"Plug 'hail2u/vim-css3-syntax',        {'for': 'css'}
+"Plug 'breard-r/vim-dnsserial'         " dns zones
+"Plug 'leafgarland/typescript-vim',    {'for': 'typescript'}
 
 Plug 'dbeniamine/vim-mail',           {'for': 'mail'}
 Plug 'chrisbra/CheckAttach',          {'for': 'mail'}
@@ -212,7 +215,7 @@ autocmd FileType gitcommit,rst,mkd,markdown,jinja set complete+=kspell
 "autocmd VimEnter,BufNewFile,BufReadPost * silent! call HardMode()
 
 " No jedi-vim doc popup
-autocmd FileType python setlocal completeopt-=preview
+"autocmd FileType python setlocal completeopt-=preview
 autocmd FileType python silent! call LoadVenv()
 
 " Mail
@@ -283,16 +286,23 @@ let g:signify_update_on_focusgained = 1
 let g:riv_global_leader ='<C-s>'
 let g:riv_disable_folding = 1
 
-" let g:ale_fix_on_save = 1
+"let g:ale_completion_enabled = 1
+let g:ale_sign_column_always = 1  " always show left column
+""let g:ale_fix_on_save = 1
+""let g:ale_lint_on_text_changed = 'never'
 let g:ale_open_list = 1
 let g:ale_list_window_size = 5
+"let g:ale_keep_list_window_open = 1
+"let g:ale_set_highlights = 0
+"let g:ale_list_vertical = 0
 let g:ale_linters = {
 \   'python': ['flake8'],
 \}
-
-let b:ale_fixers = {
-\ 'python': ['autopep8'],
-\}
+"set completeopt=menu,menuone,preview,noselect,noinsert
+"
+"let b:ale_fixers = {
+"\ 'python': ['autopep8'],
+"\}
 
 " ale: Load all plugins now. Plugins need to be added to runtimepath before helptags can be generated.
 packloadall
@@ -314,8 +324,6 @@ let python_highlight_all = 1
 
 let g:ctrlp_funky_matchtype = 'path'
 let g:ctrlp_funky_syntax_highlight = 1
-
-let g:deoplete#enable_at_startup = 1
 
 let spec_chglog_packager = "Mehdi Abaakouk <sileht@redhat.com>"
 au FileType spec map <buffer> <F5> <Plug>AddChangelogEntry
@@ -366,6 +374,8 @@ while True:
         vim.command("let g:syntastic_python_flake8_args = '\"%s\"'" % path)
         for venv in [".tox/py27-postgresql-file",
                      ".tox/py27-postgresql-ceph", ".tox/py27-mysql-file",
+                     ".tox/py36",
+                     ".tox/py37",
                      ".tox/py27"]:
             venvdir = os.path.join(path, venv)
             if os.path.exists(venvdir):
