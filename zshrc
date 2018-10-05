@@ -233,6 +233,10 @@ _prompt_main(){
   [ $VIRTUAL_ENV ] && venv="($(basename $VIRTUAL_ENV))"
 
   case $HOST in
+      red) logo="%F{red}🎩 " ;;
+      billy) logo="🍥" ;;
+  esac
+  case $HOST in
       bob) host_color=green;;
       red) host_color=130;;
       billy) host_color=32;;
@@ -241,7 +245,7 @@ _prompt_main(){
   esac
   print    "%F{240}▄"
   print    "%F{240}█ %F{$host_color}$USER%F{red}@%F{$host_color}$HOST%F{red}: %B%F{blue}%~%b%F{red}%b"
-  print -n "%F{240}█ $symbols%F{$ref_color}$ref%F{yellow}$venv%(!.%F{yellow}.%F{green})➤ %F{240}"
+  print -n "%F{240}█ ${logo}$symbols%F{$ref_color}$ref%F{yellow}$venv%(!.%F{yellow}.%F{green})➤ %F{240}"
 }
 
 _prompt_precmd() {
