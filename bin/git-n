@@ -3,14 +3,14 @@
 name=$1
 branch=${2:-master}
 remote=${3:-origin}
-prefix=${4:-$USER}
+prefix=${4:-wip}
 
-local_branch="$prefix/$name"
+local_branch="$prefix-$name"
 [ "$branch" != "master" ] && local_branch=$local_branch-$branch
 
-branch_exists=$(git rev-parse --verify $local_branch 2>/dev/null)
+branch_exists=$(git rev-parse --symbolic --glob=refs/heads/*${name}* 2>/dev/null| head -1 | sed 's,refs/heads/,,')
 if [ "$branch_exists" ]; then
-    exec git checkout $local_branch
+    exec git checkout $branch_exists
 else
     exec git checkout $remote/$branch -b $local_branch
 fi

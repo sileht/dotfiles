@@ -5,10 +5,10 @@
     ui = auto
 
 [alias]
-    #p = "!f() { git t ${1:-master} && git pull --rebase; }; f"
     pr = pull-request --no-tag-previous-revision
-    p = "!f() {if [ -f .gitreview ]; then git-review $* ; else git pull-request $* ; fi ; } ; f"
     t = "!f() { git branch --set-upstream-to=origin/${1:-master}; }; f"
+    r = "!f() { git branch -M $(git rev-parse --abbrev-ref HEAD | sed 's,^wip-,,g') ; }; f"
+
     lg = log --graph --pretty=cshort --abbrev-commit --date=relative
     lc = !git oneline ORIG_HEAD.. --stat --no-merges
     oneline = log --pretty=oneline --abbrev-commit --graph --decorate
@@ -19,7 +19,7 @@
 
     diverge-commit = "!f() { git merge-base $(git show-upstream $@) ${1:-HEAD}; }; f"
     review-branch = "!f() { git show ${1:-HEAD}:.gitreview | git config --get --file - gerrit.defaultbranch || echo master;}; f"
-    rework = "!git rebase -i $(git diverge-commit $@)"
+    rework = "!git rebase -i $(git diverge-commit $@)^"
     show-upstream = "!f() { git rev-parse --symbolic-full-name --abbrev-ref ${1}@{u} 2>/dev/null || git rev-parse --symbolic-full-name --abbrev-ref $(git review-branch)@{u}; }; f"
     fix-upstream = "!f() { git branch --set-upstream-to=$(git show-upstream) ; } ; f"
     h = !git rework
