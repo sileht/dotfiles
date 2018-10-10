@@ -35,7 +35,7 @@ bindsym $mod+Shift+c exec st -t 'gizmo.sileht.net' -e mosh -a gizmo
 
 bindsym Print exec gnome-screenshot -i
 bindsym $mod+Shift+v exec --no-startup-id /home/sileht/.bin/redtokclip
-bindsym $mod+l exec --no-startup-id slock
+bindsym --release $mod+l exec --no-startup-id slock
 bindsym $mod+x exec --no-startup-id pcmanfm /home/sileht/
 # kill focused window
 bindsym $mod+Shift+a kill
