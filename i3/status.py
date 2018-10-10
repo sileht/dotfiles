@@ -57,14 +57,13 @@ status.register("battery", interval=60, alert_percentage=3,
                 alert=True,
                 status={"DIS": "↓", "CHR": "↑", "FULL": "="},
                 not_present_text="")
-status.register("redshift")
 
 creds = netrc.netrc().authenticators("mail.sileht.net")
 status.register("mail",
                 hide_if_null=False,
                 backends=[imap.IMAP(host="mail.sileht.net",
-                          username=creds[0],
-                          password=creds[2])],
+                                    username=creds[0],
+                                    password=creds[2])],
                 format_plural="{unread} new emails",
                 on_leftclick="chromium https://m.sileht.net/")
 status.register("shell", command="/home/sileht/.i3/vpn-chk.sh",

@@ -3,7 +3,7 @@
 here=$(readlink -f $(dirname $0))
 
 if [ ! -d $here/venv ]; then
-    virtualenv -p python3 --system-site-packages $here/venv
+    virtualenv -p python3 $here/venv
 fi
 dpkg -l libiw-dev >/dev/null 2>&1 || sudo apt-get install -y libiw-dev
 $here/venv/bin/pip install -U -r $here/requirements.txt
