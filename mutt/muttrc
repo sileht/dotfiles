@@ -49,6 +49,11 @@ set mime_forward_rest = yes                         # forward everything and mor
 set indent_string     = "> "                        # how to quote replied text
 folder-hook . 'set record = "^"'                    # Put sent mail into current folder
 
+# Better default for from:
+set reverse_name=yes
+set envelope_from=yes
+set reverse_realname=no
+
 # Index
 set mark_old           = no                         # i don't care about whether a message is old
 set narrow_tree        = yes                        # narrow threading trees
@@ -70,7 +75,7 @@ set pager_index_lines  = 10                         # Split-screen index/pager p
 set pager_stop         = yes                        # Don't skip to next message at end of message (avoids accidental setting as being read)
 
 # Formats
-tag-transforms      "telemetry" "⌬ " "oslo" "⛁ " "ttnn" "♨ "
+tag-transforms      "telemetry" "⌬ " "oslo" "⛁ " "ttnn" "♨ " "mergify" "🔀"
 # tag-formats  "ttnn" Gt"
 set hidden_tags   = Junk,NonJunk,nonjunk,junk,\$Forwarded,\$label1,\$label2,\$label3,\$label4
 set index_format  = "[%Z] %{%b-%d %H:%M} | %-20.20L | %?M?➘ ?%s %?g?/ %g ?%* (%?l?%l&%c?)"

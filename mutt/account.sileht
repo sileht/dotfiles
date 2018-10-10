@@ -1,9 +1,8 @@
 # vim:set ft=muttrc:
 
-
 set from = "sileht@sileht.net"
 unalternates *
-alternates "^(theli48@gmail.com|.*mehdi.*@sileht.net|.*sileht.*@sileht.net)$
+alternates "^(theli48@gmail.com|.*mehdi.*@sileht.net|.*sileht.*@sileht.net|sileht@mergify.io)$
 set realname = "Mehdi Abaakouk"
 set signature = "~/.mutt/signature.local"
 
@@ -23,27 +22,20 @@ mailboxes =INBOX =Drafts =Sent =Trash =Junk \
       =perso-serveur \
       =amap \
       =mergify \
+      =mergify-bot \
       =ttnn \
       =ttnn-ca \
       =ttnn-hosting \
       =ttnn-services \
       =ttnn-system \
-      =code-gnocchi \
+      =code-mergify \
       =code-openstack \
       =code-other \
-      =zml-fedora \
-      =zml-ceph \
       =zml-neomutt \
       =zml-frnog \
-      =zml-os-interested \
-      =zml-os-junk \
-      =zml-os-other \
-      =zml-os-releases \
-      =zml-os-unknown \
-      =zml-toulibre \
+      =zml-openstack \
 
 folder-hook . unsubjectrx *
-folder-hook (^.*/zml-ceph) "subjectrx '\\[ceph-users\\] ' '%L%R'"
 folder-hook (^.*/zml-neomutt) "subjectrx '\\[neomutt-[^\]]*\\] ' '%L%R'"
 folder-hook (^.*/ttnn) "subjectrx '\\[tetaneutral\\] ' '%L%R'"
 folder-hook (^.*/ttnn) "subjectrx '\\[technique\\] ' '%L%R'"
@@ -55,7 +47,5 @@ folder-hook (^.*/code-.*) "subjectrx '^Change in \([^\[]*\)\\[\([^\]]*\)\\]: ' '
 folder-hook (^.*/zml-frnog) "subjectrx '\\[FRnOG\\] ' '%L%R'"
 folder-hook (^.*/zml-os-) "subjectrx '\\[Openstack\\] ' '%L%R'"
 folder-hook (^.*/zml-os-) "subjectrx '\\[openstack-dev\\] ' '%L%R'"
-folder-hook (^.*/zml-toulibre) "subjectrx '\\[Toulibre\\] ' '%L%R'"
-folder-hook (^.*/zml-toulibre) "subjectrx '\\[Toulibre-orga\\] ' '%L[ORGA] %R'"
 
 # virtual-mailboxes "TEST" "$folder/INBOX?search="imap://?query=tag:inbox"
