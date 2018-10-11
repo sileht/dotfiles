@@ -5,6 +5,7 @@
     ui = auto
 
 [alias]
+    b = branch
     pr = pull-request --no-tag-previous-revision
     t = "!f() { git branch --set-upstream-to=origin/${1:-master}; }; f"
     r = "!f() { git branch -M $(git rev-parse --abbrev-ref HEAD | sed 's,^wip-,,g') ; }; f"
