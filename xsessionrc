@@ -6,4 +6,4 @@ export PATH="$HOME/.bin:$HOME/.env/bin:$HOME/.cargo/bin:$PATH"
     export PATH="$PATH:$d"
 done
 
-[ "$DISPLAY" = ":0" ] && [ "$(lsmod | grep vboxvideo)" ] && { xset s off ; xset -dpms;}
+[ "$DISPLAY" = ":0" ] && [ "$(xrandr | grep '^VGA.* connected ')" ] && { xset s off ; xset -dpms;}
