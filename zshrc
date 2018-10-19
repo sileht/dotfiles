@@ -228,7 +228,7 @@ _prompt_main(){
   ref="$vcs_info_msg_0_"
   if [[ -n "$ref" ]]; then
     [[ "${ref/(¹|²|¹²)/}" == "$ref" ]] && ref_color=green || ref_color=yellow
-    [[ "${ref/.../}" == "$ref" ]] && ref="  $ref" || ref="✦ ${ref/.../}"
+    [[ "${ref/.../}" == "$ref" ]] && ref="  $ref " || ref="✦ ${ref/.../} "
   fi
   [ $VIRTUAL_ENV ] && venv="($(basename $VIRTUAL_ENV))"
 
