@@ -533,10 +533,10 @@ function utox() {
 
 alias etox="nocorrect etox"
 alias utox="nocorrect utox"
+alias upip="pip install  -U --upgrade-strategy eager"
 
 source ~/.env/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source ~/.env/zsh-history-substring-search/zsh-history-substring-search.zsh
-# source ~/.env/z.sh
 
 typeset -A key
 key=(
