@@ -491,7 +491,7 @@ case $HOSTNAME in
     *) alias tox="eatmydata tox";;
 esac
 
-etox() {
+function etox() {
     zparseopts -D e+:=env
     typeset -A helper
     helper=($(seq 1 ${#env}))
@@ -518,7 +518,7 @@ etox() {
 }
 
 alias pipnodev="find /workspace/pip_cache/ -name '*.dev*' -delete"
-utox() {
+function utox() {
     pipnodev
     zparseopts -D e+:=env
     typeset -A helper
@@ -533,7 +533,6 @@ utox() {
 
 alias etox="nocorrect etox"
 alias utox="nocorrect utox"
-#alias tox="rm .ropeproject -rf; tox"
 
 source ~/.env/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source ~/.env/zsh-history-substring-search/zsh-history-substring-search.zsh
