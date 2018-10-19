@@ -13,6 +13,7 @@ status.register("clock", format="%a %b %d, %H:%M")
 status.register("pulseaudio",
                 on_leftclick="change_sink",
                 on_middleclick="pavucontrol -t 1",
+                vertical_bar_width=1,
                 sink="alsa_output.pci-0000_00_1f.3.analog-stereo",
                 color_muted="#AAAAAA",
                 format="🔊: {volume}{selected}")
@@ -21,34 +22,20 @@ status.register("pulseaudio",
 status.register("pulseaudio",
                 on_leftclick="change_sink",
                 on_middleclick="pavucontrol -t 1",
-                sink="alsa_output.pci-0000_01_00.1.hdmi-stereo-extra1",
-                color_muted="#AAAAAA",
-                format="🔊: {volume}{selected}")
-
-status.register("pulseaudio",
-                on_leftclick="change_sink",
-                on_middleclick="pavucontrol -t 1",
+                vertical_bar_width=1,
                 sink="alsa_output.pci-0000_00_1b.0.analog-stereo",
                 color_muted="#AAAAAA",
-                # format="🎧: {volume}{selected}")
                 format="🔊: {volume}{selected}")
 
 # USB UGREEN
 status.register("pulseaudio",
                 on_leftclick="change_sink",
                 on_middleclick="pavucontrol -t 1",
+                vertical_bar_width=1,
                 sink=("alsa_output.usb-C-Media_Electronics_Inc._USB_Advanced_"
                       "Audio_Device-00.analog-stereo"),
                 color_muted="#AAAAAA",
                 format="🎧: {volume}{selected}")
-
-# bluetooth
-status.register("pulseaudio",
-                on_leftclick="change_sink",
-                on_middleclick="pavucontrol -t 1",
-                sink="bluez_sink.C0_7A_A5_00_9F_1A",
-                color_muted="#AAAAAA",
-                format="📡: {volume}{selected}")
 
 status.register("cpu_usage_graph", graph_width=5)
 status.register("mem_bar")
