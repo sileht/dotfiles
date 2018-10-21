@@ -46,6 +46,7 @@ Plug 'zchee/deoplete-jedi',           {'for': 'python'}
 
 """Plug 'godlygeek/tabular'
 
+Plug 'chr4/nginx.vim'
 Plug 'vim-scripts/spec.vim',          {'for': 'spec'}
 Plug 'spf13/PIV',                     {'for': 'php'}
 Plug 'Rykka/riv.vim',                 {'for': 'rst'}
