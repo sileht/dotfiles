@@ -1,21 +1,2 @@
-
-dirs="
-    $HOME/.env/bin
-    $HOME/.bin
-    $HOME/.local/bin
-    $HOME/.cargo/bin
-    $HOME/.miniconda3/bin
-    /usr/local/sbin
-    /usr/local/bin
-    /usr/sbin
-    /usr/bin
-    /sbin
-    /bin
-    /usr/local/games
-    /usr/games
-"
-
-dirs=$(echo $dirs | sed 's/[[:space:]]*//g' | tr '\n' ':' | xargs)
-export PATH=${dirs:1:-2}
-
+export PATH="$HOME/.env/bin:$HOME/.bin:$HOME/.local/bin:$HOME/.cargo/bin:$HOME/.miniconda3/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/games:/usr/games"
 [ "$DISPLAY" = ":0" ] && [ "$(xrandr | grep '^VGA.* connected ')" ] && { xset s off ; xset -dpms;}
