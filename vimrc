@@ -223,11 +223,25 @@ let g:python_highlight_all = 1
 let g:ale_completion_enabled = 0
 let g:ale_sign_column_always = 1  " always show left column
 let g:ale_open_list = 1
-let g:ale_list_window_size = 5
-let g:ale_keep_list_window_open = 0
+let g:ale_list_window_size = 70
+let g:ale_list_vertical = 1
+let g:ale_list_window_size = 7
+let g:ale_list_vertical = 0
+let g:ale_keep_list_window_open = 1
 "set completeopt=menu,menuone,preview,noselect,noinsert
 let g:ale_set_highlights = 0
-let g:ale_linters = {'python': ['pyls']}
+
+let g:ale_linters = {'python': ['pyls']} ", 'c': ['clangformat']}
+let g:ale_c_parse_makefile = 1
+let g:ale_c_parse_compile_commands = 1
+"let __ale_c_project_filenames = ['README.md']
+
+let g:ale_sign_error = '⛔'
+let g:ale_sign_info = 'ℹ️'
+let g:ale_sign_offset = 1000000
+let g:ale_sign_style_error = '⛔'
+let g:ale_sign_style_warning = '⚠'
+let g:ale_sign_warning = '⚠'
 
 packloadall
 silent! helptags ALL
