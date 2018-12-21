@@ -354,12 +354,14 @@ alias curl='noglob curl'
 alias man="LANG=C man"
 alias df="df -h"
 alias diff='diff -rNu'
+alias ip='ip -color'
 alias optimutt="find ~/.mutt/cache/headers -type f -exec tcbmgr optimize -nl {} \;"
 
 if [ -x "$(which nvim)" ] ; then
     # NOTE(sileht): workaround https://github.com/neovim/neovim/issues/5895
     alias vim="TERM=screen-256color /usr/bin/nvim"
 fi
+alias r="ranger"
 alias vi="vim"
 alias vid="vim --servername sileht"
 alias vir="vim --servername sileht --remote-silent"
