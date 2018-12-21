@@ -26,7 +26,7 @@ set read_inc          = 0
 
 
 ## Mail check
-set mail_check        = 20                          # how often to poll for new mail
+set mail_check        = 1                           # how often to poll for new mail
 set mail_check_stats  = yes                         # Get stats about new mail, needed by sidebar
 set mail_check_recent = no                          # Use New flag and not last visited date
 
@@ -90,6 +90,7 @@ set sidebar_visible       = yes
 set sidebar_divider_char  = ' '
 set sidebar_short_path    = yes
 set sidebar_format        = '%B%?F? [%F]?%*   %?N?%N/?%S'
+# set sidebar_sort_method   = unsorted
 set sidebar_sort_method   = unsorted
 #set sidebar_next_new_wrap = yes
 #set sidebar_new_mail_only = yes
@@ -125,22 +126,23 @@ set query_command = "khard email --parsable %s"
 bind editor <Tab> complete-query
 bind editor ^T    complete
 
-# GPG
-set crypt_use_gpgme          = yes
-set crypt_autosign           = yes
-set crypt_verify_sig         = yes
-set crypt_replysign          = yes
-set crypt_replyencrypt       = yes
-set crypt_replysignencrypted = yes
-set crypt_use_pka            = yes                  # get gpg by dns/dnssec
-set pgp_sign_as              = 0xCEAAEBC8
-set postpone_encrypt_as      = 0xCEAAEBC8
-set postpone_encrypt         = yes
+## GPG
+#set crypt_use_gpgme          = yes
+#set crypt_autosign           = yes
+#set crypt_verify_sig         = yes
+#set crypt_replysign          = yes
+#set crypt_replyencrypt       = yes
+#set crypt_replysignencrypted = yes
+#set crypt_use_pka            = yes                  # get gpg by dns/dnssec
+#set pgp_sign_as              = 0xCEAAEBC8
+#set postpone_encrypt_as      = 0xCEAAEBC8
+#set postpone_encrypt         = yes
 
 attachments   +A */.*
 attachments   -A text/x-vcard application/pgp.*
 attachments   -A application/x-pkcs7-.*
 
+#set external_search_command = /home/sileht/.bin/imap-search
 
 # Accounts
 set my_ttnn_user=`echo ${TTNN_USER}`

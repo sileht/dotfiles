@@ -55,4 +55,7 @@ bind index,pager y modify-labels
 
 macro compose A "<attach-message>?<toggle-mailboxes>" "attach message(s) to this message"
 
+macro index <f2> '<sync-mailbox><enter-command>source ~/.mutt/account.sileht<enter><change-folder>imap://sileht@mail.sileht.net/INBOX<enter>'
+macro index <f3> '<sync-mailbox><enter-command>source ~/.mutt/account.redhat<enter><change-folder>imap://redhat@mail.sileht.net/INBOX<enter>'
+
 # vim: ft=muttrc:

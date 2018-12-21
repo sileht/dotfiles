@@ -138,5 +138,5 @@ color   body     brightmagenta   default        "signature verification suppress
 color   body     brightmagenta   default        "invalid node with packet of type"
 
 # color menu color202        color234
-color menu default color234
-color menu_options brightgreen color234
+#color menu default color234
+#color menu_options brightgreen color234

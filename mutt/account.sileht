@@ -2,7 +2,7 @@
 
 set from = "sileht@sileht.net"
 unalternates *
-alternates "^(theli48@gmail.com|.*mehdi.*@sileht.net|.*sileht.*@sileht.net|sileht@mergify.io)$
+alternates "^(theli48@gmail.com|.*mehdi.*@sileht.net|.*sileht.*@sileht.net|sileht@mergify.io|support@mergify.io)$
 set realname = "Mehdi Abaakouk"
 set signature = "~/.mutt/signature.local"
 
@@ -12,10 +12,14 @@ folder-hook "imap://sileht@mail.sileht.net/zml-" push "<delete-pattern>~d<space>
 folder-hook "imap://sileht@mail.sileht.net/Trash" push "<delete-pattern>~d<space>>3m<enter>"
 
 set duplicate_threads = yes
-set crypt_autosign    = yes
+#set crypt_autosign    = yes
 
 unmailboxes *
-mailboxes =INBOX =Drafts =Sent =Trash =Junk \
+
+#set imap_list_subscribed = yes
+#set imap_check_subscribed = yes
+
+mailboxes = =Drafts =Sent =Trash =Junk \
       =Archive \
       =perso-appart \
       =perso-compte-achat \

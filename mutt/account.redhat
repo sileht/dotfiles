@@ -9,13 +9,13 @@ set signature = "~/.mutt/signature.redhat"
 set folder = "imap://redhat@mail.sileht.net/"
 set smtp_url = "smtp://smtp.corp.redhat.com/"
 
-folder-hook "imap://redhat@mail.sileht.net/Trash" push "<delete-pattern>~d<space>>3m<enter>"
-folder-hook "imap://redhat@mail.sileht.net/ml-annonce" push "<delete-pattern>~d<space>>3m<enter>"
-folder-hook "imap://redhat@mail.sileht.net/ml-memo-list" push "<delete-pattern>~d<space>>3m<enter>"
-folder-hook "imap://redhat@mail.sileht.net/ml-cloud-strategy" push "<delete-pattern>~d<space>>3m<enter>"
-folder-hook "imap://redhat@mail.sileht.net/bugzilla" push "<delete-pattern>~d<space>>3m<enter>"
-folder-hook "imap://redhat@mail.sileht.net/ml-rhos" push "<delete-pattern>~d<space>>3m<enter>"
-folder-hook "imap://redhat@mail.sileht.net/review-" push "<delete-pattern>~d<space>>1m<enter>"
+#folder-hook "imap://redhat@mail.sileht.net/Trash" push "<delete-pattern>~d<space>>3m<enter>"
+#folder-hook "imap://redhat@mail.sileht.net/ml-annonce" push "<delete-pattern>~d<space>>3m<enter>"
+#folder-hook "imap://redhat@mail.sileht.net/ml-memo-list" push "<delete-pattern>~d<space>>3m<enter>"
+#folder-hook "imap://redhat@mail.sileht.net/ml-cloud-strategy" push "<delete-pattern>~d<space>>3m<enter>"
+#folder-hook "imap://redhat@mail.sileht.net/bugzilla" push "<delete-pattern>~d<space>>3m<enter>"
+#folder-hook "imap://redhat@mail.sileht.net/ml-rhos" push "<delete-pattern>~d<space>>3m<enter>"
+#folder-hook "imap://redhat@mail.sileht.net/review-" push "<delete-pattern>~d<space>>1m<enter>"
 
 set duplicate_threads = yes
 set crypt_autosign    = no
