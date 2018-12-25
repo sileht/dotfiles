@@ -36,10 +36,18 @@ Plug 'ctrlpvim/ctrlp.vim'
 Plug 'tacahiroy/ctrlp-funky'
 Plug 'ervandew/supertab'
 """Plug 'tpope/vim-commentary'
+
+Plug 'lilydjwg/colorizer'
+Plug 'luochen1990/rainbow'
+Plug 'RRethy/vim-illuminate'
+Plug 'terryma/vim-smooth-scroll'
+Plug 'inside/vim-search-pulse'
+
 " Language
 Plug 'jaxbot/semantic-highlight.vim'
 Plug 'Vimjas/vim-python-pep8-indent', {'for': 'python'}
 Plug 'vim-python/python-syntax',      {'for': 'python'}
+Plug 'numirias/semshi',               {'do': ':UpdateRemotePlugins'}
 
 Plug 'Shougo/deoplete.nvim',          {'do': ':UpdateRemotePlugins' }
 Plug 'zchee/deoplete-jedi',           {'for': 'python'}
@@ -209,6 +217,8 @@ nmap <S-right> <Plug>AirlineSelectNextTab
 " ############
 " ### JEDI ###
 " ############
+"
+let g:deoplete#auto_complete_delay = 100
 autocmd FileType python setlocal completeopt-=preview
 autocmd FileType python silent! call LoadVirtualEnv()
 
@@ -220,6 +230,7 @@ let g:python_highlight_all = 1
 " ###########
 " ### ALE ###
 " ###########
+"
 let g:ale_completion_enabled = 0
 let g:ale_sign_column_always = 1  " always show left column
 let g:ale_open_list = 1
@@ -254,23 +265,54 @@ xmap ga <Plug>(EasyAlign)    " Start interactive EasyAlign in visual mode (e.g. 
 nmap ga <Plug>(EasyAlign)    " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 
 " #####################
-" ### OTHER PLUGINS ###
+" ### smooth-scroll ###
 " #####################
 
-cmap w!! :w suda://%<CR>:e!<CR>
+"noremap <silent> <c-u> :call smooth_scroll#up(&scroll, 0, 2)<CR>
+"noremap <silent> <c-d> :call smooth_scroll#down(&scroll, 0, 2)<CR>
+"noremap <silent> <c-b> :call smooth_scroll#up(&scroll*2, 0, 4)<CR>
+"noremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 0, 4)<CR>
+noremap <silent> <PageUp> :call smooth_scroll#up(&scroll, 5, 2)<CR>
+noremap <silent> <PageDown> :call smooth_scroll#down(&scroll, 5, 2)<CR>
 
-let g:signify_update_on_focusgained = 1
-
-let g:semanticTermColors = [28,1,2,3,4,5,6,7,25,9,10,34,12,13,14,15,125,124,19]
-nnoremap <F10> :SemanticHighlightToggle<cr>
-"autocmd FileType * SemanticHighlightToggle
-
-let g:rubycomplete_buffer_loading = 1
+" #############
+" ### CTRLP ###
+" #############
 
 let g:ctrlp_funky_matchtype = 'path'
 let g:ctrlp_funky_syntax_highlight = 1
 nnoremap <C-e> :CtrlPFunky<Cr>
 nnoremap <C-E> :execute 'CtrlPFunky ' . expand('<cword>')<Cr>
+
+" ##############
+" ### Semshi ###
+" ##############
+"
+nmap <silent> <leader>rr :Semshi rename<CR>
+nmap <silent> <Tab> :Semshi goto name next<CR>
+nmap <silent> <S-Tab> :Semshi goto name prev<CR>
+nmap <silent> <leader>c :Semshi goto class next<CR>
+nmap <silent> <leader>C :Semshi goto class prev<CR>
+nmap <silent> <leader>f :Semshi goto function next<CR>
+nmap <silent> <leader>F :Semshi goto function prev<CR>
+nmap <silent> <leader>ee :Semshi error<CR>
+nmap <silent> <leader>ge :Semshi goto error<CR>
+
+" #####################
+" ### OTHER PLUGINS ###
+" #####################
+
+let g:semanticTermColors = [28,1,2,3,4,5,6,7,25,9,10,34,12,13,14,15,125,124,19]
+nnoremap <F10> :SemanticHighlightToggle<cr>
+"autocmd FileType * SemanticHighlightToggle
+
+cmap w!! :w suda://%<CR>:e!<CR>
+
+let g:signify_update_on_focusgained = 1
+let g:vim_search_pulse_duration = 200
+let g:rubycomplete_buffer_loading = 1
+let g:rainbow_active = 1
+hi link illuminatedWord Visual
 
 au FileType spec map <buffer> <F5> <Plug>AddChangelogEntry
 let spec_chglog_packager = "Mehdi Abaakouk <sileht@redhat.com>"
