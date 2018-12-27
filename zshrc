@@ -356,6 +356,9 @@ alias df="df -h"
 alias diff='diff -rNu'
 alias ip='ip -color'
 alias optimutt="find ~/.mutt/cache/headers -type f -exec tcbmgr optimize -nl {} \;"
+if [ $commands[kubectl] ]; then
+  source <(kubectl completion zsh)
+fi
 
 if [ -x "$(which nvim)" ] ; then
     # NOTE(sileht): workaround https://github.com/neovim/neovim/issues/5895
