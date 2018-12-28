@@ -1,5 +1,5 @@
---- a/venv/lib/python3.6/site-packages/apiclient/base.py	2016-04-14 11:12:19.658937347 +0200
-+++ b/venv/lib/python3.6/site-packages/apiclient/base.py	2016-04-14 11:12:56.575146600 +0200
+--- a/venv/lib/python3.7/site-packages/apiclient/base.py	2016-04-14 11:12:19.658937347 +0200
++++ b/venv/lib/python3.7/site-packages/apiclient/base.py	2016-04-14 11:12:56.575146600 +0200
 @@ -1,7 +1,10 @@
  import json
  
