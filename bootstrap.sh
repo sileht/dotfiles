@@ -3,13 +3,13 @@
 here=$(dirname $(readlink -f $0))
 
 INITIAL_OPTS="$@"
-OPTS=$(getopt -o feul -- "$@")
+OPTS=$(getopt -o fu -- "$@")
 eval set -- "$OPTS"
 
 while true ; do
     case "$1" in
         -f) force=1 ;;
-        -U) BOOSTRAP_UPDATED=1 ;;
+        -u) BOOSTRAP_UPDATED=1 ;;
         --) shift; break;;
     esac
     shift
