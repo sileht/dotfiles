@@ -49,8 +49,9 @@ color quoted9       color138     color234
 # color body          red   default  "(^| )\\*[-a-z0-9*]+\\*[,.?]?[ \n]"
 # color body          green default  "(^| )_[-a-z0-9_]+_[,.?]?[ \n]"
 color index_label  color202  color234
+color index_tag    green  green "shopping"
+color index_tag    green  green "wazo"
 color index_tags   color202  color234
-#color index_tag    color202  color234 "telemetry"
 
 #color index_author red color234 ~N
 #color index_number blue color234
@@ -100,7 +101,7 @@ color header      color29       color234    '^reply-to:'
 
 # tag
 
-color body          color202        color234        "(cotyledon|oslo.messaging|gnocchi|tooz|ceilometer|aodh|panko|telemetry|grafana)"
+color body          color202        color234        "(cotyledon)"
 
 # emojy
 

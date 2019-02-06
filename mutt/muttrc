@@ -9,6 +9,7 @@ source ~/.mutt/keybinding
 set maildir_header_cache_verify = no
 set header_cache                = "~/.mutt/cache/headers"
 set message_cachedir            = "~/.mutt/cache/messages"
+set message_cache_clean         = yes
 set mailcap_path                = "~/.mutt/mailcap"
 set certificate_file            = "~/.mutt/certificates"
 
@@ -26,7 +27,7 @@ set read_inc          = 0
 
 
 ## Mail check
-set mail_check        = 1                           # how often to poll for new mail
+set mail_check        = 5                           # how often to poll for new mail
 set mail_check_stats  = yes                         # Get stats about new mail, needed by sidebar
 set mail_check_recent = no                          # Use New flag and not last visited date
 
@@ -47,7 +48,7 @@ set forward_quote     = yes                         # include original text on f
 set mime_forward      = yes                         # forward everything
 set mime_forward_rest = yes                         # forward everything and more
 set indent_string     = "> "                        # how to quote replied text
-folder-hook . 'set record = "^"'                    # Put sent mail into current folder
+# folder-hook . 'set record = "^"'                    # Put sent mail into current folder
 
 # Better default for from:
 set reverse_name=yes
@@ -75,10 +76,10 @@ set pager_index_lines  = 10                         # Split-screen index/pager p
 set pager_stop         = yes                        # Don't skip to next message at end of message (avoids accidental setting as being read)
 
 # Formats
-tag-transforms      "telemetry" "⌬ " "oslo" "⛁ " "ttnn" "♨ " "mergify" "🔀"
+tag-transforms      "sqreen" "⌬ " "ttnn" "📶" "mergify" "🔀" "amap" "🥔🥕" "shopping" "🛒" "work" "💼"
 # tag-formats  "ttnn" Gt"
 set hidden_tags   = Junk,NonJunk,nonjunk,junk,\$Forwarded,\$label1,\$label2,\$label3,\$label4
-set index_format  = "[%Z] %{%b-%d %H:%M} | %-20.20L | %?M?➘ ?%s %?g?/ %g ?%* (%?l?%l&%c?)"
+set index_format  = "[%Z] %{%b-%d %H:%M} | %-20.20L | %?g?%g ?%?M?➘ ?%s %* (%?l?%l&%c?)"
 # set index_format  = "[%Z] %{%b-%d %H:%M} | %-20.20L | %?M?➘ ?%s %?g?/ %g ?%*  %?X?📎&? (%?l?%lL %c&%c?)"
 # set index_format  = "[%Z] %{%b-%d %H:%M} | %-20.20L | %?M?➘ ?%s [g:%g/G:%Gt/J:%J]%*  %?X?📎&? (%?l?%l&%c?)"
 set folder_format = "      %-20f"

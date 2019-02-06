@@ -37,7 +37,6 @@ mailboxes = =Drafts =Sent =Trash =Junk \
       =code-other \
       =zml-neomutt \
       =zml-frnog \
-      =zml-openstack \
 
 folder-hook . unsubjectrx *
 folder-hook (^.*/zml-neomutt) "subjectrx '\\[neomutt-[^\]]*\\] ' '%L%R'"
@@ -49,7 +48,5 @@ folder-hook (^.*/ttnn-services) "subjectrx '\\[tetaneutral.net\\] ' '%L%R'"
 folder-hook (^.*/ttnn-hosting) "subjectrx '\\[Equipage-hosting\\] ' '%L%R'"
 folder-hook (^.*/code-.*) "subjectrx '^Change in \([^\[]*\)\\[\([^\]]*\)\\]: ' '%L[%1@%2]: %R'"
 folder-hook (^.*/zml-frnog) "subjectrx '\\[FRnOG\\] ' '%L%R'"
-folder-hook (^.*/zml-os-) "subjectrx '\\[Openstack\\] ' '%L%R'"
-folder-hook (^.*/zml-os-) "subjectrx '\\[openstack-dev\\] ' '%L%R'"
 
 # virtual-mailboxes "TEST" "$folder/INBOX?search="imap://?query=tag:inbox"
