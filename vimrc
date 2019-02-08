@@ -39,8 +39,6 @@ Plug 'ervandew/supertab'
 
 Plug 'lilydjwg/colorizer'
 Plug 'luochen1990/rainbow'
-Plug 'RRethy/vim-illuminate'
-Plug 'terryma/vim-smooth-scroll'
 Plug 'inside/vim-search-pulse'
 
 " Language
@@ -264,17 +262,6 @@ silent! helptags ALL
 xmap ga <Plug>(EasyAlign)    " Start interactive EasyAlign in visual mode (e.g. vipga)
 nmap ga <Plug>(EasyAlign)    " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 
-" #####################
-" ### smooth-scroll ###
-" #####################
-
-"noremap <silent> <c-u> :call smooth_scroll#up(&scroll, 0, 2)<CR>
-"noremap <silent> <c-d> :call smooth_scroll#down(&scroll, 0, 2)<CR>
-"noremap <silent> <c-b> :call smooth_scroll#up(&scroll*2, 0, 4)<CR>
-"noremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 0, 4)<CR>
-"noremap <silent> <PageUp> :call smooth_scroll#up(&scroll, 5, 2)<CR>
-"noremap <silent> <PageDown> :call smooth_scroll#down(&scroll, 5, 2)<CR>
-
 " #############
 " ### CTRLP ###
 " #############
@@ -312,7 +299,6 @@ let g:signify_update_on_focusgained = 1
 let g:vim_search_pulse_duration = 200
 let g:rubycomplete_buffer_loading = 1
 let g:rainbow_active = 1
-hi link illuminatedWord Visual
 
 au FileType spec map <buffer> <F5> <Plug>AddChangelogEntry
 let spec_chglog_packager = "Mehdi Abaakouk <sileht@redhat.com>"
