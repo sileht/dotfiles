@@ -232,8 +232,6 @@ let g:python_highlight_all = 1
 let g:ale_completion_enabled = 0
 let g:ale_sign_column_always = 1  " always show left column
 let g:ale_open_list = 1
-let g:ale_list_window_size = 70
-let g:ale_list_vertical = 1
 let g:ale_list_window_size = 7
 let g:ale_list_vertical = 0
 let g:ale_keep_list_window_open = 1
@@ -391,7 +389,7 @@ import vim
 import os
 
 def load_venv(path):
-    for venv in (".tox/py36", ".tox/py37", ".tox/py27", ".tox/py27-postgresql-file", ".tox/py27-mysql-file"):
+    for venv in (".tox/py36", ".tox/py37", ".tox/py27", ".tox/py27-postgresql-file", ".tox/py27-mysql-file", "venv"):
         venvdir = os.path.join(current_path, venv)
         if os.path.exists(venvdir):
             vim.command("let g:deoplete#sources#jedi#python_path = '%s/bin/python'" % venvdir)
