@@ -465,6 +465,8 @@ sshclean(){
         ssh-keygen -R "[$i]:22"
         ssh-keygen -R "[$i]:2222"
         ssh-keygen -R "[$i]:22222"
+        ssh-keygen -R "[$i]:5555"
+        ssh-keygen -R "[$i]:55555"
     done
 }
 
