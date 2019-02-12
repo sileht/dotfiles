@@ -37,15 +37,15 @@ Plug 'tacahiroy/ctrlp-funky'
 Plug 'ervandew/supertab'
 """Plug 'tpope/vim-commentary'
 
-Plug 'lilydjwg/colorizer'
-Plug 'luochen1990/rainbow'
+Plug 'lilydjwg/colorizer'       " color hexa code (eg: #0F12AB)
+Plug 'luochen1990/rainbow'      " special parenthesis colors
 Plug 'inside/vim-search-pulse'
 
 " Language
-Plug 'jaxbot/semantic-highlight.vim'
+Plug 'jaxbot/semantic-highlight.vim'                                  " semantic highlight (permanent)
 Plug 'Vimjas/vim-python-pep8-indent', {'for': 'python'}
 Plug 'vim-python/python-syntax',      {'for': 'python'}
-Plug 'numirias/semshi',               {'do': ':UpdateRemotePlugins'}
+Plug 'numirias/semshi',               {'do': ':UpdateRemotePlugins'}  " semantic highlight (selected)
 
 Plug 'Shougo/deoplete.nvim',          {'do': ':UpdateRemotePlugins' }
 Plug 'zchee/deoplete-jedi',           {'for': 'python'}
@@ -216,7 +216,7 @@ nmap <S-right> <Plug>AirlineSelectNextTab
 " ### JEDI ###
 " ############
 "
-let g:deoplete#auto_complete_delay = 100
+let g:deoplete#auto_complete_delay = 100  " https://github.com/numirias/semshi#semshi-is-slow-together-with-deopletenvim
 autocmd FileType python setlocal completeopt-=preview
 autocmd FileType python silent! call LoadVirtualEnv()
 
