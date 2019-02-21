@@ -1,0 +1,10 @@
+python-language-server[all]
+flake8
+jedi
+docker-compose
+git-pull-request
+vdirsyncer
+ranger-fm
+khard
+khal
+

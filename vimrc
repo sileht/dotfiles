@@ -229,7 +229,7 @@ let g:python_highlight_all = 1
 " ### ALE ###
 " ###########
 "
-let g:ale_completion_enabled = 0
+let g:ale_completion_enabled = 1
 let g:ale_sign_column_always = 1  " always show left column
 let g:ale_open_list = 1
 let g:ale_list_window_size = 7
@@ -238,9 +238,15 @@ let g:ale_keep_list_window_open = 1
 "set completeopt=menu,menuone,preview,noselect,noinsert
 let g:ale_set_highlights = 0
 
-let g:ale_linters = {'python': ['pyls']} ", 'c': ['clangformat']}
+let g:ale_linters = {}
+let g:ale_linters.python = ['flake8', 'pyls']
+"let g:ale_linters.c = ['clangformat']
 let g:ale_c_parse_makefile = 1
 let g:ale_c_parse_compile_commands = 1
+let g:ale_python_pyls_config = {'pyls': {'plugins': {
+  \   'pyflakes': {'enabled': v:false},
+  \   'pycodestyle': {'enabled': v:false},
+  \ }}}
 "let __ale_c_project_filenames = ['README.md']
 
 let g:ale_sign_error = '⛔'
@@ -388,6 +394,11 @@ python << pythoneof
 import vim
 import os
 
+def load_flake8(path):
+    venvdir = os.path.join(current_path, ".tox/pep8")
+    if os.path.exists(venvdir):
+        vim.command("let g:ale_python_flake8_executable = '%s/bin/flake8'" % venvdir)
+
 def load_venv(path):
     for venv in (".tox/py36", ".tox/py37", ".tox/py27", ".tox/py27-postgresql-file", ".tox/py27-mysql-file", "venv"):
         venvdir = os.path.join(current_path, venv)
@@ -407,6 +418,7 @@ home = os.path.abspath("~")
 while True:
     if is_source_root(current_path):
         load_venv(path)
+        load_flake8(path)
         break
     current_path = os.path.abspath(os.path.join(current_path, ".."))
     if current_path == home or current_path == "/":

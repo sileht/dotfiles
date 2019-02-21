@@ -15,7 +15,6 @@ while true ; do
     shift
 done
 
-
 typeset -a flist="zshrc zprofile zlogin zlogout zshenv vimrc screenrc wgetrc
 mutt config/awesome gitconfig gitignore-global ctags i3 config/dunst tmux
 tmux.conf config/khard vdirsyncer xsessionrc urlview conkyrc gnupg/gpg.conf gnupg/gpg-agent.conf"
@@ -130,6 +129,10 @@ setup_st(){
     (cd st && make clean && make && tic -sx st.info)
 }
 
+setup_python(){
+    python3 -m pip install --user --upgrade --upgrade-strategy eager -r ~/.env/requirements.txt
+}
+
 disable_gpg_crap(){
     # debian strech now starts agents with systemd. That can be fancy, but this break gpg-agent forwarding
     for action in stop disable mask; do
@@ -143,6 +146,7 @@ cleanup_old_link
 setup_env_link
 setup_vim
 setup_st
+setup_python
 case $HOSTNAME in
     bob|billy) ;;
     *) disable_gpg_crap
