@@ -218,7 +218,7 @@ nmap <S-right> <Plug>AirlineSelectNextTab
 "
 let g:deoplete#auto_complete_delay = 100  " https://github.com/numirias/semshi#semshi-is-slow-together-with-deopletenvim
 autocmd FileType python setlocal completeopt-=preview
-autocmd FileType python silent! call LoadVirtualEnv()
+autocmd FileType python call LoadVirtualEnv()
 
 " Use system python for neovim itself
 let g:python_host_prog = '/usr/bin/python'
@@ -395,15 +395,15 @@ import vim
 import os
 
 def load_flake8(path):
-    venvdir = os.path.join(current_path, ".tox/pep8")
+    venvdir = os.path.join(path, ".tox/pep8")
     if os.path.exists(venvdir):
         vim.command("let g:ale_python_flake8_executable = '%s/bin/flake8'" % venvdir)
 
 def load_venv(path):
     for venv in (".tox/py36", ".tox/py37", ".tox/py27", ".tox/py27-postgresql-file", ".tox/py27-mysql-file", "venv"):
-        venvdir = os.path.join(current_path, venv)
+        venvdir = os.path.join(path, venv)
         if os.path.exists(venvdir):
-            vim.command("let g:deoplete#sources#jedi#python_path = '%s/bin/python'" % venvdir)
+            vim.command("let $VIRTUAL_ENV='%s'" % venvdir)
             return
 
 def is_source_root(path):
@@ -414,11 +414,10 @@ def is_source_root(path):
 
 current_path = os.path.abspath(vim.eval('getcwd()'))
 home = os.path.abspath("~")
-
 while True:
     if is_source_root(current_path):
-        load_venv(path)
-        load_flake8(path)
+        load_venv(current_path)
+        load_flake8(current_path)
         break
     current_path = os.path.abspath(os.path.join(current_path, ".."))
     if current_path == home or current_path == "/":
