@@ -1,10 +1,35 @@
+# other
+docker-compose
+git-pull-request
+ranger-fm
+
+# mutt
+vdirsyncer
+khard
+khal
+
+# vim
 python-language-server[all]
 flake8
 jedi
-docker-compose
-git-pull-request
-vdirsyncer
-ranger-fm
-khard
-khal
+
+# i3pystatus
+-e git+https://github.com/enkore/i3pystatus.git#egg=i3pystatus
+pytz
+python-dateutil
+netifaces
+basiciw
+colour
+keyring
+psutil
+keyrings.alt
+imaplib2
+pyalsaaudio
+i3ipc
+#apiclient
+#google-api-python-client
+#httplib2
+#oauth2client
+#pyanybar
+#paramiko
 

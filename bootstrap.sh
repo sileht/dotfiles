@@ -96,8 +96,13 @@ setup_vim(){
         vim "+set nomore" +PlugInstall! +PlugClean! +PlugUpdate! +qall
     fi
 }
+
 setup_i3pystatus(){
-    ~/.i3/update.sh
+    return
+
+    dest=$(python3 -c 'import sys; print("'$HOME'/.local/lib/python" + ".".join(map(str, sys.version_info[0:2])) + "/site-packages")')
+    fix="$HOME/.env/i3/apiclient-fix.patch"
+    patch --dry-run -p1 -R -d $dest -i $fix >/dev/null 2>&1 || patch -p1 -d $dest -i $fix
 }
 
 setup_fonts(){
@@ -130,6 +135,8 @@ setup_st(){
 }
 
 setup_python(){
+    ensure_apt libiw-dev  # i3pystatus
+    ensure_yum libiw-devel  # i3pystatus
     python3 -m pip install --user --upgrade --upgrade-strategy eager -r ~/.env/requirements.txt
 }
 

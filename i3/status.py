@@ -1,4 +1,4 @@
-#!/home/sileht/.i3/venv/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 import netrc

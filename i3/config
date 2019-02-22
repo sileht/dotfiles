@@ -189,7 +189,7 @@ bar {
     output eDP-1
     output DVI-D-0
     output VGA-2
-    status_command ~/.i3/status.py
+    status_command exec ~/.i3/status.py
     position          top
     workspace_buttons yes
     separator_symbol " | "
@@ -202,6 +202,6 @@ bar {
     tray_output none
     position          top
     workspace_buttons yes
-    status_command ~/.i3/status-l.py
+    status_command exec ~/.i3/status-l.py
     separator_symbol " | "
 }
