@@ -9,6 +9,7 @@ khard
 khal
 
 # vim
+tox
 python-language-server[all]
 flake8
 jedi
