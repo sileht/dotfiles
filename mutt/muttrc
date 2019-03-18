@@ -103,6 +103,10 @@ alternative_order text/plain
 auto_view text/html
 auto_view text/x-diff
 auto_view text/x-patch
+
+message-hook ~A 'unalternative_order * ; alternative_order text/plain'
+message-hook '~i .*JavaMail.www@wsfr.*' 'unalternative_order * ; alternative_order text/html'
+
 # set my_tprot           = 't-prot -cmekatlSsw --bigq -Mmutt --pgp-move-vrf --pgp-short -L$HOME/.mutt/mlfooters -A$HOME/.mutt/adfooters'
 # set display_filter     = $my_tprot
 set skip_quoted_offset = 3
