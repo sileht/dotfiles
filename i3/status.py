@@ -52,7 +52,7 @@ status.register("mail",
                                     username=creds[0],
                                     password=creds[2])],
                 format_plural="{unread} new emails",
-                on_leftclick="chromium https://m.sileht.net/")
+                on_leftclick="firefox https://m.sileht.net/")
 status.register("shell", command="/home/sileht/.i3/vpn-chk.sh",
                 hints={"markup": "pango"},
                 on_leftclick="zsh -i -c 'vpnrh'",
