@@ -16,7 +16,7 @@ while true ; do
 done
 
 typeset -a flist="zshrc zprofile zlogin zlogout zshenv vimrc screenrc wgetrc
-mutt config/awesome gitconfig gitignore-global ctags i3 config/dunst tmux
+mutt config/awesome gitconfig gitignore-global ctags i3 config/dunst tmux vim/coc-settings.json
 tmux.conf config/khard vdirsyncer xsessionrc urlview conkyrc gnupg/gpg.conf gnupg/gpg-agent.conf"
 
 typeset -a rlist="spf13-vim spf13-vim-3 vimrc.before vimrc.bundles
@@ -80,6 +80,7 @@ cleanup_forced(){
 }
 
 setup_vim(){
+    #ensure_apt nodejs yarnpkg yarn
     if [ ! -e ~/.vim/autoload/plug.vim -o -d "~/.vim/bundle/" ]; then
         rm -rf ~/.vim ~/.vimrc*
         ln -sf ~/.env/vimrc ~/.vimrc
