@@ -1,50 +1,38 @@
 # vim:set ft=muttrc:
 
+source ~/.mutt/reset
+source ~/.mutt/password
+
 set from = "mabaakou@redhat.com"
-unalternates *
 alternates "^(sileht|mabaakou|mehdi.abaakouk)@redhat.com"
 set realname = "Mehdi Abaakouk"
 set signature = "~/.mutt/signature.redhat"
 
-set folder = "imap://redhat@mail.sileht.net/"
-set smtp_url = "smtp://smtp.corp.redhat.com/"
+set folder = "imaps://mabaakou@redhat.com@imap.gmail.com/"
+set spoolfile = "=INBOX"
+set record    = "=[Gmail]/Messages envoyés"
+set postponed = "=[Gmail]/Brouillons"
+set trash     = "=[Gmail]/Corbeille"
 
-#folder-hook "imap://redhat@mail.sileht.net/Trash" push "<delete-pattern>~d<space>>3m<enter>"
-#folder-hook "imap://redhat@mail.sileht.net/ml-annonce" push "<delete-pattern>~d<space>>3m<enter>"
-#folder-hook "imap://redhat@mail.sileht.net/ml-memo-list" push "<delete-pattern>~d<space>>3m<enter>"
-#folder-hook "imap://redhat@mail.sileht.net/ml-cloud-strategy" push "<delete-pattern>~d<space>>3m<enter>"
-#folder-hook "imap://redhat@mail.sileht.net/bugzilla" push "<delete-pattern>~d<space>>3m<enter>"
-#folder-hook "imap://redhat@mail.sileht.net/ml-rhos" push "<delete-pattern>~d<space>>3m<enter>"
-#folder-hook "imap://redhat@mail.sileht.net/review-" push "<delete-pattern>~d<space>>1m<enter>"
+set imap_authenticators = "oauthbearer"
+set imap_user = "mabaakou@redhat.com"
+set imap_oauth_refresh_command = "/home/sileht/.bin/redhat-imap-token"
+set imap_check_subscribed = "yes"
+set imap_list_subscribed  = "yes"
+
+set smtp_url = "smtp://smtp.corp.redhat.com/"
 
 set duplicate_threads = yes
 set crypt_autosign    = no
 
-unmailboxes *
-mailboxes =INBOX =Drafts =Sent =Trash =Junk \
-    =Archives \
-    =ceilo-team \
-    =reviews-os \
-    =reviews-rh \
-    =bugzilla-me \
-    =bugtracker \
-    =ml-memo-list \
-    =ml-rhos-annonce \
-    =ml-rhos-dev \
-    =ml-rhos-tech \
-    =ml-rhos-prio \
-    =ml-rhos-pgm \
-    =ml-rhos-ci \
-    =ml-cloud-strategy \
-    =ml-tech \
-    =ml-python-list \
-    =ml-annonce \
-    =ml-paris \
-    =ml-zzz-other \
-    =vie \
-    =meeting \
+#folder-hook "imap://redhat@gizmo.sileht.net/Trash" push "<delete-pattern>~d<space>>3m<enter>"
+#folder-hook "imap://redhat@gizmo.sileht.net/ml-annonce" push "<delete-pattern>~d<space>>3m<enter>"
+#folder-hook "imap://redhat@gizmo.sileht.net/ml-memo-list" push "<delete-pattern>~d<space>>3m<enter>"
+#folder-hook "imap://redhat@gizmo.sileht.net/ml-cloud-strategy" push "<delete-pattern>~d<space>>3m<enter>"
+#folder-hook "imap://redhat@gizmo.sileht.net/bugzilla" push "<delete-pattern>~d<space>>3m<enter>"
+#folder-hook "imap://redhat@gizmo.sileht.net/ml-rhos" push "<delete-pattern>~d<space>>3m<enter>"
+#folder-hook "imap://redhat@gizmo.sileht.net/review-" push "<delete-pattern>~d<space>>1m<enter>"
 
-folder-hook . unsubjectrx *
 folder-hook (^.*/ml-rhos-.*) "subjectrx '\\[rhos-announce\\] ' '%L%R'"
 folder-hook (^.*/ml-rhos-.*) "subjectrx '\\[rhos-dev\\] ' '%L%R'"
 folder-hook (^.*/ml-rhos-.*) "subjectrx '\\[openstack-program\\] ' '%L%R'"

@@ -1,28 +1,31 @@
 # vim:set ft=muttrc:
 
+source ~/.mutt/reset
+source ~/.mutt/password
+
 set from = "sileht@sileht.net"
-unalternates *
 alternates "^(theli48@gmail.com|.*mehdi.*@sileht.net|.*sileht.*@sileht.net|sileht@mergify.io|support@mergify.io)$
 set realname = "Mehdi Abaakouk"
 set signature = "~/.mutt/signature.local"
 
-set folder="imap://sileht@mail.sileht.net"
-set smtp_url="smtp://sileht@mx2.sileht.net"
-folder-hook "imap://sileht@mail.sileht.net/zml-" push "<delete-pattern>~d<space>>6m<enter>"
-folder-hook "imap://sileht@mail.sileht.net/Trash" push "<delete-pattern>~d<space>>3m<enter>"
+set folder="imaps://imap.fastmail.com/"
+set spoolfile = "=INBOX"
+set record    = "=Sent"
+set postponed = "=Drafts"
+set trash     = "=Trash"
+
+set imap_user="sileht@sileht.net"
+#set imap_list_subscribed = yes
+#set imap_check_subscribed = yes
+
+set smtp_url="smtps://sileht@sileht.net@smtp.fastmail.com/"
 
 set duplicate_threads = yes
 #set crypt_autosign    = yes
 
-unmailboxes *
-
-#set imap_list_subscribed = yes
-#set imap_check_subscribed = yes
-
-mailboxes = =Drafts =Sent =Trash =Junk \
+mailboxes = =Drafts =Sent =Trash =Spam\
       =Archive \
-      =perso-appart \
-      =perso-compte-achat \
+      =perso-logement \
       =perso-serveur \
       =wazo \
       =amap \
@@ -38,8 +41,11 @@ mailboxes = =Drafts =Sent =Trash =Junk \
       =code-other \
       =zml-neomutt \
       =zml-frnog \
+      =Junk \
 
-folder-hook . unsubjectrx *
+folder-hook "imaps://imap.fastmail.com/zml-" push "<delete-pattern>~d<space>>6m<enter>"
+folder-hook "imaps://imap.fastmail.com/Trash" push "<delete-pattern>~d<space>>3m<enter>"
+
 folder-hook (^.*/zml-neomutt) "subjectrx '\\[neomutt-[^\]]*\\] ' '%L%R'"
 folder-hook (^.*/ttnn) "subjectrx '\\[tetaneutral\\] ' '%L%R'"
 folder-hook (^.*/ttnn) "subjectrx '\\[technique\\] ' '%L%R'"
@@ -50,4 +56,4 @@ folder-hook (^.*/ttnn-hosting) "subjectrx '\\[Equipage-hosting\\] ' '%L%R'"
 folder-hook (^.*/code-.*) "subjectrx '^Change in \([^\[]*\)\\[\([^\]]*\)\\]: ' '%L[%1@%2]: %R'"
 folder-hook (^.*/zml-frnog) "subjectrx '\\[FRnOG\\] ' '%L%R'"
 
-# virtual-mailboxes "TEST" "$folder/INBOX?search="imap://?query=tag:inbox"
+# virtual-mailboxes "TEST" "$folder/INBOX?search="imaps://?query=tag:inbox"

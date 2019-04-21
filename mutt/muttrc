@@ -1,5 +1,5 @@
 
-set debug_level = 3
+set debug_level = 0
 set shell = "/bin/bash"
 
 source ~/.mutt/vombatidae.mutt
@@ -48,7 +48,7 @@ set forward_quote     = yes                         # include original text on f
 set mime_forward      = yes                         # forward everything
 set mime_forward_rest = yes                         # forward everything and more
 set indent_string     = "> "                        # how to quote replied text
-# folder-hook . 'set record = "^"'                    # Put sent mail into current folder
+folder-hook . 'set record = "^"'                    # Put sent mail into current folder
 
 # Better default for from:
 set reverse_name=yes
@@ -76,10 +76,11 @@ set pager_index_lines  = 10                         # Split-screen index/pager p
 set pager_stop         = yes                        # Don't skip to next message at end of message (avoids accidental setting as being read)
 
 # Formats
-tag-transforms      "sqreen" "⌬ " "ttnn" "📶" "mergify" "🔀" "amap" "🥔🥕" "shopping" "🛒" "work" "💼"
+tag-transforms      "ttnn" "📶" "mergify" "🔀" "amap" "🥔🥕" "shopping" "🛒" "work" "💼"
 # tag-formats  "ttnn" Gt"
 set hidden_tags   = Junk,NonJunk,nonjunk,junk,\$Forwarded,\$label1,\$label2,\$label3,\$label4
-set index_format  = "[%Z] %{%b-%d %H:%M} | %-20.20L | %?g?%g ?%?M?➘ ?%s %* (%?l?%l&%c?)"
+set index_format  = "[%Z] %{%b-%d %H:%M} | %-20.20L | %?M?➘ ?%s %* (%?l?%l&%c?)"
+# set index_format  = "[%Z] %{%b-%d %H:%M} | %-20.20L | %?g?%g ?%?M?➘ ?%s %* (%?l?%l&%c?)"
 # set index_format  = "[%Z] %{%b-%d %H:%M} | %-20.20L | %?M?➘ ?%s %?g?/ %g ?%*  %?X?📎&? (%?l?%lL %c&%c?)"
 # set index_format  = "[%Z] %{%b-%d %H:%M} | %-20.20L | %?M?➘ ?%s [g:%g/G:%Gt/J:%J]%*  %?X?📎&? (%?l?%l&%c?)"
 set folder_format = "      %-20f"
@@ -106,6 +107,7 @@ auto_view text/x-patch
 
 message-hook ~A 'unalternative_order * ; alternative_order text/plain'
 message-hook '~i .*JavaMail.www@wsfr.*' 'unalternative_order * ; alternative_order text/html'
+message-hook '~f contact@studiohop.com' 'unalternative_order * ; alternative_order text/html'
 
 # set my_tprot           = 't-prot -cmekatlSsw --bigq -Mmutt --pgp-move-vrf --pgp-short -L$HOME/.mutt/mlfooters -A$HOME/.mutt/adfooters'
 # set display_filter     = $my_tprot
@@ -152,10 +154,4 @@ attachments   -A application/x-pkcs7-.*
 # Accounts
 set my_ttnn_user=`echo ${TTNN_USER}`
 set my_account=`echo ${ACCOUNT:=sileht}`
-source ~/.mutt/password
 source ~/.mutt/account.$my_account
-
-set spoolfile = "=INBOX"
-set record    = "=Sent"
-set postponed = "=Drafts"
-set trash     = "=Trash"

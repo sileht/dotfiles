@@ -1,6 +1,7 @@
 #!/bin/bash
 
 case "$(basename $0)" in
+    wmutt) export ACCOUNT=wazo;;
     rmutt) export ACCOUNT=redhat;;
     amutt) export ACCOUNT=ttnn TTNN_USER=adhesion;;
     cmutt) export ACCOUNT=ttnn TTNN_USER=common;;
