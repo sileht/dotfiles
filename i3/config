@@ -188,7 +188,7 @@ bar {
     output DP-1
     output eDP-1
     output DVI-D-0
-    output VGA-2
+    output VGA-1
     output Virtual2
     status_command exec ~/.i3/status.py
     position          top
@@ -198,8 +198,8 @@ bar {
 bar {
     output HDMI-0
     output HDMI-2
+    output VGA-2
     output HDMI-3
-    output VGA-1
     output Virtual1
     tray_output none
     position          top

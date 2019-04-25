@@ -1,0 +1,6 @@
+{
+    "python.linting.flake8Enabled": true,
+    "python.linting.pylintEnabled": false,
+    "python.venvFolders": [".tox/py37", ".tox/py36", ".tox/py27", "venv", "envs",".pyenv",".direnv"],
+    "python.jediEnabled": true,
+}
