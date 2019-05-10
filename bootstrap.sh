@@ -15,17 +15,19 @@ while true ; do
     shift
 done
 
-typeset -a flist="zshrc zprofile zlogin zlogout zshenv vimrc screenrc wgetrc
-mutt config/awesome gitconfig gitignore-global ctags i3 config/dunst tmux vim/coc-settings.json
-tmux.conf config/khard vdirsyncer xsessionrc urlview conkyrc gnupg/gpg.conf gnupg/gpg-agent.conf"
+log(){
+    echo "### $@ ###"
+}
 
-typeset -a rlist="spf13-vim spf13-vim-3 vimrc.before vimrc.bundles
-vimrc.bundles.fork vimrc.fork notmuch-config vimrc.old vimrc.ori specemacs.d
-emacs.d vimrc.before.local vimrc.bundles.local vimrc.local zsh lbdbrc
-pythonrc.py spacemacs Xresources"
+typeset -a flist="zshrc zprofile zlogin zlogout zshenv wgetrc
+mutt gitconfig gitignore-global ctags i3 config/dunst tmux
+tmux.conf xsessionrc urlview gnupg/gpg.conf gnupg/gpg-agent.conf config/nvim"
+
+typeset -a rlist="config/awesome screenrc config/khard vdirsyncer conkyrc"
 
 
 setup_repo(){
+    log "Sync repos"
     if [ ! -f /etc/apt/sources.list.d/yarn.list ]; then
         curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
         echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
@@ -52,9 +54,10 @@ ensure_apt() {
 }
 
 setup_env_link() {
+    log "Setup links"
     haserror=
     error(){
-        echo "* file $1 already exist (.$1 = $(readlink -f .$1))"
+        log "file $1 already exist (.$1 = $(readlink -f .$1))"
         haserror=1
     }
     pushd $HOME > /dev/null
@@ -82,7 +85,7 @@ cleanup_old_link(){
 
 cleanup_forced(){
     error(){
-        echo "* file $1 is not a link"
+        log "file $1 is not a link"
     }
     pushd $HOME > /dev/null
     for f in $flist; do
@@ -93,24 +96,26 @@ cleanup_forced(){
 }
 
 setup_vim(){
-    ensure_apt nodejs yarn -neovim -python-neovim -python3-neovim
-    if [ ! -e ~/.vim/autoload/plug.vim ]; then
-        rm -rf ~/.vim ~/.vimrc*
-        ln -sf ~/.env/vimrc ~/.vimrc
-        mkdir ~/.vim
-        ln -sf ~/.vimrc ~/.vim/init.vim
-        ln -sf ~/.vim ~/.config/nvim
-        ln -sf ~/.vim ~/.local/share/nvim
+    log "Setup vim"
+    ensure_apt -yarnpkg -neovim -python-neovim -python3-neovim nodejs yarn
+    rm -rf ~/.vim ~/.vimrc*
+    dest="~/.bin/nvim"
+    if [[ ! -e "${dest}" || "$(find $dest -mtime +30)" ]]; then
+        curl -fLo $dest --create-dirs \
+	    https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage
+        chmod +x ~/.bin/nvim
     fi
-    curl -fLo ~/.bin/nvim --create-dirs \
-        https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage
-    curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-    chmod +x ~/.bin/nvim
+    dest="~/.local/share/nvim/site/autoload/plug.vim"
+    if [[ ! -e "${dest}" || "$(find $dest -mtime +30)" ]]; then
+        curl -fLo $dest --create-dirs \
+            https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    fi
     nvim "+set nomore" +PlugInstall! +PlugClean! +PlugUpdate! +qall
+    nvim "+set nomore" "+CocInstall coc-python coc-json coc-emoji coc-word coc-css coc-gocode coc-html coc-yaml"
 }
 
 setup_fonts(){
+    log "Setup fonts"
     update_fc=
     fontdir="/home/sileht/.local/share/fonts"
     mkdir -p $fontdir
@@ -126,6 +131,7 @@ setup_fonts(){
 
 maybe_do_update(){
     [ "$BOOSTRAP_UPDATED" ] && return
+    log "Sync git repositories"
     git pull --rebase --recurse-submodules
     git submodule init
     git submodule update
@@ -134,19 +140,22 @@ maybe_do_update(){
 }
 
 setup_st(){
+    log "Setup st"
     ensure_apt libxft-dev libxext-dev libfontconfig1-dev libxrender-dev libx11-dev
     ensure_yum libXft-devel libXet-devel bfontconfig1-devel libXrender-devel libX11-devel
     (cd st && make clean && make && tic -sx st.info)
 }
 
 setup_python(){
+    log "Setup python stuffs"
     ensure_apt libiw-dev  # i3pystatus
     ensure_yum libiw-devel  # i3pystatus
-    python3 -m pip install --user --upgrade --upgrade-strategy eager -r ~/.env/requirements-py3.txt
-    python2 -m pip install --user --upgrade --upgrade-strategy eager -r ~/.env/requirements-py2.txt
+    python3 -m pip install --quiet --user --upgrade --upgrade-strategy eager -r ~/.env/requirements-py3.txt
+    python2 -m pip install --quiet --user --upgrade --upgrade-strategy eager -r ~/.env/requirements-py2.txt
 }
 
 disable_gpg_crap(){
+    log "Setup gpg"
     # debian strech now starts agents with systemd. That can be fancy, but this break gpg-agent forwarding
     for action in stop disable mask; do
         systemctl --user $action gpg-agent.socket gpg-agent-ssh.socket gpg-agent-extra.socket gpg-agent-browser.socket dirmngr.socket gpg-agent.service

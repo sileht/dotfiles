@@ -10,7 +10,7 @@ autocmd BufNewFile,BufRead *.j2	  set filetype=jinja
 autocmd BufNewFile,BufRead *mutt-* set filetype=mail
 autocmd BufNewFile,BufRead rest.j2	  set filetype=rst
 
-call plug#begin('~/.vim/plugged')
+call plug#begin('~/.local/share/nvim/plugged')
 
 " Style
 Plug 'morhetz/gruvbox'
