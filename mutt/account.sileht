@@ -44,7 +44,7 @@ mailboxes = =Drafts =Sent =Trash =Spam\
       =Junk \
 
 folder-hook "imaps://imap.fastmail.com/zml-" push "<delete-pattern>~d<space>>6m<enter>"
-folder-hook "imaps://imap.fastmail.com/Trash" push "<delete-pattern>~d<space>>3m<enter>"
+folder-hook "imaps://imap.fastmail.com/Trash" push "<delete-pattern>~d<space>>1m<enter>"
 
 folder-hook (^.*/zml-neomutt) "subjectrx '\\[neomutt-[^\]]*\\] ' '%L%R'"
 folder-hook (^.*/ttnn) "subjectrx '\\[tetaneutral\\] ' '%L%R'"

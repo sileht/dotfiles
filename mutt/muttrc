@@ -1,5 +1,5 @@
 
-set debug_level = 0
+set debug_level = 3
 set shell = "/bin/bash"
 
 source ~/.mutt/vombatidae.mutt
@@ -27,7 +27,7 @@ set read_inc          = 0
 
 
 ## Mail check
-set mail_check        = 5                           # how often to poll for new mail
+set mail_check        = 20000                           # how often to poll for new mail
 set mail_check_stats  = yes                         # Get stats about new mail, needed by sidebar
 set mail_check_recent = no                          # Use New flag and not last visited date
 
@@ -76,15 +76,21 @@ set pager_index_lines  = 10                         # Split-screen index/pager p
 set pager_stop         = yes                        # Don't skip to next message at end of message (avoids accidental setting as being read)
 
 # Formats
-tag-transforms      "ttnn" "📶" "mergify" "🔀" "amap" "🥔🥕" "shopping" "🛒" "work" "💼"
+#tag-transforms      "ttnn" "📶" "mergify" "🔀" "amap" "🥔🥕" "shopping" "🛒" "work" "💼"
 # tag-formats  "ttnn" Gt"
-set hidden_tags   = Junk,NonJunk,nonjunk,junk,\$Forwarded,\$label1,\$label2,\$label3,\$label4
-set index_format  = "[%Z] %{%b-%d %H:%M} | %-20.20L | %?M?➘ ?%s %* (%?l?%l&%c?)"
+# set hidden_tags   = Junk,NonJunk,nonjunk,junk,\$Forwarded,\$label1,\$label2,\$label3,\$label4
+set index_format  = "[%Z] %{%b-%d %H:%M} | %-20.20L | %@label@ %?M?➘ ?%s %* (%?l?%l&%c?)"
 # set index_format  = "[%Z] %{%b-%d %H:%M} | %-20.20L | %?g?%g ?%?M?➘ ?%s %* (%?l?%l&%c?)"
 # set index_format  = "[%Z] %{%b-%d %H:%M} | %-20.20L | %?M?➘ ?%s %?g?/ %g ?%*  %?X?📎&? (%?l?%lL %c&%c?)"
 # set index_format  = "[%Z] %{%b-%d %H:%M} | %-20.20L | %?M?➘ ?%s [g:%g/G:%Gt/J:%J]%*  %?X?📎&? (%?l?%l&%c?)"
 set folder_format = "      %-20f"
 set pager_format  = "nono %* nono"
+
+index-format-hook label "~f mergify.io" "🔀"
+index-format-hook label "~f tetaneutral.net" "📶"
+index-format-hook label "~f wazo.io" "💼"
+index-format-hook label "~f (amazon\\|aliexpress)" "🛒"
+index-format-hook label ".*" "  "
 
 # Sidebar
 set sidebar_width         = 28
