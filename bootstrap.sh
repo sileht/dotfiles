@@ -24,6 +24,14 @@ vimrc.bundles.fork vimrc.fork notmuch-config vimrc.old vimrc.ori specemacs.d
 emacs.d vimrc.before.local vimrc.bundles.local vimrc.local zsh lbdbrc
 pythonrc.py spacemacs Xresources"
 
+
+setup_repo(){
+    if [ ! -f /etc/apt/sources.list.d/yarn.list ]; then
+        curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+        echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+        apt update -y
+    fi
+}
 ensure_yum() {
     [ -x "$(which yum)" ] || return
     for name in "$@"; do
@@ -34,7 +42,12 @@ ensure_yum() {
 ensure_apt() {
     [ -x "$(which apt)" ] || return
     for name in "$@"; do
-        [ ! -f /var/lib/dpkg/info/${name}.list -a ! -f /var/lib/dpkg/info/${name}:amd64.list ] && sudo apt -y install ${name}
+        if [ "${name:0:1}" == "-" ]; then
+            name=${name:1}
+            [ -f /var/lib/dpkg/info/${name}.list -o -f /var/lib/dpkg/info/${name}:amd64.list ] && sudo apt -y purge ${name}
+        else
+            [ ! -f /var/lib/dpkg/info/${name}.list -a ! -f /var/lib/dpkg/info/${name}:amd64.list ] && sudo apt -y install ${name}
+        fi
     done
 }
 
@@ -80,8 +93,8 @@ cleanup_forced(){
 }
 
 setup_vim(){
-    #ensure_apt nodejs yarnpkg yarn
-    if [ ! -e ~/.vim/autoload/plug.vim -o -d "~/.vim/bundle/" ]; then
+    ensure_apt nodejs yarn -neovim -python-neovim -python3-neovim
+    if [ ! -e ~/.vim/autoload/plug.vim ]; then
         rm -rf ~/.vim ~/.vimrc*
         ln -sf ~/.env/vimrc ~/.vimrc
         mkdir ~/.vim
@@ -89,21 +102,12 @@ setup_vim(){
         ln -sf ~/.vim ~/.config/nvim
         ln -sf ~/.vim ~/.local/share/nvim
     fi
+    curl -fLo ~/.bin/nvim --create-dirs \
+        https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage
     curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
         https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-    if [ -x "$(which nvim)" ]; then
-        nvim "+set nomore" +PlugInstall! +PlugClean! +PlugUpdate! +qall
-    else
-        vim "+set nomore" +PlugInstall! +PlugClean! +PlugUpdate! +qall
-    fi
-}
-
-setup_i3pystatus(){
-    return
-
-    dest=$(python3 -c 'import sys; print("'$HOME'/.local/lib/python" + ".".join(map(str, sys.version_info[0:2])) + "/site-packages")')
-    fix="$HOME/.env/i3/apiclient-fix.patch"
-    patch --dry-run -p1 -R -d $dest -i $fix >/dev/null 2>&1 || patch -p1 -d $dest -i $fix
+    chmod +x ~/.bin/nvim
+    nvim "+set nomore" +PlugInstall! +PlugClean! +PlugUpdate! +qall
 }
 
 setup_fonts(){
@@ -138,7 +142,8 @@ setup_st(){
 setup_python(){
     ensure_apt libiw-dev  # i3pystatus
     ensure_yum libiw-devel  # i3pystatus
-    python3 -m pip install --user --upgrade --upgrade-strategy eager -r ~/.env/requirements.txt
+    python3 -m pip install --user --upgrade --upgrade-strategy eager -r ~/.env/requirements-py3.txt
+    python2 -m pip install --user --upgrade --upgrade-strategy eager -r ~/.env/requirements-py2.txt
 }
 
 disable_gpg_crap(){
@@ -151,6 +156,7 @@ disable_gpg_crap(){
 maybe_do_update
 cleanup_old_link
 [ "$force" ] &&  cleanup_forced
+setup_repo
 setup_env_link
 setup_vim
 setup_st
@@ -161,5 +167,4 @@ case $HOSTNAME in
 esac
 if [ "$DISPLAY" == ":0" ]; then
     setup_fonts
-    setup_i3pystatus
 fi

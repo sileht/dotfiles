@@ -35,7 +35,7 @@ Plug 'luochen1990/rainbow'      " special parenthesis colors
 Plug 'inside/vim-search-pulse'
 
 " Language
-Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
+Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
 Plug 'jaxbot/semantic-highlight.vim'                                  " semantic highlight (permanent)
 " Can be replaced by coc-highlight
 Plug 'numirias/semshi',               {'do': ':UpdateRemotePlugins'}  " semantic highlight (selected)
@@ -43,6 +43,7 @@ Plug 'numirias/semshi',               {'do': ':UpdateRemotePlugins'}  " semantic
 Plug 'dbeniamine/vim-mail',           {'for': 'mail'}
 
 call plug#end()
+
 
 set encoding=utf8
 scriptencoding utf-8
@@ -169,6 +170,8 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#buffer_idx_mode = 1
 let g:airline#extensions#ale#enabled = 1
 let g:airline_theme = 'bubblegum'
+let g:airline_section_error = '%{airline#util#wrap(airline#extensions#coc#get_error(),0)}'
+let g:airline_section_warning = '%{airline#util#wrap(airline#extensions#coc#get_warning(),0)}'
 
 nmap <leader>1 <Plug>AirlineSelectTab1
 nmap <leader>2 <Plug>AirlineSelectTab2
@@ -192,6 +195,8 @@ set hidden          " if hidden is not set, TextEdit might fail.
 set cmdheight=2     " Better display for messages
 set updatetime=300  " Smaller updatetime for CursorHold & CursorHoldI
 set shortmess+=c    " don't give |ins-completion-menu| messages.
+
+let g:coc_force_debug = 1
 
 " Use tab for trigger completion with characters ahead and navigate.
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.

@@ -2,6 +2,7 @@
 docker-compose
 git-pull-request
 ranger-fm
+pynvim
 
 # mutt
 vdirsyncer

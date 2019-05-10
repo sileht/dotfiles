@@ -360,10 +360,7 @@ if [ $commands[kubectl] ]; then
   source <(kubectl completion zsh)
 fi
 
-if [ -x "$(which nvim)" ] ; then
-    # NOTE(sileht): workaround https://github.com/neovim/neovim/issues/5895
-    alias vim="TERM=screen-256color /usr/bin/nvim"
-fi
+[ -x "$(which nvim)" ] && alias vim="nvim"
 alias r="ranger"
 alias vi="vim"
 alias vid="vim --servername sileht"
