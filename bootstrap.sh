@@ -167,9 +167,9 @@ cleanup_old_link
 [ "$force" ] &&  cleanup_forced
 setup_repo
 setup_env_link
+setup_python
 setup_vim
 setup_st
-setup_python
 case $HOSTNAME in
     bob|billy) ;;
     *) disable_gpg_crap
