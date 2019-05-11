@@ -3,8 +3,9 @@
     "python.linting.pylintEnabled": false,
     "python.formatting.autopep8Args": ["-aa"],
     "python.venvFolders": [".tox/py37", ".tox/py36", ".tox/py27", "venv", "envs",".pyenv",".direnv"],
-    "coc.preferences.hoverTarget": "echo",
-    "diagnostic.messageTarget": "echo",
-    "signature.target": "echo",
+    "python.analysis.logLevel": "Information",
+    "coc.preferences.hoverTarget": "float",
+    "diagnostic.messageTarget": "float",
+    "signature.target": "float",
     "python.jediEnabled": true,
 }
