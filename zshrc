@@ -30,7 +30,7 @@ zcompileall(){
 source ~/.env/zsh-autosuggestions/zsh-autosuggestions.zsh
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=58"
 
-__venvwrapper=$(which virtualenvwrapper.sh)
+__venvwrapper=$(which virtualenvwrapper_lazy.sh)
 [ "$__venvwrapper" ] && source $__venvwrapper
 
 #########

@@ -15,6 +15,7 @@ python-language-server[all]
 black
 flake8
 jedi
+virtualenvwrapper
 
 # i3pystatus
 -e git+https://github.com/enkore/i3pystatus.git#egg=i3pystatus
