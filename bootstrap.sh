@@ -150,7 +150,7 @@ setup_python(){
     log "Setup python stuffs"
     ensure_apt libiw-dev  # i3pystatus
     ensure_yum libiw-devel  # i3pystatus
-    ensure_apt python3-pip python-pip virtualenvwrapper
+    ensure_apt python3-pip python-pip virtualenvwrapper libasound2-dev
 
     python3 -m pip install --quiet --user --upgrade --upgrade-strategy eager -r ~/.env/requirements-py3.txt
     python2 -m pip install --quiet --user --upgrade --upgrade-strategy eager -r ~/.env/requirements-py2.txt
