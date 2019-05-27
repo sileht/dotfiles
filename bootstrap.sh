@@ -173,7 +173,7 @@ setup_python
 setup_vim
 setup_st
 case $HOSTNAME in
-    bob|billy) ;;
+    bob|billy|trudy) ;;
     *) disable_gpg_crap
 esac
 if [ "$DISPLAY" == ":0" ]; then
