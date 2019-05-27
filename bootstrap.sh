@@ -28,11 +28,11 @@ typeset -a rlist="config/awesome screenrc config/khard vdirsyncer conkyrc"
 
 setup_repo(){
     log "Sync repos"
-    if [ ! -f /etc/apt/sources.list.d/yarn.list ]; then
-        curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-        echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-        apt update -y
-    fi
+    #if [ ! -f /etc/apt/sources.list.d/yarn.list ]; then
+    #    curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+    #    echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+    #    apt update -y
+    #fi
 }
 ensure_yum() {
     [ -x "$(which yum)" ] || return
@@ -97,21 +97,21 @@ cleanup_forced(){
 
 setup_vim(){
     log "Setup vim"
-    ensure_apt -yarnpkg -neovim -python-neovim -python3-neovim nodejs yarn
+    ensure_apt -yarnpkg -neovim -python-neovim -python3-neovim # nodejs yarn
     rm -rf ~/.vim ~/.vimrc*
-    dest="~/.bin/nvim"
+    dest="${HOME}/.bin/nvim"
     if [[ ! -e "${dest}" || "$(find $dest -mtime +30)" ]]; then
         curl -fLo $dest --create-dirs \
 	    https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage
         chmod +x ~/.bin/nvim
     fi
-    dest="~/.local/share/nvim/site/autoload/plug.vim"
+    dest="${HOME}/.local/share/nvim/site/autoload/plug.vim"
     if [[ ! -e "${dest}" || "$(find $dest -mtime +30)" ]]; then
         curl -fLo $dest --create-dirs \
             https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     fi
-    nvim "+set nomore" +PlugInstall! +PlugClean! +PlugUpdate! +qall
-    nvim "+set nomore" "+CocInstall coc-python coc-json coc-emoji coc-word coc-css coc-gocode coc-html coc-yaml"
+    ~/.bin/nvim "+set nomore" +PlugInstall! +PlugClean! +PlugUpdate! +qall
+    # nvim "+set nomore" "+CocInstall coc-python coc-json coc-emoji coc-word coc-css coc-gocode coc-html coc-yaml"
 }
 
 setup_fonts(){
@@ -150,6 +150,8 @@ setup_python(){
     log "Setup python stuffs"
     ensure_apt libiw-dev  # i3pystatus
     ensure_yum libiw-devel  # i3pystatus
+    ensure_apt python3-pip python-pip virtualenvwrapper
+
     python3 -m pip install --quiet --user --upgrade --upgrade-strategy eager -r ~/.env/requirements-py3.txt
     python2 -m pip install --quiet --user --upgrade --upgrade-strategy eager -r ~/.env/requirements-py2.txt
 }
