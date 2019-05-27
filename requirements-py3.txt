@@ -12,6 +12,7 @@ khal
 # vim
 tox
 python-language-server[all]
+black
 flake8
 jedi
 

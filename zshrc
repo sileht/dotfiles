@@ -30,7 +30,8 @@ zcompileall(){
 source ~/.env/zsh-autosuggestions/zsh-autosuggestions.zsh
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=58"
 
-
+__venvwrapper=$(which virtualenvwrapper.sh)
+[ "$__venvwrapper" ] && source $__venvwrapper
 
 #########
 # WATCH #
@@ -168,7 +169,6 @@ zstyle ':completion:*::::' completer _complete _ignored _match _approximate _lis
 # allow one error for every three characters typed in approximate completer
 zstyle -e ':completion:*:approximate:*' max-errors \
     'reply=( $(( ($#PREFIX+$#SUFFIX)/3 )) numeric )'
-    
 # formatting and messages
 zstyle ':completion:*' verbose yes
 zstyle ':completion:*:descriptions' format $fg_bold[white]'%U%d%b%u'
@@ -283,6 +283,22 @@ _title_precmd() {
 }
 
 add-zsh-hook precmd _title_precmd
+
+_set_git_account(){
+    if [ "$vcs_info_msg_0_" ]; then
+        if [ "${PWD/$HOME\/workspace\/wazo/}" == "${PWD}" ]; then
+            email="sileht@sileht.net"
+        else
+            email="mabaakouk@wazo.io"
+        fi
+        cur=$(git config --get user.email)
+        if [ "$cur" != "$email" ]; then
+            git config user.email "$email"
+            echo "-> set git email to $email <-"
+        fi
+    fi
+}
+add-zsh-hook precmd _set_git_account
 
 _prompt_preexec() {
         emulate -L zsh

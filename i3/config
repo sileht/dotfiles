@@ -40,8 +40,8 @@ bindsym $mod+x exec --no-startup-id pcmanfm /home/sileht/
 # kill focused window
 bindsym $mod+Shift+a kill
 
-#bindsym XF86Launch1 exec --no-startup-id "bash -c 'pkill solard;solard --stop-on-outside-change --show-notifications;'"
-#exec_always --no-startup-id "bash -c 'pkill solard;solard --stop-on-outside-change --show-notifications;'"
+bindsym XF86Launch1 exec --no-startup-id "bash -c 'pkill solard;solard --stop-on-outside-change --show-notifications;'"
+exec_always --no-startup-id "bash -c 'pkill solard;solard --stop-on-outside-change --show-notifications;'"
 
 #exec_always --no-startup-id "bash -c 'pkill compton; compton"
 #exec_always --no-startup-id "bash -c 'pkill conky; conky'"
