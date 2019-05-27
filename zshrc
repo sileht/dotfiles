@@ -234,13 +234,13 @@ _prompt_main(){
 
   case $HOST in
       red) logo="%F{red}🎩" ;;
-      gizmo|bob|billy) logo="%F{161}🍥" ;;
+      gizmo|bob|billy|trudy|eve) logo="%F{161}🍥" ;;
       *) logo="@";;
   esac
   case $HOST in
       bob) host_color=green;;
-      red) host_color=130;;
-      billy) host_color=32;;
+      eve) host_color=blue;;
+      billy|trudy) host_color=32;;
       gizmo) host_color=214;;
       *) host_color=242;;
   esac
