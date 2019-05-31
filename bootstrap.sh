@@ -114,19 +114,25 @@ setup_vim(){
     # nvim "+set nomore" "+CocInstall coc-python coc-json coc-emoji coc-word coc-css coc-gocode coc-html coc-yaml"
 }
 
-setup_fonts(){
-    log "Setup fonts"
-    update_fc=
+download_font(){
+    name="$1"
+    url="$2"
     fontdir="/home/sileht/.local/share/fonts"
     mkdir -p $fontdir
-    name="UbuntuMonoNerdFonts.ttf"
-    url="https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/UbuntuMono/Regular/complete/Ubuntu%20Mono%20Nerd%20Font%20Complete.ttf?raw=true"
     dest="${fontdir}/${name}"
     if [[ ! -e "${dest}" || "$(find $dest -mtime +30)" ]]; then
         curl -L -q "$url" -o "${dest}"
-        update_fc=1
     fi
-    [ "$update_fc" ] && fc-cache -fv
+}
+
+setup_fonts(){
+    log "Setup fonts"
+    update_fc=
+    download_font "UbuntuMonoNerdFonts.ttf" "https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/UbuntuMono/Regular/complete/Ubuntu%20Mono%20Nerd%20Font%20Complete.ttf?raw=true"
+    download_font "UbuntuMonoNerdItalicFonts.ttf" "https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/UbuntuMono/Regular-Italic/complete/Ubuntu%20Mono%20Italic%20Nerd%20Font%20Complete.ttf?raw=true"
+    download_font "UbuntuMonoNerdBoldFonts.ttf" "https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/UbuntuMono/Bold/complete/Ubuntu%20Mono%20Bold%20Nerd%20Font%20Complete.ttf?raw=true"
+    download_font "UbuntuMonoNerdBoldItalicFonts.ttf" "https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/UbuntuMono/Bold-Italic/complete/Ubuntu%20Mono%20Bold%20Italic%20Nerd%20Font%20Complete.ttf?raw=true"
+    fc-cache -fv
 }
 
 maybe_do_update(){

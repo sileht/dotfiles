@@ -37,6 +37,31 @@ status.register("pulseaudio",
                 color_muted="#AAAAAA",
                 format="🎧: {volume}{selected}")
 
+# Bose
+status.register("pulseaudio",
+                on_leftclick="change_sink",
+                on_middleclick="pavucontrol -t 1",
+                vertical_bar_width=1,
+                sink="bluez_sink.4C_87_5D_06_32_13.headset_head_unit",
+                color_muted="#AAAAAA",
+                format="🎧: {volume}{selected}")
+status.register("pulseaudio",
+                on_leftclick="change_sink",
+                on_middleclick="pavucontrol -t 1",
+                vertical_bar_width=1,
+                sink="bluez_sink.4C_87_5D_06_32_13.a2dp_sink",
+                color_muted="#AAAAAA",
+                format="🎧: {volume}{selected}")
+
+# Bar de son
+status.register("pulseaudio",
+                on_leftclick="change_sink",
+                on_middleclick="pavucontrol -t 1",
+                vertical_bar_width=1,
+                sink="bluez_sink.14_BB_6E_7A_E0_86.a2dp_sink",
+                color_muted="#AAAAAA",
+                format="📻: {volume}{selected}")
+
 status.register("cpu_usage_graph", graph_width=5)
 status.register("mem_bar")
 status.register("battery", interval=60, alert_percentage=3,

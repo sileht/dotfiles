@@ -1,0 +1,7 @@
+#!/bin/bash
+
+set -e
+
+wget -q -O ${HOME}/.cache/wallpaper-tmp.jpg https://unsplash.it/1920/1080/?random
+mv -f ${HOME}/.cache/wallpaper{-tmp,}.jpg
+dconf write /org/mate/desktop/background/picture-filename "'${HOME}/.cache/wallpaper.jpg'"

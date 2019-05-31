@@ -34,14 +34,14 @@ bindsym $mod+c exec st -t 'gizmo.sileht.net' -e zsh -i -c "ssh -tqxkAC gizmo"
 bindsym $mod+Shift+c exec st -t 'gizmo.sileht.net' -e mosh -a gizmo
 
 bindsym Print exec gnome-screenshot -i
-bindsym $mod+Shift+v exec --no-startup-id /home/sileht/.bin/redtokclip
 bindsym --release $mod+l exec --no-startup-id slock
 bindsym $mod+x exec --no-startup-id pcmanfm /home/sileht/
 # kill focused window
 bindsym $mod+Shift+a kill
 
-bindsym XF86Launch1 exec --no-startup-id "bash -c 'pkill solard;solard --stop-on-outside-change --show-notifications;'"
-exec_always --no-startup-id "bash -c 'pkill solard;solard --stop-on-outside-change --show-notifications;'"
+#bindsym XF86Launch1 exec --no-startup-id "bash -c 'pkill solard;solard --stop-on-outside-change --show-notifications;'"
+#exec_always --no-startup-id "bash -c 'pkill solard;solard --stop-on-outside-change --show-notifications;'"
+exec_always --no-startup-id /home/sileht/.env/bin/unsplash
 
 #exec_always --no-startup-id "bash -c 'pkill compton; compton"
 #exec_always --no-startup-id "bash -c 'pkill conky; conky'"
