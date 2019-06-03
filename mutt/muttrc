@@ -1,5 +1,5 @@
 
-set debug_level = 3
+set debug_level = 0
 set shell = "/bin/bash"
 
 source ~/.mutt/vombatidae.mutt
