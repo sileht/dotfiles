@@ -152,6 +152,8 @@ bindsym $mod+Shift+agrave move container to workspace 10
 #bindsym $mod+Shift+c reload
 bindsym $mod+Shift+h move workspace to output left
 bindsym $mod+Shift+l move workspace to output right
+bindsym $mod+Shift+j move workspace to output bottom
+bindsym $mod+Shift+k move workspace to output top
 
 bindsym $mod+Shift+e mode "resize"
 bindsym $mod+Shift+r restart

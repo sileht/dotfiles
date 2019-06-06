@@ -9,6 +9,7 @@
     pr = "!f() { git r ; git pull-request \"$@\"; }; f"
     t = "!f() { git branch --set-upstream-to=origin/${1:-master}; }; f"
     r = "!f() { git branch -M $(git rev-parse --abbrev-ref HEAD | sed -e 's,^wip-,,g' -e s,pull/[^-]*-sileht-,,g) ; }; f"
+    f = "!f() { git branch -M \"$@\"; git master ; git checkout \"$@\" ; git t; }; f"
 
     lg = log --graph --pretty=cshort --abbrev-commit --date=relative
     lc = !git oneline ORIG_HEAD.. --stat --no-merges
