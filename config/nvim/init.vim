@@ -330,7 +330,9 @@ let g:ale_python_pyls_config = {'pyls': {'plugins': {
 "let __ale_c_project_filenames = ['README.md']
 
 " WAZO tmp
-" let g:ale_python_flake8_options = "--select E,F,W --ignore E501,W503"
+if getcwd() =~ "^/home/sileht/workspace/wazo"
+    let g:ale_python_flake8_options = "--select E,F,W --ignore E501,W503"
+endif
 
 let g:ale_sign_error = '⛔'
 let g:ale_sign_info = 'ℹ'
