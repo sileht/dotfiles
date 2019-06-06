@@ -290,6 +290,11 @@ _set_git_account(){
             email="sileht@sileht.net"
         else
             email="mabaakouk@wazo.io"
+            cur=$(git config --get git-pull-request.fork)
+            if [ "$cur" != "never" ]; then
+                git config git-pull-request.fork "never"
+                echo "-> set git git-pull-request.fork to never <-"
+            fi
         fi
         cur=$(git config --get user.email)
         if [ "$cur" != "$email" ]; then
@@ -389,7 +394,8 @@ alias getaptkey='sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com'
 alias more=less
 function gcal() { gcalcli --military --monday -w $(($(tput cols)/8)) "$@"; }
 alias did="vim +'normal Go' +'r!date' ~/did.txt"
-
+alias wwdk="wdk --dev-dir /home/sileht/workspace/wazo --hostname wazo"
+alias nwdk="wdk --dev-dir /home/sileht/workspace/wazo --hostname nestbox"
 function of() { lsof -np "$1" }
 compdef _pids of
 
