@@ -1,14 +1,14 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-import netrc
-
-from i3pystatus.mail import imap
 from i3pystatus import Status
 
-status = Status(logfile='/home/sileht/.i3pystatus.log')
+status = Status()
 status.register("clock", format="%a %b %d, %H:%M")
-
+status.register("scratchpad")
+status.register("shell",
+                command="bose_bluetooth_profile",
+                on_leftclick="bose_bluetooth_profile switch")
 # Billy
 status.register("pulseaudio",
                 on_leftclick="change_sink",
@@ -45,6 +45,7 @@ status.register("pulseaudio",
                 sink="bluez_sink.4C_87_5D_06_32_13.headset_head_unit",
                 color_muted="#AAAAAA",
                 format="🎧: {volume}{selected}")
+
 status.register("pulseaudio",
                 on_leftclick="change_sink",
                 on_middleclick="pavucontrol -t 1",
@@ -70,18 +71,5 @@ status.register("battery", interval=60, alert_percentage=3,
                 status={"DIS": "↓", "CHR": "↑", "FULL": "="},
                 not_present_text="")
 
-creds = netrc.netrc().authenticators("mail.sileht.net")
-status.register("mail",
-                hide_if_null=False,
-                backends=[imap.IMAP(host="mail.sileht.net",
-                                    username=creds[0],
-                                    password=creds[2])],
-                format_plural="{unread} new emails",
-                on_leftclick="firefox https://m.sileht.net/")
-status.register("shell", command="/home/sileht/.i3/vpn-chk.sh",
-                hints={"markup": "pango"},
-                on_leftclick="zsh -i -c 'vpnrh'",
-                on_rightclick="zsh -i -c 'novpn'")
 status.register("window_title")
-
 status.run()
