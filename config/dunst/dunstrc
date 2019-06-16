@@ -70,7 +70,7 @@ hide_duplicates_count = yes
 # The width can be negative.  In this case the actual width is the
 # screen width minus the width defined in within the geometry option.
 #geometry = "250x50-40+40"
-geometry = "300x50-15+40"
+geometry = "600-15+40"
 
 # Shrink window if it's smaller than the width.  Will be ignored if
 # width is 0.
@@ -120,7 +120,7 @@ line_height = 3
 # Draw a line of "separatpr_height" pixel height between two
 # notifications.
 # Set to 0 to disable.
-separator_height = 2
+separator_height = 1
 
 # Padding between text and separator.
 padding = 6
@@ -148,11 +148,11 @@ dmenu = /usr/bin/dmenu -p dunst:
 browser = /usr/bin/firefox -new-tab
 
 # Align icons left/right/off
-icon_position = off
-max_icon_size = 80
+icon_position = left
+max_icon_size = 48
 
 # Paths to default icons.
-icon_path = /usr/share/icons/Paper/16x16/mimetypes/:/usr/share/icons/Paper/48x48/status/:/usr/share/icons/Paper/16x16/devices/:/usr/share/icons/Paper/48x48/notifications/:/usr/share/icons/Paper/48x48/emblems/
+icon_path = /usr/share/icons/ubuntu-mono-dark/apps/48:/usr/share/icons/ubuntu-mono-dark/places/48:/usr/share/icons/ubuntu-mono-dark/stock/48:/usr/share/icons/mate/48x48:/usr/share/icons/mate/48x48/devices:/usr/share/icons/mate/48x48/mimetypes:/usr/share/icons/mate/48x48/status:/usr/share/icons/mate/48x48/apps:/usr/share/icons/mate/48x48/emotes:/usr/share/icons/mate/48x48/animations:/usr/share/icons/mate/48x48/places:/usr/share/icons/mate/48x48/categories:/usr/share/icons/mate/48x48/emblems:/usr/share/icons/mate/48x48/actions:/usr/share/icons/hicolor/48x48:/usr/share/icons/hicolor/48x48/devices:/usr/share/icons/hicolor/48x48/mimetypes:/usr/share/icons/hicolor/48x48/status:/usr/share/icons/hicolor/48x48/intl:/usr/share/icons/hicolor/48x48/apps:/usr/share/icons/hicolor/48x48/emotes:/usr/share/icons/hicolor/48x48/animations:/usr/share/icons/hicolor/48x48/places:/usr/share/icons/hicolor/48x48/filesystems:/usr/share/icons/hicolor/48x48/categories:/usr/share/icons/hicolor/48x48/emblems:/usr/share/icons/hicolor/48x48/actions:/usr/share/icons/hicolor/48x48/stock:/usr/share/icons/hicolor/48x48/stock/object:/usr/share/icons/hicolor/48x48/stock/text:/usr/share/icons/hicolor/48x48/stock/chart:/usr/share/icons/hicolor/48x48/stock/form:/usr/share/icons/hicolor/48x48/stock/navigation:/usr/share/icons/hicolor/48x48/stock/table:/usr/share/icons/hicolor/48x48/stock/code:/usr/share/icons/hicolor/48x48/stock/image:/usr/share/icons/hicolor/48x48/stock/net:/usr/share/icons/hicolor/48x48/stock/data:/usr/share/icons/hicolor/48x48/stock/io:/usr/share/icons/hicolor/48x48/stock/media:/usr/share/icons/gnome/48x48:/usr/share/icons/gnome/48x48/devices:/usr/share/icons/gnome/48x48/mimetypes:/usr/share/icons/gnome/48x48/status:/usr/share/icons/gnome/48x48/apps:/usr/share/icons/gnome/48x48/emotes:/usr/share/icons/gnome/48x48/animations:/usr/share/icons/gnome/48x48/places:/usr/share/icons/gnome/48x48/categories:/usr/share/icons/gnome/48x48/emblems:/usr/share/icons/gnome/48x48/actions:/usr/share/icons/Adwaita/48x48:/usr/share/icons/Adwaita/48x48/devices:/usr/share/icons/Adwaita/48x48/mimetypes:/usr/share/icons/Adwaita/48x48/status:/usr/share/icons/Adwaita/48x48/apps:/usr/share/icons/Adwaita/48x48/emotes:/usr/share/icons/Adwaita/48x48/places:/usr/share/icons/Adwaita/48x48/categories:/usr/share/icons/Adwaita/48x48/emblems:/usr/share/icons/Adwaita/48x48/actions:
 
 frame_width = 1
 frame_color = "#8EC07C"
@@ -181,24 +181,21 @@ context = ctrl+shift+period
 [urgency_low]
 # IMPORTANT: colors have to be defined in quotation marks.
 # Otherwise the "#" and following would be interpreted as a comment.
-frame_color = "#3B7C87"
-foreground = "#3B7C87"
-background = "#191311"
-#background = "#2B313C"
+frame_color = "#eaecee"
+background = "#566573"
+foreground = "#eaecee"
 timeout = 4
 
 [urgency_normal]
-frame_color = "#5B8234"
-foreground = "#5B8234"
-background = "#191311"
-#background = "#2B313C"
+frame_color = "#d6eaf8"
+background = "#2471a3"
+foreground = "#d6eaf8"
 timeout = 6
 
 [urgency_critical]
-frame_color = "#B7472A"
-foreground = "#B7472A"
-background = "#191311"
-#background = "#2B313C"
+frame_color = "#fbeee6"
+background = "#d35400"
+foreground = "#fbeee6"
 timeout = 8
 
 

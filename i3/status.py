@@ -4,10 +4,10 @@
 from i3pystatus import Status
 
 status = Status()
-status.register("clock", format="%a %b %d, %H:%M")
-status.register("scratchpad")
+status.register("text", text="")
 status.register("shell",
                 command="bose_bluetooth_profile",
+                ignore_empty_stdout=True,
                 on_leftclick="bose_bluetooth_profile switch")
 # Billy
 status.register("pulseaudio",
@@ -62,14 +62,17 @@ status.register("pulseaudio",
                 sink="bluez_sink.14_BB_6E_7A_E0_86.a2dp_sink",
                 color_muted="#AAAAAA",
                 format="📻: {volume}{selected}")
-
+status.register("clock", format="%a %b %d, %H:%M")
+# status.register("text", text="---------------", color="#333333")
 status.register("cpu_usage_graph", graph_width=5)
 status.register("mem_bar")
+# status.register("redshift")
+status.register("dpms", format="🔳", format_disabled="🔲")
 status.register("battery", interval=60, alert_percentage=3,
                 format="{status}{remaining:%E%hh:%Mm} {consumption}W",
                 alert=True,
                 status={"DIS": "↓", "CHR": "↑", "FULL": "="},
                 not_present_text="")
-
+status.register("text", text="---------------", color="#333333")
 status.register("window_title")
 status.run()

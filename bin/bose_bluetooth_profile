@@ -1,0 +1,11 @@
+#!/bin/bash
+
+current_profile=$(pacmd list-cards | sed -n '/bluez_card.4C_87_5D_06_32_13/,/active profile/s/.*active profile: *<\(.*\)>/\1/p')
+mode="$1-$current_profile"
+
+case $mode in
+    switch-a2dp_sink) pacmd set-card-profile bluez_card.4C_87_5D_06_32_13 headset_head_unit ;;
+    switch-headset_head_unit) pacmd set-card-profile bluez_card.4C_87_5D_06_32_13 a2dp_sink ;;
+    *-a2dp_sink) echo "🎧: 🎵" ;;
+    *-headset_head_unit) echo "🎧:🎤" ;;
+esac
