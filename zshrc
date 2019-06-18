@@ -292,14 +292,19 @@ _set_git_account(){
             email="mabaakouk@wazo.io"
             cur=$(git config --get git-pull-request.fork)
             if [ "$cur" != "never" ]; then
-                git config git-pull-request.fork "never"
                 echo "-> set git git-pull-request.fork to never <-"
+                git config git-pull-request.fork "never"
+            fi
+            if [ -d .git -a ! -f .git/hooks/pre-commit ]; then
+                echo "-> install pre commit hook"
+                ln $HOME/workspace/wazo/xivo-tools/dev-tools/git-hooks/copyright-check \
+                    .git/hooks/pre-commit
             fi
         fi
         cur=$(git config --get user.email)
         if [ "$cur" != "$email" ]; then
-            git config user.email "$email"
             echo "-> set git email to $email <-"
+            git config user.email "$email"
         fi
     fi
 }
