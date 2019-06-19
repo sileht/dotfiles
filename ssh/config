@@ -1,0 +1,104 @@
+##########
+# sileht #
+##########
+
+Host alien billy gizmo eve bob rbob trudy
+    ForwardAgent no
+    RemoteForward /home/sileht/.var/S.gpg-agent /run/user/1000/gnupg/S.gpg-agent.extra
+    RemoteForward /home/sileht/.var/S.gpg-agent.ssh /run/user/1000/gnupg/S.gpg-agent.ssh
+    User sileht
+    Port 5555
+
+Host gizmo eve predator rbob rrt mergify
+    Hostname %h.sileht.net
+
+Host predator mergify rt rrt eve-unlock
+   User root
+
+Host gizmo
+    AddressFamily inet
+    DynamicForward 9999
+
+Host eve
+    AddressFamily inet
+    DynamicForward 9898
+
+Host eve-unlock
+    Hostname 192.168.3.200
+    ProxyCommand ssh -x nagios.t -W %h:%p
+    RequestTTY yes
+    RemoteCommand cryptroot-unlock
+    Port 5555
+
+Host mergify
+   Port 2222
+
+Host rt rrt
+   Port 22222
+
+Host rt
+    Hostname 192.168.8.2
+
+########
+# TTNN #
+########
+
+Host chiliproject.t redmine.t
+    Port 22
+
+Host nagios.t
+    Port 2222
+    User root
+    Hostname %hetaneutral.net
+    DynamicForward 9998
+
+Host *.tunnel
+    Hostname %h
+    Port 2222
+    User root
+    ProxyCommand ssh -W %h:%p nagios.t
+
+Host h7.t
+    Hostname %hetaneutral.net
+    Port 7422
+
+Host *.t
+    Hostname %hetaneutral.net
+    Port 2222
+    User root
+    IdentityFile ~/.ssh/id_rsa_g1
+#    PubkeyAcceptedKeyTypes +ssh-dss
+
+Host *.ring.nlnog.net
+    User tetaneutral
+
+
+##########
+# Wazo #
+##########
+
+Host *.wazo.community *.wazo.io
+    Hostname %h
+    IdentityFile ~/.ssh/id_ed25519_wazo
+
+
+Host zuul
+    Hostname %h.wazo.community
+    User root
+
+
+###########
+# DEFAULT #
+###########
+
+Host */*
+    ProxyCommand ssh ${$(dirname %h)/\%%/@} nc ${$(basename %h)#*%%} %p
+
+Host *
+    ForwardX11 no
+    ForwardAgent yes
+    Compression yes
+    NoHostAuthenticationForLocalhost yes
+    # PreferredAuthentications publickey,password,gssapi-keyex,gssapi-with-mic,
+    #ControlPath ~/.ssh/master-%r@%h:%p
+    #ControlMaster auto

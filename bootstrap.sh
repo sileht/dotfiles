@@ -19,11 +19,30 @@ log(){
     echo "### $@ ###"
 }
 
-typeset -a flist="zshrc zprofile zlogin zlogout zshenv wgetrc
-mutt gitconfig gitignore-global ctags i3 config/dunst tmux
-tmux.conf xsessionrc urlview gnupg/gpg.conf gnupg/gpg-agent.conf config/nvim"
+typeset -a flist="
+    config/dunst
+    config/nvim
+    ctags
+    gitconfig
+    gitignore-global
+    gnupg/gpg.conf
+    gnupg/gpg-agent.conf
+    i3
+    mutt
+    ssh/config
+    tmux
+    tmux.conf
+    urlview
+    xsessionrc
+    wgetrc
+    zlogin
+    zlogout
+    zprofile
+    zshenv
+    zshrc
+"
 
-typeset -a rlist="config/awesome screenrc config/khard vdirsyncer conkyrc"
+typeset -a rlist=""
 
 
 setup_repo(){
@@ -111,7 +130,6 @@ setup_vim(){
             https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     fi
     ~/.bin/nvim "+set nomore" +PlugInstall! +PlugClean! +PlugUpdate! +qall
-    # nvim "+set nomore" "+CocInstall coc-python coc-json coc-emoji coc-word coc-css coc-gocode coc-html coc-yaml"
 }
 
 download_font(){
