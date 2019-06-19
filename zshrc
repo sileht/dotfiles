@@ -340,30 +340,26 @@ function cdt() { cd $(mktemp -td cdt.$(date '+%Y%m%d-%H%M%S').XXXXXXXX) ; pwd }
 function s() { pwd >| $ZVARDIR/.saved_dir; }
 function i() { sp="$(cat $ZVARDIR/.saved_dir 2>/dev/null)"; [ -d $sp ] && cd $sp }
 function p() {
-    local -a working_dirs=($(ls -1d ~/workspace/**/${1}*/.git/.. | sed -e 's@/\.git/\.\./@@g'))
+    local -a working_dirs=($(ls -1d ~/workspace/*/(wazo-|xivo-|)${1}*/.git/.. | sed -e 's@/\.git/\.\./@@g'))
     if [ ${#working_dirs[@]} -eq 1 ] ; then
-        cd "${working_dirs}"
+        cd "${working_dirs}" ; s ; return
     else
+        for wd in ${working_dirs[@]}; do
+            if [ "$(basename $wd)" == "${1}" ] || \
+               [ "$(basename $wd)" == "wazo-${1}" ] || \
+               [ "$(basename $wd)" == "xivo-${1}" ]; then
+                cd "$wd"; s; return
+            fi
+        done
         select wd in ${working_dirs[@]}; do
-            cd "$wd"
-            break
+            cd "$wd"; s; return
         done
     fi
-    s
 }
 i
 add-zsh-hook chpwd s
 
 inw(){ Xephyr :1 & pid=$! ; DISPLAY=:1 $*; kill $pid ;}
-
-if [ "$HOST" = "bob" ]; then
-    function novpn() { sudo systemctl stop openvpn@redhat; sudo /etc/init.d/fastd stop; }
-    function vpnrh() { sudo systemctl restart openvpn@redhat ;}
-    alias vpnttnn='sudo /etc/init.d/fastd start'
-else
-    function novpn(){ local activevpn="$(nmcli -t -f TYPE,NAME c s --active | sed -ne 's/vpn:\(.*\)/\1/gp')" ; [ "$activevpn" ] && nmcli c d "$activevpn" && sudo systemctl restart dnsmasq ; }
-    function vpnrh(){ nmcli c u "Redhat UDP" && sudo systemctl restart dnsmasq; }
-fi
 
 alias Q='exec zsh'
 #alias sc="screen -RDD"
