@@ -382,19 +382,19 @@ if [ $commands[kubectl] ]; then
   source <(kubectl completion zsh)
 fi
 
-[ -x "$(which nvim)" ] && alias vim="nvim"
+alias vim="nvim"
 alias r="ranger"
-alias vi="vim"
-alias vid="vim --servername sileht"
-alias vir="vim --servername sileht --remote-silent"
-alias svi="sudo -E vim"
+alias vi="nvim"
+alias vid="nvim --servername sileht"
+alias vir="nvim --servername sileht --remote-silent"
+alias svi="sudo -E /home/sileht/.bin/nvim"
 alias psql="sudo -i -u postgres psql"
 # alias pyclean='find . \( -type f -name "*.py[co]" \) -o \( -type d -path "*__pycache__*" \) ! -path "./.tox*" -delete"'
 alias pyclean='find . \( -type f -name "*.py[co]" \) ! -path "./.tox*" -delete'
 alias getaptkey='sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com'
 alias more=less
 function gcal() { gcalcli --military --monday -w $(($(tput cols)/8)) "$@"; }
-alias did="vim +'normal Go' +'r!date' ~/did.txt"
+alias did="nvim +'normal Go' +'r!date' ~/did.txt"
 alias wwdk="wdk --dev-dir /home/sileht/workspace/wazo --hostname wazo"
 alias nwdk="wdk --dev-dir /home/sileht/workspace/wazo --hostname nestbox"
 function of() { lsof -np "$1" }
