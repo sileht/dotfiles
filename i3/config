@@ -29,7 +29,7 @@ for_window [class="Conky"] floating enable
 # start application
 bindsym $mod+Return exec st
 # bindsym $mod+b exec /home/sileht/logiciel/firefox/firefox
-bindsym $mod+b exec chromium # firefox  #--profile-directory=Default
+bindsym $mod+b exec firefox  #--profile-directory=Default
 bindsym $mod+c exec st -t 'gizmo.sileht.net' -e zsh -i -c "ssh -tqxkAC gizmo"
 bindsym $mod+Shift+c exec st -t 'gizmo.sileht.net' -e mosh -a gizmo
 

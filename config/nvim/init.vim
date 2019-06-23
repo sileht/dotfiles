@@ -150,6 +150,9 @@ autocmd FileType c,cpp,java,go,php,javascript,puppet,python,rst,rust,twig,xml,ym
 autocmd BufWritePre,BufRead *.c setlocal smartindent cindent cinoptions=(0,:0,l1,t0,L3
 autocmd BufWritePre,BufRead *.h setlocal smartindent cindent cinoptions=(0,:0,l1,t0,L3
 
+" Javascript people like 2 chars sep
+autocmd FileType javascript set shiftwidth=2 tabstop=4 softtabstop=4
+
 match ErrorMsg /\s\+$\| \+\ze\t/
 
 "" Restore cursor position
@@ -189,7 +192,8 @@ let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#buffer_idx_mode = 1
 let g:airline#extensions#ale#enabled = 1
-let g:airline_theme = 'bubblegum'
+" let g:airline_theme = 'bubblegum'
+let g:airline_theme = 'gruvbox'
 " COC let g:airline_section_error = '%{airline#util#wrap(airline#extensions#coc#get_error(),0)}'
 " COC let g:airline_section_warning = '%{airline#util#wrap(airline#extensions#coc#get_warning(),0)}'
 

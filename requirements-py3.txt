@@ -17,6 +17,8 @@ flake8
 jedi
 virtualenvwrapper
 
+ghp-import
+
 # i3pystatus
 -e git+https://github.com/enkore/i3pystatus.git#egg=i3pystatus
 pytz
