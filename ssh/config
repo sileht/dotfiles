@@ -82,6 +82,9 @@ Host *.wazo.community *.wazo.io
     IdentityFile ~/.ssh/id_ed25519_wazo
 
 
+Host nestbox wazo
+    User root
+
 Host zuul
     Hostname %h.wazo.community
     User root
