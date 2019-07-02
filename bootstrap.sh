@@ -21,6 +21,7 @@ log(){
 
 typeset -a flist="
     config/dunst
+    config/ranger
     config/nvim
     ctags
     gitconfig
