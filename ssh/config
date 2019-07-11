@@ -2,7 +2,16 @@
 # sileht #
 ##########
 
-Host alien billy gizmo eve bob rbob trudy
+Host predator mergify rt rrt eve-unlock
+   User root
+
+Host mergify
+   Port 2222
+
+Host rt rrt
+   Port 22222
+
+Host alien billy gizmo eve bob rbob trudy predator
     ForwardAgent no
     RemoteForward /home/sileht/.var/S.gpg-agent /run/user/1000/gnupg/S.gpg-agent.extra
     RemoteForward /home/sileht/.var/S.gpg-agent.ssh /run/user/1000/gnupg/S.gpg-agent.ssh
@@ -11,9 +20,6 @@ Host alien billy gizmo eve bob rbob trudy
 
 Host gizmo eve predator rbob rrt mergify
     Hostname %h.sileht.net
-
-Host predator mergify rt rrt eve-unlock
-   User root
 
 Host gizmo
     AddressFamily inet
@@ -30,12 +36,6 @@ Host eve-unlock
     RequestTTY yes
     RemoteCommand cryptroot-unlock
     Port 5555
-
-Host mergify
-   Port 2222
-
-Host rt rrt
-   Port 22222
 
 Host rt
     Hostname 192.168.8.2
