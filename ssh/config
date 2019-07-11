@@ -18,6 +18,7 @@ Host predator mergify rt rrt eve-unlock
 Host gizmo
     AddressFamily inet
     DynamicForward 9999
+    RemoteForward 62222 localhost:5555
 
 Host eve
     AddressFamily inet
