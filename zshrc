@@ -284,27 +284,31 @@ _title_precmd() {
 
 add-zsh-hook precmd _title_precmd
 
+
+_git_set_config(){
+    key="$1"
+    value="$2"
+    cur=$(git config --get $key)
+    if [ "$cur" != "$value" ]; then
+        echo "-> set git $key to $value <-"
+        git config "$key" "$value"
+    fi
+}
+
 _set_git_account(){
     if [ "$vcs_info_msg_0_" ]; then
         if [ "${PWD/$HOME\/workspace\/wazo/}" == "${PWD}" ]; then
-            email="sileht@sileht.net"
+            _git_set_config user.email "sileht@sileht.net"
         else
-            email="mabaakouk@wazo.io"
-            cur=$(git config --get git-pull-request.fork)
-            if [ "$cur" != "never" ]; then
-                echo "-> set git git-pull-request.fork to never <-"
-                git config git-pull-request.fork "never"
-            fi
+            _git_set_config user.email "mabaakouk@wazo.io"
+            _git_set_config git-pull-request.branch-prefix none
+            _git_set_config git-pull-request.fork never
+
             if [ -d .git -a ! -f .git/hooks/pre-commit ]; then
                 echo "-> install pre commit hook"
                 ln $HOME/workspace/wazo/xivo-tools/dev-tools/git-hooks/copyright-check \
                     .git/hooks/pre-commit
             fi
-        fi
-        cur=$(git config --get user.email)
-        if [ "$cur" != "$email" ]; then
-            echo "-> set git email to $email <-"
-            git config user.email "$email"
         fi
     fi
 }
