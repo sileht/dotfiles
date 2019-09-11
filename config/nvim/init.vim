@@ -43,6 +43,7 @@ Plug 'numirias/semshi',               {'do': ':UpdateRemotePlugins'}  " semantic
 
 Plug 'dbeniamine/vim-mail',           {'for': 'mail'}
 
+Plug 'psf/black',                     {'for': 'python'}
 Plug 'Vimjas/vim-python-pep8-indent', {'for': 'python'}
 Plug 'vim-python/python-syntax',      {'for': 'python'}
 Plug 'Shougo/deoplete.nvim',          {'do': ':UpdateRemotePlugins' }
@@ -194,8 +195,6 @@ let g:airline#extensions#tabline#buffer_idx_mode = 1
 let g:airline#extensions#ale#enabled = 1
 " let g:airline_theme = 'bubblegum'
 let g:airline_theme = 'gruvbox'
-" COC let g:airline_section_error = '%{airline#util#wrap(airline#extensions#coc#get_error(),0)}'
-" COC let g:airline_section_warning = '%{airline#util#wrap(airline#extensions#coc#get_warning(),0)}'
 
 nmap <leader>1 <Plug>AirlineSelectTab1
 nmap <leader>2 <Plug>AirlineSelectTab2
@@ -210,91 +209,6 @@ nmap <leader>- <Plug>AirlineSelectPrevTab
 nmap <leader>+ <Plug>AirlineSelectNextTab
 nmap <S-left>  <Plug>AirlineSelectPrevTab
 nmap <S-right> <Plug>AirlineSelectNextTab
-
-" ###########
-" ### COC ###
-" ###########
-
-"  set cmdheight=2     " Better display for messages
-"  set updatetime=300  " Smaller updatetime for CursorHold & CursorHoldI
-"  set shortmess+=c    " don't give |ins-completion-menu| messages.
-"  
-"  let g:coc_force_debug = 1
-"  
-"  " Use tab for trigger completion with characters ahead and navigate.
-"  " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
-"  inoremap <silent><expr> <TAB>
-"        \ pumvisible() ? "\<C-n>" :
-"        \ <SID>check_back_space() ? "\<TAB>" :
-"        \ coc#refresh()
-"  inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-"  
-"  function! s:check_back_space() abort
-"    let col = col('.') - 1
-"    return !col || getline('.')[col - 1]  =~# '\s'
-"  endfunction
-"  
-"  " Use <c-space> for trigger completion.
-"  inoremap <silent><expr> <c-space> coc#refresh()
-"  
-"  " Use <cr> for confirm completion, `<C-g>u` means break undo chain at current position.
-"  " Coc only does snippet and additional edit on confirm.
-"  inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-"  
-"  " Use `[c` and `]c` for navigate diagnostics
-"  nmap <silent> [c <Plug>(coc-diagnostic-prev)
-"  nmap <silent> ]c <Plug>(coc-diagnostic-next)
-"  
-"  " Remap keys for gotos
-"  nmap <silent> gd <Plug>(coc-definition)
-"  nmap <silent> gy <Plug>(coc-type-definition)
-"  nmap <silent> gi <Plug>(coc-implementation)
-"  nmap <silent> gr <Plug>(coc-references)
-"  
-"  " Use K for show documentation in preview window
-"  nnoremap <silent> K :call <SID>show_documentation()<CR>
-"  
-"  function! s:show_documentation()
-"    if &filetype == 'vim'
-"      execute 'h '.expand('<cword>')
-"    else
-"      call CocAction('doHover')
-"    endif
-"  endfunction
-"  
-"  " Highlight symbol under cursor on CursorHold
-"  autocmd CursorHold * silent call CocActionAsync('highlight')
-"  
-"  " Remap for rename current word
-"  nmap <leader>rn <Plug>(coc-rename)
-"  
-"  augroup mygroup
-"    autocmd!
-"    " Setup formatexpr specified filetype(s).
-"    autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-"    " Update signature help on jump placeholder
-"    autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-"  augroup end
-"  
-"  " Remap for format selected region
-"  vmap <leader>f  <Plug>(coc-format-selected)
-"  nmap <leader>f  <Plug>(coc-format-selected)
-"  
-"  " Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
-"  vmap <leader>a  <Plug>(coc-codeaction-selected)
-"  nmap <leader>a  <Plug>(coc-codeaction-selected)
-"  
-"  " Remap for do codeAction of current line
-"  nmap <leader>ac  <Plug>(coc-codeaction)
-"  " Fix autofix problem of current line
-"  nmap <leader>qf  <Plug>(coc-fix-current)
-"  
-"  " Use `:Format` for format current buffer
-"  command! -nargs=0 Format :call CocAction('format')
-"  
-"  " Use `:Fold` for fold current buffer
-"  command! -nargs=? Fold :call     CocAction('fold', <f-args>)
-
 
 " ############
 " ### JEDI ###
@@ -334,9 +248,14 @@ let g:ale_python_pyls_config = {'pyls': {'plugins': {
 "let __ale_c_project_filenames = ['README.md']
 
 " WAZO tmp
-"if getcwd() =~ "^/home/sileht/workspace/wazo"
-"    let g:ale_python_flake8_options = "--select E,F,W --ignore E501,W503"
-"endif
+if getcwd() =~ "^/home/sileht/workspace/wazo"
+    let envs = filter(split(system("tox -a")), 'v:val == "linters"')
+    if (len(envs) == 0)
+        let g:ale_python_flake8_options = "--select E,F,W --ignore E501,W503"
+    else
+        autocmd FileType python autocmd BufWritePre <buffer> :Black
+    endif
+endif
 
 let g:ale_sign_error = '⛔'
 let g:ale_sign_info = 'ℹ'
@@ -484,12 +403,13 @@ import vim
 import os
 
 def load_flake8(path):
-    venvdir = os.path.join(path, ".tox/pep8")
-    if os.path.exists(venvdir):
-        vim.command("let g:ale_python_flake8_executable = '%s/bin/flake8'" % venvdir)
+    for venv in (".tox/pep8", ".tox/linters"):
+        venvdir = os.path.join(path, venv)
+        if os.path.exists(venvdir):
+            vim.command("let g:ale_python_flake8_executable = '%s/bin/flake8'" % venvdir)
 
 def load_venv(path):
-    for venv in (".tox/py36", ".tox/py37", ".tox/py27", ".tox/py27-postgresql-file", ".tox/py27-mysql-file", "venv"):
+    for venv in (".tox/py37", ".tox/py27", ".tox/py27-postgresql-file", ".tox/py27-mysql-file", ".tox/integration", "venv"):
         venvdir = os.path.join(path, venv)
         if os.path.exists(venvdir):
             vim.command("let $VIRTUAL_ENV='%s'" % venvdir)

@@ -289,8 +289,9 @@ _git_set_config(){
     key="$1"
     value="$2"
     cur=$(git config --get $key)
-    if [ "$cur" != "$value" ]; then
-        echo "-> set git $key to $value <-"
+    ret=$?
+    if [ $ret -ne 0 -o "$cur" != "$value" ]; then
+        echo "-> set git '$key' to '$value' <-"
         git config "$key" "$value"
     fi
 }
@@ -301,7 +302,7 @@ _set_git_account(){
             _git_set_config user.email "sileht@sileht.net"
         else
             _git_set_config user.email "mabaakouk@wazo.io"
-            _git_set_config git-pull-request.branch-prefix none
+            _git_set_config git-pull-request.branch-prefix ""
             _git_set_config git-pull-request.fork never
 
             if [ -d .git -a ! -f .git/hooks/pre-commit ]; then
@@ -517,10 +518,7 @@ update-widevine() {
     wget -q "https://dl.google.com/widevine-cdm/${widevine_version}-linux-x64.zip" -O- | busybox unzip - -d ~/.local/lib libwidevinecdm.so
 }
 
-case $HOSTNAME in
-    red) alias tox="LD_PRELOAD=/usr/lib64/nosync/nosync.so tox";;
-    *) alias tox="eatmydata tox";;
-esac
+alias tox="eatmydata tox";
 
 function etox() {
     zparseopts -D e+:=env
@@ -539,7 +537,7 @@ function etox() {
                 tox -e$e --notest
             fi
             source $VIRTUAL_ENV/bin/activate
-            $*
+            eatmydata $*
             deactivate
         done
     done
@@ -564,7 +562,7 @@ function utox() {
 
 alias etox="nocorrect etox"
 alias utox="nocorrect utox"
-alias upip="pip install  -U --upgrade-strategy eager"
+alias upip="pip install -U --upgrade-strategy eager"
 
 source ~/.env/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source ~/.env/zsh-history-substring-search/zsh-history-substring-search.zsh

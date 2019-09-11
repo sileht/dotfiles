@@ -53,6 +53,3 @@
 #	user = sileht
 [credential]
 	helper = store
-[review "gerrit.pixelexperience.org"]
-	username = sileht
-	email = sileht@sileht.net
