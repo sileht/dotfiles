@@ -253,6 +253,7 @@ if getcwd() =~ "^/home/sileht/workspace/wazo"
     if (len(envs) == 0)
         let g:ale_python_flake8_options = "--select E,F,W --ignore E501,W503"
     else
+        let g:black_skip_string_normalization = 1
         autocmd FileType python autocmd BufWritePre <buffer> :Black
     endif
 endif
