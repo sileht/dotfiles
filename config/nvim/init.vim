@@ -257,7 +257,7 @@ if getcwd() =~ "^/home/sileht/workspace/wazo"
             let g:black_skip_string_normalization = 0
         else
             let g:black_skip_string_normalization = 1
-        fi
+        endif
         autocmd FileType python autocmd BufWritePre <buffer> :Black
     endif
 endif
