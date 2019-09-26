@@ -253,9 +253,17 @@ if getcwd() =~ "^/home/sileht/workspace/wazo"
     if (len(envs) == 0)
         let g:ale_python_flake8_options = "--select E,F,W --ignore E501,W503"
     else
-        let g:black_skip_string_normalization = 1
+        if getcwd() =~ "^/home/sileht/workspace/wazo/swarm-subscription"
+            let g:black_skip_string_normalization = 0
+        else
+            let g:black_skip_string_normalization = 1
+        fi
         autocmd FileType python autocmd BufWritePre <buffer> :Black
     endif
+endif
+
+if getcwd() =~ "^/home/sileht/workspace/mergify/engine"
+    autocmd FileType python autocmd BufWritePre <buffer> :Black
 endif
 
 let g:ale_sign_error = '⛔'
