@@ -152,8 +152,8 @@ bindsym $mod+Shift+agrave move container to workspace 10
 #bindsym $mod+Shift+c reload
 bindsym $mod+Shift+h move workspace to output left
 bindsym $mod+Shift+l move workspace to output right
-bindsym $mod+Shift+j move workspace to output bottom
-bindsym $mod+Shift+k move workspace to output top
+bindsym $mod+Shift+j move workspace to output down
+bindsym $mod+Shift+k move workspace to output up
 
 bindsym $mod+Shift+e mode "resize"
 bindsym $mod+Shift+r restart
@@ -183,20 +183,25 @@ mode "resize" {
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
+    font pango:UbuntuMono Nerd Font:style=Regular 50
     output eDP-1
-    status_command exec ~/.i3/status.py
-    position          top
-    workspace_buttons yes
-    separator_symbol " "
+    position top
+    tray_output none
+    workspace_buttons no
+    colors {
+        background #000000
+    }
 }
 bar {
+    output eDP-1
     output DP-1
     output DP-2
     output HDMI-1
     output HDMI-2
-    tray_output none
-    position          top
+
+    # tray_output none
+    position top
     workspace_buttons yes
-    status_command exec ~/.i3/status-l.py
+    status_command exec ~/.i3/status.py
     separator_symbol " "
 }
