@@ -116,21 +116,19 @@ cleanup_forced(){
 }
 
 setup_vim(){
+    loal vim_binary="${HOME}/.bin/nvim"
+
     log "Setup vim"
     ensure_apt -yarnpkg -neovim -python-neovim -python3-neovim # nodejs yarn
-    rm -rf ~/.vim ~/.vimrc*
-    dest="${HOME}/.bin/nvim"
-    if [[ ! -e "${dest}" || "$(find $dest -mtime +30)" ]]; then
-        curl -fLo $dest --create-dirs \
-	    https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage
-        chmod +x ~/.bin/nvim
-    fi
-    dest="${HOME}/.local/share/nvim/site/autoload/plug.vim"
-    if [[ ! -e "${dest}" || "$(find $dest -mtime +30)" ]]; then
-        curl -fLo $dest --create-dirs \
-            https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-    fi
-    ~/.bin/nvim "+set nomore" +PlugInstall! +PlugClean! +PlugUpdate! +qall
+    rm -rf ~/.vim ~/.vimrc* $vim_binary
+
+    curl -fLo $vim_binary --create-dirs https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage
+    chmod +x $vim_binary
+
+    curl -fLo ${HOME}/.local/share/nvim/site/autoload/plug.vim --create-dirs \
+        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+    $vim_binary "+set nomore" +PlugInstall! +PlugClean! +PlugUpdate! +qall
 }
 
 download_font(){
