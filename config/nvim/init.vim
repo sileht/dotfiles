@@ -144,7 +144,8 @@ command! R execute "source ~/.vimrc"
 " Change cwd to file directory
 autocmd BufEnter * if bufname("") !~ "^\[A-Za-z0-9\]*://" | lcd %:p:h | endif
 " Cut at 80 for some filetype
-autocmd FileType c,cpp,java,go,php,javascript,puppet,python,rst set textwidth=79
+autocmd FileType c,cpp,java,go,php,javascript,puppet,rst set textwidth=79
+autocmd FileType python set textwidth=90
 " No ending space
 autocmd FileType c,cpp,java,go,php,javascript,puppet,python,rst,rust,twig,xml,yml,perl,sql autocmd BufWritePre <buffer> call StripTrailingWhitespace()
 " libvirt C style
