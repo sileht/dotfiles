@@ -12,7 +12,6 @@ Host rt rrt
    Port 22222
 
 Host alien billy gizmo eve bob rbob trudy predator
-    ForwardAgent no
     RemoteForward /home/sileht/.var/S.gpg-agent /run/user/1000/gnupg/S.gpg-agent.extra
     RemoteForward /home/sileht/.var/S.gpg-agent.ssh /run/user/1000/gnupg/S.gpg-agent.ssh
     User sileht
@@ -80,6 +79,7 @@ Host *.ring.nlnog.net
 ##########
 
 Host *.wazo.community *.wazo.io
+    ForwardAgent yes
     Hostname %h
     IdentityFile ~/.ssh/id_ed25519_wazo
 
@@ -101,7 +101,7 @@ Host */*
 
 Host *
     ForwardX11 no
-    ForwardAgent yes
+    ForwardAgent no
     Compression yes
     NoHostAuthenticationForLocalhost yes
     # PreferredAuthentications publickey,password,gssapi-keyex,gssapi-with-mic,
