@@ -483,6 +483,18 @@ else
 fi
 }
 
+diclean () {
+    docker images -q -f dangling=true | xargs docker rmi
+}
+dclean () {
+    filter=${1:=whatever}
+    for d in $(docker ps -a | grep --color=auto -v -e 'CONTAINER ID' -e " ${filter}_" | awk '{print $1}'); do
+        docker stop $d
+        docker rm $d
+    done
+    docker ps -a
+}
+
 sshclean(){
     hostname=$(echo $1 | sed 's/\.t$/.tetaneutral.net/g')
     for i in $hostname $(getent ahosts $hostname | awk '{print $1}' | sort -u); do
