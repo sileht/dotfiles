@@ -16,3 +16,6 @@
 [submodule "st"]
 	path = st
 	url = https://github.com/sileht/st.git
+[submodule "nord-dircolors"]
+	path = nord-dircolors
+	url = https://github.com/arcticicestudio/nord-dircolors
