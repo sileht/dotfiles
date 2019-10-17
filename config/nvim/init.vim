@@ -36,9 +36,7 @@ Plug 'luochen1990/rainbow'      " special parenthesis colors
 Plug 'inside/vim-search-pulse'
 
 " Language
-"Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
 Plug 'jaxbot/semantic-highlight.vim'                                  " semantic highlight (permanent)
-" Can be replaced by coc-highlight
 Plug 'numirias/semshi',               {'do': ':UpdateRemotePlugins'}  " semantic highlight (selected)
 
 Plug 'dbeniamine/vim-mail',           {'for': 'mail'}
@@ -54,7 +52,7 @@ Plug 'vim-scripts/spec.vim',          {'for': 'spec'}
 Plug 'spf13/PIV',                     {'for': 'php'}
 Plug 'Rykka/riv.vim',                 {'for': 'rst'}
 Plug 'rodjek/vim-puppet',             {'for': 'puppet'}
-Plug 'pangloss/vim-javascript',       {'for': 'javascript'}
+"Plug 'pangloss/vim-javascript',       {'for': 'javascript'}
 Plug 'groenewege/vim-less',           {'for': 'less'}
 Plug 'elzr/vim-json',                 {'for': 'json'}
 Plug 'tpope/vim-rails',               {'for': 'ruby'}
@@ -210,6 +208,7 @@ nmap <S-right> <Plug>AirlineSelectNextTab
 " ### JEDI ###
 " ############
 
+let g:deoplete#enable_at_startup = 1
 let g:deoplete#auto_complete_delay = 100  " https://github.com/numirias/semshi#semshi-is-slow-together-with-deopletenvim
 autocmd FileType python setlocal completeopt-=preview
 autocmd FileType python call LoadVirtualEnv()
@@ -254,7 +253,7 @@ if getcwd() =~ "^/home/sileht/workspace/wazo"
         else
             let g:black_skip_string_normalization = 1
         endif
-        autocmd FileType python autocmd BufWritePre <buffer> :Black
+        "autocmd FileType python autocmd BufWritePre <buffer> :Black
     endif
 endif
 
