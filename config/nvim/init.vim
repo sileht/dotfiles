@@ -13,7 +13,7 @@ autocmd BufNewFile,BufRead rest.j2	  set filetype=rst
 call plug#begin('~/.local/share/nvim/plugged')
 
 " Style
-Plug 'morhetz/gruvbox'
+Plug 'arcticicestudio/nord-vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'w0rp/ale'
@@ -178,11 +178,7 @@ endif
 " ##############
 set t_Co=256            " Enable 256 colors to stop the CSApprox warning and make xterm vim shine
 set background=dark
-let g:gruvbox_italic=1
-"let g:gruvbox_contrast_dark="hard"
-let g:gruvbox_improved_warnings=1
-let g:gruvbox_guisp_fallback='bg'
-colorscheme gruvbox
+colorscheme nord
 
 set cursorline
 set laststatus=2        " Show statusbar
@@ -194,8 +190,7 @@ let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#buffer_idx_mode = 1
 let g:airline#extensions#ale#enabled = 1
-" let g:airline_theme = 'bubblegum'
-let g:airline_theme = 'gruvbox'
+let g:airline_theme = 'nord'
 
 nmap <leader>1 <Plug>AirlineSelectTab1
 nmap <leader>2 <Plug>AirlineSelectTab2
