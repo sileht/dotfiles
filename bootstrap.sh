@@ -116,7 +116,7 @@ cleanup_forced(){
 }
 
 setup_vim(){
-    loal vim_binary="${HOME}/.bin/nvim"
+    local vim_binary="${HOME}/.bin/nvim"
 
     log "Setup vim"
     ensure_apt -yarnpkg -neovim -python-neovim -python3-neovim # nodejs yarn
