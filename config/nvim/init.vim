@@ -52,7 +52,8 @@ Plug 'vim-scripts/spec.vim',          {'for': 'spec'}
 Plug 'spf13/PIV',                     {'for': 'php'}
 Plug 'Rykka/riv.vim',                 {'for': 'rst'}
 Plug 'rodjek/vim-puppet',             {'for': 'puppet'}
-"Plug 'pangloss/vim-javascript',       {'for': 'javascript'}
+Plug 'pangloss/vim-javascript',       {'for': 'javascript'}
+Plug 'maxmellon/vim-jsx-pretty',       {'for': 'javascript'}
 Plug 'groenewege/vim-less',           {'for': 'less'}
 Plug 'elzr/vim-json',                 {'for': 'json'}
 Plug 'tpope/vim-rails',               {'for': 'ruby'}
@@ -71,7 +72,7 @@ filetype plugin indent on
 set shell=/bin/sh
 
 "set clipboard=unnamed,unnamedplus
-set mouse=r
+set mouse=
 set hidden                      " Allow buffer switching without saving
 set backup                      " Backups are nice ...
 set undofile                    " So is persistent undo ...
@@ -233,7 +234,7 @@ let g:ale_set_highlights = 0
 
 let g:ale_linters = {}
 let g:ale_linters.python = ['flake8'] ", 'pyls']
-"let g:ale_linters.c = ['clangformat']
+let g:ale_linters.c = [] "'clangformat']
 let g:ale_c_parse_makefile = 1
 let g:ale_c_parse_compile_commands = 1
 let g:ale_python_pyls_config = {'pyls': {'plugins': {
