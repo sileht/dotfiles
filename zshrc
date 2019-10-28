@@ -189,7 +189,7 @@ zstyle ':completion:*:processes' command 'ps -aux' #u$USER'
 zstyle ':completion:*:*:(kill|killall):*' menu yes select
 zstyle ':completion:*:*:(kill|killall):*' force-list always
 
-# files to ignore 
+# files to ignore
 zstyle ':completion:*:(all-|)files' ignored-patterns '*.bk' '*.bak' '*.old' '*~' '.*.sw?'
 zstyle ':completion:*:(all-|)files' ignored-patterns '(|*/)svn'
 zstyle ':completion:*:cd:*' ignored-patterns '(*/)#svn'
@@ -219,6 +219,7 @@ zstyle ':vcs_info:*' formats '%b%u%c'
 zstyle ':vcs_info:*' actionformats '%b(%a)'
 
 _prompt_main(){
+  RIGHT=$1
   RETVAL=$?
   local symbols=() ref ref_color venv host_color
   [[ $UID -eq 0 ]] && symbols+="%B%{%F{yellow}%}⚡%b "
@@ -228,12 +229,12 @@ _prompt_main(){
   ref="$vcs_info_msg_0_"
   if [[ -n "$ref" ]]; then
     [[ "${ref/(¹|²|¹²)/}" == "$ref" ]] && ref_color=green || ref_color=yellow
-    [[ "${ref/.../}" == "$ref" ]] && ref="  $ref " || ref="✦ ${ref/.../} "
+    # [[ "${ref/.../}" == "$ref" ]] && ref="  $ref" || ref="✦ ${ref/.../}"
+    ref="%F{$ref_color}($ref)"
   fi
-  [ $VIRTUAL_ENV ] && venv="($(basename $VIRTUAL_ENV))"
+  [ $VIRTUAL_ENV ] && venv="%F{yellow}($(basename $VIRTUAL_ENV))"
 
   case $HOST in
-      red) logo="%F{red}🎩" ;;
       gizmo|bob|billy|trudy|eve) logo="%F{161}🍥" ;;
       *) logo="@";;
   esac
@@ -244,14 +245,28 @@ _prompt_main(){
       gizmo) host_color=214;;
       *) host_color=242;;
   esac
-  print    "%F{240}"
-  print    "%F{240}%F{$host_color}$USER%F{red}${logo}%F{$host_color}$HOST%F{red}: %B%F{blue}%~%b%F{red}%b"
-  print -n "%F{240}$symbols%F{$ref_color}$ref%F{yellow}$venv%(!.%F{yellow}.%F{green})➤ %F{240}"
+  case $USER in
+    sileht) user_short=s;;
+    root) user_short=r;;
+    *) user_short=$USER;;
+  esac
+  cwd=$(shrink_path -f)
+  #print    "%F{240}"
+  if [ "$RIGHT" ]; then
+  else
+      print -n "%F{240}%F{$host_color}$USER%F{red}${logo}%F{$host_color}$HOST%F{red}:"
+      print -n "%F{blue}%B${cwd}%b%F{red}%b"
+      print -n "$ref"
+      print -n "$venv"
+      print -n "$symbols"
+      print -n "%(!.%F{yellow}.%F{green})➤ %F{240}"
+  fi
 }
 
 _prompt_precmd() {
   vcs_info 'prompt'
   PROMPT='%{%f%b%k%}$(_prompt_main)'
+  RPROMPT='%{%f%b%k%}$(_prompt_main r)'
   SPROMPT='zsh: correct %F{red}%R%f to %F{green}%r%f [Nyae]? '
 }
 add-zsh-hook precmd _prompt_precmd
@@ -576,6 +591,7 @@ alias etox="nocorrect etox"
 alias utox="nocorrect utox"
 alias upip="pip install -U --upgrade-strategy eager"
 
+source ~/.env/shrink-path.plugin.zsh
 source ~/.env/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source ~/.env/zsh-history-substring-search/zsh-history-substring-search.zsh
 
