@@ -219,21 +219,21 @@ zstyle ':vcs_info:*' formats '%b%u%c'
 zstyle ':vcs_info:*' actionformats '%b(%a)'
 
 _prompt_main(){
-  RIGHT=$1
   RETVAL=$?
   local symbols=() ref ref_color venv host_color
-  [[ $UID -eq 0 ]] && symbols+="%B%{%F{yellow}%}⚡%b "
-  [[ $(jobs -l | wc -l) -gt 0 ]] && symbols+="%F{white}⚙ "
-  [[ $RETVAL -ne 0 ]] && symbols+="%{%F{red}%}✘ "
+  [[ $(jobs -l | wc -l) -gt 0 ]] && symbols+="%F{yellow}⚙"
+  [[ $RETVAL -ne 0 ]] && symbols+="%F{red}✘"
+  [ "$symbols" ] && symbols="$symbols "
 
   ref="$vcs_info_msg_0_"
   if [[ -n "$ref" ]]; then
     [[ "${ref/(¹|²|¹²)/}" == "$ref" ]] && ref_color=green || ref_color=yellow
     # [[ "${ref/.../}" == "$ref" ]] && ref="  $ref" || ref="✦ ${ref/.../}"
-    ref="%F{$ref_color}($ref)"
+    ref="%B%F{$ref_color}$ref%b"
   fi
-  [ $VIRTUAL_ENV ] && venv="%F{yellow}($(basename $VIRTUAL_ENV))"
+  [ $VIRTUAL_ENV ] && venv="%F{yellow}($(basename $VIRTUAL_ENV)) "
 
+  sep="%B%F{white}|%b"
   case $HOST in
       gizmo|bob|billy|trudy|eve) logo="%F{161}🍥" ;;
       *) logo="@";;
@@ -246,27 +246,26 @@ _prompt_main(){
       *) host_color=242;;
   esac
   case $USER in
-    sileht) user_short=s;;
-    root) user_short=r;;
-    *) user_short=$USER;;
+    root) host_color=161;;
   esac
-  cwd=$(shrink_path -f)
-  #print    "%F{240}"
-  if [ "$RIGHT" ]; then
-  else
-      print -n "%F{240}%F{$host_color}$USER%F{red}${logo}%F{$host_color}$HOST%F{red}:"
-      print -n "%F{blue}%B${cwd}%b%F{red}%b"
-      print -n "$ref"
-      print -n "$venv"
-      print -n "$symbols"
-      print -n "%(!.%F{yellow}.%F{green})➤ %F{240}"
-  fi
+
+  cwd="%~"
+  # cwd=$(shrink_path -f)
+  print    "%F{240}"
+  print -n "%F{240}%F{$host_color}$USER%F{red}${logo}%F{$host_color}$HOST%F{red}$sep"
+  print -n "%F{blue}%B${cwd}%b%F{red}%b"
+  print -n "$sep"
+  print -n "$ref"
+  print
+  print -n "$venv"
+  print -n "$symbols"
+  print -n "%F{$host_color}%(!.⚡.➤ )"
+  print -n "%F{240}"
 }
 
 _prompt_precmd() {
   vcs_info 'prompt'
   PROMPT='%{%f%b%k%}$(_prompt_main)'
-  RPROMPT='%{%f%b%k%}$(_prompt_main r)'
   SPROMPT='zsh: correct %F{red}%R%f to %F{green}%r%f [Nyae]? '
 }
 add-zsh-hook precmd _prompt_precmd
