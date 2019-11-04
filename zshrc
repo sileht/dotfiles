@@ -357,7 +357,7 @@ alias batchtask='schedtool -B -n 1 -e ionice -n 1'
 
 function cdt() { cd $(mktemp -td cdt.$(date '+%Y%m%d-%H%M%S').XXXXXXXX) ; pwd }
 function s() { pwd >| $ZVARDIR/.saved_dir; }
-function i() { sp="$(cat $ZVARDIR/.saved_dir 2>/dev/null)"; [ -d $sp ] && cd $sp }
+function i() { sp="$(cat $ZVARDIR/.saved_dir 2>/dev/null)"; [ -d $sp -a -r $sp ] && cd $sp }
 function p() {
     local -a working_dirs=($(ls -1d ~/workspace/*/(wazo-|xivo-|)${1}*/.git/.. | sed -e 's@/\.git/\.\./@@g'))
     if [ ${#working_dirs[@]} -eq 1 ] ; then
