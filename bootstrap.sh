@@ -196,9 +196,7 @@ setup_python
 setup_vim
 setup_st
 case $HOSTNAME in
-    bob|billy|trudy) ;;
-    *) disable_gpg_crap
+    bob|trudy) setup_fonts ;;
+    billy) ;;
+    *) disable_gpg_crap ;;
 esac
-if [ "$DISPLAY" == ":0" ]; then
-    setup_fonts
-fi
