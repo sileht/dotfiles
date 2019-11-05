@@ -8,7 +8,6 @@ map! <F1> <del>
 autocmd BufNewFile,BufRead *.yaml set filetype=yml
 autocmd BufNewFile,BufRead *.j2	  set filetype=jinja
 autocmd BufNewFile,BufRead *mutt-* set filetype=mail
-autocmd BufNewFile,BufRead rest.j2	  set filetype=rst
 
 call plug#begin('~/.local/share/nvim/plugged')
 
@@ -16,7 +15,7 @@ call plug#begin('~/.local/share/nvim/plugged')
 Plug 'arcticicestudio/nord-vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'w0rp/ale'
+Plug 'dense-analysis/ale'
 Plug 'bling/vim-bufferline'
 Plug 'mhinz/vim-signify'                " VCS diff
 Plug 'tpope/vim-fugitive'               " GIT
@@ -44,8 +43,6 @@ Plug 'dbeniamine/vim-mail',           {'for': 'mail'}
 Plug 'psf/black',                     {'for': 'python'}
 Plug 'Vimjas/vim-python-pep8-indent', {'for': 'python'}
 Plug 'vim-python/python-syntax',      {'for': 'python'}
-Plug 'Shougo/deoplete.nvim',          {'do': ':UpdateRemotePlugins' }
-Plug 'zchee/deoplete-jedi',           {'for': 'python'}
 
 Plug 'chr4/nginx.vim'
 Plug 'vim-scripts/spec.vim',          {'for': 'spec'}
@@ -118,10 +115,10 @@ set guioptions-=T  "remove toolbar
 set ttimeout
 set ttimeoutlen=50
 
-let mapleader = " "
-let g:mapleader = " "
-let maplocalleader = ","
-let g:maplocalleader = ","
+let mapleader = ","
+let g:mapleader = ","
+let maplocalleader = ";"
+let g:maplocalleader = ";"
 
 " http://snk.tuxfamily.org/log/vim-256color-bce.html
 " Disable Background Color Erase (BCE) so that color schemes
@@ -191,6 +188,16 @@ let g:airline#extensions#tabline#buffer_idx_mode = 1
 let g:airline#extensions#ale#enabled = 1
 let g:airline_theme = 'nord'
 
+nmap <leader>& <Plug>AirlineSelectTab1
+nmap <leader>é <Plug>AirlineSelectTab2
+nmap <leader>" <Plug>AirlineSelectTab3
+nmap <leader>' <Plug>AirlineSelectTab4
+nmap <leader>( <Plug>AirlineSelectTab5
+nmap <leader>- <Plug>AirlineSelectTab6
+nmap <leader>è <Plug>AirlineSelectTab7
+nmap <leader>_ <Plug>AirlineSelectTab8
+nmap <leader>ç <Plug>AirlineSelectTab9
+
 nmap <leader>1 <Plug>AirlineSelectTab1
 nmap <leader>2 <Plug>AirlineSelectTab2
 nmap <leader>3 <Plug>AirlineSelectTab3
@@ -200,8 +207,6 @@ nmap <leader>6 <Plug>AirlineSelectTab6
 nmap <leader>7 <Plug>AirlineSelectTab7
 nmap <leader>8 <Plug>AirlineSelectTab8
 nmap <leader>9 <Plug>AirlineSelectTab9
-nmap <leader>- <Plug>AirlineSelectPrevTab
-nmap <leader>+ <Plug>AirlineSelectNextTab
 nmap <S-left>  <Plug>AirlineSelectPrevTab
 nmap <S-right> <Plug>AirlineSelectNextTab
 
@@ -209,9 +214,6 @@ nmap <S-right> <Plug>AirlineSelectNextTab
 " ### JEDI ###
 " ############
 
-let g:deoplete#enable_at_startup = 1
-let g:deoplete#auto_complete_delay = 100  " https://github.com/numirias/semshi#semshi-is-slow-together-with-deopletenvim
-autocmd FileType python setlocal completeopt-=preview
 autocmd FileType python call LoadVirtualEnv()
 
 " Use system python for neovim itself
@@ -229,16 +231,19 @@ let g:ale_open_list = 1
 let g:ale_list_window_size = 7
 let g:ale_list_vertical = 0
 let g:ale_keep_list_window_open = 1
-"set completeopt=menu,menuone,preview,noselect,noinsert
-let g:ale_set_highlights = 0
+set omnifunc=ale#completion#OmniFunc
+"let g:ale_set_highlights = 0
 
 let g:ale_linters = {}
-let g:ale_linters.python = ['flake8'] ", 'pyls']
-let g:ale_linters.c = [] "'clangformat']
+let g:ale_linters.python = ['flake8', 'pyls']
+let g:ale_linters.c = ['clangformat']
+let g:ale_linters.javascript = ['eslint']
+let g:ale_fixers = {'python': ['black']}
 let g:ale_c_parse_makefile = 1
 let g:ale_c_parse_compile_commands = 1
 let g:ale_python_pyls_config = {'pyls': {'plugins': {
   \   'pyflakes': {'enabled': v:false},
+  \   'pylint': {'enabled': v:false},
   \   'pycodestyle': {'enabled': v:false},
   \ }}}
 "let __ale_c_project_filenames = ['README.md']
@@ -288,10 +293,16 @@ let g:ctrlp_funky_syntax_highlight = 1
 nnoremap <C-e> :CtrlPFunky<Cr>
 nnoremap <C-E> :execute 'CtrlPFunky ' . expand('<cword>')<Cr>
 
-" ##############
-" ### Semshi ###
-" ##############
-"
+" #######################
+" ### Semshi/ALE KEYS ###
+" #######################
+
+nmap <silent> <leader>j :ALENext<cr>
+nmap <silent> <leader>k :ALEPrevious<cr>
+nmap <silent> <leader>dv :ALEGoToDefinitionInVSplit<cr>
+nmap <silent> <leader>dh :ALEGoToDefinitionInVSplit<cr>
+nmap <silent> <leader>dd :ALEGoToDefinition<cr>
+
 nmap <silent> <leader>rr :Semshi rename<CR>
 nmap <silent> <Tab> :Semshi goto name next<CR>
 nmap <silent> <S-Tab> :Semshi goto name prev<CR>
@@ -308,7 +319,7 @@ nmap <silent> <leader>ge :Semshi goto error<CR>
 
 let g:semanticTermColors = [28,1,2,3,4,5,6,7,25,9,10,34,12,13,14,15,125,124,19]
 nnoremap <F10> :SemanticHighlightToggle<cr>
-"autocmd FileType * SemanticHighlightToggle
+" autocmd FileType * SemanticHighlightToggle
 
 cmap w!! :w suda://%<CR>:e!<CR>
 
@@ -318,7 +329,7 @@ let g:rubycomplete_buffer_loading = 1
 let g:rainbow_active = 1
 
 au FileType spec map <buffer> <F5> <Plug>AddChangelogEntry
-let spec_chglog_packager = "Mehdi Abaakouk <sileht@redhat.com>"
+let spec_chglog_packager = "Mehdi Abaakouk <sileht@sileht.net>"
 
 " ############
 " ### Mail ###
