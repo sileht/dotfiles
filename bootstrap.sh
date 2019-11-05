@@ -55,14 +55,14 @@ setup_repo(){
     #fi
 }
 ensure_yum() {
-    [ -x "$(which yum)" ] || return
+    [ -x "$(which yum 2>/dev/null)" ] || return
     for name in "$@"; do
          rpm -q $name > /dev/null || sudo yum install -y ${name}
     done
 }
 
 ensure_apt() {
-    [ -x "$(which apt)" ] || return
+    [ -x "$(which apt 2>/dev/null)" ] || return
     for name in "$@"; do
         if [ "${name:0:1}" == "-" ]; then
             name=${name:1}
