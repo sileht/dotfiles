@@ -34,6 +34,7 @@ bindsym $mod+c exec st -t 'gizmo.sileht.net' -e zsh -i -c "ssh -tqxkAC gizmo"
 bindsym $mod+Shift+c exec st -t 'gizmo.sileht.net' -e mosh -a gizmo
 
 bindsym Print exec gnome-screenshot -i
+bindsym Shift+Print exec kazam
 bindsym --release $mod+l exec --no-startup-id slock
 bindsym $mod+x exec --no-startup-id pcmanfm /home/sileht/
 # kill focused window
@@ -80,7 +81,6 @@ bindsym $mod+Shift+Right move right
 
 # split in horizontal orientation
 bindsym $mod+h split h
-
 # split in vertical orientation
 bindsym $mod+v split v
 
@@ -103,6 +103,8 @@ bindsym $mod+q focus parent
 
 # focus the child container
 #bindsym $mod+d focus child
+
+bindsym $mod+w sticky toggle
 
 # switch to workspace
 bindsym $mod+1 workspace 1
@@ -184,7 +186,7 @@ mode "resize" {
 # finds out, if available)
 bar {
     font pango:UbuntuMono Nerd Font:style=Regular 50
-    output eDP-1
+    output eDP-1x
     position top
     tray_output none
     workspace_buttons no
@@ -193,6 +195,7 @@ bar {
     }
 }
 bar {
+    font pango:UbuntuMono Nerd Font:style=Regular 8
     output eDP-1
     output DP-1
     output DP-2
