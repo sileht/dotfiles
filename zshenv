@@ -1,6 +1,6 @@
 [[ ! -o rcs ]] && return
 
-fpath=($fpath ~/.env/zsh-completions/src)
+fpath=($fpath ~/.env/zsh-completions/src ~/.env/zsh-completions-mine)
 
 export ZVARDIR=$HOME/.var/zsh
 export TMPDIR=/tmp
@@ -20,8 +20,8 @@ export QUILT_DIFF_ARGS="--no-timestamps --no-index -pab"
 export QUILT_REFRESH_ARGS="--no-timestamps --no-index -pab"
 export QUILT_PATCH_OPTS="--reject-format=unified"
 
-export EDITOR=vim
-export VISUAL=vim
+export EDITOR=nvim
+export VISUAL=nvim
 
 KEYTIMEOUT=1
 
@@ -35,7 +35,6 @@ export LESSCOLORIZER="highlight -O ansi"
 export LESSOPEN="|lesspipe %s"
 
 export MOSH_PREDICTION_DISPLAY=always
-export VAGRANT_DEFAULT_PROVIDER=lxc
 
 export GEM_HOME=$HOME/.ruby-gems
 # vim:ft=zsh

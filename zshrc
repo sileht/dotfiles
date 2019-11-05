@@ -155,7 +155,7 @@ zmodload zsh/complist    # load fancy completion list and menu handler
 
 # initialise the completion system
 autoload -U compinit
-compinit -C -d $ZVARDIR/comp-$HOST
+compinit -i -d $ZVARDIR/comp-$HOST
 
 
 # Use cache
