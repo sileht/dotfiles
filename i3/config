@@ -46,6 +46,7 @@ exec_always --no-startup-id /home/sileht/.env/bin/unsplash
 
 #exec_always --no-startup-id "bash -c 'pkill compton; compton"
 #exec_always --no-startup-id "bash -c 'pkill conky; conky'"
+#exec pcmanfm -d
 
 # start dmenu (a program launcher)
 #bindsym $mod+r exec dmenu_run
