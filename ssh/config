@@ -40,6 +40,9 @@ Host eve-unlock
 Host rt
     Hostname 192.168.8.2
 
+Host eris
+    Hostname 192.168.0.16
+
 ########
 # TTNN #
 ########
