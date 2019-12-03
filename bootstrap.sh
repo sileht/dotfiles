@@ -143,7 +143,7 @@ download_font(){
     fi
 }
 
-setup_xorgs(){
+setup_xorg(){
     log "Setup i3pystatus"
     python3 -m pip install --quiet --user --upgrade --upgrade-strategy eager -r ~/.env/requirements-py3-i3pystatus.txt
     log "Setup fonts"
