@@ -8,6 +8,7 @@ map! <F1> <del>
 autocmd BufNewFile,BufRead *.yaml set filetype=yml
 autocmd BufNewFile,BufRead *.jsx set filetype=javascript
 autocmd BufNewFile,BufRead *.j2	  set filetype=jinja
+autocmd BufNewFile,BufRead *.jsx	  set filetype=javascript
 autocmd BufNewFile,BufRead *mutt-* set filetype=mail
 
 call plug#begin('~/.local/share/nvim/plugged')
