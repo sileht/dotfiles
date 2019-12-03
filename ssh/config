@@ -15,7 +15,6 @@ Host rt rrt
 Host alien billy gizmo eve bob rbob trudy predator
     RemoteForward /home/sileht/.var/S.gpg-agent /run/user/1000/gnupg/S.gpg-agent.extra
     RemoteForward /home/sileht/.var/S.gpg-agent.ssh /run/user/1000/gnupg/S.gpg-agent.ssh
-    ForwardAgent yes
     User sileht
     Port 5555
 
@@ -40,11 +39,9 @@ Host eve-unlock
     Port 5555
 
 Host rt
-    ForwardAgent yes
     Hostname 192.168.8.2
 
 Host eris
-    ForwardAgent yes
     Hostname 192.168.0.16
 
 ########
@@ -72,7 +69,6 @@ Host h7.t
 
 Host *.t
     Hostname %hetaneutral.net
-    ForwardAgent yes
     Port 2222
     User root
     IdentityFile ~/.ssh/id_rsa_g1
