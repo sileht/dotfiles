@@ -12,30 +12,11 @@ khal
 # vim
 tox
 python-language-server[all]
-black
+black ;python_version>="3.6"
 flake8
 jedi
 virtualenvwrapper
 
 ghp-import
 
-# i3pystatus
--e git+https://github.com/enkore/i3pystatus.git#egg=i3pystatus
-pytz
-python-dateutil
-netifaces
-basiciw
-colour
-keyring
-psutil
-keyrings.alt
-imaplib2
-pyalsaaudio
-i3ipc
-#apiclient
-#google-api-python-client
-#httplib2
-#oauth2client
-#pyanybar
-#paramiko
 

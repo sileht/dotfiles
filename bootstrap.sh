@@ -62,6 +62,7 @@ ensure_yum() {
 }
 
 ensure_apt() {
+    [ "$HOSTNAME" == "eris" ] && return
     [ -x "$(which apt 2>/dev/null)" ] || return
     for name in "$@"; do
         if [ "${name:0:1}" == "-" ]; then
@@ -142,7 +143,9 @@ download_font(){
     fi
 }
 
-setup_fonts(){
+setup_xorgs(){
+    log "Setup i3pystatus"
+    python3 -m pip install --quiet --user --upgrade --upgrade-strategy eager -r ~/.env/requirements-py3-i3pystatus.txt
     log "Setup fonts"
     update_fc=
     download_font "UbuntuMonoNerdFonts.ttf" "https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/UbuntuMono/Regular/complete/Ubuntu%20Mono%20Nerd%20Font%20Complete.ttf?raw=true"
@@ -196,7 +199,6 @@ setup_python
 setup_vim
 setup_st
 case $HOSTNAME in
-    bob|trudy) setup_fonts ;;
-    billy) ;;
+    bob|trudy|billy) setup_xorg ;;
     *) disable_gpg_crap ;;
 esac
