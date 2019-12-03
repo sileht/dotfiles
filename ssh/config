@@ -78,16 +78,27 @@ Host *.ring.nlnog.net
 # Wazo #
 ##########
 
-Host wazo-bastion
+Host wazo-bastion-staging
+    Hostname bastion.staging.wazo.cloud
+    Port 22000
+    User mabaakouk
+    IdentityFile ~/.ssh/id_ed25519_wazo
+
+Host *.staging.wazo.cloud *.staging.wazo 172.25.*
+    ProxyJump wazo-bastion-staging
+    User mabaakouk
+    IdentityFile ~/.ssh/id_ed25519_wazo
+
+Host wazo-bastion-development
     Hostname bastion.development.wazo.cloud
     Port 22000
     User mabaakouk
     IdentityFile ~/.ssh/id_ed25519_wazo
 
-
 Host *.development.wazo.cloud *.development.wazo 172.20.* i-*
-    ProxyJump wazo-bastion
+    ProxyJump wazo-bastion-development
     User mabaakouk
+    IdentityFile ~/.ssh/id_ed25519_wazo
 
 Host *.wazo.community *.wazo.io *.wazo *.wazo.cloud
     ForwardAgent yes
