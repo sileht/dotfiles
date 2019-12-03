@@ -1,6 +1,7 @@
 ##########
 # sileht #
 ##########
+IgnoreUnknown RemoteCommand
 
 Host predator mergify rt rrt eve-unlock
    User root
