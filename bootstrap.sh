@@ -46,24 +46,11 @@ typeset -a flist="
 typeset -a rlist=""
 
 
-setup_repo(){
-    log "Sync repos"
-    #if [ ! -f /etc/apt/sources.list.d/yarn.list ]; then
-    #    curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-    #    echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-    #    apt update -y
-    #fi
-}
-ensure_yum() {
-    [ -x "$(which yum 2>/dev/null)" ] || return
-    for name in "$@"; do
-         rpm -q $name > /dev/null || sudo yum install -y ${name}
-    done
-}
-
 ensure_apt() {
-    [ "$HOSTNAME" == "eris" ] && return
     [ -x "$(which apt 2>/dev/null)" ] || return
+    sudo -n true 2>/dev/null
+    is_non_root=?
+    [ "$is_non_root" -eq 1 ] && return
     for name in "$@"; do
         if [ "${name:0:1}" == "-" ]; then
             name=${name:1}
@@ -168,14 +155,12 @@ maybe_do_update(){
 setup_st(){
     log "Setup st"
     ensure_apt libxft-dev libxext-dev libfontconfig1-dev libxrender-dev libx11-dev
-    ensure_yum libXft-devel libXet-devel bfontconfig1-devel libXrender-devel libX11-devel
     (cd st && make clean && make && tic -sx st.info)
 }
 
 setup_python(){
     log "Setup python stuffs"
     ensure_apt libiw-dev  # i3pystatus
-    ensure_yum libiw-devel  # i3pystatus
     ensure_apt python3-pip python-pip virtualenvwrapper libasound2-dev
 
     python3 -m pip install --quiet --user --upgrade --upgrade-strategy eager -r ~/.env/requirements-py3.txt
@@ -193,7 +178,6 @@ disable_gpg_crap(){
 maybe_do_update
 cleanup_old_link
 [ "$force" ] &&  cleanup_forced
-setup_repo
 setup_env_link
 setup_python
 setup_vim
