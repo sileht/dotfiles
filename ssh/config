@@ -88,7 +88,7 @@ Host wazo-bastion-staging
     IdentityFile ~/.ssh/id_ed25519_wazo
 
 Host *.staging.wazo.cloud *.staging.wazo 172.25.*
-    ProxyJump wazo-bastion-staging
+    ProxyCommand ssh -x wazo-bastion-staging -W %h:%p
     User mabaakouk
     IdentityFile ~/.ssh/id_ed25519_wazo
 
@@ -99,7 +99,7 @@ Host wazo-bastion-development
     IdentityFile ~/.ssh/id_ed25519_wazo
 
 Host *.development.wazo.cloud *.development.wazo 172.20.* i-*
-    ProxyJump wazo-bastion-development
+    ProxyCommand ssh -x wazo-bastion-development -W %h:%p
     User mabaakouk
     IdentityFile ~/.ssh/id_ed25519_wazo
 
