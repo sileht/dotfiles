@@ -82,6 +82,17 @@ Host *.ring.nlnog.net
 # Wazo #
 ##########
 
+Host wazo-bastion-production
+    Hostname bastion.production.wazo.cloud
+    Port 22000
+    User mabaakouk
+    IdentityFile ~/.ssh/id_ed25519_wazo
+
+Host *.production.wazo.cloud *.production.wazo
+    ProxyCommand ssh -x wazo-bastion-production -W %h:%p
+    User mabaakouk
+    IdentityFile ~/.ssh/id_ed25519_wazo
+
 Host wazo-bastion-staging
     Hostname bastion.staging.wazo.cloud
     Port 22000
