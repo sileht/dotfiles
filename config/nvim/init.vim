@@ -235,6 +235,11 @@ let g:ale_list_vertical = 0
 let g:ale_keep_list_window_open = 1
 set omnifunc=ale#completion#OmniFunc
 "let g:ale_set_highlights = 0
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_insert_leave = 0
+let g:ale_lint_on_enter = 0
+set completeopt+=menuone
+set completeopt+=noinsert
 
 let g:ale_linters = {}
 let g:ale_linters.python = ['flake8', 'pyls']
