@@ -510,7 +510,7 @@ dclean () {
 }
 
 sshclean(){
-    hostname=$(echo $1 | sed 's/\.t$/.tetaneutral.net/g')
+    hostname=$(echo $1 | sed -e 's/.*@\([^@]*\)/\1/g' -e 's/\.t$/.tetaneutral.net/g')
     for i in $hostname $(getent ahosts $hostname | awk '{print $1}' | sort -u); do
         ssh-keygen -R "$i"
         ssh-keygen -R "[$i]:22"
@@ -700,4 +700,8 @@ function sgpg(){
 INSIDE_TMUX_SCREEN="$WINDOW$TMUX_PANE"
 if [ "$HOST" == "gizmo" -a ! "$INSIDE_TMUX_SCREEN" ]; then
     sc ; exit 0;
+fi
+
+if command -v pyenv 1>/dev/null 2>&1; then
+    eval "$(pyenv init -)"
 fi
