@@ -37,12 +37,14 @@ Plug 'luochen1990/rainbow'      " special parenthesis colors
 Plug 'inside/vim-search-pulse'
 
 " Language
+Plug 'editorconfig/editorconfig-vim'
 Plug 'jaxbot/semantic-highlight.vim'                                  " semantic highlight (permanent)
 Plug 'numirias/semshi',               {'do': ':UpdateRemotePlugins'}  " semantic highlight (selected)
 
 Plug 'dbeniamine/vim-mail',           {'for': 'mail'}
 
 Plug 'psf/black',                     {'for': 'python'}
+Plug 'fisadev/vim-isort',             {'for': 'python'}
 Plug 'Vimjas/vim-python-pep8-indent', {'for': 'python'}
 Plug 'vim-python/python-syntax',      {'for': 'python'}
 
@@ -266,12 +268,17 @@ if getcwd() =~ "^/home/sileht/workspace/wazo"
         else
             let g:black_skip_string_normalization = 1
         endif
-        "autocmd FileType python autocmd BufWritePre <buffer> :Black
+       "autocmd FileType python autocmd BufWritePre <buffer> :Black
     endif
 endif
 
+if getcwd() =~ "^/home/sileht/workspace/mergify/site"
+    autocmd FileType python autocmd BufWritePre <buffer> :Black
+    autocmd FileType python autocmd BufWritePre <buffer> :Isort
+endif
 if getcwd() =~ "^/home/sileht/workspace/mergify/engine"
     autocmd FileType python autocmd BufWritePre <buffer> :Black
+    autocmd FileType python autocmd BufWritePre <buffer> :Isort
 endif
 
 let g:ale_sign_error = '⛔'
