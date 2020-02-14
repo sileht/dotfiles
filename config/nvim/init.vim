@@ -274,11 +274,11 @@ endif
 
 if getcwd() =~ "^/home/sileht/workspace/mergify/site"
     autocmd FileType python autocmd BufWritePre <buffer> :Black
-    autocmd FileType python autocmd BufWritePre <buffer> :Isort
+    "autocmd FileType python autocmd BufWritePre <buffer> :Isort
 endif
 if getcwd() =~ "^/home/sileht/workspace/mergify/engine"
     autocmd FileType python autocmd BufWritePre <buffer> :Black
-    autocmd FileType python autocmd BufWritePre <buffer> :Isort
+    "autocmd FileType python autocmd BufWritePre <buffer> :Isort
 endif
 
 let g:ale_sign_error = '⛔'
