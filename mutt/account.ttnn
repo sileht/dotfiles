@@ -1,7 +1,9 @@
 # vim:set ft=muttrc:
 
+source ~/.mutt/reset
+source ~/.mutt/password
+
 set from = "${my_ttnn_user}@tetaneutral.net"
-unalternates *
 set realname = "Mehdi Abaakouk for tetaneutral.net"
 set signature = "~/.mutt/signature.ttnn"
 
@@ -13,7 +15,6 @@ set crypt_autosign    = no
 
 macro index,pager M ":<enter>"
 
-unmailboxes *
 mailboxes =INBOX =Drafts =Sent =Trash =Junk
 
 
