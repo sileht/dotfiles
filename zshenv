@@ -36,5 +36,7 @@ export LESSOPEN="|lesspipe %s"
 
 export MOSH_PREDICTION_DISPLAY=always
 
+export VAGRANT_DEFAULT_PROVIDER=libvirt
+
 export GEM_HOME=$HOME/.ruby-gems
 # vim:ft=zsh

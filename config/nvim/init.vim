@@ -29,6 +29,8 @@ Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'tacahiroy/ctrlp-funky'
 
+Plug 'liuchengxu/vim-clap'
+
 Plug 'lilydjwg/colorizer'       " color hexa code (eg: #0F12AB)
 Plug 'luochen1990/rainbow'      " special parenthesis colors
 Plug 'inside/vim-search-pulse'

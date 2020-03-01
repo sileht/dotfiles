@@ -403,6 +403,14 @@ if [ $commands[kubectl] ]; then
   source <(kubectl completion zsh)
 fi
 
+function lsp() {
+    local p="$1"
+    while [ $p != "/" ]; do
+        ls -ld $p
+        p=$(dirname $p)
+    done | tac | column -t
+}
+
 alias vim="nvim"
 alias r="ranger"
 alias vi="nvim"
