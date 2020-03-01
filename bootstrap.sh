@@ -49,7 +49,7 @@ typeset -a rlist=""
 ensure_apt() {
     [ -x "$(which apt 2>/dev/null)" ] || return
     sudo -n true 2>/dev/null
-    is_non_root=?
+    is_non_root=$?
     [ "$is_non_root" -eq 1 ] && return
     for name in "$@"; do
         if [ "${name:0:1}" == "-" ]; then
