@@ -27,6 +27,8 @@ zcompileall(){
     done
 }
 
+eval "$(~/.env/base16-shell/profile_helper.sh)"
+
 source ~/.env/zsh-autosuggestions/zsh-autosuggestions.zsh
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=58"
 

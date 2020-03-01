@@ -5,19 +5,16 @@ map <F1> <del>
 map! <F1> <del>
 
 " Add some missing filetype extentions
-autocmd BufNewFile,BufRead *.yaml set filetype=yml
-autocmd BufNewFile,BufRead *.jsx set filetype=javascript
-autocmd BufNewFile,BufRead *.j2	  set filetype=jinja
-autocmd BufNewFile,BufRead *.jsx	  set filetype=javascript
+autocmd BufNewFile,BufRead *.yaml  set filetype=yml
+autocmd BufNewFile,BufRead *.j2	   set filetype=jinja
 autocmd BufNewFile,BufRead *mutt-* set filetype=mail
 
 call plug#begin('~/.local/share/nvim/plugged')
 
 " Style
-Plug 'arcticicestudio/nord-vim'
+Plug 'chriskempson/base16-vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'dense-analysis/ale'
 Plug 'bling/vim-bufferline'
 Plug 'mhinz/vim-signify'                " VCS diff
 Plug 'tpope/vim-fugitive'               " GIT
@@ -37,29 +34,31 @@ Plug 'luochen1990/rainbow'      " special parenthesis colors
 Plug 'inside/vim-search-pulse'
 
 " Language
+Plug 'dense-analysis/ale'
 Plug 'editorconfig/editorconfig-vim'
-Plug 'jaxbot/semantic-highlight.vim'                                  " semantic highlight (permanent)
-Plug 'numirias/semshi',               {'do': ':UpdateRemotePlugins'}  " semantic highlight (selected)
+Plug 'jaxbot/semantic-highlight.vim'                                                   " semantic highlight (permanent)
+Plug 'numirias/semshi',               {'do': ':UpdateRemotePlugins', 'for': 'python'}  " semantic highlight (selected/python)
 
 Plug 'dbeniamine/vim-mail',           {'for': 'mail'}
 
-Plug 'psf/black',                     {'for': 'python'}
-Plug 'fisadev/vim-isort',             {'for': 'python'}
-Plug 'Vimjas/vim-python-pep8-indent', {'for': 'python'}
+"Plug 'Vimjas/vim-python-pep8-indent', {'for': 'python'}
 Plug 'vim-python/python-syntax',      {'for': 'python'}
+"
+"Plug 'chr4/nginx.vim'
+"Plug 'vim-scripts/spec.vim',          {'for': 'spec'}
+"Plug 'spf13/PIV',                     {'for': 'php'}
+"Plug 'Rykka/riv.vim',                 {'for': 'rst'}
+"Plug 'rodjek/vim-puppet',             {'for': 'puppet'}
 
-Plug 'chr4/nginx.vim'
-Plug 'vim-scripts/spec.vim',          {'for': 'spec'}
-Plug 'spf13/PIV',                     {'for': 'php'}
-Plug 'Rykka/riv.vim',                 {'for': 'rst'}
-Plug 'rodjek/vim-puppet',             {'for': 'puppet'}
-Plug 'pangloss/vim-javascript',       {'for': 'javascript'}
-Plug 'maxmellon/vim-jsx-pretty',       {'for': 'javascript'}
+Plug 'HerringtonDarkholme/yats.vim',       {'for': ['javascript', 'javascriptreact']}
+Plug 'yuezk/vim-js',       {'for': ['javascript', 'javascriptreact']}
+Plug 'maxmellon/vim-jsx-pretty',       {'for': 'javascriptreact'}
+
 Plug 'groenewege/vim-less',           {'for': 'less'}
 Plug 'elzr/vim-json',                 {'for': 'json'}
-Plug 'tpope/vim-rails',               {'for': 'ruby'}
+"Plug 'tpope/vim-rails',               {'for': 'ruby'}
 Plug 'tpope/vim-markdown',            {'for': 'markdown'}
-"""Plug 'racer-rust/vim-racer'           " rust
+""""Plug 'racer-rust/vim-racer'           " rust
 Plug 'vim-scripts/HTML-AutoCloseTag', {'for': ['html', 'xml']}
 Plug 'hail2u/vim-css3-syntax',        {'for': 'css'}
 
@@ -135,7 +134,7 @@ nnoremap P "0p                            " Paste last yank
 nnoremap Y y$                             " Yank from the cursor to the end of the line, to be consistent with C and D.
 nmap <silent> <leader>/ :nohlsearch<CR>   " Clean hlsearch on new search
 command! Notes execute "help mynotes"
-command! R execute "source ~/.vimrc"
+command! R execute "source ~/.config/nvim/init.vim"
 
 " ###############
 " ### ON LOAD ###
@@ -171,14 +170,14 @@ if (&ft!='mail')
     augroup END
 endif
 
-" COC autocmd CursorHold * silent call CocActionAsync('highlight')
-
 " ##############
 " ### Themes ###
 " ##############
-set t_Co=256            " Enable 256 colors to stop the CSApprox warning and make xterm vim shine
-set background=dark
-colorscheme nord
+"set t_Co=256            " Enable 256 colors to stop the CSApprox warning and make xterm vim shine
+if filereadable(expand("~/.vimrc_background"))
+  let base16colorspace=256
+  source ~/.vimrc_background
+endif
 
 set cursorline
 set laststatus=2        " Show statusbar
@@ -190,7 +189,7 @@ let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#buffer_idx_mode = 1
 let g:airline#extensions#ale#enabled = 1
-let g:airline_theme = 'nord'
+let g:airline_theme = 'base16_eighties'
 
 nmap <leader>& <Plug>AirlineSelectTab1
 nmap <leader>é <Plug>AirlineSelectTab2
@@ -243,11 +242,17 @@ let g:ale_lint_on_enter = 0
 set completeopt+=menuone
 set completeopt+=noinsert
 
+let g:ale_linter_aliases = {'jsx': ['css', 'javascript']}
 let g:ale_linters = {}
 let g:ale_linters.python = ['flake8', 'pyls']
 let g:ale_linters.c = ['clangformat']
 let g:ale_linters.javascript = ['eslint']
-let g:ale_fixers = {'python': ['black']}
+let g:ale_linters.jsx = ['stylelint', 'eslint']
+let g:ale_fixers = {
+  \  '*': ['remove_trailing_lines', 'trim_whitespace'],
+  \  'python': ['black', 'isort'],
+  \  'javascript': ['eslint'],
+  \ }
 let g:ale_c_parse_makefile = 1
 let g:ale_c_parse_compile_commands = 1
 let g:ale_python_pyls_config = {'pyls': {'plugins': {
@@ -255,31 +260,9 @@ let g:ale_python_pyls_config = {'pyls': {'plugins': {
   \   'pylint': {'enabled': v:false},
   \   'pycodestyle': {'enabled': v:false},
   \ }}}
+
+let g:ale_fix_on_save = 1
 "let __ale_c_project_filenames = ['README.md']
-
-" WAZO tmp
-if getcwd() =~ "^/home/sileht/workspace/wazo"
-    let envs = filter(split(system("tox -a")), 'v:val == "linters"')
-    if (len(envs) == 0)
-        let g:ale_python_flake8_options = "--select E,F,W --ignore E501,W503"
-    else
-        if getcwd() =~ "^/home/sileht/workspace/wazo/swarm-subscription"
-            let g:black_skip_string_normalization = 0
-        else
-            let g:black_skip_string_normalization = 1
-        endif
-       "autocmd FileType python autocmd BufWritePre <buffer> :Black
-    endif
-endif
-
-if getcwd() =~ "^/home/sileht/workspace/mergify/site"
-    autocmd FileType python autocmd BufWritePre <buffer> :Black
-    "autocmd FileType python autocmd BufWritePre <buffer> :Isort
-endif
-if getcwd() =~ "^/home/sileht/workspace/mergify/engine"
-    autocmd FileType python autocmd BufWritePre <buffer> :Black
-    "autocmd FileType python autocmd BufWritePre <buffer> :Isort
-endif
 
 let g:ale_sign_error = '⛔'
 let g:ale_sign_info = 'ℹ'
@@ -316,6 +299,7 @@ nmap <silent> <leader>k :ALEPrevious<cr>
 nmap <silent> <leader>dv :ALEGoToDefinitionInVSplit<cr>
 nmap <silent> <leader>dh :ALEGoToDefinitionInVSplit<cr>
 nmap <silent> <leader>dd :ALEGoToDefinition<cr>
+nnoremap <F11> :ALEFix<cr>
 
 nmap <silent> <leader>rr :Semshi rename<CR>
 nmap <silent> <Tab> :Semshi goto name next<CR>

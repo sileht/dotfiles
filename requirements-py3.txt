@@ -12,6 +12,10 @@ khal
 # vim
 tox
 python-language-server[all]
+pyls-mypy
+pyls-isort
+pyls-black
+
 black ;python_version>="3.6"
 flake8
 jedi
