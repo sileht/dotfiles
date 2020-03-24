@@ -4,7 +4,7 @@ git fetch origin
 curbranch=$(git rev-parse --abbrev-ref HEAD)
 
 
-[ "$1" != "-q" ] && for branch in $(git branch -l | grep '^[ ]*sileht/'); do
+for branch in $(git branch -l | grep "^[ ]*${1:=sileht/}"); do
     echo "*Rebase $branch"
     git checkout $branch
     remote=$(git config branch.$(git name-rev --name-only HEAD).remote)
@@ -15,10 +15,7 @@ done
 git checkout $curbranch
 
 branches_to_delete="$((
-    git branch --merged origin/master ; 
-    git branch --merged origin/stable/liberty ; 
-    git branch --merged origin/stable/mitaka ; 
-    git branch --merged origin/stable/kilo ;
+    git branch --merged origin/master ;
     git branch -l | grep '^\s*review' ;
 ) 2>/dev/null | grep -v -e '\<master\>' -e '\<$curbranch\>' | sort -u ; )"
 
@@ -27,13 +24,17 @@ if [ ! "$branches_to_delete" ]; then
     exit 0
 fi
 
-for branch in $branches_to_delete; do 
+for branch in $branches_to_delete; do
     echo "$branch: $(git log -1 --pretty=tformat:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%an %cr)%Creset' --date=relative $branch)"
 done
 
-read -p"Continue (Y/O/N)? " 
+read -p"Continue (Y/O/N)? "
 case $REPLY in
-    Y|y|yes|Yes|YES|YEs|O) git branch -D $branches_to_delete ;;
+    Y|y|yes|Yes|YES|YEs|O)
+        git branch -D $branches_to_delete ;
+        for b in $branches_to_delete; do
+            git push origin :$b;
+        done
+        ;;
     *) echo "Abandoning..." ;;
 esac
-
