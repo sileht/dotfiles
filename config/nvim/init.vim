@@ -39,7 +39,8 @@ Plug 'inside/vim-search-pulse'
 Plug 'dense-analysis/ale'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'jaxbot/semantic-highlight.vim'                                                   " semantic highlight (permanent)
-Plug 'numirias/semshi',               {'do': ':UpdateRemotePlugins', 'for': 'python'}  " semantic highlight (selected/python)
+"Plug 'numirias/semshi',               {'do': ':UpdateRemotePlugins', 'for': 'python'}  " semantic highlight (selected/python)
+
 
 Plug 'dbeniamine/vim-mail',           {'for': 'mail'}
 
@@ -51,6 +52,8 @@ Plug 'vim-python/python-syntax',      {'for': 'python'}
 "Plug 'spf13/PIV',                     {'for': 'php'}
 "Plug 'Rykka/riv.vim',                 {'for': 'rst'}
 "Plug 'rodjek/vim-puppet',             {'for': 'puppet'}
+"
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries', 'for': 'go' }
 
 Plug 'HerringtonDarkholme/yats.vim',       {'for': ['javascript', 'javascriptreact']}
 Plug 'yuezk/vim-js',       {'for': ['javascript', 'javascriptreact']}
@@ -145,7 +148,7 @@ command! R execute "source ~/.config/nvim/init.vim"
 " Change cwd to file directory
 autocmd BufEnter * if bufname("") !~ "^\[A-Za-z0-9\]*://" | lcd %:p:h | endif
 " Cut at 80 for some filetype
-autocmd FileType c,cpp,java,go,php,javascript,puppet,rst set textwidth=79
+autocmd FileType c,cpp,java,go,php,javascript,javascriptreact,puppet,rst set textwidth=79
 autocmd FileType python set textwidth=90
 " No ending space
 autocmd FileType c,cpp,java,go,php,javascript,puppet,python,rst,rust,twig,xml,yml,perl,sql autocmd BufWritePre <buffer> call StripTrailingWhitespace()
@@ -154,7 +157,7 @@ autocmd BufWritePre,BufRead *.c setlocal smartindent cindent cinoptions=(0,:0,l1
 autocmd BufWritePre,BufRead *.h setlocal smartindent cindent cinoptions=(0,:0,l1,t0,L3
 
 " Javascript people like 2 chars sep
-autocmd FileType javascript set shiftwidth=2 tabstop=4 softtabstop=4
+autocmd FileType javascript,javascriptreact set shiftwidth=2 tabstop=4 softtabstop=4
 
 match ErrorMsg /\s\+$\| \+\ze\t/
 
@@ -176,10 +179,13 @@ endif
 " ### Themes ###
 " ##############
 "set t_Co=256            " Enable 256 colors to stop the CSApprox warning and make xterm vim shine
+let base16colorspace=256
 if filereadable(expand("~/.vimrc_background"))
-  let base16colorspace=256
   source ~/.vimrc_background
+else
+  colorscheme base16-eighties
 endif
+
 
 set cursorline
 set laststatus=2        " Show statusbar
@@ -237,7 +243,7 @@ let g:ale_list_window_size = 7
 let g:ale_list_vertical = 0
 let g:ale_keep_list_window_open = 1
 set omnifunc=ale#completion#OmniFunc
-"let g:ale_set_highlights = 0
+let g:ale_set_highlights = 0
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_insert_leave = 0
 let g:ale_lint_on_enter = 0
@@ -246,8 +252,9 @@ set completeopt+=noinsert
 
 let g:ale_linter_aliases = {'jsx': ['css', 'javascript']}
 let g:ale_linters = {}
-let g:ale_linters.python = ['flake8', 'pyls']
+let g:ale_linters.python = ['pyls', 'flake8']
 let g:ale_linters.c = ['clangformat']
+let g:ale_linters.go = ['gometalinter']
 let g:ale_linters.javascript = ['eslint']
 let g:ale_linters.jsx = ['stylelint', 'eslint']
 let g:ale_fixers = {
@@ -257,8 +264,9 @@ let g:ale_fixers = {
   \ }
 let g:ale_c_parse_makefile = 1
 let g:ale_c_parse_compile_commands = 1
-let g:ale_python_pyls_config = {'pyls': {'plugins': {
-  \   'pyflakes': {'enabled': v:false},
+let g:ale_python_pyls_config = {'pyls': {
+  \ 'settings': {"configurationSources": ["flake8"]},
+  \ 'plugins': {
   \   'pylint': {'enabled': v:false},
   \   'pycodestyle': {'enabled': v:false},
   \ }}}
@@ -266,15 +274,22 @@ let g:ale_python_pyls_config = {'pyls': {'plugins': {
 let g:ale_fix_on_save = 1
 "let __ale_c_project_filenames = ['README.md']
 
+" for golang
+let g:ale_go_gometalinter_options = '--fast --enable=staticcheck --enable=gosimple --enable=unused'
+" let g:ale_go_gometalinter_options = '--fast --vendored-linters --disable-all --enable=gotype --enable=vet --enable=golint -t'
+
+let g:go_fmt_fail_silently = 1
+
+let g:ale_echo_msg_error_str = 'E'
+let g:ale_echo_msg_warning_str = 'W'
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+
 let g:ale_sign_error = '⛔'
 let g:ale_sign_info = 'ℹ'
 let g:ale_sign_offset = 1000000
 let g:ale_sign_style_error = '⛔'
 let g:ale_sign_style_warning = '⚠'
 let g:ale_sign_warning = '⚠'
-
-packloadall
-silent! helptags ALL
 
 " ##################
 " ### EASY ALIGN ###
@@ -423,9 +438,10 @@ def load_flake8(path):
         venvdir = os.path.join(path, venv)
         if os.path.exists(venvdir):
             vim.command("let g:ale_python_flake8_executable = '%s/bin/flake8'" % venvdir)
+            return
 
 def load_venv(path):
-    for venv in (".tox/py37", ".tox/py27", ".tox/py27-postgresql-file", ".tox/py27-mysql-file", ".tox/integration", "venv"):
+    for venv in (".tox/py38", ".tox/py37", ".tox/py27", "venv"):
         venvdir = os.path.join(path, venv)
         if os.path.exists(venvdir):
             vim.command("let $VIRTUAL_ENV='%s'" % venvdir)
@@ -443,6 +459,7 @@ while True:
     if is_source_root(current_path):
         load_venv(current_path)
         load_flake8(current_path)
+        # vim.command("let g:ale_python_root='%s'" % current_path)
         break
     current_path = os.path.abspath(os.path.join(current_path, ".."))
     if current_path == home or current_path == "/":
@@ -451,3 +468,7 @@ while True:
 pythoneof
 endif
 endfunction
+
+
+packloadall
+silent! helptags ALL

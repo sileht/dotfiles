@@ -71,8 +71,12 @@ Host *.t
     Hostname %hetaneutral.net
     Port 2222
     User root
+    #PubkeyAcceptedKeyTypes +ssh-dss
+
+Host *.te
+    Hostname %htaneutral.net
+    Port 2222
     IdentityFile ~/.ssh/id_rsa_g1
-#    PubkeyAcceptedKeyTypes +ssh-dss
 
 Host *.ring.nlnog.net
     User tetaneutral

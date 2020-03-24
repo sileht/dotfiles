@@ -69,7 +69,7 @@ status.register(
     on_leftclick="change_sink",
     on_middleclick="pavucontrol -t 1",
     vertical_bar_width=1,
-    sink="bluez_sink.4C_87_5D_06_32_13.a2dp_sink",
+    sink="bluez_sink.4C_87_5D_06_32_13.a2dp_sink_aac",
     color_muted="#AAAAAA",
     format="🎧: {volume}{selected}",
 )
@@ -95,9 +95,7 @@ status.register(
     "battery",
     interval=60,
     alert_percentage=3,
-    format=(
-        "{percentage:.0f}% {glyph} {status}{remaining:%E%hh:%Mm} {consumption}W"
-    ),
+    format=("{percentage:.0f}% {glyph} {status}{remaining:%E%hh:%Mm} {consumption}W"),
     alert=True,
     status={"DIS": "↓", "CHR": "↑", "FULL": "="},
     not_present_text="",

@@ -27,7 +27,19 @@ zcompileall(){
     done
 }
 
-eval "$(~/.env/base16-shell/profile_helper.sh)"
+
+colormode() {
+    local mode="${1:=eighties}"
+    source ~/.env/base16-shell/scripts/base16-${mode}.sh
+    echo "colorscheme base16-${mode}" >| ~/.vimrc_background
+    echo "${mode}" >| ~/.colormode
+}
+alias lightmode="colormode classic-light"
+alias darkmode="colormode eighties"
+
+_last_colormode="$(cat ~/.colormode 2>/dev/null)"
+colormode "$_last_colormode"
+
 
 source ~/.env/zsh-autosuggestions/zsh-autosuggestions.zsh
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=58"
@@ -440,7 +452,7 @@ function sfind(){ find "$@" | egrep -v '(binaire|\.svn|\.git|\.bzr)' ; }
 alias grep='grep --color=auto'
 alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
-function sgrep(){ grep "$@" --color=always| egrep -v '(binaire|\.svn|\.git)' ; }
+function sgrep(){ grep "$@" --color=always| egrep -v '(Binary|binaire|\.svn|\.git)' ; }
 function g(){ grep --color=always "$@" | more }
 
 # ZSH STUFF
