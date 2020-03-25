@@ -1,0 +1,96 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+# flake8: noqa: E501
+"""Sound controller."""
+
+import functools
+import subprocess
+import time
+
+import pulsectl
+
+BOSE_MAC = "4C:87:5D:06:32:13"
+
+
+def _bluetooth(*args):
+    cmd = ["bluetoothctl"] + list(args)
+    return subprocess.run(cmd, check=True, stdout=subprocess.PIPE, text=True).stdout
+
+
+def _is_bluetooth_on():
+    for line in _bluetooth("show").split("\n"):
+        line = line.strip()
+        if line == "Powered: yes":
+            return True
+    return False
+
+
+def _select_output(pulse, card, profile):
+    sink_output = [sink for sink in pulse.sink_list() if sink.card == card.index][0]
+    pulse.default_set(sink_output)
+    for sink_input in pulse.sink_input_list():
+        pulse.sink_input_move(sink_input.index, sink_output.index)
+    pulse.card_profile_set(card, profile.name)
+
+    subprocess.run(
+        ["pkill", "-SIGUSR1", "-f", "/usr/bin/python3 /home/sileht/.i3/status.py"]
+    )
+
+
+with pulsectl.Pulse("my-client-name") as pulse:
+
+    sinks = {}
+    cards = pulse.card_list()
+
+    bose_card_name = "bluez_card.%s" % BOSE_MAC.replace(":", "_")
+    bose_found = bose_card_name in [card.name for card in cards]
+
+    if _is_bluetooth_on():
+        sinks["      Bluetooth | off"] = functools.partial(_bluetooth, "power", "off")
+
+        if bose_found:
+            label = f"    🎧 sileht's headphone | Disconnect"
+            sinks[label] = functools.partial(_bluetooth, "disconnect", BOSE_MAC)
+        else:
+            sinks["   🎧 sileht's headphone | Connect"] = functools.partial(
+                _bluetooth, "connect", BOSE_MAC
+            )
+    else:
+        sinks["     Bluetooth | on"] = functools.partial(_bluetooth, "power", "on")
+
+    default_sink_name = pulse.server_info().default_sink_name
+    default_card_index = [
+        sink.card for sink in pulse.sink_list() if sink.name == default_sink_name
+    ][0]
+
+    for card in reversed(cards):
+        for profile in reversed(card.profile_list):
+            if profile.available and profile.n_sinks >= 1:
+                status = "   "
+                if (
+                    card.index == default_card_index
+                    and profile.name == card.profile_active.name
+                ):
+                    status = "➤ "
+                if card.proplist["device.icon_name"] == "audio-headphones-bluetooth":
+                    icon = "🎧"
+                else:
+                    icon = "🔊"
+                label = f"{status} {icon} {card.proplist['device.description']} | {profile.description}"
+                sinks[label] = functools.partial(_select_output, pulse, card, profile)
+
+    p = subprocess.Popen(
+        ["dmenu", "-i", "-l", "30"],
+        stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE,
+        text=True,
+    )
+    selected = p.communicate(input="\n".join(sinks.keys()))[0][:-1]
+    if selected:
+        callback = sinks.get(selected)
+        if callback:
+            callback()
+        else:
+            print("Selected invalid")
+    else:
+        print("Nothing selected")
