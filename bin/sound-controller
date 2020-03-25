@@ -9,12 +9,12 @@ import time
 
 import pulsectl
 
-BOSE_MAC = "4C:87:5D:06:32:13"
 
-
-def _bluetooth(*args):
+def _bluetooth(*args, timeout=None):
     cmd = ["bluetoothctl"] + list(args)
-    return subprocess.run(cmd, check=True, stdout=subprocess.PIPE, text=True).stdout
+    return subprocess.run(
+        cmd, check=True, stdout=subprocess.PIPE, text=True, timeout=timeout
+    ).stdout
 
 
 def _is_bluetooth_on():
@@ -26,46 +26,92 @@ def _is_bluetooth_on():
 
 
 def _select_output(pulse, card, profile):
-    sink_output = [sink for sink in pulse.sink_list() if sink.card == card.index][0]
+    pulse.card_profile_set(card, profile.name)
+
+    sinks = []
+    while not sinks:
+        time.sleep(0.1)
+        sinks = [sink for sink in pulse.sink_list() if sink.card == card.index]
+
+    sink_output = sinks[0]
     pulse.default_set(sink_output)
     for sink_input in pulse.sink_input_list():
         pulse.sink_input_move(sink_input.index, sink_output.index)
-    pulse.card_profile_set(card, profile.name)
-
-    subprocess.run(
-        ["pkill", "-SIGUSR1", "-f", "/usr/bin/python3 /home/sileht/.i3/status.py"]
-    )
 
 
-with pulsectl.Pulse("my-client-name") as pulse:
-
-    sinks = {}
-    cards = pulse.card_list()
-
-    bose_card_name = "bluez_card.%s" % BOSE_MAC.replace(":", "_")
-    bose_found = bose_card_name in [card.name for card in cards]
-
-    if _is_bluetooth_on():
-        sinks["      Bluetooth | off"] = functools.partial(_bluetooth, "power", "off")
-
-        if bose_found:
-            label = f"    🎧 sileht's headphone | Disconnect"
-            sinks[label] = functools.partial(_bluetooth, "disconnect", BOSE_MAC)
+def _get_bluetooth_device_info(mac):
+    info = {}
+    for line in _bluetooth("info", mac).split("\n")[1:]:
+        name, _, value = line.strip().partition(": ")
+        if name == "UUID":
+            value = value.split("(")[0].strip()
+            info.setdefault(name, []).append(value)
         else:
-            sinks["   🎧 sileht's headphone | Connect"] = functools.partial(
-                _bluetooth, "connect", BOSE_MAC
-            )
-    else:
-        sinks["     Bluetooth | on"] = functools.partial(_bluetooth, "power", "on")
+            info[name] = value
+    return info
 
+
+def _bluetooth_unpair(mac, connected):
+    if connected:
+        _bluetooth("disconnect", mac)
+    _bluetooth("remove", mac)
+
+
+def _bluetooth_pair(mac):
+    _bluetooth("trust", mac)
+    _bluetooth("pair", mac)
+    _bluetooth("connect", mac)
+
+
+def _bluetooth_scan():
+    try:
+        _bluetooth("scan", "on", timeout=1)
+    except subprocess.TimeoutExpired:
+        pass
+
+
+def _get_bluetooth_items():
+
+    items = {}
+    items[f"     Bluetooth | Scan"] = functools.partial(_bluetooth_scan)
+    if _is_bluetooth_on():
+        items["     Bluetooth | Off"] = functools.partial(_bluetooth, "power", "off")
+    else:
+        items["     Bluetooth | On"] = functools.partial(_bluetooth, "power", "on")
+    for line in _bluetooth("devices").split("\n"):
+        if not line.strip():
+            continue
+        mac, _, name = line.strip()[7:].partition(" ")
+        info = _get_bluetooth_device_info(mac)
+        if info["Paired"] == "yes":
+            if "Audio Sink" in info["UUID"]:
+                connected = info["Connected"] == "yes"
+                if connected:
+                    label = f"    🎧 {info['Name']} | Disconnect"
+                    items[label] = functools.partial(_bluetooth, "disconnect", mac)
+                else:
+                    label = f"    🎧 {info['Name']} | Connect"
+                    items[label] = functools.partial(_bluetooth, "connect", mac)
+            label = f"    🎧 {info['Name']} | Disconnect & Unpair"
+            items[label] = functools.partial(_bluetooth_unpair, mac, connected)
+        else:
+            label = f"    🎧 {info['Name']} | Pair & Connect"
+            items[label] = functools.partial(_bluetooth_pair, mac)
+
+    return items
+
+
+def _get_pulseaudio_cards_profiles(pulse):
     default_sink_name = pulse.server_info().default_sink_name
     default_card_index = [
         sink.card for sink in pulse.sink_list() if sink.name == default_sink_name
     ][0]
 
+    items = {}
+    cards = pulse.card_list()
     for card in reversed(cards):
         for profile in reversed(card.profile_list):
-            if profile.available and profile.n_sinks >= 1:
+            if profile.available:
                 status = "   "
                 if (
                     card.index == default_card_index
@@ -77,7 +123,16 @@ with pulsectl.Pulse("my-client-name") as pulse:
                 else:
                     icon = "🔊"
                 label = f"{status} {icon} {card.proplist['device.description']} | {profile.description}"
-                sinks[label] = functools.partial(_select_output, pulse, card, profile)
+                items[label] = functools.partial(_select_output, pulse, card, profile)
+    return items
+
+
+def main(pulse):
+    items = {}
+
+    items.update(_get_pulseaudio_cards_profiles(pulse))
+    items["-" * 320] = None
+    items.update(_get_bluetooth_items())
 
     p = subprocess.Popen(
         ["dmenu", "-i", "-l", "30"],
@@ -85,12 +140,17 @@ with pulsectl.Pulse("my-client-name") as pulse:
         stdout=subprocess.PIPE,
         text=True,
     )
-    selected = p.communicate(input="\n".join(sinks.keys()))[0][:-1]
+    selected = p.communicate(input="\n".join(items.keys()))[0][:-1]
     if selected:
-        callback = sinks.get(selected)
+        callback = items.get(selected)
         if callback:
             callback()
         else:
             print("Selected invalid")
     else:
         print("Nothing selected")
+
+
+if __name__ == "__main__":
+    with pulsectl.Pulse("sound-controller") as pulse:
+        main(pulse)

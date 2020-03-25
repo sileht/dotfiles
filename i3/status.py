@@ -1,15 +1,14 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
+# flake8: noqa: E501
 """i3pystatus configuration."""
 
-import pulsectl
-
 import i3pystatus
+import pulsectl
 
 pulse = pulsectl.Pulse("i3pystatus")
 
 status = i3pystatus.Status()
-status.register("text", text="")
 
 SINKS = {
     "alsa_output.pci-0000_00_1f.3.analog-stereo": "🔊 (built-in)",  # billy/trudy
@@ -36,17 +35,35 @@ status.register(
     on_leftclick="change_sink",
     on_middleclick="pavucontrol -t 1",
     vertical_bar_width=1,
-    color_muted="#AAAAAA",
+    color_muted="#333333",
     format=SinkFormat,
 )
-
+status.register("dpms", format="DPMS", format_disabled="DPMS", color_disabled="#333333")
+status.register("text", text="|")
 
 status.register("clock", format="%a %b %d, %H:%M")
-# status.register("text", text="---------------", color="#333333")
-status.register("cpu_usage_graph", graph_width=5)
-status.register("mem_bar")
+status.register("text", text="|")
+
+
+status.register(
+    "network",
+    interface="wlp1s0",
+    format_up="NET: {bytes_recv}KB/s",
+    start_color="#FFFFFF",
+)
+status.register(
+    "cpu_usage_graph",
+    graph_width=5,
+    format="CPU: {usage:02}% {cpu_graph}",
+    dynamic_color=True,
+)
+status.register("mem_bar", format="{used_mem_bar}", multi_colors=True)
+status.register(
+    "mem", format="MEM: {used_mem}/{total_mem}GiB", divisor=1024 ** 3, color="#FFFFFF"
+)
+status.register("text", text="|")
+
 # status.register("redshift")
-status.register("dpms", format="🔳: on", format_disabled="🔳: off")
 status.register(
     "battery",
     interval=60,
@@ -60,6 +77,6 @@ status.register(
     status={"DIS": "↓", "CHR": "↑", "FULL": "="},
     not_present_text="",
 )
-# status.register("text", text="---------------", color="#333333")
+status.register("text", text="|")
 status.register("window_title")
 status.run()
