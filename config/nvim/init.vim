@@ -13,6 +13,7 @@ call plug#begin('~/.local/share/nvim/plugged')
 
 " Style
 Plug 'chriskempson/base16-vim'
+Plug 'ryanoasis/vim-devicons'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'bling/vim-bufferline'

@@ -14,10 +14,7 @@ done
 
 git checkout $curbranch
 
-branches_to_delete="$((
-    git branch --merged origin/master ;
-    git branch -l | grep '^\s*review' ;
-) 2>/dev/null | grep -v -e '\<master\>' -e '\<$curbranch\>' | sort -u ; )"
+branches_to_delete="$(git branch --merged origin/master 2>/dev/null | grep -v -e '\<master\>' -e '\<$curbranch\>' | sed -e 's/^*/ /g' | sort -u)"
 
 if [ ! "$branches_to_delete" ]; then
     echo "Nothing found..."
@@ -33,7 +30,7 @@ case $REPLY in
     Y|y|yes|Yes|YES|YEs|O)
         git branch -D $branches_to_delete ;
         for b in $branches_to_delete; do
-            git push origin :$b;
+            git push github-sileht :$b;
         done
         ;;
     *) echo "Abandoning..." ;;

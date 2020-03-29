@@ -3,22 +3,21 @@
 ##########
 IgnoreUnknown RemoteCommand
 
-Host predator mergify rt rrt eve-unlock nomad1 nomad2 nomad3
+Host predator rt rrt eve-unlock
    User root
-
-Host mergify nomad1 nomad2 nomad3
-   Port 2222
 
 Host rt rrt
    Port 22222
 
 Host alien billy gizmo eve bob rbob trudy predator
+    ForwardAgent yes
     RemoteForward /home/sileht/.var/S.gpg-agent /run/user/1000/gnupg/S.gpg-agent.extra
     RemoteForward /home/sileht/.var/S.gpg-agent.ssh /run/user/1000/gnupg/S.gpg-agent.ssh
     User sileht
     Port 5555
 
-Host gizmo eve predator rbob rrt mergify nomad1 nomad2 nomad3
+
+Host gizmo eve predator rbob rrt
     Hostname %h.sileht.net
 
 Host gizmo
@@ -48,7 +47,10 @@ Host eris
 # TTNN #
 ########
 
-Host chiliproject.t redmine.t
+Host puppet.t mx*.t chiliproject.t *ns*.t g*.t openstack.t www.t mastodon.t
+    ForwardAgent yes
+
+Host chiliproject.t
     Port 22
 
 Host nagios.t

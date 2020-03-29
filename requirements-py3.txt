@@ -19,8 +19,5 @@ pyls-black
 black ;python_version>="3.6"
 flake8
 jedi
-virtualenvwrapper
 
 ghp-import
-
-

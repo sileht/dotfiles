@@ -4,21 +4,21 @@
 """Sound controller."""
 
 import functools
+import shlex
 import subprocess
 import time
 
 import pulsectl
 
 
-def _bluetooth(*args, timeout=None):
-    cmd = ["bluetoothctl"] + list(args)
+def _run(cmd, timeout=None):
     return subprocess.run(
-        cmd, check=True, stdout=subprocess.PIPE, text=True, timeout=timeout
+        shlex.split(cmd), check=True, stdout=subprocess.PIPE, text=True, timeout=timeout
     ).stdout
 
 
 def _is_bluetooth_on():
-    for line in _bluetooth("show").split("\n"):
+    for line in _run("bluetoothctl show").split("\n"):
         line = line.strip()
         if line == "Powered: yes":
             return True
@@ -47,7 +47,7 @@ def _select_output(pulse, card, profile):
 
 def _get_bluetooth_device_info(mac):
     info = {}
-    for line in _bluetooth("info", mac).split("\n")[1:]:
+    for line in _run(f"bluetoothctl info {mac}").split("\n")[1:]:
         name, _, value = line.strip().partition(": ")
         if name == "UUID":
             value = value.split("(")[0].strip()
@@ -57,21 +57,9 @@ def _get_bluetooth_device_info(mac):
     return info
 
 
-def _bluetooth_unpair(mac, connected):
-    if connected:
-        _bluetooth("disconnect", mac)
-    _bluetooth("remove", mac)
-
-
-def _bluetooth_pair(mac):
-    _bluetooth("trust", mac)
-    _bluetooth("pair", mac)
-    _bluetooth("connect", mac)
-
-
 def _bluetooth_scan():
     try:
-        _bluetooth("scan", "on", timeout=3)
+        _run("bluetoothctl scan on", timeout=3)
     except subprocess.TimeoutExpired:
         pass
 
@@ -79,29 +67,33 @@ def _bluetooth_scan():
 def _get_bluetooth_items():
     items = {}
     if _is_bluetooth_on():
-        items["     Bluetooth | Scan (3 seconds)"] = functools.partial(_bluetooth_scan)
-        items["     Bluetooth | Off"] = functools.partial(_bluetooth, "power", "off")
-        for line in _bluetooth("devices").split("\n"):
+        items["    Bluetooth | Scan (3 seconds)"] = _bluetooth_scan
+        items["    Bluetooth | Off"] = "bluetoothctl power off"
+
+        for line in _run("bluetoothctl devices").split("\n"):
             if not line.strip():
                 continue
             mac, _, name = line.strip()[7:].partition(" ")
             info = _get_bluetooth_device_info(mac)
+            prefix = f"   🎧 {info['Name']} |"
             if info["Paired"] == "yes":
+                connected = info["Connected"] == "yes"
+
                 if "Audio Sink" in info["UUID"]:
-                    connected = info["Connected"] == "yes"
                     if connected:
-                        label = f"    🎧 {info['Name']} | Disconnect"
-                        items[label] = functools.partial(_bluetooth, "disconnect", mac)
+                        items[f"{prefix} Disconnect"] = f"bluetoothctl disconnect {mac}"
                     else:
-                        label = f"    🎧 {info['Name']} | Connect"
-                        items[label] = functools.partial(_bluetooth, "connect", mac)
-                label = f"    🎧 {info['Name']} | Disconnect & Unpair"
-                items[label] = functools.partial(_bluetooth_unpair, mac, connected)
+                        items[f"{prefix} Connect"] = f"bluetoothctl connect {mac}"
+
+                items[f"{prefix} Unpair"] = f"bluetoothctl remove {mac}"
             else:
-                label = f"    🎧 {info['Name']} | Pair & Connect"
-                items[label] = functools.partial(_bluetooth_pair, mac)
+                items[f"{prefix} Pair"] = [
+                    f"bluetoothctl trust {mac}",
+                    f"bluetoothctl pair {mac}",
+                    f"bluetoothctl connect {mac}",
+                ]
     else:
-        items["     Bluetooth | On"] = functools.partial(_bluetooth, "power", "on")
+        items["    Bluetooth | On"] = f"bluetoothctl power on"
 
     return items
 
@@ -116,13 +108,13 @@ def _get_pulseaudio_cards_profiles(pulse):
     for card in reversed(cards):
         for profile in reversed(card.profile_list):
             if profile.available:
-                status = "   "
+                status = "  "
                 if (
                     card.index == default_card_index
                     and profile.name == card.profile_active.name
                 ) or (profile.name == "off" and default_sink_name == "auto_null"):
                     status = "➤ "
-                if card.proplist["device.icon_name"] == "audio-headphones-bluetooth":
+                if card.proplist["device.icon_name"].endswith("bluetooth"):
                     icon = "🎧"
                 else:
                     icon = "🔊"
@@ -133,9 +125,11 @@ def _get_pulseaudio_cards_profiles(pulse):
 
 def main(pulse):
     items = {}
-
-    items.update(_get_pulseaudio_cards_profiles(pulse))
+    items["   🔊 Pulseaudio Volume Control"] = "pavucontrol"
+    items["    Bluetooth Manager"] = "blueman-manager"
     items["-" * 320] = None
+    items.update(_get_pulseaudio_cards_profiles(pulse))
+    items["-" * 321] = None
     items.update(_get_bluetooth_items())
 
     p = subprocess.Popen(
@@ -148,7 +142,13 @@ def main(pulse):
     if selected:
         callback = items.get(selected)
         if callback:
-            callback()
+            if isinstance(callback, str):
+                _run(callback)
+            elif isinstance(callback, list):
+                for c in callback:
+                    _run(c)
+            else:
+                callback()
         else:
             print("Selected invalid")
     else:

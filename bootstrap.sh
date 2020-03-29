@@ -133,13 +133,12 @@ download_font(){
 setup_xorg(){
     log "Setup i3pystatus"
     python3 -m pip install --quiet --user --upgrade --upgrade-strategy eager -r ~/.env/requirements-py3-i3pystatus.txt
-    log "Setup fonts"
-    update_fc=
-    download_font "UbuntuMonoNerdFonts.ttf" "https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/UbuntuMono/Regular/complete/Ubuntu%20Mono%20Nerd%20Font%20Complete.ttf?raw=true"
-    download_font "UbuntuMonoNerdItalicFonts.ttf" "https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/UbuntuMono/Regular-Italic/complete/Ubuntu%20Mono%20Italic%20Nerd%20Font%20Complete.ttf?raw=true"
-    download_font "UbuntuMonoNerdBoldFonts.ttf" "https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/UbuntuMono/Bold/complete/Ubuntu%20Mono%20Bold%20Nerd%20Font%20Complete.ttf?raw=true"
-    download_font "UbuntuMonoNerdBoldItalicFonts.ttf" "https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/UbuntuMono/Bold-Italic/complete/Ubuntu%20Mono%20Bold%20Italic%20Nerd%20Font%20Complete.ttf?raw=true"
-    fc-cache -fv
+    #log "Setup fonts"
+    #download_font "UbuntuMonoNerdFonts.ttf" "https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/UbuntuMono/Regular/complete/Ubuntu%20Mono%20Nerd%20Font%20Complete.ttf?raw=true"
+    #download_font "UbuntuMonoNerdItalicFonts.ttf" "https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/UbuntuMono/Regular-Italic/complete/Ubuntu%20Mono%20Italic%20Nerd%20Font%20Complete.ttf?raw=true"
+    #download_font "UbuntuMonoNerdBoldFonts.ttf" "https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/UbuntuMono/Bold/complete/Ubuntu%20Mono%20Bold%20Nerd%20Font%20Complete.ttf?raw=true"
+    #download_font "UbuntuMonoNerdBoldItalicFonts.ttf" "https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/UbuntuMono/Bold-Italic/complete/Ubuntu%20Mono%20Bold%20Italic%20Nerd%20Font%20Complete.ttf?raw=true"
+    #fc-cache -fv
 }
 
 maybe_do_update(){

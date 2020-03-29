@@ -11,8 +11,11 @@
 
 set $mod Mod4
 
-font pango:UbuntuMono Nerd Font:style=Regular 8
+font pango:MesloLGS Nerd Font:style=Regular 12
+
+title_align center
 default_border pixel 3
+workspace_layout tabbed
 hide_edge_borders both
 
 # Use Mouse+$mod to drag floating windows to their wanted position
@@ -23,6 +26,7 @@ for_window [class="pinentry"] floating enable
 for_window [class="Pavucontrol"] floating enable
 for_window [class="VirtualBox"] floating enable
 for_window [class="Conky"] floating enable
+for_window [title="Bluetooth Devices"] floating enable
 #for_window [class="^.*"] border pixel 2
 # no_focus [class="Chromium"]
 
@@ -188,7 +192,7 @@ mode "resize" {
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-    font pango:UbuntuMono Nerd Font:style=Regular 50
+    font pango:MesloLGS Nerd Font:style=Regular 50
     output eDP-1x
     position top
     tray_output none
@@ -198,7 +202,16 @@ bar {
     }
 }
 bar {
-    font pango:UbuntuMono Nerd Font:style=Regular 8
+    font pango:MeslogLGS Nerd Font:style=Regular 10
+
+    # Legacy xorg driver names
+    output eDP1
+    output DP1
+    output DP2
+    output HDMI1
+    output HDMI2
+
+    # Modesetting xorg driver names
     output eDP-1
     output DP-1
     output DP-2

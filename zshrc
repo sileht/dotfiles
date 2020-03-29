@@ -1,7 +1,31 @@
 [[ ! -o rcs ]] && return
 
+source ~/.env/zinit/bin/zinit.zsh
+
 # automatically remove duplicates from these arrays
 typeset -gU path cdpath fpath manpath fignore
+
+lucid=lucid
+
+zinit wait $lucid light-mode for \
+  atinit"zicompinit; zicdreplay" \
+      zdharma/fast-syntax-highlighting \
+  atload"_zsh_autosuggest_start" \
+      zsh-users/zsh-autosuggestions \
+  blockf atpull'zinit creinstall -q .' \
+      zsh-users/zsh-completions \
+      zdharma/history-search-multi-word \
+  atclone"dircolors -b LS_COLORS > clrs.zsh" atpull'%atclone' pick"clrs.zsh" nocompile'!' atload'zstyle ":completion:*" list-colors “${(s.:.)LS_COLORS}”' \
+      trapd00r/LS_COLORS \
+  from"gh-r" as"program" \
+      junegunn/fzf-bin \
+  from"gh-r" as"program" mv"nvim.appimage -> nvim" bpick"nvim.appimage" \
+      neovim/neovim \
+  from"gh-r" as"program" mv"xurls_*_linux_amd64 -> xurls" bpick"xurls_*_linux_amd64" \
+      @mvdan/xurls
+
+zinit ice compile'(pure|async).zsh' pick'async.zsh' src'pure.zsh'
+zinit light sindresorhus/pure
 
 autoload -U zargs           # smart xargs replacement
 autoload -U zmv             # programmable moving, copying, and linking
@@ -10,42 +34,6 @@ autoload -U zrecompile      # allow zwc file recompiling
 autoload -U allopt          # add command allopt to show all opts
 autoload -Uz add-zsh-hook
 
-setopt extended_glob     # in order to use #, ~ and ^ for filename generation
-zrecompile ~/.zprofile ~/.zshenv ~/.zlogin ~/.zlogout ~/.zshrc ~/.env/zsh-completions/src/*~*.(zwc|old) | while read pre file post; do
-    case "$post" in
-      succeeded) rm -f "${file%:}".old;;
-      *) :;;
-    esac
-  done
-
-
-zcompileall(){
-    for file in ~/.zprofile ~/.zshenv ~/.zlogin ~/.zlogout ~/.zshrc ~/.env/zsh-completions/src/*~*.(zwc|old) ; do
-        rm -f $file.zwc
-        rm -f $file.zwc.old
-        zcompile $file
-    done
-}
-
-
-colormode() {
-    local mode="${1:=eighties}"
-    source ~/.env/base16-shell/scripts/base16-${mode}.sh
-    echo "colorscheme base16-${mode}" >| ~/.vimrc_background
-    echo "${mode}" >| ~/.colormode
-}
-alias lightmode="colormode classic-light"
-alias darkmode="colormode eighties"
-
-_last_colormode="$(cat ~/.colormode 2>/dev/null)"
-colormode "$_last_colormode"
-
-
-source ~/.env/zsh-autosuggestions/zsh-autosuggestions.zsh
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=58"
-
-__venvwrapper=$(which virtualenvwrapper_lazy.sh)
-[ "$__venvwrapper" ] && source $__venvwrapper
 
 #########
 # WATCH #
@@ -78,6 +66,7 @@ setopt histverify         # when using ! cmds, confirm first
 ###############
 # Interactive #
 ###############
+setopt extended_glob     # in order to use #, ~ and ^ for filename generation
 setopt interactive_comments
 setopt auto_cd         # a commande like % /usr/local is equivalent to cd /usr/local
 setopt autopushd       # automatically append dirs to the push/pop list
@@ -98,11 +87,6 @@ setopt no_bad_pattern  # don't bitch about bad patterns, just use them verbatim
 setopt no_nomatch      # don't bitch about no matches, just the glob character verbatim
 setopt no_beep         # do. not. ever. beep.
 set -C                 # Don't ecrase file with >, use >| (overwrite) or >> (append) instead
-
-# automatically escape URLs
-# /usr/share/zsh*/functions/Zle/url-quote-magic
-autoload -U url-quote-magic
-zle -N self-insert url-quote-magic
 
 # bindkeys
 bindkey -e              # load emacs bindkeys
@@ -167,10 +151,8 @@ setopt auto_param_slash  # be magic about adding/removing final characters on ta
 setopt auto_remove_slash # be magic about adding/removing final characters on tab completion
 zmodload zsh/complist    # load fancy completion list and menu handler
 
-# initialise the completion system
-autoload -U compinit
-compinit -i -d $ZVARDIR/comp-$HOST
-
+PURE_GIT_UNTRACKED_DIRTY=0
+zstyle :prompt:pure:git:stash show yes
 
 # Use cache
 zstyle ':completion:*' use-cache on
@@ -205,8 +187,6 @@ zstyle ':completion:*:*:(kill|killall):*' force-list always
 
 # files to ignore
 zstyle ':completion:*:(all-|)files' ignored-patterns '*.bk' '*.bak' '*.old' '*~' '.*.sw?'
-zstyle ':completion:*:(all-|)files' ignored-patterns '(|*/)svn'
-zstyle ':completion:*:cd:*' ignored-patterns '(*/)#svn'
 zstyle ':completion:*:*:zless:*' file-patterns '*(-/):directories *.gz:all-files'
 zstyle ':completion:*:*:lintian:*' file-patterns '*(-/):directories *.deb'
 zstyle ':completion:*:*:less:*' ignored-patterns '*.gz'
@@ -219,147 +199,34 @@ zstyle -e ':completion:*:*:vim#:*:*' ignored-patterns \
   'texfiles=$(echo ${PREFIX}*.tex); [[ -n "$texfiles" ]] &&
   reply=(*.(aux|dvi|log|ps|pdf|bbl|toc|lot|lof|latexmain)) || reply=()'
 
+zrecompile ~/.zprofile ~/.zshenv ~/.zlogin ~/.zlogout ~/.zshrc | while read pre file post; do
+    case "$post" in
+      succeeded) rm -f "${file%:}".old;;
+      *) :;;
+    esac
+  done
 
-##########
-# PROMPT #
-##########
-setopt prompt_subst
-autoload -Uz vcs_info
-prompt_opts=(cr subst percent)
-zstyle ':vcs_info:*' check-for-changes true
-zstyle ':vcs_info:*' unstagedstr '¹'  # display ¹ if there are unstaged changes
-zstyle ':vcs_info:*' stagedstr '²'    # display ² if there are staged changes
-zstyle ':vcs_info:*' formats '%b%u%c'
-zstyle ':vcs_info:*' actionformats '%b(%a)'
 
-_prompt_main(){
-  RETVAL=$?
-  local symbols=() ref ref_color venv host_color sep
-  [[ $(jobs -l | wc -l) -gt 0 ]] && symbols+="%F{yellow}⚙"
-  [[ $RETVAL -ne 0 ]] && symbols+="%F{red}✘"
-  [ "$symbols" ] && symbols="$symbols "
-
-  sep="%B%F{white}:%b"
-
-  ref="$vcs_info_msg_0_"
-  if [[ -n "$ref" ]]; then
-    [[ "${ref/(¹|²|¹²)/}" == "$ref" ]] && ref_color=green || ref_color=yellow
-     [[ "${ref/.../}" == "$ref" ]] && ref="  $ref" || ref="✦ ${ref/.../}"
-    ref="%B%F{$ref_color}$ref%b "
-  fi
-  [ $VIRTUAL_ENV ] && venv="%F{white}($(basename $VIRTUAL_ENV)) "
-
-  case $HOST in
-      gizmo|bob|billy|trudy|eve) logo="%F{161}🍥" ;;
-      *) logo="@";;
-  esac
-  case $HOST in
-      bob) host_color=green;;
-      eve) host_color=blue;;
-      billy|trudy) host_color=32;;
-      gizmo) host_color=214;;
-      *) host_color=242;;
-  esac
-  case $USER in
-    root) host_color=161;;
-  esac
-
-  cwd="%~"
-  # cwd=$(shrink_path -f)
-  print    "%F{240}"
-  print -n "%F{240}%F{$host_color}$USER%F{red}${logo}%F{$host_color}$HOST%F{red}$sep"
-  print -n "%F{blue}%B${cwd}%b%F{red}%b"
-  print
-  print -n "$ref"
-  print -n "$venv"
-  print -n "$symbols"
-  print -n "%F{$host_color}%(!.⚡.➤ )"
-  print -n "%F{240}"
+zcompileall(){
+    for file in ~/.zprofile ~/.zshenv ~/.zlogin ~/.zlogout ~/.zshrc ; do
+        rm -f $file.zwc
+        rm -f $file.zwc.old
+        zcompile $file
+    done
 }
 
-_prompt_precmd() {
-  vcs_info 'prompt'
-  PROMPT='%{%f%b%k%}$(_prompt_main)'
-  SPROMPT='zsh: correct %F{red}%R%f to %F{green}%r%f [Nyae]? '
+colormode() {
+    local mode="${1:=eighties}"
+    source ~/.env/base16-shell/scripts/base16-${mode}.sh
+    echo "colorscheme base16-${mode}" >| ~/.vimrc_background
+    echo "${mode}" >| ~/.colormode
 }
-add-zsh-hook precmd _prompt_precmd
+alias lightmode="colormode classic-light"
+alias darkmode="colormode eighties"
 
-_title_set() {
-  if [[ $TERM = screen* ]]; then
-    #In screen this is %w
-    print -nR $'\033k'$1$'\033'\\
-  fi
-  #In screen this is %h
-  if [[ $TERM != linux ]]; then
-    print -nR $'\033]0;'$2$'\007'
-  else
-    print -nR $'\033]0;'$1' - '$2$'\007'
-  fi
-}
+_last_colormode="$(cat ~/.colormode 2>/dev/null)"
+colormode "$_last_colormode"
 
-_cutted_line(){
-    local line="$1" cut_at=${2:-15}
-    if [ ${#line} -gt $cut_at ]; then
-        print -n -- "…$line[${#line}-$cut_at,${#line}]"
-    else
-        print -n -- "$line"
-    fi
-}
-_title_precmd() {
-  local pwd=${PWD/$HOME/"~"}
-  _title_set "$(_cutted_line $pwd)" "[$pwd]"
-}
-
-add-zsh-hook precmd _title_precmd
-
-
-_git_set_config(){
-    key="$1"
-    value="$2"
-    cur=$(git config --get $key)
-    ret=$?
-    if [ $ret -ne 0 -o "$cur" != "$value" ]; then
-        echo "-> set git '$key' to '$value' <-"
-        git config "$key" "$value"
-    fi
-}
-
-_set_git_account(){
-    if [ "$vcs_info_msg_0_" ]; then
-        if [ "${PWD/$HOME\/workspace\/wazo/}" == "${PWD}" ]; then
-            _git_set_config user.email "sileht@sileht.net"
-        else
-            _git_set_config user.email "mabaakouk@wazo.io"
-            _git_set_config git-pull-request.branch-prefix ""
-            _git_set_config git-pull-request.fork never
-
-            if [ -d .git -a ! -f .git/hooks/pre-commit ]; then
-                echo "-> install pre commit hook"
-                ln $HOME/workspace/wazo/xivo-tools/dev-tools/git-hooks/copyright-check \
-                    .git/hooks/pre-commit
-            fi
-        fi
-    fi
-}
-add-zsh-hook precmd _set_git_account
-
-_prompt_preexec() {
-        emulate -L zsh
-        local -a cmd
-        local pwd=${PWD/$HOME/"~"} arf
-        cmd=(${(z)1})
-        if [ "$cmd[1]" = "fg" ]; then
-            cmd=($(jobs | grep -v "continued" | sed 's,.*suspended *,,g' | head -n1 ))
-        fi
-        arg=$(_cutted_line "$cmd[2,-1]")
-        print -nR "${reset_color}"
-        _title_set "$cmd[1] $arg" "["$PWD"] "$cmd[1,-1]
-        if [ "$cmd[1]" = "scr" -o "$cmd[1]" = "sr" -o "$cmd[1]" = "sn" ]; then
-            print -nR "${reset_color}"
-            _title "$cmd[1]$arg" "Other"
-        fi
-}
-add-zsh-hook preexec _prompt_preexec
 
 mka () { time schedtool -B -n 1 -e ionice -n 1 make -j $(nproc) "$@" }
 imka () { time schedtool -D -n 19 -e ionice -c 3 make -j $(nproc) "$@" }
@@ -373,14 +240,12 @@ function cdt() { cd $(mktemp -td cdt.$(date '+%Y%m%d-%H%M%S').XXXXXXXX) ; pwd }
 function s() { pwd >| $ZVARDIR/.saved_dir; }
 function i() { sp="$(cat $ZVARDIR/.saved_dir 2>/dev/null)"; [ -d $sp -a -r $sp ] && cd $sp }
 function p() {
-    local -a working_dirs=($(ls -1d ~/workspace/*/(wazo-|xivo-|)${1}*/.git/.. | sed -e 's@/\.git/\.\./@@g'))
+    local -a working_dirs=($(ls -1d ~/workspace/*/${1}*/.git/.. | sed -e 's@/\.git/\.\./@@g'))
     if [ ${#working_dirs[@]} -eq 1 ] ; then
         cd "${working_dirs}" ; s ; return
     else
         for wd in ${working_dirs[@]}; do
-            if [ "$(basename $wd)" == "${1}" ] || \
-               [ "$(basename $wd)" == "wazo-${1}" ] || \
-               [ "$(basename $wd)" == "xivo-${1}" ]; then
+            if [ "$(basename $wd)" == "${1}" ]; then
                 cd "$wd"; s; return
             fi
         done
@@ -391,8 +256,6 @@ function p() {
 }
 i
 add-zsh-hook chpwd s
-
-inw(){ Xephyr :1 & pid=$! ; DISPLAY=:1 $*; kill $pid ;}
 
 alias Q='exec zsh'
 #alias sc="screen -RDD"
@@ -411,12 +274,9 @@ alias df="df -h"
 alias diff='diff -rNu'
 alias ip='ip -color'
 alias optimutt="find ~/.mutt/cache/headers -type f -exec tcbmgr optimize -nl {} \;"
-if [ $commands[kubectl] ]; then
-  source <(kubectl completion zsh)
-fi
 
 function lsp() {
-    local p="$1"
+    local p="$(readlinkg -f $1)"
     while [ $p != "/" ]; do
         ls -ld $p
         p=$(dirname $p)
@@ -434,18 +294,11 @@ alias psql="sudo -i -u postgres psql"
 alias pyclean='find . \( -type f -name "*.py[co]" \) ! -path "./.tox*" -delete'
 alias getaptkey='sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com'
 alias more=less
-function gcal() { gcalcli --military --monday -w $(($(tput cols)/8)) "$@"; }
-alias did="nvim +'normal Go' +'r!date' ~/did.txt"
-alias wwdk="wdk --dev-dir /home/sileht/workspace/wazo --hostname wazo"
-alias nwdk="wdk --dev-dir /home/sileht/workspace/wazo --hostname nestbox"
-function of() { lsof -np "$1" }
-compdef _pids of
 
 # FIND STUFF
 alias locate='noglob locate'
 alias find='noglob find'
 alias qf='find . -iname '
-alias findnosecure="find . -perm +4000 -print"
 function sfind(){ find "$@" | egrep -v '(binaire|\.svn|\.git|\.bzr)' ; }
 
 # GREP STUFF
@@ -474,13 +327,24 @@ function l(){ ls -hla --color="always" "$@" | more }
 #zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 unset _LS_OPTS
 
-# handy documentation lookup on Debian
-# from http://www.michael-prokop.at/computer/config/.zshrc
-doc() { cd /usr/share/doc/$1 && ls }
-_doc() { _files -W /usr/share/doc -/ }
-compdef _doc doc
-
 function killd(){ DISPLAY="" ps xae | grep DISPLAY=:$1 | grep -v grep | awk '{print $1}' | zargs -r kill -9 }
+
+# pyenv init -
+command pyenv rehash 2>/dev/null
+pyenv() {
+  local command
+  command="${1:-}"
+  if [ "$#" -gt 0 ]; then
+    shift
+  fi
+
+  case "$command" in
+  rehash|shell)
+    eval "$(pyenv "sh-$command" "$@")";;
+  *)
+    command pyenv "$command" "$@";;
+  esac
+}
 
 function fwget(){
     local filename=$(wget -S --spider "$*" 2>&1| grep 'Content-disposition: attachment' | sed -e '/Content-disposition: attachment/s/.*filename="\(.*\)"/\1/g')
@@ -589,9 +453,7 @@ function etox() {
     unset VIRTUAL_ENV
 }
 
-alias pipnodev="find /workspace/pip_cache/ -name '*.dev*' -delete"
 function utox() {
-    pipnodev
     zparseopts -D e+:=env
     typeset -A helper
     helper=($(seq 1 ${#env}))
@@ -606,10 +468,6 @@ function utox() {
 alias etox="nocorrect etox"
 alias utox="nocorrect utox"
 alias upip="pip install -U --upgrade-strategy eager"
-
-source ~/.env/shrink-path.plugin.zsh
-source ~/.env/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source ~/.env/zsh-history-substring-search/zsh-history-substring-search.zsh
 
 typeset -A key
 key=(
@@ -657,19 +515,10 @@ bind2maps emacs viins       -- Insert      overwrite-mode
 bind2maps             vicmd -- Insert      vi-insert
 bind2maps emacs             -- Delete      delete-char
 bind2maps       viins vicmd -- Delete      vi-delete-char
-bind2maps emacs viins vicmd -- Up          history-substring-search-up
-bind2maps emacs viins vicmd -- Down        history-substring-search-down
-bind2maps emacs viins vicmd -- PageUp      history-substring-search-up
-bind2maps emacs viins vicmd -- PageDown    history-substring-search-down
 bind2maps emacs             -- Left        backward-char
 bind2maps       viins vicmd -- Left        vi-backward-char
 bind2maps emacs             -- Right       forward-char
 bind2maps       viins vicmd -- Right       vi-forward-char
-bindkey -M emacs '^P' history-substring-search-up
-bindkey -M emacs '^N' history-substring-search-down
-bindkey -M vicmd 'k' history-substring-search-up
-bindkey -M vicmd 'j' history-substring-search-down
-
 
 unfunction bind2maps
 
@@ -717,8 +566,4 @@ function sgpg(){
 INSIDE_TMUX_SCREEN="$WINDOW$TMUX_PANE"
 if [ "$HOST" == "gizmo" -a ! "$INSIDE_TMUX_SCREEN" ]; then
     sc ; exit 0;
-fi
-
-if command -v pyenv 1>/dev/null 2>&1; then
-    eval "$(pyenv init -)"
 fi

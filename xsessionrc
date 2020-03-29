@@ -1,3 +1,4 @@
 export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:/usr/lib/ccache:$HOME/.env/bin:$HOME/.bin:$HOME/.local/bin:$HOME/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/games:/usr/games:$HOME/.gem/ruby/2.5.0/bin"
-[ "$DISPLAY" = ":0" ] && [ "$(xrandr | grep '^VGA.* connected ')" ] && { xset s off ; xset -dpms;}
+export PYENV_SHELL=zsh
+export PATH="$PYENV_ROOT/bin:$PYENV_ROOT/.pyenv/shims:/usr/lib/ccache:$HOME/.env/bin:$HOME/.bin:$HOME/.local/bin:$HOME/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/games:/usr/games:$HOME/.gem/ruby/2.5.0/bin"
+# [ "$DISPLAY" = ":0" ] && [ "$(xrandr | grep '^VGA.* connected ')" ] && { xset s off ; xset -dpms;}
