@@ -235,8 +235,8 @@ upgrade() {
     #(sudo apt-get update && sudo apt-get dist-upgrade -y) &
     (cd ~/.env && git diff --quiet && git pull --recurse-submodules && ./install ) & # Only pull if not dirty
     (zinit self-update && zinit update --parallel) &
-    nvim "+set nomore" +PlugClean! +PlugUpdate! +qall
     wait
+    nvim "+set nomore" +PlugClean! +PlugUpdate! +qall
 }
 
 mka () { time schedtool -B -n 1 -e ionice -n 1 make -j $(nproc) "$@" }
