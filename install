@@ -3,6 +3,7 @@
 set -e
 
 CONFIG="install.conf.yaml"
+HOST_CONFIG="install-$(cat /etc/hostname).conf.yaml"
 DOTBOT_DIR="dotbot"
 
 DOTBOT_BIN="bin/dotbot"
@@ -13,3 +14,7 @@ git -C "${DOTBOT_DIR}" submodule sync --quiet --recursive
 git submodule update --init --recursive "${DOTBOT_DIR}"
 
 "${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${CONFIG}" "${@}"
+
+if [ -f "${HOST_CONFIG}" ] ; then
+    "${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${HOST_CONFIG}" "${@}"
+fi
