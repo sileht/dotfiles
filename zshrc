@@ -5,9 +5,14 @@ source ~/.env/zinit/zinit.zsh
 # automatically remove duplicates from these arrays
 typeset -gU path cdpath fpath manpath fignore
 
-lucid=lucid
+autoload -U zmv             # programmable moving, copying, and linking
+autoload -U zrecompile      # allow zwc file recompiling
+autoload -Uz add-zsh-hook
 
-zinit wait $lucid light-mode for \
+#########
+# ZINIT #
+#########
+zinit wait lucid light-mode for \
   atinit"zicompinit; zicdreplay" zdharma/fast-syntax-highlighting \
   atload"_zsh_autosuggest_start" zsh-users/zsh-autosuggestions \
   blockf atpull'zinit creinstall -q .' zsh-users/zsh-completions \
@@ -22,24 +27,25 @@ zinit wait $lucid light-mode for \
   cp"plug.vim -> ~/.local/share/nvim/site/autoload/plug.vim" nocompile'!' junegunn/vim-plug \
   as"program" atinit"tic -sx st.info &>/dev/null" make"zinit_install" pick"st" sileht/st \
 
-
 zinit ice compile'(pure|async).zsh' pick'async.zsh' src'pure.zsh'
 zinit light sindresorhus/pure
 
+#########
+# THEME #
+#########
+PURE_GIT_UNTRACKED_DIRTY=0
+zstyle :prompt:pure:git:stash show yes
 
-upgrade() {
-    (sudo pacman -Suy) &
-    #(sudo apt-get update && sudo apt-get dist-upgrade -y) &
-    (cd ~/.env && git diff --quiet && git pull --recurse-submodules) &# Only pull if not dirty
-    (zinit self-update && zinit update --parallel) &
-    wait
-    nvim "+set nomore" +PlugClean! +PlugUpdate! +qall
+colormode() {
+    local mode="${1:=eighties}"
+    source ~/.env/base16-shell/scripts/base16-${mode}.sh
+    echo "colorscheme base16-${mode}" >| ~/.vimrc_background
+    echo "${mode}" >| ~/.colormode
 }
-
-autoload -U zmv             # programmable moving, copying, and linking
-autoload -U zrecompile      # allow zwc file recompiling
-autoload -Uz add-zsh-hook
-
+alias lightmode="colormode classic-light"
+alias darkmode="colormode snazzy" #eighties"
+_last_colormode="$(cat ~/.colormode 2>/dev/null)"
+colormode "$_last_colormode"
 
 #########
 # WATCH #
@@ -94,7 +100,9 @@ setopt no_nomatch      # don't bitch about no matches, just the glob character v
 setopt no_beep         # do. not. ever. beep.
 set -C                 # Don't ecrase file with >, use >| (overwrite) or >> (append) instead
 
-# bindkeys
+############
+# BINDKEYS #
+############
 bindkey -e              # load emacs bindkeys
 bindkey " " magic-space # also do history expansion on space
 
@@ -137,6 +145,11 @@ zle -N edit-command-line
 bindkey "" edit-command-line
 bindkey "e" edit-command-line
 
+bindkey "${terminfo[khome]}" beginning-of-line
+bindkey "${terminfo[kend]}" end-of-line
+bindkey "${terminfo[kich1]}" overwrite-mode  # Insert
+bindkey "${terminfo[kdch1]}" delete-char  # Suppr.
+
 ##############
 # Completion #
 ##############
@@ -156,9 +169,6 @@ setopt auto_param_keys   # be magic about adding/removing final characters on ta
 setopt auto_param_slash  # be magic about adding/removing final characters on tab completion
 setopt auto_remove_slash # be magic about adding/removing final characters on tab completion
 zmodload zsh/complist    # load fancy completion list and menu handler
-
-PURE_GIT_UNTRACKED_DIRTY=0
-zstyle :prompt:pure:git:stash show yes
 
 # Use cache
 zstyle ':completion:*' use-cache on
@@ -220,18 +230,14 @@ zcompileall(){
     done
 }
 
-colormode() {
-    local mode="${1:=eighties}"
-    source ~/.env/base16-shell/scripts/base16-${mode}.sh
-    echo "colorscheme base16-${mode}" >| ~/.vimrc_background
-    echo "${mode}" >| ~/.colormode
+upgrade() {
+    (yes | sudo pacman -Suy) &
+    #(sudo apt-get update && sudo apt-get dist-upgrade -y) &
+    (cd ~/.env && git diff --quiet && git pull --recurse-submodules && ./install ) & # Only pull if not dirty
+    (zinit self-update && zinit update --parallel) &
+    nvim "+set nomore" +PlugClean! +PlugUpdate! +qall
+    wait
 }
-alias lightmode="colormode classic-light"
-alias darkmode="colormode snazzy" #eighties"
-
-_last_colormode="$(cat ~/.colormode 2>/dev/null)"
-colormode "$_last_colormode"
-
 
 mka () { time schedtool -B -n 1 -e ionice -n 1 make -j $(nproc) "$@" }
 imka () { time schedtool -D -n 19 -e ionice -c 3 make -j $(nproc) "$@" }
@@ -291,9 +297,7 @@ function lsp() {
 alias vim="nvim"
 alias r="ranger"
 alias vi="nvim"
-alias vid="nvim --servername sileht"
-alias vir="nvim --servername sileht --remote-silent"
-alias svi="sudo -E /home/sileht/.bin/nvim"
+alias svi="sudo -E /home/sileht/.zinit/plugins/neovim---neovim/nvim"
 alias psql="sudo -i -u postgres psql"
 # alias pyclean='find . \( -type f -name "*.py[co]" \) -o \( -type d -path "*__pycache__*" \) ! -path "./.tox*" -delete"'
 alias pyclean='find . \( -type f -name "*.py[co]" \) ! -path "./.tox*" -delete'
@@ -304,14 +308,14 @@ alias more=less
 alias locate='noglob locate'
 alias find='noglob find'
 alias qf='find . -iname '
-function sfind(){ find "$@" | egrep -v '(binaire|\.svn|\.git|\.bzr)' ; }
+function sfind(){ find "$@" | egrep -v '(Binary|binaire|\.svn|\.git|\.bzr)' ; }
 
 # GREP STUFF
 alias grep='grep --color=auto'
 alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
-function sgrep(){ grep "$@" --color=always| egrep -v '(Binary|binaire|\.svn|\.git)' ; }
-function g(){ grep --color=always "$@" | more }
+function sgrep(){ grep "$@" --color=always| egrep -v '(Binary|binaire|\.svn|\.git|\.bzr)' ; }
+function g(){ sgrep "$@" | more }
 
 # ZSH STUFF
 alias zmv="nocorrect noglob zmv"
@@ -326,8 +330,6 @@ alias lla="ls -alF"
 alias lsd='ls -ld *(-/DN)'
 alias lsdir="for dir in *;do;if [ -d \$dir ];then;du -xhsL \$dir 2>/dev/null;fi;done"
 function l(){ ls -hla --color="always" "$@" | more }
-
-function killd(){ DISPLAY="" ps xae | grep DISPLAY=:$1 | grep -v grep | awk '{print $1}' | xargs -r kill -9 }
 
 # pyenv init -
 command pyenv rehash 2>/dev/null
@@ -468,60 +470,6 @@ function utox() {
 alias etox="nocorrect etox"
 alias utox="nocorrect utox"
 alias upip="pip install -U --upgrade-strategy eager"
-
-typeset -A key
-key=(
-    BackSpace  "${terminfo[kbs]}"
-    Home       "${terminfo[khome]}"
-    End        "${terminfo[kend]}"
-    Insert     "${terminfo[kich1]}"
-    Delete     "${terminfo[kdch1]}"
-    Up         "${terminfo[kcuu1]}"
-    Down       "${terminfo[kcud1]}"
-    Left       "${terminfo[kcub1]}"
-    Right      "${terminfo[kcuf1]}"
-    PageUp     "${terminfo[kpp]}"
-    PageDown   "${terminfo[knp]}"
-)
-
-function bind2maps () {
-    local i sequence widget
-    local -a maps
-
-    while [[ "$1" != "--" ]]; do
-        maps+=( "$1" )
-        shift
-    done
-    shift
-
-    sequence="${key[$1]}"
-    widget="$2"
-
-    [[ -z "$sequence" ]] && return 1
-
-    for i in "${maps[@]}"; do
-        bindkey -M "$i" "$sequence" "$widget"
-    done
-}
-
-bind2maps emacs             -- BackSpace   backward-delete-char
-bind2maps       viins       -- BackSpace   vi-backward-delete-char
-bind2maps             vicmd -- BackSpace   vi-backward-char
-bind2maps emacs             -- Home        beginning-of-line
-bind2maps       viins vicmd -- Home        vi-beginning-of-line
-bind2maps emacs             -- End         end-of-line
-bind2maps       viins vicmd -- End         vi-end-of-line
-bind2maps emacs viins       -- Insert      overwrite-mode
-bind2maps             vicmd -- Insert      vi-insert
-bind2maps emacs             -- Delete      delete-char
-bind2maps       viins vicmd -- Delete      vi-delete-char
-bind2maps emacs             -- Left        backward-char
-bind2maps       viins vicmd -- Left        vi-backward-char
-bind2maps emacs             -- Right       forward-char
-bind2maps       viins vicmd -- Right       vi-forward-char
-
-unfunction bind2maps
-
 
 # https://st.suckless.org/patches/right_click_to_plumb/
 __vte_urlencode() (
