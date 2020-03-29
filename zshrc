@@ -18,6 +18,7 @@ zinit wait $lucid light-mode for \
   from"gh-r" as"program" mv"nvim.appimage -> nvim" bpick"nvim.appimage" neovim/neovim \
   from"gh-r" as"program" mv"xurls_*_linux_amd64 -> xurls" bpick"xurls_*_linux_amd64" @mvdan/xurls \
   from"gh-r" as"program" mv"docker* -> docker-compose" bpick"*linux*" docker/compose \
+  changyuheng/zsh-interactive-cd
 
 
 zinit ice compile'(pure|async).zsh' pick'async.zsh' src'pure.zsh'
