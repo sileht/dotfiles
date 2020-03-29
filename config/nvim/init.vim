@@ -67,6 +67,7 @@ Plug 'tpope/vim-markdown',            {'for': 'markdown'}
 """"Plug 'racer-rust/vim-racer'           " rust
 Plug 'vim-scripts/HTML-AutoCloseTag', {'for': ['html', 'xml']}
 Plug 'hail2u/vim-css3-syntax',        {'for': 'css'}
+Plug 'zinit-zsh/zinit-vim-syntax'
 
 call plug#end()
 

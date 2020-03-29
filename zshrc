@@ -8,21 +8,17 @@ typeset -gU path cdpath fpath manpath fignore
 lucid=lucid
 
 zinit wait $lucid light-mode for \
-  atinit"zicompinit; zicdreplay" \
-      zdharma/fast-syntax-highlighting \
-  atload"_zsh_autosuggest_start" \
-      zsh-users/zsh-autosuggestions \
-  blockf atpull'zinit creinstall -q .' \
-      zsh-users/zsh-completions \
-      zdharma/history-search-multi-word \
-  atclone"dircolors -b LS_COLORS > clrs.zsh" atpull'%atclone' pick"clrs.zsh" nocompile'!' atload'zstyle ":completion:*" list-colors “${(s.:.)LS_COLORS}”' \
-      trapd00r/LS_COLORS \
-  from"gh-r" as"program" \
-      junegunn/fzf-bin \
-  from"gh-r" as"program" mv"nvim.appimage -> nvim" bpick"nvim.appimage" \
-      neovim/neovim \
-  from"gh-r" as"program" mv"xurls_*_linux_amd64 -> xurls" bpick"xurls_*_linux_amd64" \
-      @mvdan/xurls
+  atinit"zicompinit; zicdreplay" zdharma/fast-syntax-highlighting \
+  atload"_zsh_autosuggest_start" zsh-users/zsh-autosuggestions \
+  blockf atpull'zinit creinstall -q .' zsh-users/zsh-completions \
+  zdharma/history-search-multi-word \
+  atclone"dircolors -b LS_COLORS > clrs.zsh" atpull'%atclone' pick"clrs.zsh" nocompile'!' \
+  atload'zstyle ":completion:*" list-colors “${(s.:.)LS_COLORS}”' trapd00r/LS_COLORS \
+  from"gh-r" as"program" junegunn/fzf-bin \
+  from"gh-r" as"program" mv"nvim.appimage -> nvim" bpick"nvim.appimage" neovim/neovim \
+  from"gh-r" as"program" mv"xurls_*_linux_amd64 -> xurls" bpick"xurls_*_linux_amd64" @mvdan/xurls \
+  from"gh-r" as"program" mv"docker* -> docker-compose" bpick"*linux*" docker/compose \
+
 
 zinit ice compile'(pure|async).zsh' pick'async.zsh' src'pure.zsh'
 zinit light sindresorhus/pure
@@ -222,7 +218,7 @@ colormode() {
     echo "${mode}" >| ~/.colormode
 }
 alias lightmode="colormode classic-light"
-alias darkmode="colormode eighties"
+alias darkmode="colormode snazzy" #eighties"
 
 _last_colormode="$(cat ~/.colormode 2>/dev/null)"
 colormode "$_last_colormode"
