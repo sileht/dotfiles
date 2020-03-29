@@ -1,0 +1,28 @@
+- defaults:
+    link:
+      relink: true
+
+- clean: ['~']
+
+- link:
+    ~/.config/dunst/dunstrc: dunstrc
+    ~/.config/ranger: ranger
+    ~/.config/nvim/init.vim: nvim.vim
+    ~/.ctags: ctags
+    ~/.gitconfig: gitconfig
+    ~/.gitignore-global: gitignore-global
+    ~/.gnupg/gpg.conf: gpg.conf
+    ~/.gnupg/gpg-agent.conf: gpg-agent.conf
+    ~/.i3: i3
+    ~/.mutt: mutt
+    ~/.ssh/config: ssh-config
+    ~/.tmux: tmux
+    ~/.tmux.conf: tmux.conf
+    ~/.urlview: urlview
+    ~/.xsessionrc: xsessionrc
+    ~/.wgetrc: wgetrc
+    ~/.zlogin: zlogin
+    ~/.zlogout: zlogout
+    ~/.zprofile: zprofile
+    ~/.zshenv: zshenv
+    ~/.zshrc: zshrc
