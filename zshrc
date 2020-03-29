@@ -24,7 +24,7 @@ zinit wait lucid light-mode for \
   from"gh-r" as"program" mv"xurls_*_linux_amd64 -> xurls" bpick"xurls_*_linux_amd64" @mvdan/xurls \
   from"gh-r" as"program" mv"docker* -> docker-compose" bpick"*linux*" docker/compose \
   changyuheng/zsh-interactive-cd \
-  cp"plug.vim -> ~/.local/share/nvim/site/autoload/plug.vim" nocompile'!' junegunn/vim-plug \
+  cp"plug.vim -> $HOME/.local/share/nvim/site/autoload/plug.vim" nocompile'!' junegunn/vim-plug \
   as"program" atinit"tic -sx st.info &>/dev/null" make"zinit_install" pick"st" sileht/st \
 
 zinit ice compile'(pure|async).zsh' pick'async.zsh' src'pure.zsh'
