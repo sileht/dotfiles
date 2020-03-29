@@ -78,6 +78,7 @@ Host *.t
 Host *.te
     Hostname %htaneutral.net
     Port 2222
+    User root
     IdentityFile ~/.ssh/id_rsa_g1
 
 Host *.ring.nlnog.net
