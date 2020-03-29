@@ -1,6 +1,6 @@
 [[ ! -o rcs ]] && return
 
-source ~/.env/zinit/bin/zinit.zsh
+source ~/.env/zinit/zinit.zsh
 
 # automatically remove duplicates from these arrays
 typeset -gU path cdpath fpath manpath fignore
@@ -18,8 +18,17 @@ zinit wait $lucid light-mode for \
   from"gh-r" as"program" mv"nvim.appimage -> nvim" bpick"nvim.appimage" neovim/neovim \
   from"gh-r" as"program" mv"xurls_*_linux_amd64 -> xurls" bpick"xurls_*_linux_amd64" @mvdan/xurls \
   from"gh-r" as"program" mv"docker* -> docker-compose" bpick"*linux*" docker/compose \
-  changyuheng/zsh-interactive-cd
+  changyuheng/zsh-interactive-cd \
+  atclone"mkdir -p ~/.local/share/nvim/site/autoload/; ln -sf plug.vim ~/.local/share/nvim/site/autoload/plug.vim" atpull"%atclone" nocompile'!' junegunn/vim-plug
 
+upgrade() {
+    (cd ~/.env && git diff --quiet && git pull --recurse-submodules) &# Only pull if not dirty
+    #(sudo apt-get update && sudo apt-get dist-upgrade -y) &
+    (sudo pacman -Suy) &
+    (zinit self-update && zinit update --parallel) &
+    wait
+    nvim "+set nomore" +PlugInstall! +PlugClean! +PlugUpdate! +qall
+}
 
 zinit ice compile'(pure|async).zsh' pick'async.zsh' src'pure.zsh'
 zinit light sindresorhus/pure

@@ -2,7 +2,13 @@
     link:
       relink: true
 
-- clean: ['~']
+- clean:
+    - '~'
+    - '~/.config'
+    - '~/.config/dunst'
+    - '~/.config/ranger'
+    - '~/.config/nvim'
+    - '~/.ssh'
 
 - link:
     ~/.config/dunst/dunstrc: dunstrc
