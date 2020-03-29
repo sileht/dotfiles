@@ -19,25 +19,25 @@ zinit wait $lucid light-mode for \
   from"gh-r" as"program" mv"xurls_*_linux_amd64 -> xurls" bpick"xurls_*_linux_amd64" @mvdan/xurls \
   from"gh-r" as"program" mv"docker* -> docker-compose" bpick"*linux*" docker/compose \
   changyuheng/zsh-interactive-cd \
-  atclone"mkdir -p ~/.local/share/nvim/site/autoload/; ln -sf plug.vim ~/.local/share/nvim/site/autoload/plug.vim" atpull"%atclone" nocompile'!' junegunn/vim-plug
+  cp"plug.vim -> ~/.local/share/nvim/site/autoload/plug.vim" nocompile'!' junegunn/vim-plug \
+  as"program" atinit"tic -sx st.info &>/dev/null" make"zinit_install" pick"st" sileht/st \
 
-upgrade() {
-    (cd ~/.env && git diff --quiet && git pull --recurse-submodules) &# Only pull if not dirty
-    #(sudo apt-get update && sudo apt-get dist-upgrade -y) &
-    (sudo pacman -Suy) &
-    (zinit self-update && zinit update --parallel) &
-    wait
-    nvim "+set nomore" +PlugInstall! +PlugClean! +PlugUpdate! +qall
-}
 
 zinit ice compile'(pure|async).zsh' pick'async.zsh' src'pure.zsh'
 zinit light sindresorhus/pure
 
-autoload -U zargs           # smart xargs replacement
+
+upgrade() {
+    (sudo pacman -Suy) &
+    #(sudo apt-get update && sudo apt-get dist-upgrade -y) &
+    (cd ~/.env && git diff --quiet && git pull --recurse-submodules) &# Only pull if not dirty
+    (zinit self-update && zinit update --parallel) &
+    wait
+    nvim "+set nomore" +PlugClean! +PlugUpdate! +qall
+}
+
 autoload -U zmv             # programmable moving, copying, and linking
-autoload -U colors ; colors # make color arrays available
 autoload -U zrecompile      # allow zwc file recompiling
-autoload -U allopt          # add command allopt to show all opts
 autoload -Uz add-zsh-hook
 
 
@@ -169,11 +169,10 @@ zstyle ':completion:*' cache-path $ZVARDIR/compcache
 zstyle ':completion:*::::' completer _complete _ignored _match _approximate _list _prefix
 
 # allow one error for every three characters typed in approximate completer
-zstyle -e ':completion:*:approximate:*' max-errors \
-    'reply=( $(( ($#PREFIX+$#SUFFIX)/3 )) numeric )'
+zstyle -e ':completion:*:approximate:*' max-errors 'reply=( $(( ($#PREFIX+$#SUFFIX)/3 )) numeric )'
 # formatting and messages
 zstyle ':completion:*' verbose yes
-zstyle ':completion:*:descriptions' format $fg_bold[white]'%U%d%b%u'
+zstyle ':completion:*:descriptions' format '%U%d%b%u'
 zstyle ':completion:*:messages' format '%d'
 zstyle ':completion:*:warnings' format 'No matches for: %d'
 zstyle ':completion:*:corrections' format '%B%d (errors: %e)%b'
@@ -320,9 +319,6 @@ alias mmv="nocorrect noglob zmv -W"
 alias zcp='zmv -C'
 alias zln='zmv -L'
 
-hash -d doc=/usr/share/doc
-hash -d log=/var/log
-
 alias ls="LC_COLLATE=POSIX ls -h --color=auto -bCF --color=auto --group-directories-first"
 alias ll="ls -lF"
 alias la="ls -aF"
@@ -330,10 +326,8 @@ alias lla="ls -alF"
 alias lsd='ls -ld *(-/DN)'
 alias lsdir="for dir in *;do;if [ -d \$dir ];then;du -xhsL \$dir 2>/dev/null;fi;done"
 function l(){ ls -hla --color="always" "$@" | more }
-#zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-unset _LS_OPTS
 
-function killd(){ DISPLAY="" ps xae | grep DISPLAY=:$1 | grep -v grep | awk '{print $1}' | zargs -r kill -9 }
+function killd(){ DISPLAY="" ps xae | grep DISPLAY=:$1 | grep -v grep | awk '{print $1}' | xargs -r kill -9 }
 
 # pyenv init -
 command pyenv rehash 2>/dev/null
