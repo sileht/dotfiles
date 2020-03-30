@@ -37,5 +37,5 @@
 - shell:
   # - chsh -s $(which zsh)
   - git submodule update --init --recursive
-  - python3 -m pip install --quiet --user --upgrade --upgrade-strategy eager -r ~/.env/requirements-py3.txt
-  - python2 -m pip install --quiet --user --upgrade --upgrade-strategy eager -r ~/.env/requirements-py2.txt
+  - python3 -m pip install --user --upgrade --upgrade-strategy eager -r ~/.env/requirements-py3.txt
+  - python2 -m pip install --user --upgrade --upgrade-strategy eager -r ~/.env/requirements-py2.txt
