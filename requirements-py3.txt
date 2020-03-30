@@ -1,23 +1,16 @@
 # other
-docker-compose
 git-pull-request
-ranger-fm
 pynvim
 
 # mutt
-vdirsyncer
-khard
-khal
+# vdirsyncer
+# khard
+# khal
 
 # vim
-tox
 python-language-server[all]
 pyls-mypy
 pyls-isort
 pyls-black
-
-black ;python_version>="3.6"
-flake8
-jedi
 
 ghp-import
