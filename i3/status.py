@@ -70,6 +70,7 @@ status.register(
     on_change=add_battery_glyph,
 )
 
+status.register("cpu_freq")
 status.register(
     "cpu_usage_graph",
     graph_width=5,
@@ -81,9 +82,9 @@ status.register(
     "battery",
     interval=60,
     alert_percentage=3,
-    format="{glyph}{status} {remaining:%E%hh%M}/{consumption:1.0f}w",
+    format="{glyph}{status} {consumption:1.0f}w {remaining:%E%hh%M}",
     alert=True,
-    status={"DIS": "↓", "CHR": "↑", "FULL": ""},
+    status={"DIS": "", "CHR": "", "FULL": ""},
     glyphs="",
     not_present_text="",
 )
