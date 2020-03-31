@@ -3,6 +3,8 @@
 # flake8: noqa: E501
 """i3pystatus configuration."""
 
+import fnmatch
+
 import pulsectl
 
 import i3pystatus
@@ -12,22 +14,25 @@ pulse = pulsectl.Pulse("i3pystatus")
 status = i3pystatus.Status()
 
 SINKS = {
-    "alsa_output.pci-0000_00_1f.3.analog-stereo": "🔊 (built-in)",  # billy/trudy
-    "alsa_output.pci-0000_00_1b.0.analog-stereo": "🔊 (built-in)",  # bob
-    "alsa_output.usb-C-Media_Electronics_Inc."
-    "_USB_Advanced_Audio_Device-00.analog-stereo": "🎧 (usb)",
-    "bluez_sink.4C_87_5D_06_32_13.headset_head_unit": "🎧 (headset)",
-    "bluez_sink.4C_87_5D_06_32_13.a2dp_sink": "🎧 (a2dp)",
-    "bluez_sink.4C_87_5D_06_32_13.a2dp_sink_aac": "🎧 (a2dp/aac)",
-    "bluez_sink.4C_87_5D_06_32_13.a2dp_sink_sbc": "🎧 (a2dp/sbc)",
+    "alsa_output.pci-????_??_??.?.analog-stereo": "🔊 (built-in)",
+    "alsa_output.usb-*.analog-stereo": "🎧 (usb)",
+    "bluez_sink.??_??_??_??_??_??.headset_head_unit": "🎧 (headset)",
+    "bluez_sink.??_??_??_??_??_??.a2dp_sink": "🎧 (a2dp)",
+    "bluez_sink.??_??_??_??_??_??.a2dp_sink_aac": "🎧 (a2dp/aac)",
+    "bluez_sink.??_??_??_??_??_??.a2dp_sink_sbc": "🎧 (a2dp/sbc)",
 }  # noqa
 
 
 class SinkFormat:
     @staticmethod
     def format(*args, **kwargs):
-        default_name = SINKS.get(pulse.server_info().default_sink_name)
-        output_format = "%s: {volume}{selected}" % default_name
+        default_sink_name = pulse.server_info().default_sink_name
+        for sink_wilcard, label in SINKS.items():
+            if fnmatch.fnmatch(default_sink_name, sink_wilcard):
+                break
+        else:
+            label = "🔊 (unknown)"
+        output_format = "%s: {volume}%%" % label
         return output_format.format(*args, **kwargs)
 
 
