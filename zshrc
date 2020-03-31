@@ -34,7 +34,15 @@ zinit light sindresorhus/pure
 # THEME #
 #########
 PURE_GIT_UNTRACKED_DIRTY=0
+case $HOST in
+    eve) host_color=252;;
+    gizmo) host_color=214;;
+    *) host_color=242;;
+esac
+
 zstyle :prompt:pure:git:stash show yes
+zstyle :prompt:pure:host color $host_color
+zstyle :prompt:pure:user color $host_color
 
 colormode() {
     local mode="${1:=eighties}"
