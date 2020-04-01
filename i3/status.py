@@ -4,36 +4,46 @@
 """i3pystatus configuration."""
 
 import fnmatch
+import subprocess
 
 import pulsectl
 
 import i3pystatus
+
+
+class CustomFormat(str):
+    def __new__(cls, string, options_getter):
+        o = str.__new__(cls, string)
+        o.options_getter = options_getter
+        return o
+
+    def format(self, *args, **kwargs):
+        kwargs.update(self.options_getter())
+        return super().format(*args, **kwargs)
+
 
 pulse = pulsectl.Pulse("i3pystatus")
 
 status = i3pystatus.Status()
 
 SINKS = {
-    "alsa_output.pci-????_??_??.?.analog-stereo": "🔊 (built-in)",
-    "alsa_output.usb-*.analog-stereo": "🎧 (usb)",
-    "bluez_sink.??_??_??_??_??_??.headset_head_unit": "🎧 (headset)",
-    "bluez_sink.??_??_??_??_??_??.a2dp_sink": "🎧 (a2dp)",
-    "bluez_sink.??_??_??_??_??_??.a2dp_sink_aac": "🎧 (a2dp/aac)",
-    "bluez_sink.??_??_??_??_??_??.a2dp_sink_sbc": "🎧 (a2dp/sbc)",
+    "alsa_output.pci-????_??_??.?.analog-stereo": "🔊 built-in",
+    "alsa_output.usb-*.analog-stereo": "🎧 usb",
+    "bluez_sink.??_??_??_??_??_??.headset_head_unit": "🎧 headset",
+    "bluez_sink.??_??_??_??_??_??.a2dp_sink": "🎧 a2dp",
+    "bluez_sink.??_??_??_??_??_??.a2dp_sink_aac": "🎧 a2dp/aac",
+    "bluez_sink.??_??_??_??_??_??.a2dp_sink_sbc": "🎧 a2dp/sbc",
 }  # noqa
 
 
-class SinkFormat:
-    @staticmethod
-    def format(*args, **kwargs):
-        default_sink_name = pulse.server_info().default_sink_name
-        for sink_wilcard, label in SINKS.items():
-            if fnmatch.fnmatch(default_sink_name, sink_wilcard):
-                break
-        else:
-            label = "🔊 (unknown)"
-        output_format = "%s: {volume}%%" % label
-        return output_format.format(*args, **kwargs)
+def get_sink_options():
+    default_sink_name = pulse.server_info().default_sink_name
+    for sink_wilcard, label in SINKS.items():
+        if fnmatch.fnmatch(default_sink_name, sink_wilcard):
+            break
+    else:
+        label = "🔊 unknown"
+    return zip(("icon", "label"), label.split())
 
 
 status.register(
@@ -42,7 +52,7 @@ status.register(
     on_middleclick="pavucontrol -t 1",
     vertical_bar_width=1,
     color_muted="#333333",
-    format=SinkFormat,
+    format=CustomFormat("{icon} {volume}% ({label})", get_sink_options),
 )
 status.register("dpms", format="冷", format_disabled="冷", color_disabled="#333333")
 status.register("text", text="|")
@@ -70,7 +80,30 @@ status.register(
     on_change=add_battery_glyph,
 )
 
-status.register("cpu_freq")
+
+def get_cpufreq_mode():
+    with open("/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor") as f:
+        return dict(mode=f.read().strip())
+
+
+def change_cpufreq_mode():
+    mode = get_cpufreq_mode()["mode"]
+    if mode == "powersave":
+        mode = "performance"
+    else:
+        mode = "powersave"
+    subprocess.run(
+        f"sudo cpupower frequency-set -g {mode}".split(),
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
+
+
+status.register(
+    "cpu_freq",
+    format=CustomFormat("{avgg}Ghz ({mode})", get_cpufreq_mode),
+    on_leftclick=change_cpufreq_mode,
+)
 status.register(
     "cpu_usage_graph",
     graph_width=5,
