@@ -1,4 +1,4 @@
 export PYENV_ROOT="$HOME/.pyenv"
 export PYENV_SHELL=zsh
 export PATH="$PYENV_ROOT/bin:$PYENV_ROOT/.pyenv/shims:/usr/lib/ccache:$HOME/.env/bin:$HOME/.bin:$HOME/.local/bin:$HOME/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/games:/usr/games"
-# [ "$DISPLAY" = ":0" ] && [ "$(xrandr | grep '^VGA.* connected ')" ] && { xset s off ; xset -dpms;}
+[ -n "$VIRTUAL_ENV" ] && export PATH=$VIRTUAL_ENV/bin:$PATH
