@@ -242,7 +242,7 @@ upgrade() {
     [ "$commands[pacman]" ] && (yes | sudo pacman -Suy) &
     [ "$commands[apt]" ] && (sudo apt update -y && sudo apt upgrade -y && sudo apt autoremove --purge && sudo apt clean -y) &
     (cd ~/.env && git diff --quiet && git pull --recurse-submodules && ./install ) & # Only pull if not dirty
-    (zinit self-update && zinit update --parallel) &
+    (zinit self-update && zinit update -q --parallel) &
     wait
     nvim "+set nomore" +PlugClean! +PlugUpdate! +qall
 }
