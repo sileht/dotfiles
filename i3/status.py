@@ -66,7 +66,7 @@ status.register(
 
 
 @i3pystatus.get_module
-def add_battery_glyph(self):
+def add_mem_glyph(self):
     glyphs = "▁▂▃▄▅▆▇█"
     pos = int(self.data["percent_used_mem"] * len(glyphs) / 100)
     self.output["full_text"] += glyphs[pos]
@@ -77,7 +77,7 @@ status.register(
     format=" {percent_used_mem:02.1f}% ",
     divisor=1000000000,
     color="#FFFFFF",
-    on_change=add_battery_glyph,
+    on_change=add_mem_glyph,
 )
 
 
@@ -114,9 +114,10 @@ status.register(
 status.register(
     "battery",
     interval=60,
-    alert_percentage=3,
-    format="{glyph}{status} {consumption:1.0f}w {remaining:%E%hh%M}",
     alert=True,
+    alert_percentage=10,
+    critical_level_percentage=5,
+    format="{glyph}{status} {consumption:1.0f}w {remaining:%E%hh%M}",
     status={"DIS": "", "CHR": "", "FULL": ""},
     glyphs="",
     not_present_text="",

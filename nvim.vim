@@ -254,7 +254,7 @@ set completeopt+=noinsert
 
 let g:ale_linter_aliases = {'jsx': ['css', 'javascript']}
 let g:ale_linters = {}
-let g:ale_linters.python = ['pyls', 'flake8']
+let g:ale_linters.python = ['pyls'] " , 'flake8']
 let g:ale_linters.c = ['clangformat']
 let g:ale_linters.go = ['gometalinter']
 let g:ale_linters.javascript = ['eslint']
