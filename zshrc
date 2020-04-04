@@ -17,15 +17,22 @@ zinit wait lucid light-mode for \
   atload"_zsh_autosuggest_start" zsh-users/zsh-autosuggestions \
   blockf atpull'zinit creinstall -q .' zsh-users/zsh-completions \
   zdharma/history-search-multi-word \
-  atclone"dircolors -b LS_COLORS > clrs.zsh" atpull'%atclone' pick"clrs.zsh" nocompile'!' \
-  atload'zstyle ":completion:*" list-colors “${(s.:.)LS_COLORS}”' trapd00r/LS_COLORS \
   from"gh-r" as"program" junegunn/fzf-bin \
   from"gh-r" as"program" mv"nvim.appimage -> nvim" bpick"nvim.appimage" neovim/neovim \
   from"gh-r" as"program" mv"xurls_*_linux_amd64 -> xurls" bpick"xurls_*_linux_amd64" @mvdan/xurls \
   from"gh-r" as"program" mv"docker* -> docker-compose" bpick"*linux*" docker/compose \
+  from"gh-r" as"program" mv"exa* -> exa" bpick"*linux*" ogham/exa \
   changyuheng/zsh-interactive-cd \
   cp"plug.vim -> $HOME/.local/share/nvim/site/autoload/plug.vim" nocompile'!' junegunn/vim-plug \
   as"program" make"zinit_install" pick"st" sileht/st \
+  davidparsson/zsh-pyenv-lazy \
+  MichaelAquilina/zsh-you-should-use \
+  as"program" pick"bin/git-dsf" zdharma/zsh-diff-so-fancy \
+
+  # Replaced by exa
+  #atclone"dircolors -b LS_COLORS > clrs.zsh" atpull'%atclone' pick"clrs.zsh" nocompile'!' \
+  #atload'zstyle ":completion:*" list-colors “${(s.:.)LS_COLORS}”' trapd00r/LS_COLORS \
+
 
 zinit ice compile'(pure|async).zsh' pick'async.zsh' src'pure.zsh'
 zinit light sindresorhus/pure
@@ -239,10 +246,10 @@ zcompileall(){
 }
 
 upgrade() {
-    [ "$commands[pacman]" ] && (yes | sudo pacman -Suy) &
-    [ "$commands[apt]" ] && (sudo apt update -y && sudo apt upgrade -y && sudo apt autoremove --purge && sudo apt clean -y) &
-    (cd ~/.env && git diff --quiet && git pull --recurse-submodules && ./install ) & # Only pull if not dirty
-    (zinit self-update && zinit update -q --parallel) &
+    [ "$commands[pacman]" ] && (yes | sudo pacman -Suy)
+    [ "$commands[apt]" ] && (sudo apt update -y && sudo apt upgrade -y && sudo apt autoremove --purge && sudo apt clean -y)
+    (cd ~/.env && git diff --quiet && git pull --recurse-submodules && ./install ) # Only pull if not dirty
+    (zinit self-update && zinit update -q --parallel)
     wait
     nvim "+set nomore" +PlugClean! +PlugUpdate! +qall
 }
@@ -287,25 +294,25 @@ alias ln='nocorrect ln'
 alias mkdir='nocorrect mkdir'
 [ ${UID} -eq 0 ] && alias sudo="" || alias sudo="nocorrect sudo"
 alias wget='noglob wget'
-alias curl='noglob curl'
+alias curl='noglob curl --silent'
 alias man="LANG=C man"
 alias df="df -h"
 alias diff='diff -rNu'
 alias ip='ip -color'
 alias optimutt="find ~/.mutt/cache/headers -type f -exec tcbmgr optimize -nl {} \;"
 
-function lsp() {
-    local p="$(readlinkg -f $1)"
-    while [ $p != "/" ]; do
-        ls -ld $p
-        p=$(dirname $p)
-    done | tac | column -t
+function nvim(){
+    # Replace :123 by \s+123
+    local cmd="command nvim"
+	for arg in $@; do
+		cmd="$cmd \"${arg/:/\" \"+:}\""
+	done
+	eval $cmd
 }
-
 alias vim="nvim"
-alias r="ranger"
 alias vi="nvim"
 alias svi="sudo -E /home/sileht/.zinit/plugins/neovim---neovim/nvim"
+alias r="ranger"
 alias psql="sudo -i -u postgres psql"
 # alias pyclean='find . \( -type f -name "*.py[co]" \) -o \( -type d -path "*__pycache__*" \) ! -path "./.tox*" -delete"'
 alias pyclean='find . \( -type f -name "*.py[co]" \) ! -path "./.tox*" -delete'
@@ -331,13 +338,22 @@ alias mmv="nocorrect noglob zmv -W"
 alias zcp='zmv -C'
 alias zln='zmv -L'
 
-alias ls="LC_COLLATE=POSIX ls -h --color=auto -bCF --color=auto --group-directories-first"
-alias ll="ls -lF"
-alias la="ls -aF"
-alias lla="ls -alF"
+#alias ls="LC_COLLATE=POSIX ls -h --color=auto -bCF --group-directories-first"
+alias ls="exa -F --group-directories-first"
+alias ll="ls -l"
+alias lla="ls -la"
 alias lsd='ls -ld *(-/DN)'
 alias lsdir="for dir in *;do;if [ -d \$dir ];then;du -xhsL \$dir 2>/dev/null;fi;done"
-function l(){ ls -hla --color="always" "$@" | more }
+function l(){ lla --color="always" "$@" | more }
+function lsp() {
+    local p="$(readlink -f ${1:=.})"
+    local all_paths
+    while [ $p != "/" ]; do
+        all_paths=($p $all_paths)
+        p=$(dirname $p)
+    done
+    ll -d --sort=inode $all_paths
+}
 
 # pyenv init -
 command pyenv rehash 2>/dev/null
