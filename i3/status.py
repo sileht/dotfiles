@@ -89,7 +89,7 @@ for interface in os.listdir("/sys/class/net/"):
     if interface.startswith("wl"):
         status.register(
             "network",
-            interface="wlp61s0",
+            interface=interface,
             format_up=" {bytes_recv}KB/s",
             start_color="#FFFFFF",
         )
