@@ -4,6 +4,7 @@
 """i3pystatus configuration."""
 
 import fnmatch
+import os
 import subprocess
 
 import pulsectl
@@ -60,9 +61,14 @@ status.register("text", text="|")
 status.register("clock", format="%a %b %d, %H:%M")
 status.register("text", text="|")
 
-status.register(
-    "network", interface="wlp1s0", format_up=" {bytes_recv}KB/s", start_color="#FFFFFF"
-)
+for interface in os.listdir("/sys/class/net/"):
+    if interface.startswith("wl"):
+        status.register(
+            "network",
+            interface="wlp61s0",
+            format_up=" {bytes_recv}KB/s",
+            start_color="#FFFFFF",
+        )
 
 
 @i3pystatus.get_module
