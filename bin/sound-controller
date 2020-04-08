@@ -75,7 +75,8 @@ def _get_bluetooth_items():
                 continue
             mac, _, name = line.strip()[7:].partition(" ")
             info = _get_bluetooth_device_info(mac)
-            prefix = f"   🎧 {info['Name']} |"
+            name = info.get("Name", "Unknown")
+            prefix = f"   🎧 {name} / {mac} |"
             if info["Paired"] == "yes":
                 connected = info["Connected"] == "yes"
 

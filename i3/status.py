@@ -55,8 +55,32 @@ status.register(
     color_muted="#333333",
     format=CustomFormat("{icon} {volume}% ({label})", get_sink_options),
 )
+
+
+@i3pystatus.get_module
+def add_bose_battery_glyph(self):
+    glyphs = "ﴐﴆﴇﴈﴉﴊﴋﴌﴍﴎﴅ"
+    glyphs = ""
+    try:
+        level = int(self.output["full_text"])
+    except ValueError:
+        self.output["full_text"] = ""
+        return
+    pos = int(level * len(glyphs) / 100)
+    self.output["full_text"] = glyphs[pos] + " " + self.output["full_text"] + "%"
+
+
+status.register(
+    "shell",
+    ignore_empty_stdout=True,
+    command="based-connect -b 4C:87:5D:06:32:13",
+    on_change=add_bose_battery_glyph,
+)
+
+
 status.register("dpms", format="冷", format_disabled="冷", color_disabled="#333333")
 status.register("text", text="|")
+
 
 status.register("clock", format="%a %b %d, %H:%M")
 status.register("text", text="|")
@@ -120,10 +144,10 @@ status.register(
 status.register(
     "battery",
     interval=60,
-    alert=True,
+    # alert=True,
     alert_percentage=10,
     critical_level_percentage=5,
-    format="{glyph}{status} {consumption:1.0f}w {remaining:%E%hh%M}",
+    format="{status}{glyph} {percentage:1.0f}% {consumption:1.0f}w {remaining:%E%hh%M}",
     status={"DIS": "", "CHR": "", "FULL": ""},
     glyphs="",
     not_present_text="",
