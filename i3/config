@@ -26,6 +26,7 @@ for_window [class="pinentry"] floating enable
 for_window [class="Pavucontrol"] floating enable
 for_window [class="VirtualBox"] floating enable
 for_window [class="Conky"] floating enable
+for_window [class="Mate-appearance-properties"] floating enable
 for_window [title="Bluetooth Devices"] floating enable
 #for_window [class="^.*"] border pixel 2
 # no_focus [class="Chromium"]
