@@ -194,16 +194,6 @@ mode "resize" {
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-    font pango:MesloLGS Nerd Font:style=Regular 50
-    output eDP-1x
-    position top
-    tray_output none
-    workspace_buttons no
-    colors {
-        background #000000
-    }
-}
-bar {
     font pango:MeslogLGS Nerd Font:style=Regular 10
 
     # Legacy xorg driver names

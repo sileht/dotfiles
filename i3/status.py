@@ -79,11 +79,27 @@ status.register(
 
 
 status.register("dpms", format="冷", format_disabled="冷", color_disabled="#333333")
-status.register("text", text="|")
+
+status.register(
+    "battery",
+    interval=60,
+    # alert=True,
+    alert_percentage=10,
+    full_color="white",
+    charging_color="white",
+    critical_level_percentage=5,
+    format="{status}{glyph} {percentage:1.0f}% {consumption:1.0f}w {remaining:%E%hh%M}",
+    status={"DIS": "", "CHR": "", "FULL": ""},
+    glyphs="",
+    not_present_text="",
+)
+
+
+status.register("text", text="  |  ")
 
 
 status.register("clock", format="%a %b %d, %H:%M")
-status.register("text", text="|")
+status.register("text", text="  |  ")
 
 for interface in os.listdir("/sys/class/net/"):
     if interface.startswith("wl"):
@@ -91,8 +107,11 @@ for interface in os.listdir("/sys/class/net/"):
             "network",
             interface=interface,
             format_up=" {bytes_recv}KB/s",
-            start_color="#FFFFFF",
+            recv_limit="10000",
+            start_color="white",
         )
+
+status.register("text", text="  |  ")
 
 
 @i3pystatus.get_module
@@ -106,7 +125,7 @@ status.register(
     "mem",
     format=" {percent_used_mem:02.1f}% ",
     divisor=1000000000,
-    color="#FFFFFF",
+    color="white",
     on_change=add_mem_glyph,
 )
 
@@ -139,19 +158,6 @@ status.register(
     graph_width=5,
     format="﬙ {usage:02}% {cpu_graph}",
     dynamic_color=True,
+    start_color="white",
 )
-
-status.register(
-    "battery",
-    interval=60,
-    # alert=True,
-    alert_percentage=10,
-    critical_level_percentage=5,
-    format="{status}{glyph} {percentage:1.0f}% {consumption:1.0f}w {remaining:%E%hh%M}",
-    status={"DIS": "", "CHR": "", "FULL": ""},
-    glyphs="",
-    not_present_text="",
-)
-status.register("text", text="|")
-status.register("window_title")
 status.run()
