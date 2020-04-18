@@ -28,6 +28,15 @@ zinit wait lucid light-mode for \
   davidparsson/zsh-pyenv-lazy \
   MichaelAquilina/zsh-you-should-use \
   as"program" pick"bin/git-dsf" zdharma/zsh-diff-so-fancy \
+  from"gh-r" as"program" cp"istio*/bin/istioctl -> istioctl" bpick"*1.5*linux*" istio/istio \
+  from"gh-r" as"program" bpick"*linux*" Qovery/qovery-cli \
+  \
+  as="program" bpick"kubectx" bpick"kubens" nocompile'!' \
+  atclone"ln -s completion/kubectx.zsh _kubectx" \
+  atclone"ln -s completion/kubens.zsh _kubens" \
+  atpull"zinit creinstall -q ." \
+  ahmetb/kubectx \
+
 
   # Replaced by exa
   #atclone"dircolors -b LS_COLORS > clrs.zsh" atpull'%atclone' pick"clrs.zsh" nocompile'!' \
@@ -35,11 +44,12 @@ zinit wait lucid light-mode for \
 
 
 zinit ice compile'(pure|async).zsh' pick'async.zsh' src'pure.zsh'
-zinit light sindresorhus/pure
+zinit light sileht/pure
 
 #########
 # THEME #
 #########
+PURE_GIT_PULL=0
 PURE_GIT_UNTRACKED_DIRTY=0
 case $HOST in
     eve) host_color=252;;

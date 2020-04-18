@@ -49,7 +49,7 @@ def get_sink_options():
 
 status.register(
     "pulseaudio",
-    on_leftclick="change_sink",
+    on_leftclick="sound-controller",
     on_middleclick="pavucontrol -t 1",
     vertical_bar_width=1,
     color_muted="#333333",
