@@ -52,11 +52,13 @@ zinit light sileht/pure
 #########
 # THEME #
 #########
+
 PURE_GIT_PULL=0
 PURE_GIT_UNTRACKED_DIRTY=0
 case $HOST in
     eve) host_color=252;;
     gizmo) host_color=214;;
+    joe) host_color=yellow; PURE_KUBE=1;;
     *) host_color=242;;
 esac
 
