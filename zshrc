@@ -58,7 +58,8 @@ PURE_GIT_UNTRACKED_DIRTY=0
 case $HOST in
     eve) host_color=252;;
     gizmo) host_color=214;;
-    joe) host_color=yellow; PURE_KUBE=1;;
+    billy) host_color=76;;
+    joe) host_color=216; PURE_KUBE=1;;
     *) host_color=242;;
 esac
 
