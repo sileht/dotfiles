@@ -27,6 +27,10 @@ pulse = pulsectl.Pulse("i3pystatus")
 
 status = i3pystatus.Status()
 
+status.register("text", text=" | ")
+status.register("clock", format="%a %b %d, %H:%M")
+status.register("text", text=" | ")
+
 SINKS = {
     "alsa_output.pci-????_??_??.?.analog-stereo": "🔊 built-in",
     "alsa_output.usb-*.analog-stereo": "🎧 usb",
@@ -77,6 +81,7 @@ status.register(
     on_change=add_bose_battery_glyph,
 )
 
+status.register("text", text=" | ")
 
 status.register("dpms", format="冷", format_disabled="冷", color_disabled="#333333")
 
@@ -95,11 +100,8 @@ status.register(
 )
 
 
-status.register("text", text="  |  ")
+status.register("text", text=" | ")
 
-
-status.register("clock", format="%a %b %d, %H:%M")
-status.register("text", text="  |  ")
 
 for interface in os.listdir("/sys/class/net/"):
     if interface.startswith("wl"):
