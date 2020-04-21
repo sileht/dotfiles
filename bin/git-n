@@ -6,7 +6,8 @@ remote=${3:-origin}
 prefix=${4:-wip}
 
 local_branch="$prefix-$name"
-[ "$branch" != "master" ] && local_branch=$local_branch-$branch
+local_branch="$name"
+#[ "$branch" != "master" ] && local_branch=$local_branch-$branch
 
 branch_exists=$(git rev-parse --symbolic --glob=refs/heads/*${name}* 2>/dev/null| head -1 | sed 's,refs/heads/,,')
 if [ "$branch_exists" ]; then

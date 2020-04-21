@@ -10,7 +10,7 @@
     t = "!f() { git branch --set-upstream-to=origin/${1:-master}; }; f"
     r = "!f() { git branch -M $(git rev-parse --abbrev-ref HEAD | sed -e 's,^wip-,,g' -e s,pull/[^-]*-sileht-,,g) ; }; f"
     f = "!f() { git branch -M \"$@\"; git master ; git checkout \"$@\" ; git t; }; f"
-    p = pull --rebase origin master
+    p = "!f() { git pull --rebase origin \"$@\" ;}; f"
     go = "!f() { git r ; git pull-request -l no-review-needed \"$@\"; }; f"
     wip = "!f() { git r ; git pull-request -l work-in-progress \"$@\"; }; f"
 

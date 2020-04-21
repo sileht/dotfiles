@@ -261,9 +261,9 @@ let g:ale_linters.javascript = ['eslint']
 let g:ale_linters.jsx = ['stylelint', 'eslint']
 let g:ale_fixers = {
   \  '*': ['remove_trailing_lines', 'trim_whitespace'],
-  \  'python': ['black', 'isort'],
   \  'javascript': ['eslint'],
   \ }
+
 let g:ale_c_parse_makefile = 1
 let g:ale_c_parse_compile_commands = 1
 let g:ale_python_pyls_config = {'pyls': {
@@ -440,6 +440,7 @@ def load_flake8(path):
         venvdir = os.path.join(path, venv)
         if os.path.exists(venvdir):
             vim.command("let g:ale_python_flake8_executable = '%s/bin/flake8'" % venvdir)
+            vim.command("let g:ale_fixers.python = ['black', 'isort']")
             return
 
 def load_venv(path):

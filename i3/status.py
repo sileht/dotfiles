@@ -32,7 +32,8 @@ status.register("clock", format="%a %b %d, %H:%M")
 status.register("text", text=" | ")
 
 SINKS = {
-    "alsa_output.pci-????_??_??.?.analog-stereo": "🔊 built-in",
+    "alsa_output.pci-????_??_??.?.analog-stereo": "🔊 built-in/analog",
+    "alsa_output.pci-????_??_??.?.hdmi-stereo": "🔊 built-in/hdmi",
     "alsa_output.usb-*.analog-stereo": "🎧 usb",
     "bluez_sink.??_??_??_??_??_??.headset_head_unit": "🎧 headset",
     "bluez_sink.??_??_??_??_??_??.a2dp_sink": "🎧 a2dp",
@@ -90,8 +91,8 @@ status.register(
     interval=60,
     # alert=True,
     alert_percentage=10,
-    full_color="white",
-    charging_color="white",
+    full_color="#FFFFFF",
+    charging_color="#FFFFFF",
     critical_level_percentage=5,
     format="{status}{glyph} {percentage:1.0f}% {consumption:1.0f}w {remaining:%E%hh%M}",
     status={"DIS": "", "CHR": "", "FULL": ""},
@@ -110,7 +111,7 @@ for interface in os.listdir("/sys/class/net/"):
             interface=interface,
             format_up=" {bytes_recv}KB/s",
             recv_limit="10000",
-            start_color="white",
+            start_color="#FFFFFF",
         )
 
 status.register("text", text="  |  ")
@@ -127,7 +128,7 @@ status.register(
     "mem",
     format=" {percent_used_mem:02.1f}% ",
     divisor=1000000000,
-    color="white",
+    color="#FFFFFF",
     on_change=add_mem_glyph,
 )
 
@@ -160,6 +161,6 @@ status.register(
     graph_width=5,
     format="﬙ {usage:02}% {cpu_graph}",
     dynamic_color=True,
-    start_color="white",
+    start_color="#FFFFFF",
 )
 status.run()
