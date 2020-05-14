@@ -38,6 +38,7 @@ Plug 'inside/vim-search-pulse'
 
 " Language
 Plug 'dense-analysis/ale'
+Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'jaxbot/semantic-highlight.vim'                                                   " semantic highlight (permanent)
 "Plug 'numirias/semshi',               {'do': ':UpdateRemotePlugins', 'for': 'python'}  " semantic highlight (selected/python)
@@ -68,6 +69,7 @@ Plug 'tpope/vim-markdown',            {'for': 'markdown'}
 Plug 'vim-scripts/HTML-AutoCloseTag', {'for': ['html', 'xml']}
 Plug 'hail2u/vim-css3-syntax',        {'for': 'css'}
 Plug 'zinit-zsh/zinit-vim-syntax'
+Plug 'udalov/kotlin-vim'
 
 call plug#end()
 
@@ -152,8 +154,6 @@ autocmd BufEnter * if bufname("") !~ "^\[A-Za-z0-9\]*://" | lcd %:p:h | endif
 " Cut at 80 for some filetype
 autocmd FileType c,cpp,java,go,php,javascript,javascriptreact,puppet,rst set textwidth=79
 autocmd FileType python set textwidth=90
-" No ending space
-autocmd FileType c,cpp,java,go,php,javascript,puppet,python,rst,rust,twig,xml,yml,perl,sql autocmd BufWritePre <buffer> call StripTrailingWhitespace()
 " libvirt C style
 autocmd BufWritePre,BufRead *.c setlocal smartindent cindent cinoptions=(0,:0,l1,t0,L3
 autocmd BufWritePre,BufRead *.h setlocal smartindent cindent cinoptions=(0,:0,l1,t0,L3
@@ -238,19 +238,25 @@ let g:python_highlight_all = 1
 " ### ALE ###
 " ###########
 
-let g:ale_completion_enabled = 1
+au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#ale#get_source_options({
+  \ 'priority': 10,
+  \ }))
+
+let g:ale_completion_enabled = 0
+"let g:ale_completion_delay = 5
+"set omnifunc=ale#completion#OmniFunc
+"set completeopt+=menuone
+"set completeopt+=noinsert
+
 let g:ale_sign_column_always = 1  " always show left column
 let g:ale_open_list = 1
 let g:ale_list_window_size = 7
 let g:ale_list_vertical = 0
 let g:ale_keep_list_window_open = 1
-set omnifunc=ale#completion#OmniFunc
 let g:ale_set_highlights = 0
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_insert_leave = 0
 let g:ale_lint_on_enter = 0
-set completeopt+=menuone
-set completeopt+=noinsert
 
 let g:ale_linter_aliases = {'jsx': ['css', 'javascript']}
 let g:ale_linters = {}
@@ -260,8 +266,8 @@ let g:ale_linters.go = ['gometalinter']
 let g:ale_linters.javascript = ['eslint']
 let g:ale_linters.jsx = ['stylelint', 'eslint']
 let g:ale_fixers = {
-  \  '*': ['remove_trailing_lines', 'trim_whitespace'],
   \  'javascript': ['eslint'],
+  \  '*': ['remove_trailing_lines', 'trim_whitespace'],
   \ }
 
 let g:ale_c_parse_makefile = 1
@@ -387,18 +393,6 @@ endfunction
 " #########################
 " ### VARIOUS FUNCTIONS ###
 " #########################
-function! StripTrailingWhitespace()
-    " Preparation: save last search, and cursor position.
-    let _s=@/
-    let l = line(".")
-    let c = col(".")
-    " do the business:
-    %s/\s\+$//e
-    " clean up: restore previous search history, and cursor position
-    let @/=_s
-    call cursor(l, c)
-endfunction
-
 function! InitializeDirectories()
     let parent = $HOME
     let prefix = 'vim'
@@ -436,7 +430,7 @@ import vim
 import os
 
 def load_flake8(path):
-    for venv in (".tox/pep8", ".tox/linters"):
+    for venv in (".tox/pep8", ".tox/linters", ".tox/lint"):
         venvdir = os.path.join(path, venv)
         if os.path.exists(venvdir):
             vim.command("let g:ale_python_flake8_executable = '%s/bin/flake8'" % venvdir)
