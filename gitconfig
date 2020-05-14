@@ -14,7 +14,7 @@
     go = "!f() { git r ; git pull-request -l no-review-needed \"$@\"; }; f"
     wip = "!f() { git r ; git pull-request -l work-in-progress \"$@\"; }; f"
 
-    lg = log --graph --pretty=cshort --abbrev-commit --date=relative
+    lg = "!f() { git log --graph --pretty=cshort --abbrev-commit --date=relative ${@:--15} ;}; f"
     lc = !git oneline ORIG_HEAD.. --stat --no-merges
     oneline = log --pretty=oneline --abbrev-commit --graph --decorate
     who = shortlog -sne
