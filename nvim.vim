@@ -8,6 +8,7 @@ map! <F1> <del>
 autocmd BufNewFile,BufRead *.yaml  set filetype=yml
 autocmd BufNewFile,BufRead *.j2	   set filetype=jinja
 autocmd BufNewFile,BufRead *mutt-* set filetype=mail
+autocmd BufReadPost *.kt setlocal filetype=kotlin
 
 call plug#begin('~/.local/share/nvim/plugged')
 
@@ -41,7 +42,7 @@ Plug 'dense-analysis/ale'
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'jaxbot/semantic-highlight.vim'                                                   " semantic highlight (permanent)
-"Plug 'numirias/semshi',               {'do': ':UpdateRemotePlugins', 'for': 'python'}  " semantic highlight (selected/python)
+Plug 'numirias/semshi',               {'do': ':UpdateRemotePlugins', 'for': 'python'}  " semantic highlight (selected/python)
 
 
 Plug 'dbeniamine/vim-mail',           {'for': 'mail'}
@@ -69,7 +70,7 @@ Plug 'tpope/vim-markdown',            {'for': 'markdown'}
 Plug 'vim-scripts/HTML-AutoCloseTag', {'for': ['html', 'xml']}
 Plug 'hail2u/vim-css3-syntax',        {'for': 'css'}
 Plug 'zinit-zsh/zinit-vim-syntax'
-Plug 'udalov/kotlin-vim'
+Plug 'udalov/kotlin-vim',             {'for': 'kotlin'}
 
 call plug#end()
 
@@ -263,6 +264,7 @@ let g:ale_linters = {}
 let g:ale_linters.python = ['pyls'] " , 'flake8']
 let g:ale_linters.c = ['clangformat']
 let g:ale_linters.go = ['gometalinter']
+let g:ale_linters.kotlin = ['ktlint', 'languageserver', 'kotlinc']
 let g:ale_linters.javascript = ['eslint']
 let g:ale_linters.jsx = ['stylelint', 'eslint']
 let g:ale_fixers = {
@@ -278,6 +280,8 @@ let g:ale_python_pyls_config = {'pyls': {
   \   'pylint': {'enabled': v:false},
   \   'pycodestyle': {'enabled': v:false},
   \ }}}
+
+let g:ale_kotlin_languageserver_executable = 'kotlin-language-server'
 
 let g:ale_fix_on_save = 1
 "let __ale_c_project_filenames = ['README.md']
@@ -321,9 +325,8 @@ nnoremap <C-E> :execute 'CtrlPFunky ' . expand('<cword>')<Cr>
 
 nmap <silent> <leader>j :ALENext<cr>
 nmap <silent> <leader>k :ALEPrevious<cr>
-nmap <silent> <leader>dv :ALEGoToDefinitionInVSplit<cr>
-nmap <silent> <leader>dh :ALEGoToDefinitionInVSplit<cr>
-nmap <silent> <leader>dd :ALEGoToDefinition<cr>
+nmap <silent> <leader>dd <Plug>(ale_go_to_definition)
+nmap <silent> <leader>dr <Plug>(ale_find_references)
 nnoremap <F11> :ALEFix<cr>
 
 nmap <silent> <leader>rr :Semshi rename<CR>

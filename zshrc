@@ -18,25 +18,34 @@ zinit wait lucid light-mode for \
   atload"_zsh_autosuggest_start" zsh-users/zsh-autosuggestions \
   blockf atpull'zinit creinstall -q .' zsh-users/zsh-completions \
   zdharma/history-search-multi-word \
+  changyuheng/zsh-interactive-cd \
+  MichaelAquilina/zsh-you-should-use \
+  \
+  davidparsson/zsh-pyenv-lazy \
+  \
   from"gh-r" as"program" junegunn/fzf-bin \
   from"gh-r" as"program" mv"nvim.appimage -> nvim" bpick"nvim.appimage" neovim/neovim \
   from"gh-r" as"program" mv"xurls_*_linux_amd64 -> xurls" bpick"xurls_*_linux_amd64" @mvdan/xurls \
   from"gh-r" as"program" mv"docker* -> docker-compose" bpick"*linux*" docker/compose \
   from"gh-r" as"program" mv"exa* -> exa" bpick"*linux*" ogham/exa \
-  changyuheng/zsh-interactive-cd \
+  from"gh-r" as"program" bpick"*ktlint*" pinterest/ktlint \
+  \
   cp"plug.vim -> $HOME/.local/share/nvim/site/autoload/plug.vim" nocompile'!' junegunn/vim-plug \
+  \
+  from"gh-r" as"program" pick"server/bin/kotlin-language-server" bpick"server.zip" fwcd/kotlin-language-server \
+  \
   as"program" make"zinit_install" pick"st" sileht/st \
-  davidparsson/zsh-pyenv-lazy \
-  MichaelAquilina/zsh-you-should-use \
+  \
   as"program" pick"bin/git-dsf" zdharma/zsh-diff-so-fancy \
+  \
   from"gh-r" as"program" cp"istio*/bin/istioctl -> istioctl" bpick"*1.5*linux*" istio/istio \
   from"gh-r" as"program" bpick"*linux*" Qovery/qovery-cli \
   \
   as="program" bpick"kubectx" bpick"kubens" nocompile'!' \
-  atclone"ln -s completion/kubectx.zsh _kubectx" \
-  atclone"ln -s completion/kubens.zsh _kubens" \
-  atpull"zinit creinstall -q ." \
-  ahmetb/kubectx \
+      atclone"ln -s completion/kubectx.zsh _kubectx" \
+      atclone"ln -s completion/kubens.zsh _kubens" \
+      atpull"zinit creinstall -q ." \
+      ahmetb/kubectx \
 
 
   # Replaced by exa
@@ -318,12 +327,14 @@ alias optimutt="find ~/.mutt/cache/headers -type f -exec tcbmgr optimize -nl {} 
 
 function nvim(){
     # Replace :123 by \s+123
-    local cmd="command nvim"
+    local cmd="command nvim" arg new_arg
 	for arg in $@; do
-		cmd="$cmd \"${arg/:/\" \"+:}\""
+        new_arg=$(echo "$arg" | sed 's/:\([0-9]\+\)\( \|$\)/ +\1\2/g')
+        cmd="$cmd $new_arg"
 	done
 	eval $cmd
 }
+
 alias vim="nvim"
 alias vi="nvim"
 alias svi="sudo -E /home/sileht/.zinit/plugins/neovim---neovim/nvim"

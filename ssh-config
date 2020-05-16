@@ -85,6 +85,14 @@ Host *.ring.nlnog.net
     User tetaneutral
 
 
+Host gitlab1
+    User ubuntu
+    Hostname ec2-15-188-127-53.eu-west-3.compute.amazonaws.com
+
+Host gitlab2
+    User ubuntu
+    Hostname ec2-52-47-38-177.eu-west-3.compute.amazonaws.com
+
 ###########
 # DEFAULT #
 ###########
