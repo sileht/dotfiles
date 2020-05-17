@@ -277,8 +277,11 @@ let g:ale_c_parse_compile_commands = 1
 let g:ale_python_pyls_config = {'pyls': {
   \ 'settings': {"configurationSources": ["flake8"]},
   \ 'plugins': {
+  \   'jedi': {'environment': ''},
   \   'pylint': {'enabled': v:false},
   \   'pycodestyle': {'enabled': v:false},
+  \   'pyls_mypy': { 'enabled': v:true, "live_mode": v:false },
+  \   'pyls_black': { 'enabled': v:true},
   \ }}}
 
 let g:ale_kotlin_languageserver_executable = 'kotlin-language-server'
@@ -444,6 +447,7 @@ def load_venv(path):
     for venv in (".tox/py38", ".tox/py37", ".tox/py27", "venv"):
         venvdir = os.path.join(path, venv)
         if os.path.exists(venvdir):
+            vim.command("let g:ale_python_pyls_config.pyls.plugins.jedi.environment='%s'" % venvdir)
             vim.command("let $VIRTUAL_ENV='%s'" % venvdir)
             return
 
@@ -459,7 +463,6 @@ while True:
     if is_source_root(current_path):
         load_venv(current_path)
         load_flake8(current_path)
-        # vim.command("let g:ale_python_root='%s'" % current_path)
         break
     current_path = os.path.abspath(os.path.join(current_path, ".."))
     if current_path == home or current_path == "/":
