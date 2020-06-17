@@ -38,7 +38,7 @@ zinit wait lucid light-mode for \
   \
   as"program" pick"bin/git-dsf" zdharma/zsh-diff-so-fancy \
   \
-  from"gh-r" as"program" cp"istio*/bin/istioctl -> istioctl" bpick"*1.5*linux*" istio/istio \
+  from"gh-r" as"program" cp"istio*/bin/istioctl -> istioctl" bpick"*1.6*linux*" istio/istio \
   from"gh-r" as"program" bpick"*linux*" Qovery/qovery-cli \
   \
   as="program" bpick"kubectx" bpick"kubens" nocompile'!' \
@@ -287,8 +287,12 @@ alias idletask='schedtool -D -n 19 -e ionice -c 3'
 alias batchtask='schedtool -B -n 1 -e ionice -n 1'
 
 function cdt() { cd $(mktemp -td cdt.$(date '+%Y%m%d-%H%M%S').XXXXXXXX) ; pwd }
-function s() { pwd >| $ZVARDIR/.saved_dir; }
+function s() { pwd >| $ZVARDIR/.saved_dir; pwd >| $ZVARDIR/.saved_dir_$$; }
 function i() { sp="$(cat $ZVARDIR/.saved_dir 2>/dev/null)"; [ -d $sp -a -r $sp ] && cd $sp }
+function ii() { p=$(cat $ZVARDIR/.saved_dir_* | fzf) ; cd $p ; s ; }
+function zshexit() {
+    rm -f $ZVARDIR/.saved_dir_$$
+}
 function p() {
     local -a working_dirs=($(ls -1d ~/workspace/*/${1}*/.git/.. | sed -e 's@/\.git/\.\./@@g'))
     if [ ${#working_dirs[@]} -eq 1 ] ; then
@@ -324,6 +328,8 @@ alias df="df -h"
 alias diff='diff -rNu'
 alias ip='ip -color'
 alias optimutt="find ~/.mutt/cache/headers -type f -exec tcbmgr optimize -nl {} \;"
+alias kubens="FZF_DEFAULT_OPTS='--height=25%' kubens"
+alias kubectx="FZF_DEFAULT_OPTS='--height=25%' kubectx"
 
 function nvim(){
     # Replace :123 by \s+123

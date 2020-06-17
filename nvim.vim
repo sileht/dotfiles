@@ -31,6 +31,8 @@ Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'tacahiroy/ctrlp-funky'
 
+Plug 'rhysd/vim-grammarous'
+
 Plug 'liuchengxu/vim-clap'
 
 Plug 'lilydjwg/colorizer'       " color hexa code (eg: #0F12AB)
@@ -43,6 +45,7 @@ Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'jaxbot/semantic-highlight.vim'                                                   " semantic highlight (permanent)
 Plug 'numirias/semshi',               {'do': ':UpdateRemotePlugins', 'for': 'python'}  " semantic highlight (selected/python)
+Plug 'mgedmin/python-imports.vim'
 
 
 Plug 'dbeniamine/vim-mail',           {'for': 'mail'}
@@ -224,6 +227,9 @@ nmap <leader>9 <Plug>AirlineSelectTab9
 nmap <S-left>  <Plug>AirlineSelectPrevTab
 nmap <S-right> <Plug>AirlineSelectNextTab
 
+
+nmap <leader>i :ImportName<CR>
+
 " ############
 " ### JEDI ###
 " ############
@@ -305,6 +311,8 @@ let g:ale_sign_offset = 1000000
 let g:ale_sign_style_error = '⛔'
 let g:ale_sign_style_warning = '⚠'
 let g:ale_sign_warning = '⚠'
+
+let g:vim_json_syntax_conceal = 0
 
 " ##################
 " ### EASY ALIGN ###
