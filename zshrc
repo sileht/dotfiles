@@ -35,7 +35,7 @@ zinit wait lucid light-mode for \
   \
   as"program" pick"bin/git-dsf" zdharma/zsh-diff-so-fancy \
   \
-  from"gh-r" as"program" cp"istio*/bin/istioctl -> istioctl" bpick"*1.6*linux*" istio/istio \
+  from"gh-r" as"program" cp"istio*/bin/istioctl -> istioctl" bpick"*linux*" istio/istio \
   \
   as="program" bpick"kubectx" bpick"kubens" nocompile'!' \
       atclone"ln -s completion/kubectx.zsh _kubectx" \
