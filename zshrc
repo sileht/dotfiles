@@ -274,7 +274,7 @@ upgrade() {
     [ "$commands[pacman]" ] && (yes | sudo pacman -Suy)
     [ "$commands[apt]" ] && (sudo apt update -y && sudo apt upgrade -y && sudo apt autoremove --purge && sudo apt clean -y)
     (cd ~/.env && git diff --quiet && git pull --rebase --recurse-submodules && ./install ) # Only pull if not dirty
-    (zinit self-update && zinit update -q --parallel)
+    (cd ~/.env && zinit self-update && zinit update -q --parallel && git commit -m "sync zinit" zinit && git push origin master )
     [ "$1" ] && nvim "+set nomore" +PlugClean! +PlugUpdate! +qall
 }
 
