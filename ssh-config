@@ -9,7 +9,7 @@ Host predator rt rrt eve-unlock
 Host rt rrt
    Port 22222
 
-Host alien billy gizmo eve bob rbob trudy predator
+Host alien billy gizmo eve bob rbob trudy predator joe.s joe
     ForwardAgent yes
     RemoteForward /home/sileht/.var/S.gpg-agent /run/user/1000/gnupg/S.gpg-agent.extra
     RemoteForward /home/sileht/.var/S.gpg-agent.ssh /run/user/1000/gnupg/S.gpg-agent.ssh
@@ -19,6 +19,9 @@ Host alien billy gizmo eve bob rbob trudy predator
 
 Host gizmo eve predator rbob rrt
     Hostname %h.sileht.net
+
+Host joe.s
+    Hostname %hileht.net
 
 Host gizmo
     AddressFamily inet

@@ -103,6 +103,9 @@ status.register(
 
 status.register("text", text=" | ")
 
+status.register("redshift")
+
+status.register("text", text=" | ")
 
 for interface in os.listdir("/sys/class/net/"):
     if interface.startswith("wl"):
