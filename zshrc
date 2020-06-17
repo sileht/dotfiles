@@ -28,18 +28,14 @@ zinit wait lucid light-mode for \
   from"gh-r" as"program" mv"xurls_*_linux_amd64 -> xurls" bpick"xurls_*_linux_amd64" @mvdan/xurls \
   from"gh-r" as"program" mv"docker* -> docker-compose" bpick"*linux*" docker/compose \
   from"gh-r" as"program" mv"exa* -> exa" bpick"*linux*" ogham/exa \
-  from"gh-r" as"program" bpick"*ktlint*" pinterest/ktlint \
   \
   cp"plug.vim -> $HOME/.local/share/nvim/site/autoload/plug.vim" nocompile'!' junegunn/vim-plug \
-  \
-  from"gh-r" as"program" pick"server/bin/kotlin-language-server" bpick"server.zip" fwcd/kotlin-language-server \
   \
   as"program" make"zinit_install" pick"st" sileht/st \
   \
   as"program" pick"bin/git-dsf" zdharma/zsh-diff-so-fancy \
   \
   from"gh-r" as"program" cp"istio*/bin/istioctl -> istioctl" bpick"*1.6*linux*" istio/istio \
-  from"gh-r" as"program" bpick"*linux*" Qovery/qovery-cli \
   \
   as="program" bpick"kubectx" bpick"kubens" nocompile'!' \
       atclone"ln -s completion/kubectx.zsh _kubectx" \
