@@ -59,7 +59,7 @@ Plug 'vim-python/python-syntax',      {'for': 'python'}
 "Plug 'Rykka/riv.vim',                 {'for': 'rst'}
 "Plug 'rodjek/vim-puppet',             {'for': 'puppet'}
 "
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries', 'for': 'go' }
+"Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries', 'for': 'go' }
 
 Plug 'HerringtonDarkholme/yats.vim',       {'for': ['javascript', 'javascriptreact']}
 Plug 'yuezk/vim-js',       {'for': ['javascript', 'javascriptreact']}
