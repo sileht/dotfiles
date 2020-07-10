@@ -214,6 +214,7 @@ bar {
     # tray_output none
     position top
     workspace_buttons yes
+    workspace_min_width 30
     status_command exec ~/.i3/status.py
     separator_symbol " "
 }

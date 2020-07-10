@@ -34,15 +34,6 @@ zinit wait lucid light-mode for \
   as"program" make"zinit_install" pick"st" sileht/st \
   \
   as"program" pick"bin/git-dsf" zdharma/zsh-diff-so-fancy \
-  \
-  from"gh-r" as"program" cp"istio*/bin/istioctl -> istioctl" bpick"*linux*" istio/istio \
-  \
-  as="program" bpick"kubectx" bpick"kubens" nocompile'!' \
-      atclone"ln -s completion/kubectx.zsh _kubectx" \
-      atclone"ln -s completion/kubens.zsh _kubens" \
-      atpull"zinit creinstall -q ." \
-      ahmetb/kubectx \
-
 
   # Replaced by exa
   #atclone"dircolors -b LS_COLORS > clrs.zsh" atpull'%atclone' pick"clrs.zsh" nocompile'!' \
