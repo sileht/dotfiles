@@ -5,10 +5,11 @@ map <F1> <del>
 map! <F1> <del>
 
 " Add some missing filetype extentions
+autocmd BufNewFile,BufRead *.jsx set filetype=javascript.jsx
 autocmd BufNewFile,BufRead *.yaml  set filetype=yml
 autocmd BufNewFile,BufRead *.j2	   set filetype=jinja
 autocmd BufNewFile,BufRead *mutt-* set filetype=mail
-autocmd BufReadPost *.kt setlocal filetype=kotlin
+autocmd BufNewFile,BufRead *.kt set filetype=kotlin
 
 call plug#begin('~/.local/share/nvim/plugged')
 

@@ -42,7 +42,8 @@ bindsym $mod+k exec sound-controller
 # bindsym Print exec gnome-screenshot -i
 bindsym Print exec flameshot gui
 bindsym Shift+Print exec kazam
-bindsym --release $mod+l exec --no-startup-id slock
+# bindsym --release $mod+l exec --no-startup-id slock
+bindsym --release $mod+l exec --no-startup-id betterlockscreen -l
 bindsym $mod+x exec --no-startup-id pcmanfm /home/sileht/
 # kill focused window
 bindsym $mod+Shift+a kill
@@ -201,6 +202,7 @@ bar {
     output eDP1
     output DP1
     output DP2
+    output DP3
     output HDMI1
     output HDMI2
 
@@ -208,6 +210,7 @@ bar {
     output eDP-1
     output DP-1
     output DP-2
+    output DP-3
     output HDMI-1
     output HDMI-2
 
