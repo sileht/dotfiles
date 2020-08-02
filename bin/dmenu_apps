@@ -1,5 +1,7 @@
 #!/bin/sh
 
+ exec rofi -combi-modi "window,drun,run,ssh" -theme gruvbox-dark-hard -show combi -show-icons -font "MesloLGS Nerd Font 18"
+
 cachedir=${XDG_CACHE_HOME:-"$HOME/.cache"}
 if [ -d "$cachedir" ]; then
 	cache=$cachedir/dmenu_run
