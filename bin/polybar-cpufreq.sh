@@ -8,6 +8,7 @@ display() {
 
 run () {
     sudo cpupower frequency-set -g $1
+    $0 output
 }
 
 mode=$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor)
@@ -15,5 +16,5 @@ case $1-$mode in
     toggle-performance) run powersave ;;
     toggle-powersave) run performance ;;
     output-performance) display "" ;;
-    output-power) display "鈴" ;;
+    output-powersave) display "鈴" ;;
 esac

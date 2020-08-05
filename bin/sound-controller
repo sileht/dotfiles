@@ -67,8 +67,8 @@ def _bluetooth_scan():
 def _get_bluetooth_items():
     items = {}
     if _is_bluetooth_on():
-        items["    Bluetooth | Scan (3 seconds)"] = _bluetooth_scan
-        items["    Bluetooth | Off"] = "bluetoothctl power off"
+        items["   Scan (3 seconds)"] = _bluetooth_scan
+        items["   Off"] = "bluetoothctl power off"
 
         for line in _run("bluetoothctl devices").split("\n"):
             if not line.strip():
@@ -76,7 +76,7 @@ def _get_bluetooth_items():
             mac, _, name = line.strip()[7:].partition(" ")
             info = _get_bluetooth_device_info(mac)
             name = info.get("Name", "Unknown")
-            prefix = f"   🎧 {name} / {mac} |"
+            prefix = f"🎧 {name} / {mac} |"
             if info["Paired"] == "yes":
                 connected = info["Connected"] == "yes"
 
@@ -94,7 +94,7 @@ def _get_bluetooth_items():
                     f"bluetoothctl connect {mac}",
                 ]
     else:
-        items["    Bluetooth | On"] = f"bluetoothctl power on"
+        items["Bluetooth | On"] = "bluetoothctl power on"
 
     return items
 
@@ -109,32 +109,40 @@ def _get_pulseaudio_cards_profiles(pulse):
     for card in reversed(cards):
         for profile in reversed(card.profile_list):
             if profile.available:
-                status = "  "
+                selected = False
                 if (
                     card.index == default_card_index
                     and profile.name == card.profile_active.name
                 ) or (profile.name == "off" and default_sink_name == "auto_null"):
-                    status = "➤ "
+                    selected = True
                 if card.proplist["device.icon_name"].endswith("bluetooth"):
                     icon = "🎧"
                 else:
                     icon = "🔊"
-                label = f"{status} {icon} {card.proplist['device.description']} | {profile.description}"
+                label = f"{icon} {card.proplist['device.description']} | {profile.description}"
+                if selected:
+                    label = f"<b>{label}</b>"
                 items[label] = functools.partial(_select_output, pulse, card, profile)
     return items
 
 
 def main(pulse):
     items = {}
-    items["   🔊 Pulseaudio Volume Control"] = "pavucontrol"
-    items["    Bluetooth Manager"] = "blueman-manager"
-    items["-" * 320] = None
+    items["Pulseaudio"] = "pavucontrol"
     items.update(_get_pulseaudio_cards_profiles(pulse))
-    items["-" * 321] = None
+    items["Bluetooth"] = "blueman-manager"
     items.update(_get_bluetooth_items())
 
+    for pos, key in enumerate(items):
+        if "<b>" in key:
+            break
+    else:
+        pos = None
+
+    if pos is not None:
+        selection = ["-selected-row", str(pos)]
     p = subprocess.Popen(
-        ["dmenu", "-i", "-l", "30"],
+        ["rofi", "-dmenu"] + selection,
         stdin=subprocess.PIPE,
         stdout=subprocess.PIPE,
         text=True,

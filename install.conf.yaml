@@ -6,13 +6,13 @@
 - clean:
     - '~'
     - '~/.config'
+    - '~/.config/ntfd'
     - '~/.config/dunst'
     - '~/.config/ranger'
     - '~/.config/nvim'
     - '~/.ssh'
 
 - link:
-    ~/.config/dunst/dunstrc: dunstrc
     ~/.config/ranger: ranger
     ~/.config/ntfd: ntfd
     ~/.config/nvim/init.vim: nvim.vim

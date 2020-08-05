@@ -17,7 +17,18 @@ title_align center
 default_border pixel 2
 workspace_layout tabbed
 hide_edge_borders both
-client.focused          #1976D2 #1976D2 #FFFFFF #0D47A1  #1976D2
+
+gaps top 38
+gaps bottom 38
+
+# <colorclass> <border> <background> <text> <indicator> <child_border>
+client.focused          #0D47A1 #0D47A1 #F9F9F9 #1976D2 #0D47A1
+client.focused_inactive #2E2E2E #1E1E1E #888888 #292D2E #2E2E2E
+client.unfocused        #2E2E2E #2E2E2E #888888 #292D2E #2E2E2E
+client.placeholder      #000000 #2E2E2E #F9F9F9 #000000 #000000
+client.urgent           #2E2E2E #ffb52a #2E2E2E #ffb52a #ffb52a
+
+assign [class="spotify"] 9
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -28,6 +39,7 @@ for_window [class="Pavucontrol"] floating enable
 for_window [class="VirtualBox"] floating enable
 for_window [class="Mate-appearance-properties"] floating enable
 for_window [title="Bluetooth Devices"] floating enable
+for_window [class="^.*"] border normal
 #for_window [class="^.*"] border pixel 2
 # no_focus [class="Chromium"]
 
@@ -39,7 +51,6 @@ bindsym $mod+c exec st -t 'gizmo.sileht.net' -e zsh -i -c "ssh -tqxkAC gizmo"
 bindsym $mod+Shift+c exec st -t 'gizmo.sileht.net' -e mosh -a gizmo
 bindsym $mod+k exec sound-controller
 
-# bindsym Print exec gnome-screenshot -i
 bindsym Print exec flameshot gui
 bindsym Shift+Print exec kazam
 # bindsym --release $mod+l exec --no-startup-id slock
@@ -48,24 +59,17 @@ bindsym $mod+x exec --no-startup-id pcmanfm /home/sileht/
 # kill focused window
 bindsym $mod+Shift+a kill
 
-#bindsym XF86Launch1 exec --no-startup-id "bash -c 'pkill solard;solard --stop-on-outside-change --show-notifications;'"
-#exec_always --no-startup-id "bash -c 'pkill solard;solard --stop-on-outside-change --show-notifications;'"
-exec_always --no-startup-id /home/sileht/.env/bin/unsplash
-exec_always bash -c "pkill ntfd ; exec /home/sileht/.zinit/plugins/kamek-pf---ntfd/ntfd;"
-exec_always bash -c "pkill polybar ; exec polybar -c /home/sileht/.env/polybar-config.ini top;"
-exec spotifyd --volume-normalisation --backend pulseaudio
+bindsym $mod+j exec --no-startup-id rofimoji
+bindsym $mod+r exec --no-startup-id rofi_menu
+bindsym $mod+m exec --no-startup-id "rofi -show calc -modi calc -no-show-match -no-sort -calc-command \\"echo -n '{result}' | xclip\\" > /dev/null"
 
-#exec_always --no-startup-id "bash -c 'pkill compton; compton"
-#exec_always --no-startup-id "bash -c 'pkill conky; conky'"
+exec_always /home/sileht/.env/bin/unsplash
+exec_always bash -c "pkill ntfd ; exec /home/sileht/.zinit/plugins/kamek-pf---ntfd/ntfd;"
+exec_always bash -c "pkill polybar ; polybar -c /home/sileht/.env/polybar/config.ini top & polybar -c /home/sileht/.env/polybar/config.ini bottom;"
+#exec spotifyd --volume-normalisation --backend pulseaudio
+
 #exec pcmanfm -d
 
-# start dmenu (a program launcher)
-#bindsym $mod+r exec dmenu_run
-bindsym $mod+r exec dmenu_apps
-# There also is the (new) i3-dmenu-desktop which only displays applications
-# shipping a .desktop file. It is a wrapper around dmenu, so you need that
-# installed.
-#bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 
 ## change focus
 #bindsym $mod+j focus left
@@ -194,43 +198,3 @@ mode "resize" {
         bindsym Return mode "default"
         bindsym Escape mode "default"
 }
-
-## Start i3bar to display a workspace bar (plus the system information i3status
-## finds out, if available)
-#bar {
-#    font pango:MeslogLGS Nerd Font:style=Regular 12
-#
-#    # Legacy xorg driver names
-#    output eDP1
-#    output DP1
-#    output DP2
-#    output DP3
-#    output HDMI1
-#    output HDMI2
-#
-#    # Modesetting xorg driver names
-#    output eDP-1
-#    output DP-1
-#    output DP-2
-#    output DP-3
-#    output HDMI-1
-#    output HDMI-2
-#
-#    # tray_output none
-#    position top
-#    workspace_buttons yes
-#    workspace_min_width 30
-#    status_command exec ~/.i3/status.py
-#    separator_symbol " "
-#}
-#
-#bar {
-#    font pango:DejaVu Sans Mono 1
-#    position top
-#    tray_output none
-#    workspace_buttons no
-#    output eDP-1
-#    colors p{
-#        background #00BCD4
-#    }
-#}
