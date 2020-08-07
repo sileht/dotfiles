@@ -15,7 +15,7 @@ font pango:MesloLGS Nerd Font:style=Regular 12
 
 title_align center
 default_border pixel 2
-workspace_layout tabbed
+workspace_layout default
 hide_edge_borders both
 
 gaps top 38
@@ -39,7 +39,7 @@ for_window [class="Pavucontrol"] floating enable
 for_window [class="VirtualBox"] floating enable
 for_window [class="Mate-appearance-properties"] floating enable
 for_window [title="Bluetooth Devices"] floating enable
-for_window [class="^.*"] border normal
+#for_window [class="^.*"] border normal
 #for_window [class="^.*"] border pixel 2
 # no_focus [class="Chromium"]
 
