@@ -8,12 +8,14 @@
     - '~/.config'
     - '~/.config/ntfd'
     - '~/.config/dunst'
+    - '~/.config/rofi'
     - '~/.config/ranger'
     - '~/.config/nvim'
     - '~/.ssh'
 
 - link:
     ~/.config/ranger: ranger
+    ~/.config/rofi: rofi
     ~/.config/ntfd: ntfd
     ~/.config/nvim/init.vim: nvim.vim
     ~/.ctags: ctags

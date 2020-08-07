@@ -142,7 +142,7 @@ def main(pulse):
     if pos is not None:
         selection = ["-selected-row", str(pos)]
     p = subprocess.Popen(
-        ["rofi", "-dmenu"] + selection,
+        ["rofi", "-dmenu", "-markup-rows"] + selection,
         stdin=subprocess.PIPE,
         stdout=subprocess.PIPE,
         text=True,

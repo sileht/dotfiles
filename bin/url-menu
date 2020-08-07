@@ -1,3 +1,3 @@
 #!/bin/bash
 
-xurls | tac | awk '!x[$0]++' | dmenu -l 25 | xargs -r xdg-open
+xurls | tac | awk '!x[$0]++' | rofi -dmenu -l 25 | xargs -r xdg-open
