@@ -64,8 +64,7 @@ bindsym $mod+r exec --no-startup-id rofi_menu
 bindsym $mod+m exec --no-startup-id "rofi -show calc -modi calc -no-show-match -no-sort -calc-command \\"echo -n '{result}' | xclip\\" > /dev/null"
 
 exec_always /home/sileht/.env/bin/unsplash
-exec_always bash -c "pkill ntfd ; exec /home/sileht/.zinit/plugins/kamek-pf---ntfd/ntfd;"
-exec_always bash -c "pkill polybar ; polybar -c /home/sileht/.env/polybar/config.ini top & polybar -c /home/sileht/.env/polybar/config.ini bottom;"
+exec_always polybar-start.sh
 #exec spotifyd --volume-normalisation --backend pulseaudio
 
 #exec pcmanfm -d
