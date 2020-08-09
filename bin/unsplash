@@ -4,6 +4,9 @@ set -e
 feh --bg-scale "${HOME}/.cache/wallpaper.jpg"
 
 wget -q -O ${HOME}/.cache/wallpaper-tmp.jpg https://unsplash.it/1920/1080/?random
-mv -f ${HOME}/.cache/wallpaper{-tmp,}.jpg
+
+#mv -f ${HOME}/.cache/wallpaper{-tmp,}.jpg
+convert ${HOME}/.cache/wallpaper-tmp.jpg -crop 1920x1016+0+32 -bordercolor black -border x32 ${HOME}/.cache/wallpaper.jpg
+
 feh --bg-scale "${HOME}/.cache/wallpaper.jpg"
 betterlockscreen -u "${HOME}/.cache/wallpaper.jpg" -b

@@ -14,9 +14,19 @@ set $mod Mod4
 font pango:MesloLGS Nerd Font:style=Regular 12
 
 title_align center
-default_border pixel 2
+default_border pixel 0
 workspace_layout default
 hide_edge_borders both
+
+for_window [class="^.*"] border pixel 0
+for_window [title="^.*"] border pixel 0
+
+
+border_radius 10
+
+# SET GAPS
+gaps inner 32
+gaps outer 0
 
 gaps top 38
 gaps bottom 38
@@ -28,7 +38,8 @@ client.unfocused        #2E2E2E #2E2E2E #888888 #292D2E #2E2E2E
 client.placeholder      #000000 #2E2E2E #F9F9F9 #000000 #000000
 client.urgent           #2E2E2E #ffb52a #2E2E2E #ffb52a #ffb52a
 
-assign [class="spotify"] 9
+assign [class="Spotify"] 9
+for_window [class="Polybar"] border_radius 0
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
