@@ -14,22 +14,25 @@ set $mod Mod4
 font pango:MesloLGS Nerd Font:style=Regular 12
 
 title_align center
-default_border pixel 0
+default_border pixel 2
 workspace_layout default
-hide_edge_borders both
+hide_edge_borders smart
+smart_borders on
 
-for_window [class="^.*"] border pixel 0
-for_window [title="^.*"] border pixel 0
+#for_window [class="^.*"] border pixel 0
+#for_window [title="^.*"] border pixel 0
 
-
-border_radius 10
+#border_radius 10
+#for_window [class="Polybar"] border_radius 0
 
 # SET GAPS
-gaps inner 32
-gaps outer 0
+#gaps inner 0
+#gaps outer 0
 
-gaps top 38
-gaps bottom 38
+gaps top 34
+gaps bottom 34
+#gaps left 0
+#gaps right 0
 
 # <colorclass> <border> <background> <text> <indicator> <child_border>
 client.focused          #0D47A1 #0D47A1 #F9F9F9 #1976D2 #0D47A1
@@ -39,7 +42,6 @@ client.placeholder      #000000 #2E2E2E #F9F9F9 #000000 #000000
 client.urgent           #2E2E2E #ffb52a #2E2E2E #ffb52a #ffb52a
 
 assign [class="Spotify"] 9
-for_window [class="Polybar"] border_radius 0
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -74,12 +76,11 @@ bindsym $mod+j exec --no-startup-id rofimoji
 bindsym $mod+r exec --no-startup-id rofi_menu
 bindsym $mod+m exec --no-startup-id "rofi -show calc -modi calc -no-show-match -no-sort -calc-command \\"echo -n '{result}' | xclip\\" > /dev/null"
 
-exec_always /home/sileht/.env/bin/unsplash
+#exec "picom --config ~/.env/picom.conf"
+exec /home/sileht/.env/bin/unsplash
 exec_always polybar-start.sh
-#exec spotifyd --volume-normalisation --backend pulseaudio
 
 #exec pcmanfm -d
-
 
 ## change focus
 #bindsym $mod+j focus left

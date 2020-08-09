@@ -6,7 +6,6 @@
 - clean:
     - '~'
     - '~/.config'
-    - '~/.config/ntfd'
     - '~/.config/dunst'
     - '~/.config/rofi'
     - '~/.config/ranger'
@@ -17,7 +16,6 @@
     ~/.config/ranger: ranger
     ~/.config/dunst: dunst
     ~/.config/rofi: rofi
-    ~/.config/ntfd: ntfd
     ~/.config/nvim/init.vim: nvim.vim
     ~/.ctags: ctags
     ~/.gitconfig: gitconfig

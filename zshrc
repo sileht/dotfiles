@@ -29,8 +29,6 @@ zinit wait lucid light-mode for \
   from"gh-r" as"program" mv"docker* -> docker-compose" bpick"*linux*" docker/compose \
   from"gh-r" as"program" mv"exa* -> exa" bpick"*linux*" ogham/exa \
   \
-  from"gh-r" as"program" mv"ntfd-x86_64-unknown-linux-musl -> ntfd" bpick"ntfd-x86_64-unknown-linux-musl" kamek-pf/ntfd \
-  \
   cp"plug.vim -> $HOME/.local/share/nvim/site/autoload/plug.vim" nocompile'!' junegunn/vim-plug \
   \
   as"program" make"zinit_install" pick"st" sileht/st \
