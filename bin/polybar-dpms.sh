@@ -1,7 +1,7 @@
 #!/bin/bash
 
-format="冷 on"
-format_disabled="冷 off"
+format=""
+format_disabled=""
 #format_disabled="冷 off"
 
 

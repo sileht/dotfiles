@@ -26,13 +26,7 @@ smart_borders on
 #for_window [class="Polybar"] border_radius 0
 
 # SET GAPS
-#gaps inner 0
-#gaps outer 0
-
 gaps top 34
-gaps bottom 34
-#gaps left 0
-#gaps right 0
 
 # <colorclass> <border> <background> <text> <indicator> <child_border>
 client.focused          #0D47A1 #0D47A1 #F9F9F9 #1976D2 #0D47A1

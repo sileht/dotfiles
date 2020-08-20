@@ -4,13 +4,21 @@ VOL_INC=2
 VOL_MAX=130
 
 declare -A SINK_NICKNAMES
-SINK_NICKNAMES[alsa_output.usb-*.analog-stereo]="🎧 (usb)"
-SINK_NICKNAMES[alsa_output.pci-0000_00_??.?.analog-stereo]="🔊 (built-in/analog)"
-SINK_NICKNAMES[alsa_output.pci-0000_00_??.?.hdmi-stereo]="🔊 (built-in/hdmi)"
-SINK_NICKNAMES[bluez_sink.??_??_??_??_??_??.headset_head_unit]="🎧 (headset)"
-SINK_NICKNAMES[bluez_sink.??_??_??_??_??_??.a2dp_sink]="🎧 (a2dp)"
-SINK_NICKNAMES[bluez_sink.??_??_??_??_??_??.a2dp_sink_aac]="🎧 (a2dp/aac)"
-SINK_NICKNAMES[bluez_sink.??_??_??_??_??_??.a2dp_sink_sbc]="🎧 (a2dp/sbc)"
+#SINK_NICKNAMES[alsa_output.usb-*.analog-stereo]="🎧 (usb)"
+#SINK_NICKNAMES[alsa_output.pci-0000_00_??.?.analog-stereo]="🔊 (built-in/analog)"
+#SINK_NICKNAMES[alsa_output.pci-0000_00_??.?.hdmi-stereo]="🔊 (built-in/hdmi)"
+#SINK_NICKNAMES[bluez_sink.??_??_??_??_??_??.headset_head_unit]="🎧 (headset)"
+#SINK_NICKNAMES[bluez_sink.??_??_??_??_??_??.a2dp_sink]="🎧 (a2dp)"
+#SINK_NICKNAMES[bluez_sink.??_??_??_??_??_??.a2dp_sink_aac]="🎧 (a2dp/aac)"
+#SINK_NICKNAMES[bluez_sink.??_??_??_??_??_??.a2dp_sink_sbc]="🎧 (a2dp/sbc)"
+
+SINK_NICKNAMES[alsa_output.usb-*.analog-stereo]=""
+SINK_NICKNAMES[alsa_output.pci-0000_00_??.?.analog-stereo]="🔊"
+SINK_NICKNAMES[alsa_output.pci-0000_00_??.?.hdmi-stereo]=""
+SINK_NICKNAMES[bluez_sink.??_??_??_??_??_??.headset_head_unit]="🎧"
+SINK_NICKNAMES[bluez_sink.??_??_??_??_??_??.a2dp_sink]="🎧"
+SINK_NICKNAMES[bluez_sink.??_??_??_??_??_??.a2dp_sink_aac]="🎧"
+SINK_NICKNAMES[bluez_sink.??_??_??_??_??_??.a2dp_sink_sbc]="🎧"
 
 if ! pulseaudio --check; then
     echo "No pulseaudio" >&2
@@ -28,19 +36,17 @@ MUTED=$(pacmd list-sinks | grep -A 15 "index: $SELECTED_SINK" | awk '/muted/{pri
 
 
 output() {
-    local fancy_name="?? Unknown output"
+    local icon="🔊? "
     for match in "${!SINK_NICKNAMES[@]}"; do
         case $SELECTED_SINK_NAME in
-            $match) fancy_name=${SINK_NICKNAMES[$match]} ;;
+            $match) icon=${SINK_NICKNAMES[$match]} ;;
         esac
     done
-    echo $fancy_name | while read icon name ; do
-        if [ "$MUTED" == "yes" ]; then
-            echo "%{F#6b6b6b}${icon} ${VOLUME}% ${name}%{F-}"
-        else
-            echo "${icon} ${VOLUME}% ${name}"
-        fi
-    done
+    if [ "$MUTED" == "yes" ]; then
+        echo "%{F#6b6b6b}${icon}  ${VOLUME}%%{F-}"
+    else
+        echo "${icon}  ${VOLUME}%"
+    fi
 }
 
 function listen() {

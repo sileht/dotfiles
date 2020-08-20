@@ -19,7 +19,6 @@ color_2="%{F#ffb52a}"
 color_7="%{F#009966}"
 color_8="%{F#009966}"
 vol=$(based-connect -b 4C:87:5D:06:32:13 2>/dev/null)
-vol=70
 if [ "$vol" ]; then
     i=$(($vol * ${#glyphs} / 100))
     [ "$i" -eq 0 ] && i=8
