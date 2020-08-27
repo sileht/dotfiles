@@ -259,6 +259,7 @@ zcompileall(){
 
 upgrade() {
     [ "$commands[pacman]" ] && (yes | sudo pacman -Suy)
+    [ "$commands[pacman]" ] && sudo remove-orphaned-kernels
     [ "$commands[apt]" ] && (sudo apt update -y && sudo apt upgrade -y && sudo apt autoremove --purge && sudo apt clean -y)
     (cd ~/.env && git diff --quiet && git pull --rebase --recurse-submodules && ./install ) # Only pull if not dirty
     (cd ~/.env && zinit self-update && zinit update -q --parallel && zinit delete --clean -y && git commit -m "sync zinit" zinit && git push origin master )

@@ -4,21 +4,27 @@ VOL_INC=2
 VOL_MAX=130
 
 declare -A SINK_NICKNAMES
-#SINK_NICKNAMES[alsa_output.usb-*.analog-stereo]="🎧 (usb)"
-#SINK_NICKNAMES[alsa_output.pci-0000_00_??.?.analog-stereo]="🔊 (built-in/analog)"
-#SINK_NICKNAMES[alsa_output.pci-0000_00_??.?.hdmi-stereo]="🔊 (built-in/hdmi)"
-#SINK_NICKNAMES[bluez_sink.??_??_??_??_??_??.headset_head_unit]="🎧 (headset)"
-#SINK_NICKNAMES[bluez_sink.??_??_??_??_??_??.a2dp_sink]="🎧 (a2dp)"
-#SINK_NICKNAMES[bluez_sink.??_??_??_??_??_??.a2dp_sink_aac]="🎧 (a2dp/aac)"
-#SINK_NICKNAMES[bluez_sink.??_??_??_??_??_??.a2dp_sink_sbc]="🎧 (a2dp/sbc)"
+SINK_NICKNAMES[alsa_output.usb-*.analog-stereo]="🎧 (usb)"
+SINK_NICKNAMES[alsa_output.pci-0000_00_??.?.analog-stereo]="🔊 (built-in/analog)"
+SINK_NICKNAMES[alsa_output.pci-0000_00_??.?.hdmi-stereo]=" (built-in/hdmi)"
+SINK_NICKNAMES[bluez_sink.??_??_??_??_??_??.headset_head_unit]="🎧 (headset)"
+SINK_NICKNAMES[bluez_sink.??_??_??_??_??_??.a2dp_sink_aac]="🎧 (a2dp/aac)"
+SINK_NICKNAMES[bluez_sink.??_??_??_??_??_??.a2dp_sink_sbc]="🎧 (a2dp/sbc)"
+SINK_NICKNAMES[bluez_sink.??_??_??_??_??_??.a2dp_sink]="🎧 (a2dp)"
+
+#SINK_NICKNAMES[alsa_output.usb-*.analog-stereo]=""
+#SINK_NICKNAMES[alsa_output.pci-0000_00_??.?.analog-stereo]="🔊"
+#SINK_NICKNAMES[alsa_output.pci-0000_00_??.?.hdmi-stereo]=""
+#SINK_NICKNAMES[bluez_sink.??_??_??_??_??_??.headset_head_unit]="🎧"
+#SINK_NICKNAMES[bluez_sink.??_??_??_??_??_??.a2dp_sink]="🎧"
+#SINK_NICKNAMES[bluez_sink.??_??_??_??_??_??.a2dp_sink_aac]="🎧"
+#SINK_NICKNAMES[bluez_sink.??_??_??_??_??_??.a2dp_sink_sbc]="🎧"
 
 SINK_NICKNAMES[alsa_output.usb-*.analog-stereo]=""
 SINK_NICKNAMES[alsa_output.pci-0000_00_??.?.analog-stereo]="🔊"
 SINK_NICKNAMES[alsa_output.pci-0000_00_??.?.hdmi-stereo]=""
-SINK_NICKNAMES[bluez_sink.??_??_??_??_??_??.headset_head_unit]="🎧"
+SINK_NICKNAMES[bluez_sink.??_??_??_??_??_??.headset_head_unit]=""
 SINK_NICKNAMES[bluez_sink.??_??_??_??_??_??.a2dp_sink]="🎧"
-SINK_NICKNAMES[bluez_sink.??_??_??_??_??_??.a2dp_sink_aac]="🎧"
-SINK_NICKNAMES[bluez_sink.??_??_??_??_??_??.a2dp_sink_sbc]="🎧"
 
 if ! pulseaudio --check; then
     echo "No pulseaudio" >&2
@@ -43,10 +49,26 @@ output() {
         esac
     done
     if [ "$MUTED" == "yes" ]; then
-        echo "%{F#6b6b6b}${icon}  ${VOLUME}%%{F-}"
+        echo -n "%{F#6b6b6b}${icon}  ${VOLUME}%%{F-}"
     else
-        echo "${icon}  ${VOLUME}%"
+        echo -n "${icon}  ${VOLUME}%"
     fi
+
+    glyphs="ﴐﴆﴇﴈﴉﴊﴋﴌﴍﴎﴅ"
+    color_0="%{F#cc0033}"
+    color_1="%{F#ffb52a}"
+    color_2="%{F#ffb52a}"
+    color_7="%{F#009966}"
+    color_8="%{F#009966}"
+    vol=$(based-connect -b 4C:87:5D:06:32:13 2>/dev/null)
+    if [ "$vol" ]; then
+        i=$(($vol * ${#glyphs} / 100))
+        [ "$i" -eq 0 ] && i=8
+        glyph=${glyphs:$i:1}
+        color=$(eval echo '$color_'$i)
+        echo -n "$color  $glyph ${vol}%%{F-}"
+    fi
+    echo
 }
 
 function listen() {

@@ -1,9 +1,5 @@
 set nocompatible
 
-" Temp hack for https://github.com/neovim/neovim/issues/3211
-map <F1> <del>
-map! <F1> <del>
-
 " Add some missing filetype extentions
 autocmd BufNewFile,BufRead *.jsx set filetype=javascript.jsx
 autocmd BufNewFile,BufRead *.yaml  set filetype=yml
@@ -74,7 +70,7 @@ Plug 'tpope/vim-markdown',            {'for': 'markdown'}
 Plug 'vim-scripts/HTML-AutoCloseTag', {'for': ['html', 'xml']}
 Plug 'hail2u/vim-css3-syntax',        {'for': 'css'}
 Plug 'zinit-zsh/zinit-vim-syntax'
-Plug 'udalov/kotlin-vim',             {'for': 'kotlin'}
+"Plug 'udalov/kotlin-vim',             {'for': 'kotlin'}
 
 call plug#end()
 
