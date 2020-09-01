@@ -56,6 +56,7 @@ case $HOST in
     gizmo) host_color=214;;
     billy) host_color=76;;
     joe) host_color=216; PURE_KUBE=1;;
+    oberon) host_color=216; PURE_KUBE=1;;
     *) host_color=242;;
 esac
 

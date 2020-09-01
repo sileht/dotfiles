@@ -1,13 +1,15 @@
 #!/bin/bash
 set -e
 
-feh --bg-scale "${HOME}/.cache/wallpaper.jpg"
+dest="${HOME}/.cache/wallpaper.jpg"
+tmp="${dest}.tmp"
 
-wget -q -O ${HOME}/.cache/wallpaper-tmp.jpg https://unsplash.it/1920/1200/?random
+[ -e "$dest" ] && feh --bg-scale "$dest"
 
-#mv -f ${HOME}/.cache/wallpaper{-tmp,}.jpg
+wget -q -O "${tmp}" https://unsplash.it/1920/1200/?random
+
 size=32
-convert ${HOME}/.cache/wallpaper-tmp.jpg -crop 1920x$((1200 - $size))+0+$size -background black -splice 0x$size ${HOME}/.cache/wallpaper.jpg
+convert ${tmp} -crop 1920x$((1200 - $size))+0+$size -background black -splice 0x$size ${dest}
 
-feh --bg-scale "${HOME}/.cache/wallpaper.jpg"
-betterlockscreen -u "${HOME}/.cache/wallpaper.jpg" -b
+feh --bg-scale "${dest}"
+betterlockscreen -u "${dest}" -b

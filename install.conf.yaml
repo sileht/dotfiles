@@ -29,6 +29,7 @@
     ~/.tmux.conf: tmux.conf
     ~/.urlview: urlview
     ~/.xsessionrc: xsessionrc
+    ~/.xsession: xsessionrc
     ~/.wgetrc: wgetrc
     ~/.zlogin: zlogin
     ~/.zlogout: zlogout
