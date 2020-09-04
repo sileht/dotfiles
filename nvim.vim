@@ -155,9 +155,14 @@ autocmd BufEnter * if bufname("") !~ "^\[A-Za-z0-9\]*://" | lcd %:p:h | endif
 " Cut at 80 for some filetype
 autocmd FileType c,cpp,java,go,php,javascript,javascriptreact,puppet,rst set textwidth=79
 autocmd FileType python set textwidth=90
-" libvirt C style
+
+" libvirt C style, skip me if editorconfig is present ?
 autocmd BufWritePre,BufRead *.c setlocal smartindent cindent cinoptions=(0,:0,l1,t0,L3
 autocmd BufWritePre,BufRead *.h setlocal smartindent cindent cinoptions=(0,:0,l1,t0,L3
+
+"autocmd BufWritePre,BufRead *.cpp setlocal shiftwidth=4 expandtab tabstop=4 softtabstop=4
+"autocmd BufWritePre,BufRead *.c setlocal shiftwidth=4 expandtab tabstop=4 softtabstop=4
+"autocmd BufWritePre,BufRead *.h setlocal shiftwidth=4 expandtab tabstop=4 softtabstop=4
 
 " Javascript people like 2 chars sep
 autocmd FileType javascript,javascriptreact set shiftwidth=2 tabstop=4 softtabstop=4
@@ -266,6 +271,7 @@ let g:ale_linter_aliases = {'jsx': ['css', 'javascript']}
 let g:ale_linters = {}
 let g:ale_linters.python = ['pyls'] " , 'flake8']
 let g:ale_linters.c = ['clangformat']
+let g:ale_linters.cpp = ['clangformat']
 let g:ale_linters.go = ['gometalinter']
 let g:ale_linters.kotlin = ['ktlint', 'languageserver']
 let g:ale_linters.javascript = ['eslint']
@@ -274,6 +280,7 @@ let g:ale_fixers = {
   \  'javascript': ['eslint'],
   \  '*': ['remove_trailing_lines', 'trim_whitespace'],
   \ }
+"  \  'cpp': ['clang-format'],
 
 let g:ale_c_parse_makefile = 1
 let g:ale_c_parse_compile_commands = 1
@@ -374,8 +381,6 @@ let g:VimMailStartFlags="SA"
 let g:VimMailContactSyncCmd="true"
 let g:VimMailContactQueryCmd="/home/sileht/.env/bin/vim-mail-contact-query"
 autocmd FileType mail setlocal completeopt+=preview
-autocmd BufWritePre,BufRead *.c setlocal shiftwidth=2 expandtab tabstop=2 softtabstop=2
-autocmd BufWritePre,BufRead *.h setlocal shiftwidth=2 expandtab tabstop=2 softtabstop=2
 
 " ###################
 " ### SPELL CHECK ###

@@ -2,6 +2,8 @@
 git-pull-request
 pynvim
 
+pulsectl
+
 # mutt
 # vdirsyncer
 # khard

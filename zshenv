@@ -8,6 +8,7 @@ export TMPDIR=/tmp
 [ ! -d $ZVARDIR ] && mkdir -p $ZVARDIR
 # Source PATH
 source ~/.xsessionrc
+[ -f "~/.secrets" ] && source ~/.secrets
 
 export DEBEMAIL=sileht@sileht.net
 export DEBFULLNAME='Mehdi Abaakouk'
@@ -39,4 +40,7 @@ export MOSH_PREDICTION_DISPLAY=always
 export VAGRANT_DEFAULT_PROVIDER=libvirt
 
 export GEM_HOME=$HOME/.ruby-gems
+
+export DOCKER_BUILDKIT=1
+
 # vim:ft=zsh
