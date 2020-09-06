@@ -150,11 +150,12 @@ if [ -n "$current" ] && [ -n "$forecast" ]; then
     sun_rise=" "$(date -d @$sun_rise "+%H:%M")
     sun_set=""$(date -d @$sun_set "+%H:%M")
 
-
+    echo -n "%{A1:polybar-show-weather.sh kill:}"
     echo -n "$sun_rise  $sun_set  "
     echo -n "   $wind_color${wind}km/h%{F-}"
     echo -n "  $(get_icon "$current_icon") $current_desc, $current_color$current_temp$SYMBOL%{F-}"
     echo -n "  $trend"
     echo -n "  $(get_icon "$forecast_icon") $forecast_desc, $forecast_color$forecast_temp$SYMBOL%{F-}"
+    echo -n "%{A}"
     echo
 fi
