@@ -11,8 +11,9 @@ Host rt rrt
 
 Host alien billy gizmo eve bob rbob trudy predator joe.s joe
     ForwardAgent yes
-    RemoteForward /home/sileht/.var/S.gpg-agent /run/user/1000/gnupg/S.gpg-agent.extra
-    RemoteForward /home/sileht/.var/S.gpg-agent.ssh /run/user/1000/gnupg/S.gpg-agent.ssh
+    #RemoteForward /home/sileht/.var/S.gpg-agent /run/user/1000/gnupg/S.gpg-agent.extra
+    #RemoteForward /home/sileht/.var/S.gpg-agent.ssh /run/user/1000/gnupg/S.gpg-agent.ssh
+    RemoteForward /home/sileht/.var/S.gpg-agent.ssh /run/user/1000/keyring/ssh
     User sileht
     Port 5555
 
@@ -43,8 +44,6 @@ Host eve-unlock
 Host rt
     Hostname 192.168.8.2
 
-Host eris
-    Hostname 192.168.0.16
 
 ########
 # TTNN #
@@ -72,6 +71,9 @@ Host h7.t
     Hostname %hetaneutral.net
     Port 7422
 
+Host utopialab.t
+    Port 55555
+
 Host *.t
     Hostname %hetaneutral.net
     Port 2222
@@ -87,14 +89,24 @@ Host *.te
 Host *.ring.nlnog.net
     User tetaneutral
 
+#############
+# JOLIBRAIN #
+#############
 
-Host gitlab1
-    User ubuntu
-    Hostname ec2-15-188-127-53.eu-west-3.compute.amazonaws.com
+Host *.j
+    ProxyCommand ssh utopialab.t nc %h %p
+    RemoteForward /home/sileht/.var/S.gpg-agent.ssh /run/user/1000/keyring/ssh
 
-Host gitlab2
-    User ubuntu
-    Hostname ec2-52-47-38-177.eu-west-3.compute.amazonaws.com
+Host ceres.j
+    Hostname 10.10.77.67
+    #DynamicForward 7777
+
+Host eris.j
+    Hostname 10.10.77.61
+    DynamicForward 7777
+
+# Host eris
+#    Hostname 192.168.0.16
 
 ###########
 # DEFAULT #
