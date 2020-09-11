@@ -105,8 +105,12 @@ Host eris.j
     Hostname 10.10.77.61
     DynamicForward 7777
 
-# Host eris
-#    Hostname 192.168.0.16
+Host eris ceres
+    ForwardAgent yes
+    #RemoteForward /home/sileht/.var/S.gpg-agent /run/user/1000/gnupg/S.gpg-agent.extra
+    #RemoteForward /home/sileht/.var/S.gpg-agent.ssh /run/user/1000/gnupg/S.gpg-agent.ssh
+    RemoteForward /home/sileht/.var/S.gpg-agent.ssh /run/user/1000/keyring/ssh
+    User sileht
 
 ###########
 # DEFAULT #
