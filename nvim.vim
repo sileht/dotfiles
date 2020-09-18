@@ -278,9 +278,9 @@ let g:ale_linters.javascript = ['eslint']
 let g:ale_linters.jsx = ['stylelint', 'eslint']
 let g:ale_fixers = {
   \  'javascript': ['eslint'],
+  \  'cpp': ['clang-format'],
   \  '*': ['remove_trailing_lines', 'trim_whitespace'],
   \ }
-"  \  'cpp': ['clang-format'],
 
 let g:ale_c_parse_makefile = 1
 let g:ale_c_parse_compile_commands = 1
@@ -290,7 +290,7 @@ let g:ale_python_pyls_config = {'pyls': {
   \   'jedi': {'environment': ''},
   \   'pylint': {'enabled': v:false},
   \   'pycodestyle': {'enabled': v:false},
-  \   'pyls_mypy': { 'enabled': v:true, "live_mode": v:false },
+  \   'pyls_mypy': { 'enabled': v:false, "live_mode": v:false },
   \   'pyls_black': { 'enabled': v:true},
   \ }}}
 
