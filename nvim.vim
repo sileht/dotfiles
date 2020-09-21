@@ -35,6 +35,7 @@ Plug 'liuchengxu/vim-clap'
 Plug 'lilydjwg/colorizer'       " color hexa code (eg: #0F12AB)
 Plug 'luochen1990/rainbow'      " special parenthesis colors
 Plug 'inside/vim-search-pulse'
+Plug 'brooth/far.vim'
 
 " Language
 Plug 'dense-analysis/ale'
