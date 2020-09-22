@@ -60,14 +60,21 @@ output() {
     color_2="%{F#ffb52a}"
     color_7="%{F#009966}"
     color_8="%{F#009966}"
-    vol=$(based-connect -b 4C:87:5D:06:32:13 2>/dev/null)
-    if [ "$vol" ]; then
-        i=$(($vol * ${#glyphs} / 100))
-        [ "$i" -eq 0 ] && i=8
-        glyph=${glyphs:$i:1}
-        color=$(eval echo '$color_'$i)
-        echo -n "$color  $glyph ${vol}%%{F-}"
+
+    head_phone_connected=$(bluetoothctl info 4C:87:5D:06:32:13 | grep "Connected: yes")
+
+    if [ "$head_phone_connected" ] ; then
+        vol=$(cat ~/.head-phone-vol 2>/dev/null)
+        if [ "$vol" ]; then
+            i=$(($vol * ${#glyphs} / 100))
+            [ "$i" -eq 0 ] && i=8
+            glyph=${glyphs:$i:1}
+            color=$(eval echo '$color_'$i)
+            echo -n "$color  $glyph ${vol}%%{F-}"
+        fi
+        based-connect -b 4C:87:5D:06:32:13 2>/dev/null > ~/.head-phone-vol &
     fi
+
     echo
 }
 
@@ -77,6 +84,7 @@ function listen() {
         need_refresh=$(echo "$event" | grep -e "on card" -e "on sink" -e "on server")
         [ "$need_refresh" ] && $0 output
     done
+    exec $0 listen
 }
 
 case "$1" in
