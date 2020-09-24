@@ -61,10 +61,12 @@ output() {
     color_7="%{F#009966}"
     color_8="%{F#009966}"
 
-    head_phone_connected=$(bluetoothctl info 4C:87:5D:06:32:13 | grep "Connected: yes")
+    headset_connected=$(bluetoothctl info 4C:87:5D:06:32:13 | grep "Connected: yes")
 
-    if [ "$head_phone_connected" ] ; then
-        vol=$(cat ~/.head-phone-vol 2>/dev/null)
+    if [ "$headset_connected" ] ; then
+        headset_file="$HOME/.headset-last-vol"
+
+        vol=$(cat $headset_file 2>/dev/null)
         if [ "$vol" ]; then
             i=$(($vol * ${#glyphs} / 100))
             [ "$i" -eq 0 ] && i=8
@@ -72,7 +74,14 @@ output() {
             color=$(eval echo '$color_'$i)
             echo -n "$color  $glyph ${vol}%%{F-}"
         fi
-        based-connect -b 4C:87:5D:06:32:13 2>/dev/null > ~/.head-phone-vol &
+        if [ -f $headset_file ]; then
+            changed_since_minutes=$(( ($(date +%s) - $(stat $headset_file -c %Y)) / 60 ))
+        else
+            changed_since_minutes=100
+        fi
+        if [ "$changed_since_minutes" -gt 10 ]; then
+            based-connect -b 4C:87:5D:06:32:13 2>/dev/null > $headset_file &
+        fi
     fi
 
     echo
