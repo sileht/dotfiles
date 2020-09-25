@@ -323,8 +323,8 @@ let g:vim_json_syntax_conceal = 0
 " ### EASY ALIGN ###
 " ##################
 
-xmap ga <Plug>(EasyAlign)    " Start interactive EasyAlign in visual mode (e.g. vipga)
-nmap ga <Plug>(EasyAlign)    " Start interactive EasyAlign for a motion/text object (e.g. gaip)
+xmap ga <Plug>(EasyAlign)
+nmap ga <Plug>(EasyAlign)
 
 " #############
 " ### CTRLP ###
