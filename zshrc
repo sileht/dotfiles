@@ -350,7 +350,7 @@ function sfind(){ find "$@" | egrep -v '(Binary|binaire|\.svn|\.git|\.bzr)' ; }
 alias grep='grep --color=auto'
 alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
-function sgrep(){ grep "$@" --color=always| egrep -v '(Binary|binaire|\.svn|\.git|\.bzr)' ; }
+function sgrep(){ grep "$@" --color=always| egrep -v '(Binary|binaire|\.svn|\.git|\.bzr|.mypy_cache)' ; }
 function g(){ sgrep "$@" | more }
 
 # ZSH STUFF

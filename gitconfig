@@ -6,6 +6,8 @@
 
 [alias]
     b = branch --sort=-committerdate --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))'
+    bl = "!f() { git checkout $(git branch --sort=-committerdate --format='%(refname:short)' | sed -n '2p') ; }; f"
+
     pr = "!f() { git r ; git pull-request \"$@\"; }; f"
     t = "!f() { git branch --set-upstream-to=origin/${1:-master}; }; f"
     r = "!f() { git branch -M $(git rev-parse --abbrev-ref HEAD | sed -e 's,^wip-,,g' -e s,pull/[^-]*-sileht-,,g) ; }; f"
