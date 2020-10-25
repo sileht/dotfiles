@@ -66,7 +66,7 @@ bindsym $mod+x exec --no-startup-id pcmanfm /home/sileht/
 # kill focused window
 bindsym $mod+Shift+a kill
 
-bindsym $mod+j exec --no-startup-id rofimoji
+bindsym $mod+colon exec --no-startup-id rofimoji
 bindsym $mod+r exec --no-startup-id rofi_menu
 bindsym $mod+m exec --no-startup-id "rofi -show calc -modi calc -no-show-match -no-sort -calc-command \\"echo -n '{result}' | xclip\\" > /dev/null"
 
