@@ -28,6 +28,7 @@ zinit wait lucid light-mode for \
   from"gh-r" as"program" mv"xurls_*_linux_amd64 -> xurls" bpick"xurls_*_linux_amd64" @mvdan/xurls \
   from"gh-r" as"program" mv"docker* -> docker-compose" bpick"*linux*" docker/compose \
   from"gh-r" as"program" mv"exa* -> exa" bpick"*linux*" ogham/exa \
+  from"gh-r" as"program" pick"gh*/bin/gh" bpick"*gh_*_linux_amd64.tar.gz" cli/cli \
   \
   atinit"mkdir -p $HOME/.local/share/nvim/site/autoload && ln -sf \$(pwd)/plug.vim $HOME/.local/share/nvim/site/autoload/plug.vim" nocompile'!' junegunn/vim-plug \
   \
