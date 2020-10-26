@@ -271,8 +271,8 @@ let g:ale_lint_on_enter = 0
 let g:ale_linter_aliases = {'jsx': ['css', 'javascript']}
 let g:ale_linters = {}
 let g:ale_linters.python = ['pyls'] " , 'flake8']
-let g:ale_linters.c = ['clangformat']
-let g:ale_linters.cpp = ['clangformat']
+let g:ale_linters.c = ['clangformat', 'clangd']
+let g:ale_linters.cpp = ['clangformat', 'clangd']
 let g:ale_linters.go = ['gometalinter']
 let g:ale_linters.kotlin = ['ktlint', 'languageserver']
 let g:ale_linters.javascript = ['eslint']
@@ -280,9 +280,12 @@ let g:ale_linters.jsx = ['stylelint', 'eslint']
 let g:ale_fixers = {
   \  'javascript': ['eslint'],
   \  'cpp': ['clang-format'],
-  \  '*': ['remove_trailing_lines', 'trim_whitespace'],
+  \  '*': ['remove_trailing_lines'],
   \ }
-
+ ", 'trim_whitespace'],
+ "
+let g:cpp_ccls_init_options = {'clang': { 'extraArgs': '--gcc-toolchain=/usr' }}
+let g:ale_cpp_clangd_executable = '/usr/lib/llvm-10/bin/clangd'
 let g:ale_c_parse_makefile = 1
 let g:ale_c_parse_compile_commands = 1
 let g:ale_python_pyls_config = {'pyls': {
