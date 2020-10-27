@@ -13,7 +13,8 @@ Host alien billy gizmo eve bob rbob trudy predator joe.s joe
     ForwardAgent yes
     #RemoteForward /home/sileht/.var/S.gpg-agent /run/user/1000/gnupg/S.gpg-agent.extra
     #RemoteForward /home/sileht/.var/S.gpg-agent.ssh /run/user/1000/gnupg/S.gpg-agent.ssh
-    RemoteForward /home/sileht/.var/S.gpg-agent.ssh /run/user/1000/keyring/ssh
+    #RemoteForward /home/sileht/.var/S.gpg-agent.ssh /run/user/1000/keyring/ssh
+    #StreamLocalBindUnlink yes
     User sileht
     Port 5555
 
@@ -32,7 +33,6 @@ Host gizmo
 Host eve
     AddressFamily inet
     DynamicForward 9898
-    LocalForward 3000 localhost:3000
 
 Host eve-unlock
     Hostname 192.168.3.200
@@ -95,7 +95,9 @@ Host *.ring.nlnog.net
 
 Host *.j
     ProxyCommand ssh utopialab.t nc %h %p
-    RemoteForward /home/sileht/.var/S.gpg-agent.ssh /run/user/1000/keyring/ssh
+    ForwardAgent yes
+    #RemoteForward /home/sileht/.var/S.gpg-agent.ssh /run/user/1000/keyring/ssh
+    #StreamLocalBindUnlink yes
 
 Host ceres.j
     Hostname 10.10.77.67
@@ -109,7 +111,8 @@ Host eris ceres
     ForwardAgent yes
     #RemoteForward /home/sileht/.var/S.gpg-agent /run/user/1000/gnupg/S.gpg-agent.extra
     #RemoteForward /home/sileht/.var/S.gpg-agent.ssh /run/user/1000/gnupg/S.gpg-agent.ssh
-    RemoteForward /home/sileht/.var/S.gpg-agent.ssh /run/user/1000/keyring/ssh
+    #RemoteForward /home/sileht/.var/S.gpg-agent.ssh /run/user/1000/keyring/ssh
+    #StreamLocalBindUnlink yes
     User sileht
 
 ###########

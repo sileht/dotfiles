@@ -360,8 +360,8 @@ alias mmv="nocorrect noglob zmv -W"
 alias zcp='zmv -C'
 alias zln='zmv -L'
 
-#alias ls="LC_COLLATE=POSIX ls -h --color=auto -bCF --group-directories-first"
-alias ls="exa -F --group-directories-first"
+#alias ls="exa -F --group-directories-first"
+alias ls="LC_COLLATE=POSIX ls -h --color=auto -bCF --group-directories-first"
 alias ll="ls -l"
 alias lla="ls -la"
 alias lsd='ls -ld *(-/DN)'
