@@ -44,6 +44,7 @@ Plug 'editorconfig/editorconfig-vim'
 Plug 'jaxbot/semantic-highlight.vim'                                                   " semantic highlight (permanent)
 Plug 'numirias/semshi',               {'do': ':UpdateRemotePlugins', 'for': 'python'}  " semantic highlight (selected/python)
 Plug 'mgedmin/python-imports.vim'
+Plug 'martinda/Jenkinsfile-vim-syntax'
 
 
 Plug 'dbeniamine/vim-mail',           {'for': 'mail'}
@@ -160,6 +161,8 @@ autocmd FileType python set textwidth=90
 " libvirt C style, skip me if editorconfig is present ?
 autocmd BufWritePre,BufRead *.c setlocal smartindent cindent cinoptions=(0,:0,l1,t0,L3
 autocmd BufWritePre,BufRead *.h setlocal smartindent cindent cinoptions=(0,:0,l1,t0,L3
+
+autocmd FileType Jenkinsfile set shiftwidth=2 tabstop=2 softtabstop=2
 
 "autocmd BufWritePre,BufRead *.cpp setlocal shiftwidth=4 expandtab tabstop=4 softtabstop=4
 "autocmd BufWritePre,BufRead *.c setlocal shiftwidth=4 expandtab tabstop=4 softtabstop=4
