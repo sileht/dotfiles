@@ -52,7 +52,7 @@ Plug 'dbeniamine/vim-mail',           {'for': 'mail'}
 "Plug 'Vimjas/vim-python-pep8-indent', {'for': 'python'}
 Plug 'vim-python/python-syntax',      {'for': 'python'}
 "
-"Plug 'chr4/nginx.vim'
+Plug 'chr4/nginx.vim'
 "Plug 'vim-scripts/spec.vim',          {'for': 'spec'}
 "Plug 'spf13/PIV',                     {'for': 'php'}
 "Plug 'Rykka/riv.vim',                 {'for': 'rst'}
