@@ -2,14 +2,14 @@
 
 pkill -x polybar
 
-TRAY_POSITION=center polybar -c ~/.env/polybar/config.ini top &
+DISPLAYS=$(xrandr | awk '/ connected/{print $1}')
+DISPLAY_PRIMARY=$(xrandr | awk '/ connected primary/{print $1}')
+[ ! "$DISPLAY_PRIMARY" ]  && DISPLAY_PRIMARY=$(xrandr | awk '/ connected/{print $1;exit;}')
 
-DISPLAY_NB=$(xrandr | grep ' connected' | wc -l)
-
-if [ "$DISPLAY_NB" -ge 2 ]; then
-    DISPLAY_AUX=$(xrandr | grep ' connected' | grep -v primary | tail -1 | awk '{print $1}')
-    [ ! "$DISPLAY_AUX" ] && DISPLAY_AUX=$(xrandr | grep ' connected' | tail -1 | awk '{print $1}')
-    DISPLAY_AUX=${DISPLAY_AUX} polybar -c ~/.env/polybar/config.ini aux &
-fi
+echo TRAY_POSITION=center polybar -c ~/.env/polybar/config.ini top &
+for display in $DISPLAYS; do
+    [ "$display" == "$DISPLAY_PRIMARY" ] && continue
+    echo DISPLAY_AUX=${display} polybar -c ~/.env/polybar/config.ini aux &
+done
 
 wait
