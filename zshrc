@@ -463,11 +463,6 @@ sshrefresh(){
     done
 }
 
-update-flash() {
-    sudo update-pepperflashplugin-nonfree --status
-    sudo update-pepperflashplugin-nonfree --install
-    sudo update-pepperflashplugin-nonfree --status
-}
 update-widevine() {
     rm -f ~/.local/lib/libwidevinecdm.so
     widevine_version="$(wget -q -O- https://dl.google.com/widevine-cdm/current.txt)"
