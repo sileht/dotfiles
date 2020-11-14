@@ -1,0 +1,52 @@
+#!/bin/env python
+
+import subprocess
+
+
+# subprocess.run("xrandr", shell=True, check=True)
+MODES = {
+    "                | eDP-1": (
+        "xrandr"
+        " --output eDP-1 --auto --primary"
+        " --output DP-1 --off"
+        " --output DP-2 --off"
+        " --output DP-3 --off"
+        " --output DP-4 --off"
+    ),
+    "                | DP-1": (
+        "xrandr"
+        " --output DP-1 --auto --primary"
+        " --output eDP-1 --off"
+        " --output DP-2 --off"
+        " --output DP-3 --off"
+        " --output DP-4 --off"
+    ),
+    "             | eDP-1  DP-1": (
+        "xrandr"
+        " --output DP-1 --auto --primary"
+        " --output eDP-1 --auto --below DP-1"
+        " --output DP-2 --off"
+        " --output DP-3 --off"
+        " --output DP-4 --off"
+    ),
+    "         | eDP-1  DP-2  DP-1": (
+        "xrandr"
+        " --output DP-2 --auto --primary"
+        " --output DP-1 --auto --right-of DP-2"
+        " --output eDP-1 --auto --left-of DP-2"
+        " --output DP-3 --off"
+        " --output DP-4 --off"
+    ),
+
+}
+
+p = subprocess.Popen(
+    ["rofi", "-font", "Noto Sans Symbolas2 24", "-dmenu", "-markup-rows"],
+    stdin=subprocess.PIPE,
+    stdout=subprocess.PIPE,
+    text=True,
+)
+selected = p.communicate(input="\n".join(MODES.keys()))[0][:-1]
+if selected:
+    callback = MODES.get(selected)
+    subprocess.run(callback, shell=True, check=True)

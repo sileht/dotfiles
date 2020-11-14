@@ -68,6 +68,7 @@ bindsym $mod+Shift+a kill
 
 bindsym $mod+colon exec --no-startup-id rofimoji
 bindsym $mod+r exec --no-startup-id rofi_menu
+bindsym $mod+d exec --no-startup-id desk
 bindsym $mod+m exec --no-startup-id "rofi -show calc -modi calc -no-show-match -no-sort -calc-command \\"echo -n '{result}' | xclip -selection c\\" > /dev/null"
 
 #exec "picom --config ~/.env/picom.conf"
