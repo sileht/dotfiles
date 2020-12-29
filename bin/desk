@@ -1,61 +1,151 @@
 #!/bin/env python
 
+import string
+import threading
 import subprocess
+import sys
+
+import gi
+
+gi.require_version("GLib", "2.0")
+from gi.repository import GLib
+
+gi.require_version("Gdk", "3.0")
+from gi.repository import Gdk
+
+gi.require_version("Gtk", "3.0")
+from gi.repository import Gtk
+
+OFFSET_X = 20
+OFFSET_Y = 50
+
+LAPTOP_ICON=""
+DESKTOP_ICON=""
+
+OFF_COMMAND="--output {} --off"
 
 
-# subprocess.run("xrandr", shell=True, check=True)
-MODES = {
-    "                | eDP-1": (
-        "xrandr"
-        " --output eDP-1 --auto --primary"
-        " --output DP-1 --off"
-        " --output DP-2 --off"
-        " --output DP-3 --off"
-        " --output DP-4 --off"
-    ),
-    "                | DP-1": (
-        "xrandr"
-        " --output DP-1 --auto --primary"
-        " --output eDP-1 --off"
-        " --output DP-2 --off"
-        " --output DP-3 --off"
-        " --output DP-4 --off"
-    ),
-    "             | eDP-1  DP-1": (
-        "xrandr"
-        " --output DP-1 --auto --primary"
-        " --output eDP-1 --auto --below DP-1"
-        " --output DP-2 --off"
-        " --output DP-3 --off"
-        " --output DP-4 --off"
-    ),
-    "         | eDP-1  DP-2  DP-1": (
-        "xrandr"
-        " --output DP-2 --auto --primary"
-        " --output DP-1 --auto --right-of DP-2"
-        " --output eDP-1 --auto --left-of DP-2"
-        " --output DP-3 --off"
-        " --output DP-4 --off"
-    ),
-   "         | eDP-1  DP-1  DP-3": (
-        "xrandr"
-        " --output DP-1 --auto --primary"
-        " --output DP-3 --auto --right-of DP-1"
-        " --output eDP-1 --auto --left-of DP-1"
-        " --output DP-2 --off"
-        " --output DP-4 --off"
-    ),
+class Layout:
+    @classmethod
+    @property
+    def positions(cls):
+        fmt = string.Formatter()
+        return list(dict.fromkeys(
+            [v[1] for v in fmt.parse(cls.command) if v[1] is not None]
+        ))
+
+class OneScreenLayout(Layout):
+    label =  ""
+    command = "xrandr --output {primary} --auto --primary"
+
+class VerticalLayout(Layout):
+    label = "  "
+    command = "xrandr --output {primary} --auto --primary --output {bottom} --auto --below {primary}"
+
+class OnLeftLayout(Layout):
+    label = "  "
+    command = "xrandr --output {primary} --auto --primary --output {left} --auto --left-of {primary}"
+
+class OnRightLayout(Layout):
+    label = "  "
+    command = "xrandr --output {primary} --auto --primary --output {right} --auto --right-of {primary}"
+
+class BothSideLayout(Layout):
+    label = "    "
+    command = "xrandr --output {primary} --auto --primary --output {left} --auto --left-of {primary} --output {right} --auto --right-of {primary}"
 
 
-}
+LAYOUTS = (OneScreenLayout, VerticalLayout, OnLeftLayout, OnRightLayout, BothSideLayout)
 
-p = subprocess.Popen(
-    ["rofi", "-font", "Noto Sans Symbolas2 24", "-dmenu", "-markup-rows"],
-    stdin=subprocess.PIPE,
-    stdout=subprocess.PIPE,
-    text=True,
-)
-selected = p.communicate(input="\n".join(MODES.keys()))[0][:-1]
-if selected:
-    callback = MODES.get(selected)
-    subprocess.run(callback, shell=True, check=True)
+
+def get_selection(title, options):
+    if len(options) == 1:
+        return list(options.items())[0]
+
+    p = subprocess.Popen(
+        ["rofi", "-font", "Noto Sans Symbolas2 24", "-dmenu", "-markup-rows", "-window-title",  title],
+        stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE,
+        text=True,
+    )
+    selected = p.communicate(input="\n".join(options.keys()))[0][:-1]
+    return selected, options.get(selected)
+
+def menu(monitors):
+    layouts = {}
+    for l in LAYOUTS:
+        print(f"Layout: {l.label}: {l.positions}")
+        if len(l.positions) <= len(monitors):
+            layouts[l.label] = l
+
+    layout_label, layout = get_selection("Layout", layouts)
+    if not layout:
+        return
+
+    print(f"Selected layout: {layout_label}: {'/'.join(layout.positions)}")
+
+    selected_monitors = {}
+    for position in layout.positions:
+        selected_monitor_label, selected_monitor = get_selection(position, monitors)
+        print(f"Selected {position}: {selected_monitor_label}: {selected_monitor}")
+        if not selected_monitor:
+            return
+        selected_monitors[position] = selected_monitor
+        del monitors[selected_monitor_label]
+
+    cmd = layout.command.format(**selected_monitors)
+
+    for v in monitors.values():
+        cmd += " %s" % OFF_COMMAND.format(v)
+
+    print(f"cmd: {cmd}")
+    result = subprocess.run(cmd, shell=True, stderr=subprocess.STDOUT,
+            stdout=subprocess.PIPE, text=True)
+    if result.stdout:
+        print(f"FAIL: {result.stdout}")
+        subprocess.run(["zenity", "--error", "--no-wrap", "--text", result.stdout])
+
+
+
+def main():
+    windows = set()
+    monitors = {}
+
+    disp=Gdk.Display.get_default()
+    for n in range(disp.get_n_monitors()):
+        mon = disp.get_monitor(n)
+        geo = mon.get_geometry()
+        # print(disp.get_default_seat())
+        # print(f"{disp.get_name()} / {mon.get_model()}: {geo.width}x{geo.height}+{geo.x}+{geo.y}")
+
+        l = Gtk.Label()
+        l.set_markup(f"<b>{mon.get_manufacturer()}</b>\n{mon.get_model()}")
+
+        w = Gtk.Window(type=Gtk.WindowType.POPUP)
+        w.add(l)
+        w.set_modal(True)
+        w.resize(250, 100)
+        w.move(geo.x + OFFSET_X, geo.y + OFFSET_Y)
+        w.show_all()
+
+        icon = LAPTOP_ICON if mon.get_model().startswith("eDP") else DESKTOP_ICON
+        monitors[f"{icon} {mon.get_model()}: {mon.get_manufacturer()}"] = mon.get_model()
+        windows.add(w)
+
+    t = threading.Thread(target=menu, args=(monitors,))
+    t.daemon = True
+    t.start()
+
+    def wait_menu_exit():
+        if not t.is_alive():
+            Gtk.main_quit()
+        return True
+
+    GLib.idle_add(wait_menu_exit)
+
+
+if __name__ == "__main__":
+    main()
+    Gtk.main()
+
+sys.exit(0)
