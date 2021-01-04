@@ -18,6 +18,7 @@
     ~/.config/rofi: rofi
     ~/.config/nvim/init.vim: nvim.vim
     ~/.ctags: ctags
+    ~/.Xresources: Xresources
     ~/.gitconfig: gitconfig
     ~/.gitignore-global: gitignore-global
     ~/.gnupg/gpg.conf: gpg.conf

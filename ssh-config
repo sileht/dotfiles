@@ -36,7 +36,7 @@ Host eve
 
 Host eve-unlock
     Hostname 192.168.3.200
-    ProxyCommand ssh -x nagios.t -W %h:%p
+    ProxyCommand ssh -x g1.t -W %h:%p
     RequestTTY yes
     RemoteCommand cryptroot-unlock
     Port 5555
@@ -106,6 +106,22 @@ Host ceres.j
 Host eris.j
     Hostname 10.10.77.61
     DynamicForward 7777
+
+Host neptune01t.j
+    Hostname 10.10.77.101
+
+Host neptune02t.j
+    Hostname 10.10.77.102
+
+Host neptune03t.j
+    Hostname 10.10.77.103
+
+Host neptune04t.j
+    Hostname 10.10.77.104
+
+Host neptune05t.j
+    Hostname 10.10.77.105
+
 
 Host eris ceres
     ForwardAgent yes

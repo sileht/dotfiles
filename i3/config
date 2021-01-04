@@ -26,10 +26,10 @@ smart_borders on
 #for_window [class="Polybar"] border_radius 0
 
 # SET GAPS
-gaps top 34
+# gaps top 34
 
 # <colorclass> <border> <background> <text> <indicator> <child_border>
-client.focused          #0D47A1 #0D47A1 #F9F9F9 #1976D2 #0D47A1
+client.focused          #279881 #279881 #F9F9F9 #2f9b85 #279881
 client.focused_inactive #2E2E2E #1E1E1E #888888 #292D2E #2E2E2E
 client.unfocused        #2E2E2E #2E2E2E #888888 #292D2E #2E2E2E
 client.placeholder      #000000 #2E2E2E #F9F9F9 #000000 #000000
@@ -61,7 +61,10 @@ bindsym $mod+k exec sound-controller
 bindsym Print exec flameshot gui
 bindsym Shift+Print exec kazam
 # bindsym --release $mod+l exec --no-startup-id slock
-bindsym --release $mod+l exec --no-startup-id betterlockscreen -l
+# bindsym --release $mod+l exec --no-startup-id betterlockscreen -l
+# bindsym --release $mod+l exec --no-startup-id xflock4
+bindsym --release $mod+l exec --no-startup-id mate-screensaver-command -l
+# bindsym $mod+x exec --no-startup-id pcmanfm /home/sileht/
 bindsym $mod+x exec --no-startup-id pcmanfm /home/sileht/
 # kill focused window
 bindsym $mod+Shift+a kill

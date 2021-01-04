@@ -1,11 +1,46 @@
 #!/bin/env python
 
+
 import string
-import threading
 import subprocess
 import sys
+import threading
 
 import gi
+
+OFFSET_X = 20
+OFFSET_Y = 50
+
+LAPTOP_ICON = ""
+DESKTOP_ICON = ""
+
+OFF_COMMAND = "--output {} --off"
+ON_COMMAND = "--output {} --auto --above {}"
+
+
+def all_monitors_on():
+    from Xlib import display
+
+    d = display.Display()
+    scr = d.screen()
+    res = scr.root.xrandr_get_screen_resources()
+    primary_output = scr.root.xrandr_get_output_primary().output
+    output_to_attach_to = d.xrandr_get_output_info(primary_output, res.config_timestamp)
+    commands = set()
+    for output in res.outputs:
+        info = d.xrandr_get_output_info(output, res.config_timestamp)
+        print(f"{info.name}: {info.connection}")
+        if output != primary_output and not info.connection:
+            commands.add(ON_COMMAND.format(info.name, output_to_attach_to.name))
+            output_to_attach_to = info
+
+    if commands:
+        cmd = f"xrandr {' '.join(commands)}"
+        print(f"Run: {cmd}")
+        subprocess.run(cmd, shell=True)
+
+
+all_monitors_on()
 
 gi.require_version("GLib", "2.0")
 from gi.repository import GLib
@@ -16,39 +51,36 @@ from gi.repository import Gdk
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
 
-OFFSET_X = 20
-OFFSET_Y = 50
-
-LAPTOP_ICON=""
-DESKTOP_ICON=""
-
-OFF_COMMAND="--output {} --off"
-
 
 class Layout:
     @classmethod
     @property
     def positions(cls):
         fmt = string.Formatter()
-        return list(dict.fromkeys(
-            [v[1] for v in fmt.parse(cls.command) if v[1] is not None]
-        ))
+        return list(
+            dict.fromkeys([v[1] for v in fmt.parse(cls.command) if v[1] is not None])
+        )
+
 
 class OneScreenLayout(Layout):
-    label =  ""
+    label = ""
     command = "xrandr --output {primary} --auto --primary"
+
 
 class VerticalLayout(Layout):
     label = "  "
     command = "xrandr --output {primary} --auto --primary --output {bottom} --auto --below {primary}"
 
+
 class OnLeftLayout(Layout):
     label = "  "
     command = "xrandr --output {primary} --auto --primary --output {left} --auto --left-of {primary}"
 
+
 class OnRightLayout(Layout):
     label = "  "
     command = "xrandr --output {primary} --auto --primary --output {right} --auto --right-of {primary}"
+
 
 class BothSideLayout(Layout):
     label = "    "
@@ -63,13 +95,22 @@ def get_selection(title, options):
         return list(options.items())[0]
 
     p = subprocess.Popen(
-        ["rofi", "-font", "Noto Sans Symbolas2 24", "-dmenu", "-markup-rows", "-window-title",  title],
+        [
+            "rofi",
+            "-font",
+            "Noto Sans Symbolas2 24",
+            "-dmenu",
+            "-markup-rows",
+            "-window-title",
+            title,
+        ],
         stdin=subprocess.PIPE,
         stdout=subprocess.PIPE,
         text=True,
     )
     selected = p.communicate(input="\n".join(options.keys()))[0][:-1]
     return selected, options.get(selected)
+
 
 def menu(monitors):
     layouts = {}
@@ -99,24 +140,51 @@ def menu(monitors):
         cmd += " %s" % OFF_COMMAND.format(v)
 
     print(f"cmd: {cmd}")
-    result = subprocess.run(cmd, shell=True, stderr=subprocess.STDOUT,
-            stdout=subprocess.PIPE, text=True)
+    result = subprocess.run(
+        cmd, shell=True, stderr=subprocess.STDOUT, stdout=subprocess.PIPE, text=True
+    )
     if result.stdout:
         print(f"FAIL: {result.stdout}")
-        subprocess.run(["zenity", "--error", "--no-wrap", "--text", result.stdout])
-
+        subprocess.run(
+            [
+                "notify-send",
+                "-i",
+                "/usr/share/icons/Humanity-Dark/apps/24/gsd-xrandr.svg",
+                "display configuration error",
+                f"selected: {l.label}\nran: {cmd}\nresult:{result.stdout}",
+            ]
+        )
+    else:
+        config = subprocess.run(
+            "xrandr --listactivemonitors",
+            shell=True,
+            stdout=subprocess.PIPE,
+            text=True,
+        ).stdout
+        subprocess.run(
+            [
+                "notify-send",
+                "-i",
+                "/usr/share/icons/Humanity-Dark/apps/24/gsd-xrandr.svg",
+                "display configuration done",
+                f"selected: {l.label}\nran: {cmd}\n{config}",
+            ]
+        )
 
 
 def main():
-    windows = set()
+    windows = []
     monitors = {}
 
-    disp=Gdk.Display.get_default()
+    disp = Gdk.Display.get_default()
     for n in range(disp.get_n_monitors()):
         mon = disp.get_monitor(n)
         geo = mon.get_geometry()
+
         # print(disp.get_default_seat())
-        # print(f"{disp.get_name()} / {mon.get_model()}: {geo.width}x{geo.height}+{geo.x}+{geo.y}")
+        print(
+            f"{mon.get_manufacturer()} / {mon.get_model()}: {geo.width}x{geo.height}+{geo.x}+{geo.y}"
+        )
 
         l = Gtk.Label()
         l.set_markup(f"<b>{mon.get_manufacturer()}</b>\n{mon.get_model()}")
@@ -129,8 +197,10 @@ def main():
         w.show_all()
 
         icon = LAPTOP_ICON if mon.get_model().startswith("eDP") else DESKTOP_ICON
-        monitors[f"{icon} {mon.get_model()}: {mon.get_manufacturer()}"] = mon.get_model()
-        windows.add(w)
+        monitors[
+            f"{icon} {mon.get_model()}: {mon.get_manufacturer()}"
+        ] = mon.get_model()
+        windows.append(w)
 
     t = threading.Thread(target=menu, args=(monitors,))
     t.daemon = True
@@ -144,8 +214,6 @@ def main():
     GLib.idle_add(wait_menu_exit)
 
 
-if __name__ == "__main__":
-    main()
-    Gtk.main()
-
+main()
+Gtk.main()
 sys.exit(0)
