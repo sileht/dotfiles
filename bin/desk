@@ -1,12 +1,16 @@
 #!/bin/env python
 
-
+import argparse
 import string
 import subprocess
-import sys
 import threading
 
 import gi
+gi.require_version("GLib", "2.0")
+gi.require_version("Gdk", "3.0")
+gi.require_version("Gtk", "3.0")
+
+from Xlib import display
 
 OFFSET_X = 20
 OFFSET_Y = 50
@@ -17,39 +21,42 @@ DESKTOP_ICON = ""
 OFF_COMMAND = "--output {} --off"
 ON_COMMAND = "--output {} --auto --above {}"
 
+with open("/usr/share/hwdata/pnp.ids") as f:
+    PNP_MAPS = {}
+    for line in f.readlines():
+        pnp_id, _, vendor = line.strip().partition("\t")
+        PNP_MAPS[pnp_id] = vendor
 
-def all_monitors_on():
-    from Xlib import display
+def get_vendor(pnp_id):
+    return f"{PNP_MAPS.get(pnp_id, pnp_id)} ({pnp_id})"
 
+def wakeup_all_monitors(dry_run):
     d = display.Display()
     scr = d.screen()
     res = scr.root.xrandr_get_screen_resources()
     primary_output = scr.root.xrandr_get_output_primary().output
     output_to_attach_to = d.xrandr_get_output_info(primary_output, res.config_timestamp)
+    print(f"current primary: {output_to_attach_to.name}")
     commands = set()
     for output in res.outputs:
         info = d.xrandr_get_output_info(output, res.config_timestamp)
-        print(f"{info.name}: {info.connection}")
-        if output != primary_output and not info.connection:
+        resolution = "....x...."
+        if info.crtc:
+            crtc = d.xrandr_get_crtc_info(info.crtc, res.config_timestamp)
+            resolution = f"{crtc.width}x{crtc.height}"
+        have_monitor_connected = info.connection == 0
+        have_monitor_on = bool(info.crtc)
+        print(f"{info.name}: have_monitor_on={have_monitor_on} have_monitor_connected={have_monitor_connected} resolution={resolution}")
+        if have_monitor_connected and not have_monitor_on: 
             commands.add(ON_COMMAND.format(info.name, output_to_attach_to.name))
             output_to_attach_to = info
 
     if commands:
         cmd = f"xrandr {' '.join(commands)}"
         print(f"Run: {cmd}")
+        if dry_run:
+            return
         subprocess.run(cmd, shell=True)
-
-
-all_monitors_on()
-
-gi.require_version("GLib", "2.0")
-from gi.repository import GLib
-
-gi.require_version("Gdk", "3.0")
-from gi.repository import Gdk
-
-gi.require_version("Gtk", "3.0")
-from gi.repository import Gtk
 
 
 class Layout:
@@ -112,7 +119,19 @@ def get_selection(title, options):
     return selected, options.get(selected)
 
 
-def menu(monitors):
+def show_menu(dry_run):
+    from gi.repository import Gdk
+
+    monitors = {}
+    disp = Gdk.Display.get_default()
+    for n in range(disp.get_n_monitors()):
+        mon = disp.get_monitor(n)
+        icon = LAPTOP_ICON if mon.get_model().startswith("eDP") else DESKTOP_ICON
+        vendor = get_vendor(mon.get_manufacturer())
+        monitors[
+            f"{icon} {mon.get_model()}: {vendor}"
+        ] = mon.get_model()
+
     layouts = {}
     for l in LAYOUTS:
         print(f"Layout: {l.label}: {l.positions}")
@@ -140,6 +159,8 @@ def menu(monitors):
         cmd += " %s" % OFF_COMMAND.format(v)
 
     print(f"cmd: {cmd}")
+    if dry_run:
+        return
     result = subprocess.run(
         cmd, shell=True, stderr=subprocess.STDOUT, stdout=subprocess.PIPE, text=True
     )
@@ -172,18 +193,18 @@ def menu(monitors):
         )
 
 
-def main():
-    windows = []
-    monitors = {}
+def show_screen_name_popups():
+    from gi.repository import Gdk
+    from gi.repository import Gtk
 
     disp = Gdk.Display.get_default()
     for n in range(disp.get_n_monitors()):
         mon = disp.get_monitor(n)
         geo = mon.get_geometry()
 
-        # print(disp.get_default_seat())
+        vendor = get_vendor(mon.get_manufacturer())
         print(
-            f"{mon.get_manufacturer()} / {mon.get_model()}: {geo.width}x{geo.height}+{geo.x}+{geo.y}"
+            f"{vendor} / {mon.get_model()}: {geo.width}x{geo.height}+{geo.x}+{geo.y}"
         )
 
         l = Gtk.Label()
@@ -196,15 +217,21 @@ def main():
         w.move(geo.x + OFFSET_X, geo.y + OFFSET_Y)
         w.show_all()
 
-        icon = LAPTOP_ICON if mon.get_model().startswith("eDP") else DESKTOP_ICON
-        monitors[
-            f"{icon} {mon.get_model()}: {mon.get_manufacturer()}"
-        ] = mon.get_model()
-        windows.append(w)
+def main():
+    parser = argparse.ArgumentParser(description='Screen selector')
+    parser.add_argument('--dry-run', action="store_true")
+    args = parser.parse_args()
 
-    t = threading.Thread(target=menu, args=(monitors,))
+    wakeup_all_monitors(args.dry_run)
+
+    show_screen_name_popups()
+
+    t = threading.Thread(target=show_menu, args=(args.dry_run, ))
     t.daemon = True
     t.start()
+
+    from gi.repository import GLib
+    from gi.repository import Gtk
 
     def wait_menu_exit():
         if not t.is_alive():
@@ -212,8 +239,7 @@ def main():
         return True
 
     GLib.idle_add(wait_menu_exit)
+    Gtk.main()
 
-
-main()
-Gtk.main()
-sys.exit(0)
+if __name__ == "__main__":
+    main()
