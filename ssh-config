@@ -123,7 +123,7 @@ Host neptune05t.j
     Hostname 10.10.77.105
 
 
-Host eris ceres
+Host erist cerest
     ForwardAgent yes
     #RemoteForward /home/sileht/.var/S.gpg-agent /run/user/1000/gnupg/S.gpg-agent.extra
     #RemoteForward /home/sileht/.var/S.gpg-agent.ssh /run/user/1000/gnupg/S.gpg-agent.ssh
