@@ -10,7 +10,8 @@ gi.require_version("GLib", "2.0")
 gi.require_version("Gdk", "3.0")
 gi.require_version("Gtk", "3.0")
 
-from Xlib import display
+import Xlib.display
+import Xlib.error
 
 OFFSET_X = 20
 OFFSET_Y = 50
@@ -31,25 +32,39 @@ def get_vendor(pnp_id):
     return f"{PNP_MAPS.get(pnp_id, pnp_id)} ({pnp_id})"
 
 def wakeup_all_monitors(dry_run):
-    d = display.Display()
+    d = Xlib.display.Display()
     scr = d.screen()
     res = scr.root.xrandr_get_screen_resources()
-    primary_output = scr.root.xrandr_get_output_primary().output
-    output_to_attach_to = d.xrandr_get_output_info(primary_output, res.config_timestamp)
-    print(f"current primary: {output_to_attach_to.name}")
-    commands = set()
+
+    outputs_off = []
+    outputs_on = []
     for output in res.outputs:
         info = d.xrandr_get_output_info(output, res.config_timestamp)
         resolution = "....x...."
         if info.crtc:
             crtc = d.xrandr_get_crtc_info(info.crtc, res.config_timestamp)
             resolution = f"{crtc.width}x{crtc.height}"
-        have_monitor_connected = info.connection == 0
-        have_monitor_on = bool(info.crtc)
-        print(f"{info.name}: have_monitor_on={have_monitor_on} have_monitor_connected={have_monitor_connected} resolution={resolution}")
-        if have_monitor_connected and not have_monitor_on: 
-            commands.add(ON_COMMAND.format(info.name, output_to_attach_to.name))
-            output_to_attach_to = info
+        have_output_connected = info.connection == 0
+        have_output_on = bool(info.crtc)
+        print(f"{info.name}: have_output_on={have_output_on} have_output_connected={have_output_connected} resolution={resolution}")
+        if have_output_connected and not have_output_on: 
+            outputs_off.append(info.name)
+        else:
+            outputs_on.append(info.name)
+
+
+    primary_output = scr.root.xrandr_get_output_primary().output
+    try:
+        output_to_attach_to = d.xrandr_get_output_info(primary_output, res.config_timestamp).name
+    except Xlib.error.XError:
+        output_to_attach_to = outputs_on[0]
+
+    print(f"current primary: {output_to_attach_to}")
+
+    commands = set()
+    for output in outputs_off:
+        commands.add(ON_COMMAND.format(output, output_to_attach_to))
+        output_to_attach_to = info.name
 
     if commands:
         cmd = f"xrandr {' '.join(commands)}"
