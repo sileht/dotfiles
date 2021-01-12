@@ -38,6 +38,7 @@ def wakeup_all_monitors(dry_run):
 
     outputs_off = []
     outputs_on = []
+    outputs_on_to_switch_off = []
     for output in res.outputs:
         info = d.xrandr_get_output_info(output, res.config_timestamp)
         resolution = "....x...."
@@ -49,6 +50,8 @@ def wakeup_all_monitors(dry_run):
         print(f"{info.name}: have_output_on={have_output_on} have_output_connected={have_output_connected} resolution={resolution}")
         if have_output_connected and not have_output_on: 
             outputs_off.append(info.name)
+        elif have_output_on and not have_output_connected:
+            outputs_on_to_switch_off.append(info.name)
         else:
             outputs_on.append(info.name)
 
@@ -65,6 +68,9 @@ def wakeup_all_monitors(dry_run):
     for output in outputs_off:
         commands.add(ON_COMMAND.format(output, output_to_attach_to))
         output_to_attach_to = info.name
+
+    for output in outputs_on_to_switch_off:
+        commands.add(OFF_COMMAND.format(output))
 
     if commands:
         cmd = f"xrandr {' '.join(commands)}"
@@ -206,6 +212,8 @@ def show_menu(dry_run):
                 f"selected: {l.label}\nran: {cmd}\n{config}",
             ]
         )
+
+        subprocess.Popen(["/home/sileht/.env/bin/polybar-start.sh"], start_new_session=True)
 
 
 def show_screen_name_popups():
