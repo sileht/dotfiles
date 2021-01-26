@@ -29,7 +29,8 @@ smart_borders on
 # gaps top 34
 
 # <colorclass> <border> <background> <text> <indicator> <child_border>
-client.focused          #279881 #279881 #F9F9F9 #2f9b85 #279881
+# client.focused          #279881 #279881 #F9F9F9 #2f9b85 #279881
+client.focused          #0D47A1 #0D47A1 #F9F9F9 #2f9b85 #0D47A1
 client.focused_inactive #2E2E2E #1E1E1E #888888 #292D2E #2E2E2E
 client.unfocused        #2E2E2E #2E2E2E #888888 #292D2E #2E2E2E
 client.placeholder      #000000 #2E2E2E #F9F9F9 #000000 #000000
@@ -69,7 +70,7 @@ bindsym $mod+x exec --no-startup-id pcmanfm /home/sileht/
 # kill focused window
 bindsym $mod+Shift+a kill
 
-bindsym $mod+colon exec --no-startup-id rofimoji
+bindsym $mod+colon exec --no-startup-id "rofimoji --insert-with-clipboard"
 bindsym $mod+r exec --no-startup-id rofi_menu
 bindsym $mod+d exec --no-startup-id desk
 bindsym $mod+m exec --no-startup-id "rofi -show calc -modi calc -no-show-match -no-sort -calc-command \\"echo -n '{result}' | xclip -selection c\\" > /dev/null"
