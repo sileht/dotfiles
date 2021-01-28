@@ -14,7 +14,7 @@ autoload -Uz add-zsh-hook
 #########
 
 zinit wait lucid light-mode for \
-  atinit"zicompinit; zicdreplay" zdharma/fast-syntax-highlighting \
+  atinit"zicompinit; zicdreplay" atload"fast-theme -s|grep -q sv-orple || fast-theme sv-orple" zdharma/fast-syntax-highlighting \
   atload"_zsh_autosuggest_start" zsh-users/zsh-autosuggestions \
   blockf atpull'zinit creinstall -q .' zsh-users/zsh-completions \
   zdharma/history-search-multi-word \
@@ -43,8 +43,6 @@ zinit wait lucid light-mode for \
 
 zinit ice compile'(pure|async).zsh' pick'async.zsh' src'pure.zsh'
 zinit light sileht/pure
-
-# fast-theme sv-orple
 
 #########
 # THEME #
