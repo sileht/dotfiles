@@ -553,6 +553,19 @@ function sgpg(){
 # SCREEN #
 ##########
 
+__ssh_auth_sock_fix() {
+    # Predictable SSH authentication socket location.
+    local SOCK="/tmp/ssh-agent-$USER-screen"
+    if [ -e "$SSH_AUTH_SOCK" -a "$SSH_AUTH_SOCK" != "$SOCK" ]; then
+        rm -f /tmp/ssh-agent-$USER-screen
+        ln -sf $SSH_AUTH_SOCK $SOCK
+        export SSH_AUTH_SOCK=$SOCK
+    fi
+}
+
+# precmd_functions+=(__ssh_auth_sock_fix)
+__ssh_auth_sock_fix
+
 INSIDE_TMUX_SCREEN="$WINDOW$TMUX_PANE"
 if [ "$HOST" == "gizmo" -a ! "$INSIDE_TMUX_SCREEN" ]; then
     sc ; exit 0;
