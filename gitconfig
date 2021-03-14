@@ -24,6 +24,8 @@
     diffc = diff --cached
     diffs = diff --stat
 
+    fpr = "!f() { b=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD); git fetch github && git reset --hard github/$b && git h ;}; f"
+
     diverge-commit = "!f() { git merge-base $(git show-upstream $@) ${1:-HEAD}; }; f"
     review-branch = "!f() { git show ${1:-HEAD}:.gitreview | git config --get --file - gerrit.defaultbranch || echo master;}; f"
     rework = "!git rebase -i $(git diverge-commit $@)^"

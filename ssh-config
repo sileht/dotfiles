@@ -101,7 +101,7 @@ Host *.j
 
 Host ceres.j
     Hostname 10.10.77.67
-    #DynamicForward 7777
+    DynamicForward 7777
 
 Host eris.j
     Hostname 10.10.77.61

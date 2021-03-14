@@ -274,6 +274,7 @@ let g:ale_lint_on_enter = 0
 let g:ale_linter_aliases = {'jsx': ['css', 'javascript']}
 let g:ale_linters = {}
 let g:ale_linters.python = ['pyls'] " , 'flake8']
+"let g:ale_linters.yaml = ['yamllint']
 let g:ale_linters.c = ['clangformat', 'clangd']
 let g:ale_linters.cpp = ['clangformat', 'clangd']
 let g:ale_linters.go = ['gometalinter']

@@ -23,12 +23,14 @@ zinit wait lucid light-mode for \
   \
   davidparsson/zsh-pyenv-lazy \
   \
+  from"gh-r" as"program" mv"Bitwarden-*-x86_64.AppImage -> bitwarden" bpick"Bitwarden-*-x86_64.AppImage" bitwarden/desktop \
   from"gh-r" as"program" junegunn/fzf-bin \
   from"gh-r" as"program" mv"nvim.appimage -> nvim" bpick"nvim.appimage" neovim/neovim \
   from"gh-r" as"program" mv"xurls_*_linux_amd64 -> xurls" bpick"xurls_*_linux_amd64" @mvdan/xurls \
   from"gh-r" as"program" mv"docker* -> docker-compose" bpick"*linux*" docker/compose \
   from"gh-r" as"program" mv"exa* -> exa" bpick"*linux*" ogham/exa \
   from"gh-r" as"program" pick"gh*/bin/gh" bpick"*gh_*_linux_amd64.tar.gz" cli/cli \
+  from"gh-r" as"program" bpick"*stripe_*_linux_x86_64.tar.gz" stripe/stripe-cli \
   \
   atinit"mkdir -p $HOME/.local/share/nvim/site/autoload && ln -sf \$(pwd)/plug.vim $HOME/.local/share/nvim/site/autoload/plug.vim" nocompile'!' junegunn/vim-plug \
   \
@@ -260,12 +262,14 @@ zcompileall(){
 upgrade() {
     [ "$commands[pacman]" ] && (yes | sudo pacman -Suy)
     [ "$commands[pacman]" ] && sudo remove-orphaned-kernels
+    [ "$commands[pacman]" ] && sudo pacman -Rns $(pacman -Qtdq)
+    [ "$commands[pacman]" ] && sudo paccache -ruk0
     [ "$commands[apt]" ] && (sudo apt update -y && sudo apt upgrade -y && sudo apt autoremove --purge && sudo apt clean -y)
     (cd ~/.env && git diff --quiet && git pull --rebase --recurse-submodules && ./install ) # Only pull if not dirty
     (cd ~/.env && zinit self-update && git commit -m "sync zinit" zinit && git push origin master )
     zinit update -q --parallel
     zinit delete --clean -y
-    [ "$1" ] && nvim "+set nomore" +PlugClean! +PlugUpdate! +qall
+    nvim "+set nomore" +PlugClean! +PlugUpdate! +qall
 }
 
 mka () { time schedtool -B -n 1 -e ionice -n 1 make -j $(nproc) "$@" }
@@ -351,7 +355,7 @@ function sfind(){ find "$@" | egrep -v '(Binary|binaire|\.svn|\.git|\.bzr)' ; }
 alias grep='grep --color=auto'
 alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
-function sgrep(){ grep "$@" --color=always| egrep -v '(Binary|binaire|\.svn|\.git|\.bzr|.mypy_cache)' ; }
+function sgrep(){ grep "$@" --color=always 2>&1| grep -v -e 'binary' -e binaire -e '.svn'  -e '.git' -e '.bzr' -e '.mypy_cache' ; }
 function g(){ sgrep "$@" | more }
 
 # ZSH STUFF
