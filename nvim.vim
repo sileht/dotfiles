@@ -298,7 +298,7 @@ let g:ale_python_pyls_config = {'pyls': {
   \   'jedi': {'environment': ''},
   \   'pylint': {'enabled': v:false},
   \   'pycodestyle': {'enabled': v:false},
-  \   'pyls_mypy': { 'enabled': v:false, "live_mode": v:false },
+  \   'pyls_mypy': { 'enabled': v:true, "live_mode": v:true },
   \   'pyls_black': { 'enabled': v:true},
   \ }}}
 

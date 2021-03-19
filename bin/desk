@@ -6,6 +6,7 @@ import subprocess
 import threading
 
 import gi
+
 gi.require_version("GLib", "2.0")
 gi.require_version("Gdk", "3.0")
 gi.require_version("Gtk", "3.0")
@@ -28,8 +29,10 @@ with open("/usr/share/hwdata/pnp.ids") as f:
         pnp_id, _, vendor = line.strip().partition("\t")
         PNP_MAPS[pnp_id] = vendor
 
+
 def get_vendor(pnp_id):
     return f"{PNP_MAPS.get(pnp_id, pnp_id)} ({pnp_id})"
+
 
 def wakeup_all_monitors(dry_run):
     d = Xlib.display.Display()
@@ -39,7 +42,7 @@ def wakeup_all_monitors(dry_run):
     outputs_off = []
     outputs_on = []
     outputs_on_to_switch_off = []
-    for output in res.outputs:
+    for output in reversed(res.outputs):
         info = d.xrandr_get_output_info(output, res.config_timestamp)
         resolution = "....x...."
         if info.crtc:
@@ -47,18 +50,21 @@ def wakeup_all_monitors(dry_run):
             resolution = f"{crtc.width}x{crtc.height}"
         have_output_connected = info.connection == 0
         have_output_on = bool(info.crtc)
-        print(f"{info.name}: have_output_on={have_output_on} have_output_connected={have_output_connected} resolution={resolution}")
-        if have_output_connected and not have_output_on: 
+        print(
+            f"{info.name}: have_output_on={have_output_on} have_output_connected={have_output_connected} resolution={resolution}"
+        )
+        if have_output_connected and not have_output_on:
             outputs_off.append(info.name)
         elif have_output_on and not have_output_connected:
             outputs_on_to_switch_off.append(info.name)
         else:
             outputs_on.append(info.name)
 
-
     primary_output = scr.root.xrandr_get_output_primary().output
     try:
-        output_to_attach_to = d.xrandr_get_output_info(primary_output, res.config_timestamp).name
+        output_to_attach_to = d.xrandr_get_output_info(
+            primary_output, res.config_timestamp
+        ).name
     except Xlib.error.XError:
         output_to_attach_to = outputs_on[0]
 
@@ -149,9 +155,7 @@ def show_menu(dry_run):
         mon = disp.get_monitor(n)
         icon = LAPTOP_ICON if mon.get_model().startswith("eDP") else DESKTOP_ICON
         vendor = get_vendor(mon.get_manufacturer())
-        monitors[
-            f"{icon} {mon.get_model()}: {vendor}"
-        ] = mon.get_model()
+        monitors[f"{icon} {mon.get_model()}: {vendor}"] = mon.get_model()
 
     layouts = {}
     for l in LAYOUTS:
@@ -213,12 +217,13 @@ def show_menu(dry_run):
             ]
         )
 
-        subprocess.Popen(["/home/sileht/.env/bin/polybar-start.sh"], start_new_session=True)
+        subprocess.Popen(
+            ["/home/sileht/.env/bin/polybar-start.sh"], start_new_session=True
+        )
 
 
 def show_screen_name_popups():
-    from gi.repository import Gdk
-    from gi.repository import Gtk
+    from gi.repository import Gdk, Gtk
 
     disp = Gdk.Display.get_default()
     for n in range(disp.get_n_monitors()):
@@ -226,9 +231,7 @@ def show_screen_name_popups():
         geo = mon.get_geometry()
 
         vendor = get_vendor(mon.get_manufacturer())
-        print(
-            f"{vendor} / {mon.get_model()}: {geo.width}x{geo.height}+{geo.x}+{geo.y}"
-        )
+        print(f"{vendor} / {mon.get_model()}: {geo.width}x{geo.height}+{geo.x}+{geo.y}")
 
         l = Gtk.Label()
         l.set_markup(f"<b>{mon.get_manufacturer()}</b>\n{mon.get_model()}")
@@ -240,21 +243,21 @@ def show_screen_name_popups():
         w.move(geo.x + OFFSET_X, geo.y + OFFSET_Y)
         w.show_all()
 
+
 def main():
-    parser = argparse.ArgumentParser(description='Screen selector')
-    parser.add_argument('--dry-run', action="store_true")
+    parser = argparse.ArgumentParser(description="Screen selector")
+    parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
 
     wakeup_all_monitors(args.dry_run)
 
     show_screen_name_popups()
 
-    t = threading.Thread(target=show_menu, args=(args.dry_run, ))
+    t = threading.Thread(target=show_menu, args=(args.dry_run,))
     t.daemon = True
     t.start()
 
-    from gi.repository import GLib
-    from gi.repository import Gtk
+    from gi.repository import GLib, Gtk
 
     def wait_menu_exit():
         if not t.is_alive():
@@ -263,6 +266,7 @@ def main():
 
     GLib.idle_add(wait_menu_exit)
     Gtk.main()
+
 
 if __name__ == "__main__":
     main()
