@@ -260,11 +260,11 @@ zcompileall(){
 }
 
 upgrade() {
-    [ "$commands[pacman]" ] && (yes | sudo pacman -Suy)
-    [ "$commands[pacman]" ] && sudo remove-orphaned-kernels
-    [ "$commands[pacman]" ] && sudo pacman -Rns $(pacman -Qtdq)
-    [ "$commands[pacman]" ] && sudo paccache -ruk0
-    [ "$commands[apt]" ] && (sudo apt update -y && sudo apt upgrade -y && sudo apt autoremove --purge && sudo apt clean -y)
+    (yes | sudo pacman -Suy)
+    sudo remove-orphaned-kernels
+    sudo pacman -Rns $(pacman -Qtdq)
+    sudo paccache -ruk0
+    pkill -f polybar-update.sh
     (cd ~/.env && git diff --quiet && git pull --rebase --recurse-submodules && ./install ) # Only pull if not dirty
     (cd ~/.env && zinit self-update && git commit -m "sync zinit" zinit && git push origin master )
     zinit update -q --parallel

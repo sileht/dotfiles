@@ -12,4 +12,4 @@ size=32
 convert ${tmp} -crop 1920x$((1200 - $size))+0+$size -background black -splice 0x$size ${dest}
 
 feh --bg-scale "${dest}"
-betterlockscreen -u "${dest}" -b
+#betterlockscreen -u "${dest}" -b
