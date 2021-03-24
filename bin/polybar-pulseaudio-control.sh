@@ -7,39 +7,31 @@ declare -A SINK_NICKNAMES
 SINK_NICKNAMES[alsa_output.usb-*.analog-stereo]="🎧 (usb)"
 SINK_NICKNAMES[alsa_output.pci-0000_00_??.?.analog-stereo]="🔊 (built-in/analog)"
 SINK_NICKNAMES[alsa_output.pci-0000_00_??.?.hdmi-stereo]=" (built-in/hdmi)"
-SINK_NICKNAMES[bluez_sink.??_??_??_??_??_??.headset_head_unit]="🎧 (headset)"
-SINK_NICKNAMES[bluez_sink.??_??_??_??_??_??.a2dp_sink_aac]="🎧 (a2dp/aac)"
-SINK_NICKNAMES[bluez_sink.??_??_??_??_??_??.a2dp_sink_sbc]="🎧 (a2dp/sbc)"
-SINK_NICKNAMES[bluez_sink.??_??_??_??_??_??.a2dp_sink]="🎧 (a2dp)"
-
-#SINK_NICKNAMES[alsa_output.usb-*.analog-stereo]=""
-#SINK_NICKNAMES[alsa_output.pci-0000_00_??.?.analog-stereo]="🔊"
-#SINK_NICKNAMES[alsa_output.pci-0000_00_??.?.hdmi-stereo]=""
-#SINK_NICKNAMES[bluez_sink.??_??_??_??_??_??.headset_head_unit]="🎧"
-#SINK_NICKNAMES[bluez_sink.??_??_??_??_??_??.a2dp_sink]="🎧"
-#SINK_NICKNAMES[bluez_sink.??_??_??_??_??_??.a2dp_sink_aac]="🎧"
-#SINK_NICKNAMES[bluez_sink.??_??_??_??_??_??.a2dp_sink_sbc]="🎧"
+SINK_NICKNAMES[bluez_output.??_??_??_??_??_??.headset_head_unit]="🎧 (headset)"
+SINK_NICKNAMES[bluez_output.??_??_??_??_??_??.a2dp-sink_aac]="🎧 (a2dp/aac)"
+SINK_NICKNAMES[bluez_output.??_??_??_??_??_??.a2dp-sink_sbc]="🎧 (a2dp/sbc)"
+SINK_NICKNAMES[bluez_output.??_??_??_??_??_??.a2dp-sink]="🎧 (a2dp)"
 
 SINK_NICKNAMES[alsa_output.usb-*.analog-stereo]=""
 SINK_NICKNAMES[alsa_output.pci-0000_00_??.?.analog-stereo]="🔊"
 SINK_NICKNAMES[alsa_output.pci-0000_00_??.?.hdmi-stereo]=""
-SINK_NICKNAMES[bluez_sink.??_??_??_??_??_??.headset_head_unit]=""
-SINK_NICKNAMES[bluez_sink.??_??_??_??_??_??.a2dp_sink]="🎧"
+SINK_NICKNAMES[bluez_output.??_??_??_??_??_??.headset_head_unit]=""
+SINK_NICKNAMES[bluez_output.??_??_??_??_??_??.a2dp-sink]="🎧"
 
-if ! pulseaudio --check; then
+if ! pactl info &>/dev/null; then
     echo "No pulseaudio" >&2
     exit 0;
 fi
 
-SELECTED_SINK=$(pacmd list-sinks | awk '/\* index:/{print $3}')
-SELECTED_SINK_NAME=$(pactl list sinks short | awk -v sink="${SELECTED_SINK}" '{ if ($1 == sink) {print $2} }')
-VOLUME=$(pacmd list-sinks | grep -A 15 'index: '"$SELECTED_SINK"'' | grep 'volume:' | grep -E -v 'base volume:' | awk -F : '{print $3; exit}' | grep -o -P '.{0,3}%' | sed s/.$// | tr -d ' ')
+SELECTED_SINK_NAME=$(pactl info | awk -F': ' '/Default Sink/{print $2}')
+SELECTED_SINK=$(pactl list sinks short | awk -v sink="$SELECTED_SINK_NAME" '{if ($2 == sink) { print $1} }')
+MUTED=$(pactl list sinks | grep -A 15 "^Sink #$SELECTED_SINK" | awk '/Mute:/{print $2}')
+VOLUME=$(pactl list sinks | grep -A 15 "^Sink #$SELECTED_SINK" | awk '/^\s*Volume:/{print $5}')
+VOLUME=${VOLUME%*%}
 VOLUME_UP=$((VOLUME + VOL_INC))
 VOLUME_UP=$((VOLUME_UP > VOL_MAX ? VOL_MAX : VOLUME_UP))
 VOLUME_DOWN=$((VOLUME - VOL_INC))
 VOLUME_DOWN=$((VOLUME_DOWN < 0 ? 0 : VOLUME_DOWN))
-MUTED=$(pacmd list-sinks | grep -A 15 "index: $SELECTED_SINK" | awk '/muted/{print $2}')
-
 
 output() {
     local icon="🔊? "
