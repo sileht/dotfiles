@@ -1,10 +1,10 @@
 set nocompatible
 
+
 " Add some missing filetype extentions
 autocmd BufNewFile,BufRead *.jsx set filetype=javascript.jsx
 autocmd BufNewFile,BufRead *.yaml  set filetype=yml
 autocmd BufNewFile,BufRead *.j2	   set filetype=jinja
-autocmd BufNewFile,BufRead *mutt-* set filetype=mail
 autocmd BufNewFile,BufRead *.kt set filetype=kotlin
 
 call plug#begin('~/.local/share/nvim/plugged')
@@ -15,8 +15,6 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'bling/vim-bufferline'
-Plug 'mhinz/vim-signify'                " VCS diff
-Plug 'tpope/vim-fugitive'               " GIT
 Plug 'ryanoasis/vim-devicons'
 Plug 'eugen0329/vim-esearch'
 Plug 'lambdalisue/suda.vim'
@@ -25,8 +23,6 @@ Plug 'nacitar/terminalkeys.vim'
 Plug 'junegunn/vim-easy-align'
 " File/Tag browsing
 Plug 'tmux-plugins/vim-tmux-focus-events'
-Plug 'ctrlpvim/ctrlp.vim'
-Plug 'tacahiroy/ctrlp-funky'
 
 Plug 'rhysd/vim-grammarous'
 
@@ -38,41 +34,8 @@ Plug 'inside/vim-search-pulse'
 Plug 'brooth/far.vim'
 
 " Language
-Plug 'dense-analysis/ale'
-Plug 'prabirshrestha/asyncomplete.vim'
-Plug 'editorconfig/editorconfig-vim'
-Plug 'jaxbot/semantic-highlight.vim'                                                   " semantic highlight (permanent)
-Plug 'numirias/semshi',               {'do': ':UpdateRemotePlugins', 'for': 'python'}  " semantic highlight (selected/python)
-Plug 'mgedmin/python-imports.vim'
-Plug 'martinda/Jenkinsfile-vim-syntax'
-
-
-Plug 'dbeniamine/vim-mail',           {'for': 'mail'}
-
-"Plug 'Vimjas/vim-python-pep8-indent', {'for': 'python'}
-Plug 'vim-python/python-syntax',      {'for': 'python'}
-"
-Plug 'chr4/nginx.vim'
-"Plug 'vim-scripts/spec.vim',          {'for': 'spec'}
-"Plug 'spf13/PIV',                     {'for': 'php'}
-"Plug 'Rykka/riv.vim',                 {'for': 'rst'}
-"Plug 'rodjek/vim-puppet',             {'for': 'puppet'}
-"
-"Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries', 'for': 'go' }
-
-Plug 'HerringtonDarkholme/yats.vim',       {'for': ['javascript', 'javascriptreact']}
-Plug 'yuezk/vim-js',       {'for': ['javascript', 'javascriptreact']}
-Plug 'maxmellon/vim-jsx-pretty',       {'for': 'javascriptreact'}
-
-Plug 'groenewege/vim-less',           {'for': 'less'}
-Plug 'elzr/vim-json',                 {'for': 'json'}
-"Plug 'tpope/vim-rails',               {'for': 'ruby'}
-Plug 'tpope/vim-markdown',            {'for': 'markdown'}
-""""Plug 'racer-rust/vim-racer'           " rust
-Plug 'vim-scripts/HTML-AutoCloseTag', {'for': ['html', 'xml']}
-Plug 'hail2u/vim-css3-syntax',        {'for': 'css'}
-Plug 'zinit-zsh/zinit-vim-syntax'
-"Plug 'udalov/kotlin-vim',             {'for': 'kotlin'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'sheerun/vim-polyglot'
 
 call plug#end()
 
@@ -86,7 +49,10 @@ set shell=/bin/sh
 "set clipboard=unnamed,unnamedplus
 set mouse=
 set hidden                      " Allow buffer switching without saving
-set backup                      " Backups are nice ...
+"set backup                      " Backups are nice ...
+set nobackup
+set nowritebackup
+
 set undofile                    " So is persistent undo ...
 set undolevels=1000             " Maximum number of changes that can be undone
 set undoreload=10000            " Maximum number lines to save for undo on a buffer reload
@@ -145,47 +111,31 @@ endif
 nnoremap P "0p                            " Paste last yank
 nnoremap Y y$                             " Yank from the cursor to the end of the line, to be consistent with C and D.
 nmap <silent> <leader>/ :nohlsearch<CR>   " Clean hlsearch on new search
-command! Notes execute "help mynotes"
 command! R execute "source ~/.config/nvim/init.vim"
 
 " ###############
 " ### ON LOAD ###
 " ###############
 
-" Change cwd to file directory
-autocmd BufEnter * if bufname("") !~ "^\[A-Za-z0-9\]*://" | lcd %:p:h | endif
 " Cut at 80 for some filetype
-autocmd FileType c,cpp,java,go,php,javascript,javascriptreact,puppet,rst set textwidth=79
-autocmd FileType python set textwidth=90
+"autocmd FileType c,cpp,java,go,php,javascript,javascriptreact,puppet,rst set textwidth=79
+"autocmd FileType python set textwidth=90
 
 " libvirt C style, skip me if editorconfig is present ?
-autocmd BufWritePre,BufRead *.c setlocal smartindent cindent cinoptions=(0,:0,l1,t0,L3
-autocmd BufWritePre,BufRead *.h setlocal smartindent cindent cinoptions=(0,:0,l1,t0,L3
+"autocmd BufWritePre,BufRead *.c setlocal smartindent cindent cinoptions=(0,:0,l1,t0,L3
+"autocmd BufWritePre,BufRead *.h setlocal smartindent cindent cinoptions=(0,:0,l1,t0,L3
 
-autocmd FileType Jenkinsfile set shiftwidth=2 tabstop=2 softtabstop=2
-
-"autocmd BufWritePre,BufRead *.cpp setlocal shiftwidth=4 expandtab tabstop=4 softtabstop=4
-"autocmd BufWritePre,BufRead *.c setlocal shiftwidth=4 expandtab tabstop=4 softtabstop=4
-"autocmd BufWritePre,BufRead *.h setlocal shiftwidth=4 expandtab tabstop=4 softtabstop=4
+""autocmd BufWritePre,BufRead *.cpp setlocal shiftwidth=4 expandtab tabstop=4 softtabstop=4
+""autocmd BufWritePre,BufRead *.c setlocal shiftwidth=4 expandtab tabstop=4 softtabstop=4
+""autocmd BufWritePre,BufRead *.h setlocal shiftwidth=4 expandtab tabstop=4 softtabstop=4
 
 " Javascript people like 2 chars sep
-autocmd FileType javascript,javascriptreact set shiftwidth=2 tabstop=4 softtabstop=4
+"autocmd FileType javascript,javascriptreact set shiftwidth=2 tabstop=4 softtabstop=4
+
+"autocmd BufWritePre *.py call CocAction('runCommand', 'editor.action.organizeImport')
+"autocmd BufWritePre *.py call CocAction('format')
 
 match ErrorMsg /\s\+$\| \+\ze\t/
-
-"" Restore cursor position
-if (&ft!='mail')
-    function! ResCur()
-        if line("'\"") <= line("$")
-        silent! normal! g`"
-        return 1
-        endif
-    endfunction
-    augroup resCur
-        autocmd!
-        autocmd BufWinEnter * call ResCur()
-    augroup END
-endif
 
 " ##############
 " ### Themes ###
@@ -208,7 +158,7 @@ set laststatus=2        " Show statusbar
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#buffer_idx_mode = 1
-let g:airline#extensions#ale#enabled = 1
+let g:airline#extensions#coc#enabled = 1
 let g:airline_theme = 'base16_eighties'
 
 nmap <leader>& <Plug>AirlineSelectTab1
@@ -233,98 +183,96 @@ nmap <leader>9 <Plug>AirlineSelectTab9
 nmap <S-left>  <Plug>AirlineSelectPrevTab
 nmap <S-right> <Plug>AirlineSelectNextTab
 
-
-nmap <leader>i :ImportName<CR>
-
-" ############
-" ### JEDI ###
-" ############
-
-autocmd FileType python call LoadVirtualEnv()
-
-" Use system python for neovim itself
-let g:python_host_prog = '/usr/bin/python'
-let g:python3_host_prog = '/usr/bin/python3'
-let g:python_highlight_all = 1
-
 " ###########
-" ### ALE ###
+" ### COC ###
 " ###########
 
-au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#ale#get_source_options({
-  \ 'priority': 10,
-  \ }))
+set cmdheight=2
+set shortmess+=c
+set signcolumn=number  " merge signcolumn and number column into one
 
-let g:ale_completion_enabled = 0
-"let g:ale_completion_delay = 5
-"set omnifunc=ale#completion#OmniFunc
-"set completeopt+=menuone
-"set completeopt+=noinsert
+let g:coc_global_extensions = ['coc-eslint', 'coc-json', 'coc-git', 'coc-pyright', 'coc-tsserver', 'coc-html']
 
-let g:ale_sign_column_always = 1  " always show left column
-let g:ale_open_list = 1
-let g:ale_list_window_size = 7
-let g:ale_list_vertical = 0
-let g:ale_keep_list_window_open = 1
-let g:ale_set_highlights = 0
-let g:ale_lint_on_text_changed = 'never'
-let g:ale_lint_on_insert_leave = 0
-let g:ale_lint_on_enter = 0
+" Use tab for trigger completion with characters ahead and navigate.
+" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" other plugin before putting this into your config.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
-let g:ale_linter_aliases = {'jsx': ['css', 'javascript']}
-let g:ale_linters = {}
-let g:ale_linters.python = ['pyls'] " , 'flake8']
-"let g:ale_linters.yaml = ['yamllint']
-let g:ale_linters.c = ['clangformat', 'clangd']
-let g:ale_linters.cpp = ['clangformat', 'clangd']
-let g:ale_linters.go = ['gometalinter']
-let g:ale_linters.kotlin = ['ktlint', 'languageserver']
-let g:ale_linters.javascript = ['eslint']
-let g:ale_linters.jsx = ['stylelint', 'eslint']
-let g:ale_fixers = {
-  \  'javascript': ['eslint'],
-  \  'cpp': ['clang-format'],
-  \  '*': ['remove_trailing_lines'],
-  \ }
- ", 'trim_whitespace'],
- "
-let g:cpp_ccls_init_options = {'clang': { 'extraArgs': '--gcc-toolchain=/usr' }}
-let g:ale_cpp_clangd_executable = '/usr/lib/llvm-10/bin/clangd'
-let g:ale_c_parse_makefile = 1
-let g:ale_c_parse_compile_commands = 1
-let g:ale_python_pyls_config = {'pyls': {
-  \ 'settings': {"configurationSources": ["flake8"]},
-  \ 'plugins': {
-  \   'jedi': {'environment': ''},
-  \   'pylint': {'enabled': v:false},
-  \   'pycodestyle': {'enabled': v:false},
-  \   'pyls_mypy': { 'enabled': v:true, "live_mode": v:true },
-  \   'pyls_black': { 'enabled': v:true},
-  \ }}}
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
 
-let g:ale_kotlin_languageserver_executable = 'kotlin-language-server'
+" Use <c-space> to trigger completion.
+if has('nvim')
+  inoremap <silent><expr> <c-space> coc#refresh()
+else
+  inoremap <silent><expr> <c-@> coc#refresh()
+endif
 
-let g:ale_fix_on_save = 1
-"let __ale_c_project_filenames = ['README.md']
+" Make <CR> auto-select the first completion item and notify coc.nvim to
+" format on enter, <cr> could be remapped by other vim plugin
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
-" for golang
-let g:ale_go_gometalinter_options = '--fast --enable=staticcheck --enable=gosimple --enable=unused'
-" let g:ale_go_gometalinter_options = '--fast --vendored-linters --disable-all --enable=gotype --enable=vet --enable=golint -t'
+" Use `[g` and `]g` to navigate diagnostics
+" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
-let g:go_fmt_fail_silently = 1
+" GoTo code navigation.
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
 
-let g:ale_echo_msg_error_str = 'E'
-let g:ale_echo_msg_warning_str = 'W'
-let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+" Use K to show documentation in preview window.
+nnoremap <silent> K :call <SID>show_documentation()<CR>
 
-let g:ale_sign_error = '⛔'
-let g:ale_sign_info = 'ℹ'
-let g:ale_sign_offset = 1000000
-let g:ale_sign_style_error = '⛔'
-let g:ale_sign_style_warning = '⚠'
-let g:ale_sign_warning = '⚠'
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  elseif (coc#rpc#ready())
+    call CocActionAsync('doHover')
+  else
+    execute '!' . &keywordprg . " " . expand('<cword>')
+  endif
+endfunction
 
-let g:vim_json_syntax_conceal = 0
+" Highlight the symbol and its references when holding the cursor.
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Symbol renaming.
+nmap <leader>rn <Plug>(coc-rename)
+
+" Formatting selected code.
+xmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
+
+" Applying codeAction to the selected region.
+" Example: `<leader>aap` for current paragraph
+xmap <leader>a  <Plug>(coc-codeaction-selected)
+nmap <leader>a  <Plug>(coc-codeaction-selected)
+
+" Remap keys for applying codeAction to the current buffer.
+nmap <leader>ac  <Plug>(coc-codeaction)
+" Apply AutoFix to problem on the current line.
+nmap <leader>qf  <Plug>(coc-fix-current)
+
+" Map function and class text objects
+" NOTE: Requires 'textDocument.documentSymbol' support from the language server.
+xmap if <Plug>(coc-funcobj-i)
+omap if <Plug>(coc-funcobj-i)
+xmap af <Plug>(coc-funcobj-a)
+omap af <Plug>(coc-funcobj-a)
+xmap ic <Plug>(coc-classobj-i)
+omap ic <Plug>(coc-classobj-i)
+xmap ac <Plug>(coc-classobj-a)
+omap ac <Plug>(coc-classobj-a)
 
 " ##################
 " ### EASY ALIGN ###
@@ -332,35 +280,6 @@ let g:vim_json_syntax_conceal = 0
 
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
-
-" #############
-" ### CTRLP ###
-" #############
-
-let g:ctrlp_funky_matchtype = 'path'
-let g:ctrlp_funky_syntax_highlight = 1
-nnoremap <C-e> :CtrlPFunky<Cr>
-nnoremap <C-E> :execute 'CtrlPFunky ' . expand('<cword>')<Cr>
-
-" #######################
-" ### Semshi/ALE KEYS ###
-" #######################
-
-nmap <silent> <leader>j :ALENext<cr>
-nmap <silent> <leader>k :ALEPrevious<cr>
-nmap <silent> <leader>dd <Plug>(ale_go_to_definition)
-nmap <silent> <leader>dr <Plug>(ale_find_references)
-nnoremap <F11> :ALEFix<cr>
-
-nmap <silent> <leader>rr :Semshi rename<CR>
-nmap <silent> <Tab> :Semshi goto name next<CR>
-nmap <silent> <S-Tab> :Semshi goto name prev<CR>
-nmap <silent> <leader>c :Semshi goto class next<CR>
-nmap <silent> <leader>C :Semshi goto class prev<CR>
-nmap <silent> <leader>f :Semshi goto function next<CR>
-nmap <silent> <leader>F :Semshi goto function prev<CR>
-nmap <silent> <leader>ee :Semshi error<CR>
-nmap <silent> <leader>ge :Semshi goto error<CR>
 
 " #####################
 " ### OTHER PLUGINS ###
@@ -370,25 +289,17 @@ let g:semanticTermColors = [28,1,2,3,4,5,6,7,25,9,10,34,12,13,14,15,125,124,19]
 nnoremap <F10> :SemanticHighlightToggle<cr>
 " autocmd FileType * SemanticHighlightToggle
 
+nnoremap <C-o> :Clap files<cr>
+nnoremap <C-f> :Clap grep<cr>
+
 cmap w!! :w suda://%<CR>:e!<CR>
 
 let g:signify_update_on_focusgained = 1
 let g:vim_search_pulse_duration = 200
-let g:rubycomplete_buffer_loading = 1
 let g:rainbow_active = 1
 
 au FileType spec map <buffer> <F5> <Plug>AddChangelogEntry
 let spec_chglog_packager = "Mehdi Abaakouk <sileht@sileht.net>"
-
-" ############
-" ### Mail ###
-" ############
-let g:VimMailSpellLangs=['fr', 'en']
-let g:VimMailClient="true"
-let g:VimMailStartFlags="SA"
-let g:VimMailContactSyncCmd="true"
-let g:VimMailContactQueryCmd="/home/sileht/.env/bin/vim-mail-contact-query"
-autocmd FileType mail setlocal completeopt+=preview
 
 " ###################
 " ### SPELL CHECK ###
@@ -447,49 +358,31 @@ function! InitializeDirectories()
 endfunction
 call InitializeDirectories()
 
-function! LoadVirtualEnv()
-if has('python')
-python << pythoneof
-import vim
-import os
-
-def load_flake8(path):
-    for venv in (".tox/pep8", ".tox/linters", ".tox/lint"):
-        venvdir = os.path.join(path, venv)
-        if os.path.exists(venvdir):
-            vim.command("let g:ale_python_flake8_executable = '%s/bin/flake8'" % venvdir)
-            vim.command("let g:ale_fixers.python = ['black', 'isort']")
-            return
-
-def load_venv(path):
-    for venv in (".tox/py38", ".tox/py37", ".tox/py27", "venv"):
-        venvdir = os.path.join(path, venv)
-        if os.path.exists(venvdir):
-            vim.command("let g:ale_python_pyls_config.pyls.plugins.jedi.environment='%s'" % venvdir)
-            vim.command("let $VIRTUAL_ENV='%s'" % venvdir)
-            return
-
-def is_source_root(path):
-    for f in ("tox.ini", ".tox", "venv", ".git", ".hg"):
-        if os.path.exists(os.path.join(path, f)):
-            return True
-    return False
-
-current_path = os.path.abspath(vim.eval('getcwd()'))
-home = os.path.abspath("~")
-while True:
-    if is_source_root(current_path):
-        load_venv(current_path)
-        load_flake8(current_path)
+function! SetProjectRoot()
+  " default to the current file's directory
+  lcd %:p:h
+  let git_dir = trim(system("git rev-parse --show-toplevel"))
+  let is_not_git_dir = matchstr(git_dir, '^fatal:.*')
+  if empty(is_not_git_dir)
+    for p in [".tox/py39", ".tox/py38", ".tox/py37", ".tox/py27", "venv"]
+      if isdirectory(git_dir."/".p)
+        call coc#config("python.pythonPath", git_dir."/".p."/bin/python")
         break
-    current_path = os.path.abspath(os.path.join(current_path, ".."))
-    if current_path == home or current_path == "/":
-        break
-
-pythoneof
-endif
+      endif
+    endfor
+  endif
 endfunction
 
+" follow symlink and set working directory
+autocmd BufEnter * call SetProjectRoot()
+
+"" netrw: follow symlink and set working directory
+"autocmd CursorMoved silent *
+"  " short circuit for non-netrw files
+"  \ if &filetype == 'netrw' |
+"  \   call FollowSymlink() |
+"  \   call SetProjectRoot() |
+"  \ endif
 
 packloadall
 silent! helptags ALL
