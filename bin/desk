@@ -1,7 +1,10 @@
 #!/bin/env python
 
+import struct
+from collections import namedtuple
 import argparse
 import string
+import logging
 import subprocess
 import threading
 
@@ -13,6 +16,8 @@ gi.require_version("Gtk", "3.0")
 
 import Xlib.display
 import Xlib.error
+
+logging.basicConfig(level=logging.DEBUG)
 
 OFFSET_X = 20
 OFFSET_Y = 50
@@ -34,6 +39,97 @@ def get_vendor(pnp_id):
     return f"{PNP_MAPS.get(pnp_id, pnp_id)} ({pnp_id})"
 
 
+RawEdid = namedtuple(
+    "RawEdid",
+    (
+        "header",
+        "manu_id",
+        "prod_id",
+        "serial_no",
+        "manu_week",
+        "manu_year",
+        "edid_version",
+        "edid_revision",
+        "input_type",
+        "width",
+        "height",
+        "gamma",
+        "features",
+        "color",
+        "timings_supported",
+        "timings_reserved",
+        "timings_edid",
+        "timing_1",
+        "timing_2",
+        "timing_3",
+        "timing_4",
+        "extension",
+        "checksum",
+    ),
+)
+EDID_STRUCT_FORMAT = (
+    ">"  # big-endian
+    "8s"  # constant header (8 bytes)
+    "H"  # manufacturer id (2 bytes)
+    "H"  # product id (2 bytes)
+    "I"  # serial number (4 bytes)
+    "B"  # manufactoring week (1 byte)
+    "B"  # manufactoring year (1 byte)
+    "B"  # edid version (1 byte)
+    "B"  # edid revision (1 byte)
+    "B"  # video input type (1 byte)
+    "B"  # horizontal size in cm (1 byte)
+    "B"  # vertical size in cm (1 byte)
+    "B"  # display gamma (1 byte)
+    "B"  # supported features (1 byte)
+    "10s"  # color characteristics (10 bytes)
+    "H"  # supported timings (2 bytes)
+    "B"  # reserved timing (1 byte)
+    "16s"  # EDID supported timings (16 bytes)
+    "18s"  # detailed timing block 1 (18 bytes)
+    "18s"  # detailed timing block 2 (18 bytes)
+    "18s"  # detailed timing block 3 (18 bytes)
+    "18s"  # detailed timing block 4 (18 bytes)
+    "B"  # extension flag (1 byte)
+    "B"
+)  # checksum (1 byte)
+
+
+def model_from_edid(output="DP-1"):
+    with open(f"/sys/class/drm/card0-{output}/edid", "rb") as f:
+        blob = f.read()[:128]
+
+        if sum(map(int, blob)) % 256 != 0:
+            logging.warning("EDID: checksum error.")
+            return ""
+        if struct.calcsize(EDID_STRUCT_FORMAT) != 128:
+            logging.warning("EDID: wrong size.")
+            return ""
+
+        unpacked = struct.unpack(EDID_STRUCT_FORMAT, blob)
+        raw_edid = RawEdid(*unpacked)
+
+        if raw_edid.header != b"\x00\xff\xff\xff\xff\xff\xff\x00":
+            logging.error("EDID: Invalid header.")
+
+        for timing_bytes in (
+            raw_edid.timing_1,
+            raw_edid.timing_2,
+            raw_edid.timing_3,
+            raw_edid.timing_4,
+        ):
+            # "other" descriptor
+            if timing_bytes[0:2] == b"\x00\x00":
+                timing_type = timing_bytes[3]
+                # https://en.wikipedia.org/wiki/Extended_Display_Identification_Data#Display_Descriptors
+                if timing_type == 0xFC:
+                    buffer = timing_bytes[5:]
+                    buffer = buffer.partition(b"\x0a")[0]
+                    text = buffer.decode("cp437")
+                    return text
+        return ""
+
+
 def wakeup_all_monitors(dry_run):
     d = Xlib.display.Display()
     scr = d.screen()
@@ -50,7 +146,7 @@ def wakeup_all_monitors(dry_run):
             resolution = f"{crtc.width}x{crtc.height}"
         have_output_connected = info.connection == 0
         have_output_on = bool(info.crtc)
-        print(
+        logging.info(
             f"{info.name}: have_output_on={have_output_on} have_output_connected={have_output_connected} resolution={resolution}"
         )
         if have_output_connected and not have_output_on:
@@ -68,7 +164,7 @@ def wakeup_all_monitors(dry_run):
     except Xlib.error.XError:
         output_to_attach_to = outputs_on[0]
 
-    print(f"current primary: {output_to_attach_to}")
+    logging.info(f"current primary: {output_to_attach_to}")
 
     commands = set()
     for output in outputs_off:
@@ -80,13 +176,15 @@ def wakeup_all_monitors(dry_run):
 
     if commands:
         cmd = f"xrandr {' '.join(commands)}"
-        print(f"Run: {cmd}")
+        logging.info(f"Run: {cmd}")
         if dry_run:
             return
         subprocess.run(cmd, shell=True)
 
 
 class Layout:
+    predefined = {}
+
     @classmethod
     @property
     def positions(cls):
@@ -99,6 +197,12 @@ class Layout:
 class OneScreenLayout(Layout):
     label = ""
     command = "xrandr --output {primary} --auto --primary"
+
+
+class OnAutoRightLayout(Layout):
+    label = "   (auto)"
+    command = "xrandr --output {primary} --auto --primary --output {right} --auto --right-of {primary}"
+    predefined = {"right": "eDP-1"}
 
 
 class VerticalLayout(Layout):
@@ -121,7 +225,7 @@ class BothSideLayout(Layout):
     command = "xrandr --output {primary} --auto --primary --output {left} --auto --left-of {primary} --output {right} --auto --right-of {primary}"
 
 
-LAYOUTS = (OneScreenLayout, VerticalLayout, OnLeftLayout, OnRightLayout, BothSideLayout)
+LAYOUTS = (OnAutoRightLayout, OneScreenLayout, VerticalLayout, OnLeftLayout, OnRightLayout, BothSideLayout)
 
 
 def get_selection(title, options):
@@ -151,28 +255,43 @@ def show_menu(dry_run):
 
     monitors = {}
     disp = Gdk.Display.get_default()
+
     for n in range(disp.get_n_monitors()):
         mon = disp.get_monitor(n)
-        icon = LAPTOP_ICON if mon.get_model().startswith("eDP") else DESKTOP_ICON
-        vendor = get_vendor(mon.get_manufacturer())
-        monitors[f"{icon} {mon.get_model()}: {vendor}"] = mon.get_model()
+        output = mon.get_model()
+        icon = LAPTOP_ICON if output.startswith("eDP") else DESKTOP_ICON
+        vendor_id = mon.get_manufacturer()
+        vendor = get_vendor(vendor_id)
+        model = model_from_edid(output)
+        logging.info(f"{vendor_id} {model}")
+        monitors[f"{icon} {output}: {vendor} | {model}"] = output
 
     layouts = {}
-    for l in LAYOUTS:
-        print(f"Layout: {l.label}: {l.positions}")
-        if len(l.positions) <= len(monitors):
-            layouts[l.label] = l
+    for layout in LAYOUTS:
+        logging.info(f"Layout: {layout.label}: {layout.positions}")
+        if len(layout.positions) <= len(monitors):
+            layouts[layout.label] = layout
 
     layout_label, layout = get_selection("Layout", layouts)
     if not layout:
         return
 
-    print(f"Selected layout: {layout_label}: {'/'.join(layout.positions)}")
+    logging.info(f"Selected layout: {layout_label}: {'/'.join(layout.positions)}")
 
     selected_monitors = {}
-    for position in layout.positions:
-        selected_monitor_label, selected_monitor = get_selection(position, monitors)
-        print(f"Selected {position}: {selected_monitor_label}: {selected_monitor}")
+    for position in sorted(layout.positions, key=lambda p: p not in layout.predefined):
+        predefined_m_id = layout.predefined.get(position)
+        selected_monitor_label, selected_monitor = get_selection(
+            position,
+            {
+                m_label: m_id
+                for m_label, m_id in monitors.items()
+                if predefined_m_id is None or m_id == predefined_m_id
+            },
+        )
+        logging.info(
+            f"Selected {position}: {selected_monitor_label}: {selected_monitor}"
+        )
         if not selected_monitor:
             return
         selected_monitors[position] = selected_monitor
@@ -183,14 +302,15 @@ def show_menu(dry_run):
     for v in monitors.values():
         cmd += " %s" % OFF_COMMAND.format(v)
 
-    print(f"cmd: {cmd}")
+    logging.info(f"cmd: {cmd}")
     if dry_run:
         return
+
     result = subprocess.run(
         cmd, shell=True, stderr=subprocess.STDOUT, stdout=subprocess.PIPE, text=True
     )
     if result.stdout:
-        print(f"FAIL: {result.stdout}")
+        logging.info(f"FAIL: {result.stdout}")
         subprocess.run(
             [
                 "notify-send",
@@ -213,7 +333,7 @@ def show_menu(dry_run):
                 "-i",
                 "/usr/share/icons/Humanity-Dark/apps/24/gsd-xrandr.svg",
                 "display configuration done",
-                f"selected: {l.label}\nran: {cmd}\n{config}",
+                f"selected: {layout.label}\nran: {cmd}\n{config}",
             ]
         )
 
@@ -230,14 +350,16 @@ def show_screen_name_popups():
         mon = disp.get_monitor(n)
         geo = mon.get_geometry()
 
+        output = mon.get_model()
         vendor = get_vendor(mon.get_manufacturer())
-        print(f"{vendor} / {mon.get_model()}: {geo.width}x{geo.height}+{geo.x}+{geo.y}")
+        model = model_from_edid(output)
+        logging.info(f"{vendor} / {output}: {geo.width}x{geo.height}+{geo.x}+{geo.y}")
 
-        l = Gtk.Label()
-        l.set_markup(f"<b>{mon.get_manufacturer()}</b>\n{mon.get_model()}")
+        label = Gtk.Label()
+        label.set_markup(f"<b>{vendor}\n{model}</b>\n{output}")
 
         w = Gtk.Window(type=Gtk.WindowType.POPUP)
-        w.add(l)
+        w.add(label)
         w.set_modal(True)
         w.resize(250, 100)
         w.move(geo.x + OFFSET_X, geo.y + OFFSET_Y)
