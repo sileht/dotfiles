@@ -264,12 +264,12 @@ upgrade() {
     sudo remove-orphaned-kernels
     sudo pacman -Rns $(pacman -Qtdq)
     sudo paccache -ruk0
-    pkill -f polybar-update.sh
     (cd ~/.env && git diff --quiet && git pull --rebase --recurse-submodules && ./install ) # Only pull if not dirty
     (cd ~/.env && zinit self-update && git commit -m "sync zinit" zinit && git push origin master )
     zinit update -q --parallel
     zinit delete --clean -y
     nvim "+set nomore" +PlugClean! +PlugUpdate! +qall
+    pkill -f polybar-update.sh
 }
 
 mka () { time schedtool -B -n 1 -e ionice -n 1 make -j $(nproc) "$@" }

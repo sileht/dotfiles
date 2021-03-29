@@ -132,8 +132,6 @@ command! R execute "source ~/.config/nvim/init.vim"
 " Javascript people like 2 chars sep
 "autocmd FileType javascript,javascriptreact set shiftwidth=2 tabstop=4 softtabstop=4
 
-"autocmd BufWritePre *.py call CocAction('runCommand', 'editor.action.organizeImport')
-"autocmd BufWritePre *.py call CocAction('format')
 
 match ErrorMsg /\s\+$\| \+\ze\t/
 
@@ -252,6 +250,7 @@ nmap <leader>rn <Plug>(coc-rename)
 " Formatting selected code.
 xmap <leader>f  <Plug>(coc-format-selected)
 nmap <leader>f  <Plug>(coc-format-selected)
+"command! -nargs=0 W :call CocAction('format')<cr>:call CocAction('runCommand', 'editor.action.organizeImport')<cr>:w<cr>
 
 " Applying codeAction to the selected region.
 " Example: `<leader>aap` for current paragraph
@@ -262,6 +261,7 @@ nmap <leader>a  <Plug>(coc-codeaction-selected)
 nmap <leader>ac  <Plug>(coc-codeaction)
 " Apply AutoFix to problem on the current line.
 nmap <leader>qf  <Plug>(coc-fix-current)
+nmap <C-f>  <Plug>(coc-fix-current)
 
 " Map function and class text objects
 " NOTE: Requires 'textDocument.documentSymbol' support from the language server.
@@ -290,7 +290,7 @@ nnoremap <F10> :SemanticHighlightToggle<cr>
 " autocmd FileType * SemanticHighlightToggle
 
 nnoremap <C-o> :Clap files<cr>
-nnoremap <C-f> :Clap grep<cr>
+"nnoremap <C-f> :Clap grep<cr>
 
 cmap w!! :w suda://%<CR>:e!<CR>
 
@@ -366,6 +366,8 @@ function! SetProjectRoot()
   if empty(is_not_git_dir)
     for p in [".tox/py39", ".tox/py38", ".tox/py37", ".tox/py27", "venv"]
       if isdirectory(git_dir."/".p)
+        autocmd BufWritePre *.py call CocAction('runCommand', 'editor.action.organizeImport')
+        autocmd BufWritePre *.py call CocAction('format')
         call coc#config("python.pythonPath", git_dir."/".p."/bin/python")
         break
       endif
