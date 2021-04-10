@@ -66,7 +66,7 @@ bindsym $mod+x exec --no-startup-id pcmanfm /home/sileht/
 # kill focused window
 bindsym $mod+Shift+a kill
 
-bindsym $mod+colon exec --no-startup-id "rofimoji --insert-with-clipboard"
+bindsym $mod+colon exec --no-startup-id "rofimoji --action clipboard"
 bindsym $mod+r exec --no-startup-id rofi_menu
 bindsym $mod+d exec --no-startup-id desk
 bindsym $mod+m exec --no-startup-id "rofi -show calc -modi calc -no-show-match -no-sort -calc-command \\"echo -n '{result}' | xclip -selection c\\" > /dev/null"

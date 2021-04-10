@@ -117,6 +117,8 @@ command! R execute "source ~/.config/nvim/init.vim"
 " ### ON LOAD ###
 " ###############
 
+autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
+    \| exe "normal! g'\"" | endif
 " Cut at 80 for some filetype
 "autocmd FileType c,cpp,java,go,php,javascript,javascriptreact,puppet,rst set textwidth=79
 "autocmd FileType python set textwidth=90
@@ -366,14 +368,15 @@ function! SetProjectRoot()
   if empty(is_not_git_dir)
     for p in [".tox/py39", ".tox/py38", ".tox/py37", ".tox/py27", "venv"]
       if isdirectory(git_dir."/".p)
-        autocmd BufWritePre *.py call CocAction('runCommand', 'editor.action.organizeImport')
-        autocmd BufWritePre *.py call CocAction('format')
         call coc#config("python.pythonPath", git_dir."/".p."/bin/python")
         break
       endif
     endfor
   endif
 endfunction
+
+autocmd BufWritePre *.py call CocAction('format')
+autocmd BufWritePre *.py call CocAction('runCommand', 'editor.action.organizeImport')
 
 " follow symlink and set working directory
 autocmd BufEnter * call SetProjectRoot()
