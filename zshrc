@@ -27,6 +27,7 @@ zinit wait lucid light-mode for \
   from"gh-r" as"program" junegunn/fzf-bin \
   from"gh-r" as"program" mv"nvim.appimage -> nvim" bpick"nvim.appimage" neovim/neovim \
   from"gh-r" as"program" mv"xurls_*_linux_amd64 -> xurls" bpick"xurls_*_linux_amd64" @mvdan/xurls \
+  from"gh-r" as"program" mv"sentry-cli-Linux-x86_64 -> sentry-cli" bpick"sentry-cli-Linux-x86_64" @getsentry/sentry-cli \
   from"gh-r" as"program" mv"docker* -> docker-compose" bpick"*linux*" docker/compose \
   from"gh-r" as"program" mv"exa* -> exa" bpick"*linux*" ogham/exa \
   from"gh-r" as"program" pick"gh*/bin/gh" bpick"*gh_*_linux_amd64.tar.gz" cli/cli \
@@ -261,7 +262,7 @@ zcompileall(){
 
 upgrade() {
     (yes | sudo pacman -Suy)
-    sudo remove-orphaned-kernels
+    # sudo remove-orphaned-kernels
     sudo pacman -Rns $(pacman -Qtdq)
     sudo paccache -ruk0
     (cd ~/.env && git diff --quiet && git pull --rebase --recurse-submodules && ./install ) # Only pull if not dirty
@@ -322,8 +323,7 @@ alias df="df -h"
 alias diff='diff -rNu'
 alias ip='ip -color'
 alias optimutt="find ~/.mutt/cache/headers -type f -exec tcbmgr optimize -nl {} \;"
-alias kubens="FZF_DEFAULT_OPTS='--height=25%' kubens"
-alias kubectx="FZF_DEFAULT_OPTS='--height=25%' kubectx"
+alias heroku="TERM=xterm heroku"
 
 function nvim(){
     # Replace :123 by \s+123
