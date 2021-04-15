@@ -3,6 +3,7 @@
 # flake8: noqa: E501
 """Sound controller."""
 
+import fnmatch
 import functools
 import shlex
 import subprocess
@@ -24,6 +25,24 @@ def _is_bluetooth_on():
             return True
     return False
 
+def _select_input(pulse, card, profile):
+    pulse.card_profile_set(card, profile.name)
+
+    sources = []
+    while not sources:
+        time.sleep(0.1)
+        sources = [
+            source
+            for source in pulse.source_list()
+            if source.card == card.index
+            or source.name == "auto_null"
+            or profile.name == "off"
+        ]
+
+    source_output = sources[0]
+    pulse.default_set(source_output)
+    for source_input in pulse.sink_input_list():
+        pulse.source_input_move(source_input.index, source_output.index)
 
 def _select_output(pulse, card, profile):
     pulse.card_profile_set(card, profile.name)
@@ -59,7 +78,7 @@ def _get_bluetooth_device_info(mac):
 
 def _bluetooth_scan():
     try:
-        _run("bluetoothctl scan on", timeout=3)
+        _run("bluetoothctl scan on", timeout=10)
     except subprocess.TimeoutExpired:
         pass
 
@@ -67,9 +86,6 @@ def _bluetooth_scan():
 def _get_bluetooth_items():
     items = {}
     if _is_bluetooth_on():
-        items["   Scan (3 seconds)"] = _bluetooth_scan
-        items["   Off"] = "bluetoothctl power off"
-
         for line in _run("bluetoothctl devices").split("\n"):
             if not line.strip():
                 continue
@@ -93,43 +109,81 @@ def _get_bluetooth_items():
                     f"bluetoothctl pair {mac}",
                     f"bluetoothctl connect {mac}",
                 ]
+        items["   Scan (10 seconds)"] = _bluetooth_scan
+        items["   Off"] = "bluetoothctl power off"
     else:
         items["Bluetooth | On"] = "bluetoothctl power on"
 
     return items
 
+HIDDEN_PROFILES = (
+    "input:analog-stereo", # We keep only the duplex
+    "output:analog-stereo", # We keep only the duplex
+    "pro-audio",
+    "*iec958*",
+    "input:mono-fallback",
+)
 
-def _get_pulseaudio_cards_profiles(pulse):
-    default_sink_name = pulse.server_info().default_sink_name
-    default_card_index = [
-        sink.card for sink in pulse.sink_list() if sink.name == default_sink_name
-    ][0]
+
+def _get_pulseaudio_cards_profiles(pulse, mode="sink"):
+    if mode == "sink":
+        default_name = pulse.server_info().default_sink_name
+        default_index = [
+            sink.card for sink in pulse.sink_list() if sink.name == default_name
+        ][0]
+    elif mode == "source":
+        default_name = pulse.server_info().default_source_name
+        default_index = [
+            source.card for source in pulse.source_list() if source.name == default_name
+        ][0]
+    else:
+        raise RuntimeError(f"wrong mode: {mode}")
     items = {}
     cards = pulse.card_list()
     for card in reversed(cards):
         for profile in reversed(card.profile_list):
-            if profile.available:
-                selected = False
-                if (
-                    card.index == default_card_index
-                    and profile.name == card.profile_active.name
-                ) or (profile.name == "off" and default_sink_name == "auto_null"):
-                    selected = True
-                if card.proplist["device.icon_name"].endswith("bluetooth"):
-                    icon = "🎧"
-                else:
-                    icon = "🔊"
-                label = f"{icon} {card.proplist['device.description']} | {profile.description}"
-                if selected:
-                    label = f"<b>{label}</b>"
+            if not profile.available:
+                continue 
+            if any(p for p in HIDDEN_PROFILES if fnmatch.fnmatch(profile.name, p)):
+                continue
+            if mode == "sink" and profile.n_sinks==0:
+                continue
+            if mode == "source" and profile.n_sources==0:
+                continue
+
+            print(profile)
+            selected = False
+            if (
+                card.index == default_index
+                and profile.name == card.profile_active.name
+            ) or (profile.name == "off" and default_name == "auto_null"):
+                selected = True
+            if card.proplist["device.icon_name"].endswith("bluetooth"):
+                icon = "🎧"
+            elif mode == "sink":
+                icon = "🔊"
+            elif mode == "source":
+                icon = "🎤"
+            else:
+                raise RuntimeError(f"wrong mode: {mode}")
+            label = f"{icon} {card.proplist['device.description']} | {profile.description}"
+            if selected:
+                label = f"<b>{label}</b>"
+            if mode == "sink":
                 items[label] = functools.partial(_select_output, pulse, card, profile)
+            elif mode == "source":
+                items[label] = functools.partial(_select_input, pulse, card, profile)
+            else:
+                raise RuntimeError(f"wrong mode: {mode}")
     return items
 
 
 def main(pulse):
     items = {}
-    items["Pulseaudio"] = "pavucontrol"
-    items.update(_get_pulseaudio_cards_profiles(pulse))
+    items["Audio Output"] = "pavucontrol -t 3"
+    items.update(_get_pulseaudio_cards_profiles(pulse, "sink"))
+    items["Audio Input"] = "pavucontrol -t 4"
+    items.update(_get_pulseaudio_cards_profiles(pulse, "source"))
     items["Bluetooth"] = "blueman-manager"
     items.update(_get_bluetooth_items())
 
