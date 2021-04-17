@@ -25,6 +25,7 @@ def _is_bluetooth_on():
             return True
     return False
 
+
 def _select_input(pulse, card, profile):
     pulse.card_profile_set(card, profile.name)
 
@@ -43,6 +44,7 @@ def _select_input(pulse, card, profile):
     pulse.default_set(source_output)
     for source_input in pulse.sink_input_list():
         pulse.source_input_move(source_input.index, source_output.index)
+
 
 def _select_output(pulse, card, profile):
     pulse.card_profile_set(card, profile.name)
@@ -116,9 +118,10 @@ def _get_bluetooth_items():
 
     return items
 
+
 HIDDEN_PROFILES = (
-    "input:analog-stereo", # We keep only the duplex
-    "output:analog-stereo", # We keep only the duplex
+    "input:analog-stereo",  # We keep only the duplex
+    "output:analog-stereo",  # We keep only the duplex
     "pro-audio",
     "*iec958*",
     "input:mono-fallback",
@@ -143,21 +146,21 @@ def _get_pulseaudio_cards_profiles(pulse, mode="sink"):
     for card in reversed(cards):
         for profile in reversed(card.profile_list):
             if not profile.available:
-                continue 
+                continue
             if any(p for p in HIDDEN_PROFILES if fnmatch.fnmatch(profile.name, p)):
                 continue
-            if mode == "sink" and profile.n_sinks==0:
+            if mode == "sink" and profile.n_sinks == 0:
                 continue
-            if mode == "source" and profile.n_sources==0:
+            if mode == "source" and profile.n_sources == 0:
                 continue
 
             print(profile)
             selected = False
             if (
-                card.index == default_index
-                and profile.name == card.profile_active.name
+                card.index == default_index and profile.name == card.profile_active.name
             ) or (profile.name == "off" and default_name == "auto_null"):
                 selected = True
+            print(card.proplist)
             if card.proplist["device.icon_name"].endswith("bluetooth"):
                 icon = "🎧"
             elif mode == "sink":
@@ -166,7 +169,9 @@ def _get_pulseaudio_cards_profiles(pulse, mode="sink"):
                 icon = "🎤"
             else:
                 raise RuntimeError(f"wrong mode: {mode}")
-            label = f"{icon} {card.proplist['device.description']} | {profile.description}"
+            label = (
+                f"{icon} {card.proplist['device.description']} | {profile.description}"
+            )
             if selected:
                 label = f"<b>{label}</b>"
             if mode == "sink":

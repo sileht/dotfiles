@@ -9,6 +9,6 @@ while [ 1 ]; do
     [ "$pacman_updates" -gt 0 ] && output="$output, $pacman_updates pkg(s)"
     [ "$fw_updates" -gt 0 ] && output="$output, $fw_updates fw(s)"
 
-    [ "$output" ] && echo "ﮮ ${output:1}"
+    [ "$output" ] && echo "ﮮ ${output:1}" || echo ""
     sleep 3600
 done

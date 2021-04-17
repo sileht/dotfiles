@@ -62,7 +62,8 @@ bindsym $mod+k exec sound-controller
 bindsym Print exec flameshot gui
 bindsym Shift+Print exec kazam
 bindsym --release $mod+l exec --no-startup-id mate-screensaver-command -l
-bindsym $mod+x exec --no-startup-id pcmanfm /home/sileht/
+# bindsym $mod+x exec --no-startup-id pcmanfm /home/sileht/
+bindsym $mod+x exec --no-startup-id rofi -show file-browser
 # kill focused window
 bindsym $mod+Shift+a kill
 

@@ -16,7 +16,7 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'bling/vim-bufferline'
 Plug 'ryanoasis/vim-devicons'
-Plug 'eugen0329/vim-esearch'
+"Plug 'eugen0329/vim-esearch'
 Plug 'lambdalisue/suda.vim'
 " Text navigation
 Plug 'nacitar/terminalkeys.vim'
@@ -34,7 +34,7 @@ Plug 'inside/vim-search-pulse'
 Plug 'brooth/far.vim'
 
 " Language
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc.nvim', {'branch': 'release', 'do': { -> coc#util#install()}}
 Plug 'sheerun/vim-polyglot'
 
 call plug#end()

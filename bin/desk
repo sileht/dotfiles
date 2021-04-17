@@ -1,5 +1,7 @@
 #!/bin/env python
 
+import json
+import time
 import struct
 from collections import namedtuple
 import argparse
@@ -225,7 +227,14 @@ class BothSideLayout(Layout):
     command = "xrandr --output {primary} --auto --primary --output {left} --auto --left-of {primary} --output {right} --auto --right-of {primary}"
 
 
-LAYOUTS = (OnAutoRightLayout, OneScreenLayout, VerticalLayout, OnLeftLayout, OnRightLayout, BothSideLayout)
+LAYOUTS = (
+    OnAutoRightLayout,
+    OneScreenLayout,
+    VerticalLayout,
+    OnLeftLayout,
+    OnRightLayout,
+    BothSideLayout,
+)
 
 
 def get_selection(title, options):
@@ -248,6 +257,26 @@ def get_selection(title, options):
     )
     selected = p.communicate(input="\n".join(options.keys()))[0][:-1]
     return selected, options.get(selected)
+
+
+def wait_become_primary(name):
+    from gi.repository import Gdk
+    disp = Gdk.Display.get_default()
+
+    while range(0, 20):
+        for n in range(disp.get_n_monitors()):
+            mon = disp.get_monitor(n)
+            output = mon.get_model()
+            if output == name:
+                if mon.is_primary():
+                    print(f"{name} is primary")
+                    return
+                else:
+                    break
+        else:
+            print(f"can wait for {name}: not found")
+        time.sleep(0.5)
+    print(f"{name} never become primary")
 
 
 def show_menu(dry_run):
@@ -337,9 +366,28 @@ def show_menu(dry_run):
             ]
         )
 
-        subprocess.Popen(
-            ["/home/sileht/.env/bin/polybar-start.sh"], start_new_session=True
-        )
+        wait_become_primary(selected_monitors["primary"])
+        time.sleep(1)
+        output = subprocess.check_output("i3-msg -t get_workspaces", shell=True)
+        i3config = json.loads(output)
+        workspace_to_move = [
+            workspace["num"] for workspace in i3config
+            if workspace["output"] != selected_monitors["primary"]
+        ]
+        commands = []
+        for i in workspace_to_move:
+            commands.extend([
+                f"i3-msg workspace {i}",
+                "i3-msg move workspace to output primary"
+            ])
+        commands += [
+            "/home/sileht/.env/bin/polybar-start.sh",
+            "unsplash",
+            "i3-msg workspace 1",
+        ]
+        for command in commands:
+            print(command)
+            subprocess.Popen(command, shell=True, start_new_session=True)
 
 
 def show_screen_name_popups():
