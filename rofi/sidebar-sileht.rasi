@@ -57,9 +57,13 @@
     spacing: 1em;
 }
 #listview {
-    padding: 0em 0.4em 0em 1em;
+    padding: 0em 1em 0em 1em;
     dynamic: false;
     lines: 0;
+}
+#element-icon { size: 1.8ch ; }
+#element {
+    padding: 0.05em 0em 0.05em 0em;
 }
 #element selected  normal {
     background-color: @lightblue;

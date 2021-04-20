@@ -19,7 +19,7 @@ configuration {
 	run-shell-command: "{terminal} zsh -i -c '{cmd} ; echo Enter to exit. ; read'";
 /*	window-command: "wmctrl -i -R {window}";*/
 /*	window-match-fields: "all";*/
-/*	icon-theme: ;*/
+  	icon-theme: "Vimix-Doder-dark";
 /*	drun-match-fields: "name,generic,exec,categories";*/
 /*	drun-show-actions: false;*/
 /*	drun-display-format: "{name} [<span weight='light' size='small'><i>({generic})</i></span>]";*/
