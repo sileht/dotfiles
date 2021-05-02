@@ -36,6 +36,7 @@
     libvirt-review = send-email --cover-letter --no-chain-reply-to --annotate --to=libvir-list@redhat.com origin/master
 [core]
 	excludesfile = ~/.gitignore-global
+    #pager = git-split-diffs --color | less -RFX
 [push]
 	default = simple
 [diff]
@@ -61,3 +62,5 @@
 	helper = store
 [init]
 	defaultBranch = main
+[split-diffs]
+	syntax-highlighting-theme = github-dark

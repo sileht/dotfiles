@@ -62,8 +62,8 @@ bindsym $mod+k exec sound-controller
 bindsym Print exec flameshot gui
 bindsym Shift+Print exec kazam
 bindsym --release $mod+l exec --no-startup-id mate-screensaver-command -l
-# bindsym $mod+x exec --no-startup-id pcmanfm /home/sileht/
-bindsym $mod+x exec --no-startup-id rofi -show file-browser
+bindsym $mod+x exec --no-startup-id pcmanfm /home/sileht/
+bindsym $mod+s exec --no-startup-id rofi -show file-browser
 # kill focused window
 bindsym $mod+Shift+a kill
 
@@ -111,7 +111,7 @@ bindsym $mod+v split v
 bindsym $mod+f fullscreen
 
 # change container layout (stacked, tabbed, toggle split)
-bindsym $mod+s layout stacking
+#bindsym $mod+s layout stacking
 bindsym $mod+z layout tabbed
 bindsym $mod+e layout toggle split
 

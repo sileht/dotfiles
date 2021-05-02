@@ -1,11 +1,10 @@
 set nocompatible
 
-
 " Add some missing filetype extentions
-autocmd BufNewFile,BufRead *.jsx set filetype=javascript.jsx
-autocmd BufNewFile,BufRead *.yaml  set filetype=yml
-autocmd BufNewFile,BufRead *.j2	   set filetype=jinja
-autocmd BufNewFile,BufRead *.kt set filetype=kotlin
+autocmd BufNewFile,BufRead *.jsxa set filetype=javascript.jsx
+autocmd BufNewFile,BufRead *.yaml set filetype=yaml
+autocmd BufNewFile,BufRead *.j2	  set filetype=jinja
+autocmd BufNewFile,BufRead *.kt   set filetype=kotlin
 
 call plug#begin('~/.local/share/nvim/plugged')
 
@@ -34,6 +33,7 @@ Plug 'inside/vim-search-pulse'
 Plug 'brooth/far.vim'
 
 " Language
+Plug 'dense-analysis/ale'
 Plug 'neoclide/coc.nvim', {'branch': 'release', 'do': { -> coc#util#install()}}
 Plug 'sheerun/vim-polyglot'
 
@@ -159,6 +159,7 @@ let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#buffer_idx_mode = 1
 let g:airline#extensions#coc#enabled = 1
+let g:airline#extensions#ale#enabled = 1
 let g:airline_theme = 'base16_eighties'
 
 nmap <leader>& <Plug>AirlineSelectTab1
@@ -189,7 +190,7 @@ nmap <S-right> <Plug>AirlineSelectNextTab
 
 set cmdheight=2
 set shortmess+=c
-set signcolumn=number  " merge signcolumn and number column into one
+"set signcolumn=number  " merge signcolumn and number column into one
 
 let g:coc_global_extensions = ['coc-eslint', 'coc-json', 'coc-git', 'coc-pyright', 'coc-tsserver', 'coc-html']
 
@@ -366,17 +367,57 @@ function! SetProjectRoot()
   let git_dir = trim(system("git rev-parse --show-toplevel"))
   let is_not_git_dir = matchstr(git_dir, '^fatal:.*')
   if empty(is_not_git_dir)
-    for p in [".tox/py39", ".tox/py38", ".tox/py37", ".tox/py27", "venv"]
+    if isdirectory(git_dir."/.tox/pep8")
+      call coc#config("python", {"linting": { 
+        \ "mypyPath": git_dir."/.tox/pep8/bin/mypy", 
+        \ "mypyEnabled": v:true,
+        \ "flake8Path": git_dir."/.tox/pep8/bin/flake8",
+        \ "flake8Enabled": v:true
+        \ }})
+    endif
+    for p in [".tox/py39", "venv"]
       if isdirectory(git_dir."/".p)
-        call coc#config("python.pythonPath", git_dir."/".p."/bin/python")
+        call coc#config("python", {"pythonPath": git_dir."/".p."/bin/python"})
         break
       endif
     endfor
   endif
 endfunction
 
-autocmd BufWritePre *.py call CocAction('format')
+augroup CocWrite
+"autocmd BufWritePre *.py call CocAction('format')
 autocmd BufWritePre *.py call CocAction('runCommand', 'editor.action.organizeImport')
+augroup END
+
+
+let g:ale_disable_lsp = 1
+let g:ale_completion_enabled = 0
+"let g:ale_completion_delay = 5
+"set omnifunc=ale#completion#OmniFunc
+"set completeopt+=menuone
+"set completeopt+=noinsert
+
+let g:ale_sign_column_always = 1  " always show left column
+let g:ale_open_list = 1
+let g:ale_list_window_size = 7
+let g:ale_list_vertical = 0
+let g:ale_keep_list_window_open = 1
+let g:ale_set_highlights = 0
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_insert_leave = 0
+let g:ale_lint_on_enter = 0
+
+let g:ale_echo_msg_error_str = 'E'
+let g:ale_echo_msg_warning_str = 'W'
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+
+let g:ale_sign_error = '⛔'
+let g:ale_sign_info = 'ℹ'
+let g:ale_sign_offset = 1000000
+let g:ale_sign_style_error = '⛔'
+let g:ale_sign_style_warning = '⚠'
+let g:ale_sign_warning = '⚠'
+
 
 " follow symlink and set working directory
 autocmd BufEnter * call SetProjectRoot()

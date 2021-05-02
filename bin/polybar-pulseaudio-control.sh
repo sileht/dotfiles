@@ -4,17 +4,9 @@ VOL_INC=2
 VOL_MAX=130
 
 declare -A SINK_NICKNAMES
-SINK_NICKNAMES[alsa_output.usb-*.analog-stereo]="🎧 (usb)"
-SINK_NICKNAMES[alsa_output.pci-0000_00_??.?.analog-stereo]="🔊 (built-in/analog)"
-SINK_NICKNAMES[alsa_output.pci-0000_00_??.?.hdmi-stereo]=" (built-in/hdmi)"
-SINK_NICKNAMES[bluez_output.??_??_??_??_??_??.headset_head_unit]="🎧 (headset)"
-SINK_NICKNAMES[bluez_output.??_??_??_??_??_??.a2dp-sink_aac]="🎧 (a2dp/aac)"
-SINK_NICKNAMES[bluez_output.??_??_??_??_??_??.a2dp-sink_sbc]="🎧 (a2dp/sbc)"
-SINK_NICKNAMES[bluez_output.??_??_??_??_??_??.a2dp-sink]="🎧 (a2dp)"
-
-SINK_NICKNAMES[alsa_output.usb-*.analog-stereo]=""
-SINK_NICKNAMES[alsa_output.pci-0000_00_??.?.analog-stereo]="🔊"
-SINK_NICKNAMES[alsa_output.pci-0000_00_??.?.hdmi-stereo]=""
+SINK_NICKNAMES[alsa_output.usb-*.output_analog-stereo]=""
+SINK_NICKNAMES[alsa_output.pci-0000_00_??.?.output_analog-stereo]="🔊"
+SINK_NICKNAMES[alsa_output.pci-0000_00_??.?.output_hdmi-stereo]=""
 SINK_NICKNAMES[bluez_output.??_??_??_??_??_??.headset_head_unit]=""
 SINK_NICKNAMES[bluez_output.??_??_??_??_??_??.a2dp-sink]="🎧"
 
@@ -37,7 +29,7 @@ output() {
     local icon="🔊? "
     for match in "${!SINK_NICKNAMES[@]}"; do
         case $SELECTED_SINK_NAME in
-            $match) icon=${SINK_NICKNAMES[$match]} ;;
+            $match*) icon=${SINK_NICKNAMES[$match]} ;;
         esac
     done
     if [ "$MUTED" == "yes" ]; then

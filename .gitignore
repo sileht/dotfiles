@@ -11,3 +11,4 @@ i3/i3pystatus/
 Ubuntu Mono derivative Powerline Nerd Font Complete Mono.ttf
 mutt/log*
 config/nvim/.netrwhist
+node/node_modules

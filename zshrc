@@ -25,8 +25,8 @@ zinit wait lucid light-mode for \
   \
   from"gh-r" as"program" mv"Bitwarden-*-x86_64.AppImage -> bitwarden" bpick"Bitwarden-*-x86_64.AppImage" bitwarden/desktop \
   from"gh-r" as"program" junegunn/fzf-bin \
-  from"gh-r" as"program" mv"nvim.appimage -> nvim" bpick"nvim.appimage" neovim/neovim \
   from"gh-r" as"program" mv"xurls_*_linux_amd64 -> xurls" bpick"xurls_*_linux_amd64" @mvdan/xurls \
+  from"gh-r" as"program" bpick"pack-*-linux.tgz" buildpacks/pack \
   from"gh-r" as"program" mv"sentry-cli-Linux-x86_64 -> sentry-cli" bpick"sentry-cli-Linux-x86_64" @getsentry/sentry-cli \
   from"gh-r" as"program" mv"docker* -> docker-compose" bpick"*linux*" docker/compose \
   from"gh-r" as"program" mv"exa* -> exa" bpick"*linux*" ogham/exa \
@@ -39,6 +39,7 @@ zinit wait lucid light-mode for \
   \
   as"program" pick"bin/git-dsf" zdharma/zsh-diff-so-fancy \
 
+  #from"gh-r" as"program" mv"nvim.appimage -> nvim" bpick"nvim.appimage" neovim/neovim \
   # Replaced by exa
   #atclone"dircolors -b LS_COLORS > clrs.zsh" atpull'%atclone' pick"clrs.zsh" nocompile'!' \
   #atload'zstyle ":completion:*" list-colors “${(s.:.)LS_COLORS}”' trapd00r/LS_COLORS \
@@ -324,6 +325,7 @@ alias diff='diff -rNu'
 alias ip='ip -color'
 alias optimutt="find ~/.mutt/cache/headers -type f -exec tcbmgr optimize -nl {} \;"
 alias heroku="TERM=xterm heroku"
+alias dv="git-split-diffs --color | less -RFX"
 
 function nvim(){
     # Replace :123 by \s+123
@@ -355,7 +357,7 @@ function sfind(){ find "$@" | egrep -v '(Binary|binaire|\.svn|\.git|\.bzr)' ; }
 alias grep='grep --color=auto'
 alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
-function sgrep(){ grep "$@" --color=always 2>&1| grep -v -e 'binary' -e binaire -e '.svn'  -e '.git' -e '.bzr' -e '.mypy_cache' ; }
+function sgrep(){ grep "$@" --color=always 2>&1| grep -v -e 'binary' -e binaire -e '\.svn'  -e '\.git/' -e '\.bzr/' -e '\.mypy_cache/' ; }
 function g(){ sgrep "$@" | more }
 
 # ZSH STUFF

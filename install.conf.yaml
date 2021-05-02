@@ -1,3 +1,4 @@
+---
 - defaults:
     link:
       relink: true
@@ -39,6 +40,7 @@
     ~/.zshrc: zshrc
 
 - shell:
-  # - chsh -s $(which zsh)
-  - git submodule update --init --recursive
-  - python3 -m pip install --user --upgrade -r ~/.env/requirements-py3.txt
+    # - chsh -s $(which zsh)
+    - git submodule update --init --recursive
+    - python3 -m pip install --user --upgrade -r ~/.env/requirements-py3.txt
+    - bash "cd ~/.env/node && yarn && yarn bin"
