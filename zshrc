@@ -325,7 +325,9 @@ alias diff='diff -rNu'
 alias ip='ip -color'
 alias optimutt="find ~/.mutt/cache/headers -type f -exec tcbmgr optimize -nl {} \;"
 alias heroku="TERM=xterm heroku"
-alias dv="git-split-diffs --color | less -RFX"
+function diffv() {
+    diff "$@" | git-split-diffs --color=16m | less -RFX
+}
 
 function nvim(){
     # Replace :123 by \s+123

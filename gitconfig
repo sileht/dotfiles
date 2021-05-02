@@ -34,6 +34,9 @@
     h = !git rework
     where = "!f() { git bisect start HEAD $(git diverge-commit); git bisect run $@; }; f"
     libvirt-review = send-email --cover-letter --no-chain-reply-to --annotate --to=libvir-list@redhat.com origin/master
+
+    showv= "!f() { git show $@ | git-split-diffs --color=16m | less -RFX ;} ; f"
+    diffv = "!f() { git diff $@ | git-split-diffs --color=16m | less -RFX ;} ; f"
 [core]
 	excludesfile = ~/.gitignore-global
     #pager = git-split-diffs --color | less -RFX
@@ -63,4 +66,4 @@
 [init]
 	defaultBranch = main
 [split-diffs]
-	syntax-highlighting-theme = github-dark
+	theme-name = github-dark-dim
