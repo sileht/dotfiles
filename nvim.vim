@@ -367,14 +367,14 @@ function! SetProjectRoot()
   let git_dir = trim(system("git rev-parse --show-toplevel"))
   let is_not_git_dir = matchstr(git_dir, '^fatal:.*')
   if empty(is_not_git_dir)
-    if isdirectory(git_dir."/.tox/pep8")
-      call coc#config("python", {"linting": { 
-        \ "mypyPath": git_dir."/.tox/pep8/bin/mypy", 
-        \ "mypyEnabled": v:true,
-        \ "flake8Path": git_dir."/.tox/pep8/bin/flake8",
-        \ "flake8Enabled": v:true
-        \ }})
-    endif
+"    if isdirectory(git_dir."/.tox/pep8")
+"      call coc#config("python", {"linting": { 
+"        \ "mypyPath": git_dir."/.tox/pep8/bin/mypy", 
+"        \ "mypyEnabled": v:true,
+"        \ "flake8Path": git_dir."/.tox/pep8/bin/flake8",
+"        \ "flake8Enabled": v:true
+"        \ }})
+"    endif
     for p in [".tox/py39", "venv"]
       if isdirectory(git_dir."/".p)
         call coc#config("python", {"pythonPath": git_dir."/".p."/bin/python"})
@@ -383,6 +383,7 @@ function! SetProjectRoot()
     endfor
   endif
 endfunction
+
 
 augroup CocWrite
 "autocmd BufWritePre *.py call CocAction('format')

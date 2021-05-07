@@ -9,9 +9,9 @@
     bl = "!f() { git checkout $(git branch --sort=-committerdate --format='%(refname:short)' | sed -n '2p') ; }; f"
 
     pr = "!f() { git r ; git pull-request \"$@\"; }; f"
-    t = "!f() { git branch --set-upstream-to=origin/${1:-master}; }; f"
+    t = "!f() { git branch --set-upstream-to=origin/${1:-main}; }; f"
     r = "!f() { git branch -M $(git rev-parse --abbrev-ref HEAD | sed -e 's,^wip-,,g' -e s,pull/[^-]*-sileht-,,g) ; }; f"
-    f = "!f() { git branch -M \"$@\"; git master ; git checkout \"$@\" ; git t; }; f"
+    f = "!f() { git branch -M \"$@\"; git main ; git checkout \"$@\" ; git t; }; f"
     p = "!f() { git pull --rebase origin \"$@\" ;}; f"
     hotfix = "!f() { git r ; git pull-request -l hotfix \"$@\"; }; f"
     wip = "!f() { git r ; git pull-request -l work-in-progress \"$@\"; }; f"
@@ -27,13 +27,12 @@
     fpr = "!f() { b=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD); git fetch github && git reset --hard github/$b && git h ;}; f"
 
     diverge-commit = "!f() { git merge-base $(git show-upstream $@) ${1:-HEAD}; }; f"
-    review-branch = "!f() { git show ${1:-HEAD}:.gitreview | git config --get --file - gerrit.defaultbranch || echo master;}; f"
+    review-branch = "!f() { git show ${1:-HEAD}:.gitreview | git config --get --file - gerrit.defaultbranch || echo main;}; f"
     rework = "!git rebase -i $(git diverge-commit $@)^"
     show-upstream = "!f() { git rev-parse --symbolic-full-name --abbrev-ref ${1}@{u} 2>/dev/null || git rev-parse --symbolic-full-name --abbrev-ref $(git review-branch)@{u}; }; f"
     fix-upstream = "!f() { git branch --set-upstream-to=$(git show-upstream) ; } ; f"
     h = !git rework
     where = "!f() { git bisect start HEAD $(git diverge-commit); git bisect run $@; }; f"
-    libvirt-review = send-email --cover-letter --no-chain-reply-to --annotate --to=libvir-list@redhat.com origin/master
 
     showv= "!f() { git show $@ | git-split-diffs --color=16m | less -RFX ;} ; f"
     diffv = "!f() { git diff $@ | git-split-diffs --color=16m | less -RFX ;} ; f"

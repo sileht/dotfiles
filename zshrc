@@ -39,6 +39,7 @@ zinit wait lucid light-mode for \
   \
   as"program" pick"bin/git-dsf" zdharma/zsh-diff-so-fancy \
 
+
   #from"gh-r" as"program" mv"nvim.appimage -> nvim" bpick"nvim.appimage" neovim/neovim \
   # Replaced by exa
   #atclone"dircolors -b LS_COLORS > clrs.zsh" atpull'%atclone' pick"clrs.zsh" nocompile'!' \
@@ -46,7 +47,7 @@ zinit wait lucid light-mode for \
 
 
 zinit ice compile'(pure|async).zsh' pick'async.zsh' src'pure.zsh'
-zinit light sileht/pure
+zinit light sindresorhus/pure
 
 #########
 # THEME #
@@ -359,7 +360,7 @@ function sfind(){ find "$@" | egrep -v '(Binary|binaire|\.svn|\.git|\.bzr)' ; }
 alias grep='grep --color=auto'
 alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
-function sgrep(){ grep "$@" --color=always 2>&1| grep -v -e 'binary' -e binaire -e '\.svn'  -e '\.git/' -e '\.bzr/' -e '\.mypy_cache/' ; }
+function sgrep(){ grep "$@" --color=always 2>&1| grep -v -e 'binary' -e binaire -e '\.svn'  -e '\.git/' -e '\.bzr/' -e '\.mypy_cache/' -e 'node_modules/' -e '.tox/'; }
 function g(){ sgrep "$@" | more }
 
 # ZSH STUFF

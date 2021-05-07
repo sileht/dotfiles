@@ -101,7 +101,9 @@ def _get_bluetooth_items():
 
             if "Audio Sink" in info["UUID"]:
                 if connected:
-                    items[f"<b>{prefix} Disconnect</b> {suffix}"] = f"bluetoothctl disconnect {mac}"
+                    items[
+                        f"<b>{prefix} Disconnect</b> {suffix}"
+                    ] = f"bluetoothctl disconnect {mac}"
                 else:
                     items[f"{prefix} Connect {suffix}"] = f"bluetoothctl connect {mac}"
 
@@ -165,9 +167,7 @@ def _get_pulseaudio_cards_profiles(pulse, mode="sink"):
                 icon = "audio-input-microphone"
             else:
                 raise RuntimeError(f"wrong mode: {mode}")
-            label = (
-                f"{card.proplist['device.description']} | {profile.description}"
-            )
+            label = f"{card.proplist['device.description']} | {profile.description} <span lang='{mode}' />"
             if selected:
                 label = f"<b>{label}</b>"
             label += f"\0icon\x1f{icon}"
@@ -182,17 +182,25 @@ def _get_pulseaudio_cards_profiles(pulse, mode="sink"):
 
 def main(pulse):
     items = {}
-    items['<span underline="1">Audio Output</span>\0icon\x1faudio-output-none'] = "pavucontrol -t 3"
+    items[
+        '<span underline="1">Audio Output</span>\0icon\x1faudio-output-none'
+    ] = "pavucontrol -t 3"
     items.update(_get_pulseaudio_cards_profiles(pulse, "sink"))
     items[" "] = ""
-    items['<span underline="1">Audio Input</span>\0icon\x1faudio-input-microphone-none-panel'] = "pavucontrol -t 4"
+    items[
+        '<span underline="1">Audio Input</span>\0icon\x1faudio-input-microphone-none-panel'
+    ] = "pavucontrol -t 4"
     items.update(_get_pulseaudio_cards_profiles(pulse, "source"))
     items["  "] = ""
     if _is_bluetooth_on():
-        items['<span underline="1">Bluetooth</span> - on\0icon\x1fbluetooth-active-symbolic'] = "bluetoothctl power off"
+        items[
+            '<span underline="1">Bluetooth</span> - on\0icon\x1fbluetooth-active-symbolic'
+        ] = "bluetoothctl power off"
         items.update(_get_bluetooth_items())
     else:
-        items['<span underline="1">Bluetooth</span> - off\0icon\x1fbluetooth-disabled-symbolic'] = "bluetoothctl power on"
+        items[
+            '<span underline="1">Bluetooth</span> - off\0icon\x1fbluetooth-disabled-symbolic'
+        ] = "bluetoothctl power on"
 
     for pos, key in enumerate(items):
         if "<b>" in key:
@@ -202,7 +210,7 @@ def main(pulse):
 
     if pos is not None:
         selection = ["-selected-row", str(pos)]
-    else: 
+    else:
         selection = []
     p = subprocess.Popen(
         ["rofi", "-dmenu", "-markup-rows"] + selection,
@@ -212,7 +220,7 @@ def main(pulse):
     )
     selected = p.communicate(input="\n".join(items.keys()))[0][:-1]
     if selected:
-        items_without_icon = {k.split("\0")[0]: v  for k, v in items.items()}
+        items_without_icon = {k.split("\0")[0]: v for k, v in items.items()}
         print(selected)
         callback = items_without_icon.get(selected)
         if callback:
