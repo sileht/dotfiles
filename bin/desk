@@ -1,23 +1,22 @@
 #!/bin/env python
 
-import json
-import time
-import struct
-from collections import namedtuple
 import argparse
-import string
+import json
 import logging
+import string
+import struct
 import subprocess
 import threading
+import time
+from collections import namedtuple
 
 import gi
+import Xlib.display
+import Xlib.error
 
 gi.require_version("GLib", "2.0")
 gi.require_version("Gdk", "3.0")
 gi.require_version("Gtk", "3.0")
-
-import Xlib.display
-import Xlib.error
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -149,7 +148,10 @@ def wakeup_all_monitors(dry_run):
         have_output_connected = info.connection == 0
         have_output_on = bool(info.crtc)
         logging.info(
-            f"{info.name}: have_output_on={have_output_on} have_output_connected={have_output_connected} resolution={resolution}"
+            f"{info.name}:"
+            f" have_output_on={have_output_on}"
+            f" have_output_connected={have_output_connected}"
+            f" resolution={resolution}"
         )
         if have_output_connected and not have_output_on:
             outputs_off.append(info.name)
@@ -261,6 +263,7 @@ def get_selection(title, options):
 
 def wait_become_primary(name):
     from gi.repository import Gdk
+
     disp = Gdk.Display.get_default()
 
     while range(0, 20):
@@ -346,7 +349,7 @@ def show_menu(dry_run):
                 "-i",
                 "/usr/share/icons/Humanity-Dark/apps/24/gsd-xrandr.svg",
                 "display configuration error",
-                f"selected: {l.label}\nran: {cmd}\nresult:{result.stdout}",
+                f"ran: {cmd}\nresult:{result.stdout}",
             ]
         )
     else:
@@ -371,15 +374,15 @@ def show_menu(dry_run):
         output = subprocess.check_output("i3-msg -t get_workspaces", shell=True)
         i3config = json.loads(output)
         workspace_to_move = [
-            workspace["num"] for workspace in i3config
+            workspace["num"]
+            for workspace in i3config
             if workspace["output"] != selected_monitors["primary"]
         ]
         commands = []
         for i in workspace_to_move:
-            commands.extend([
-                f"i3-msg workspace {i}",
-                "i3-msg move workspace to output primary"
-            ])
+            commands.extend(
+                [f"i3-msg workspace {i}", "i3-msg move workspace to output primary"]
+            )
         commands += [
             "/home/sileht/.env/bin/polybar-start.sh",
             "unsplash",
