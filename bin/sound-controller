@@ -122,7 +122,7 @@ HIDDEN_PROFILES = (
     "output:analog-stereo",  # We keep only the duplex
     "pro-audio",
     "*iec958*",
-    "input:mono-fallback",
+    #    "input:mono-fallback",
 )
 
 
