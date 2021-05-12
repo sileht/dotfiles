@@ -53,6 +53,8 @@ zinit ice \
         stylelint-config-standard;
         jsonlint;
         alex;
+        fixjson;
+        prettier;
         bash-language-server;
         markdownlint' \
     sbin'p:venv/bin/git-pull-request;
@@ -60,6 +62,8 @@ zinit ice \
         p:venv/bin/rstcheck;
         n:node_modules/.bin/markdown-it;
         n:node_modules/.bin/alex;
+        n:node_modules/.bin/fixjson;
+        n:node_modules/.bin/prettier;
         n:node_modules/.bin/stylelint;
         n:node_modules/.bin/jsonlint;
         n:node_modules/.bin/bash-language-server;

@@ -203,6 +203,7 @@ let g:ale_fixers = {}
 let g:ale_fixers['*'] = ['remove_trailing_lines', 'trim_whitespace']
 let g:ale_fixers.javascript = ['eslint']
 let g:ale_fixers.python = ["isort", "black"]
+let g:ale_fixers.json = ['fixjson', 'jq']
 
 let g:ale_linters = {}
 let g:ale_linters.sh = ['language_server']
@@ -212,7 +213,7 @@ let g:ale_linters.yaml = ['yamllint']
 let g:ale_linters.text = ['vale']
 let g:ale_linters.asciidoc = ['vale']
 let g:ale_linters.vim = ['vimls']
-let g:ale_linters.json = ['jsonlint']
+let g:ale_linters.json = ['jsonlint', 'jq']
 let g:ale_linters.python = ['jedils', 'flake8', 'mypy']
 let g:ale_linters.javascript = ['stylelint', 'eslint']
 let g:ale_linters.css = ["stylelint"]
