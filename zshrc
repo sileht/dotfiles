@@ -13,6 +13,9 @@ autoload -Uz add-zsh-hook
 # ZINIT #
 #########
 
+mkdir -p $ZPFX
+zinit light sileht/z-a-bin-gem-node
+
 zinit wait lucid light-mode for \
   atinit"zicompinit; zicdreplay" atload"fast-theme -s|grep -q sv-orple || fast-theme sv-orple" zdharma/fast-syntax-highlighting \
   atload"_zsh_autosuggest_start" zsh-users/zsh-autosuggestions \
@@ -32,6 +35,7 @@ zinit wait lucid light-mode for \
   from"gh-r" as"program" mv"exa* -> exa" bpick"*linux*" ogham/exa \
   from"gh-r" as"program" pick"gh*/bin/gh" bpick"*gh_*_linux_amd64.tar.gz" cli/cli \
   from"gh-r" as"program" bpick"*stripe_*_linux_x86_64.tar.gz" stripe/stripe-cli \
+  from"gh-r" as"program" bpick"vale_*_Linux_64-bit.tar.gz" errata-ai/vale \
   \
   atinit"mkdir -p $HOME/.local/share/nvim/site/autoload && ln -sf \$(pwd)/plug.vim $HOME/.local/share/nvim/site/autoload/plug.vim" nocompile'!' junegunn/vim-plug \
   \
@@ -39,12 +43,35 @@ zinit wait lucid light-mode for \
   \
   as"program" pick"bin/git-dsf" zdharma/zsh-diff-so-fancy \
 
+zinit ice \
+    pip'git-pull-request;
+        ghp-import;
+        rstcheck;' \
+    node'git-split-diffs;
+        vim-language-server;
+        stylelint;
+        stylelint-config-standard;
+        jsonlint;
+        alex;
+        bash-language-server;
+        markdownlint' \
+    sbin'p:venv/bin/git-pull-request;
+        p:venv/bin/ghp-import;
+        p:venv/bin/rstcheck;
+        n:node_modules/.bin/markdown-it;
+        n:node_modules/.bin/alex;
+        n:node_modules/.bin/stylelint;
+        n:node_modules/.bin/jsonlint;
+        n:node_modules/.bin/bash-language-server;
+        n:node_modules/.bin/git-split-diffs;
+        n:node_modules/.bin/vim-language-server'
+
+zinit load zdharma/null
 
   #from"gh-r" as"program" mv"nvim.appimage -> nvim" bpick"nvim.appimage" neovim/neovim \
   # Replaced by exa
   #atclone"dircolors -b LS_COLORS > clrs.zsh" atpull'%atclone' pick"clrs.zsh" nocompile'!' \
   #atload'zstyle ":completion:*" list-colors “${(s.:.)LS_COLORS}”' trapd00r/LS_COLORS \
-
 
 zinit ice compile'(pure|async).zsh' pick'async.zsh' src'pure.zsh'
 zinit light sindresorhus/pure
@@ -342,7 +369,7 @@ function nvim(){
 
 alias vim="nvim"
 alias vi="nvim"
-alias svi="sudo -E /home/sileht/.zinit/plugins/neovim---neovim/nvim"
+alias svi="sudo -E nvim"
 alias r="ranger"
 alias psql="sudo -i -u postgres psql"
 # alias pyclean='find . \( -type f -name "*.py[co]" \) -o \( -type d -path "*__pycache__*" \) ! -path "./.tox*" -delete"'

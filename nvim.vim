@@ -1,10 +1,9 @@
 set nocompatible
 
 " Add some missing filetype extentions
-autocmd BufNewFile,BufRead *.jsxa set filetype=javascript.jsx
+"autocmd BufNewFile,BufRead *.jsx set filetype=javascript.jsx
 autocmd BufNewFile,BufRead *.yaml set filetype=yaml
 autocmd BufNewFile,BufRead *.j2	  set filetype=jinja
-autocmd BufNewFile,BufRead *.kt   set filetype=kotlin
 
 call plug#begin('~/.local/share/nvim/plugged')
 
@@ -34,8 +33,11 @@ Plug 'brooth/far.vim'
 
 " Language
 Plug 'dense-analysis/ale'
-Plug 'neoclide/coc.nvim', {'branch': 'release', 'do': { -> coc#util#install()}}
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'sheerun/vim-polyglot'
+
+Plug 'tpope/vim-fugitive'
+Plug 'mhinz/vim-signify'
 
 call plug#end()
 
@@ -158,7 +160,6 @@ set laststatus=2        " Show statusbar
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#buffer_idx_mode = 1
-let g:airline#extensions#coc#enabled = 1
 let g:airline#extensions#ale#enabled = 1
 let g:airline_theme = 'base16_eighties'
 
@@ -185,97 +186,78 @@ nmap <S-left>  <Plug>AirlineSelectPrevTab
 nmap <S-right> <Plug>AirlineSelectNextTab
 
 " ###########
-" ### COC ###
+" ### ALE ###
 " ###########
 
-set cmdheight=2
-set shortmess+=c
-"set signcolumn=number  " merge signcolumn and number column into one
 
-let g:coc_global_extensions = ['coc-eslint', 'coc-json', 'coc-git', 'coc-pyright', 'coc-tsserver', 'coc-html']
+" Only use errors and fixers reporting of ALE
+let g:deoplete#enable_at_startup = 1
+let g:ale_completion_enabled = 0
+"
+call deoplete#custom#option('sources', {
+\ '_': ['ale'],
+\})
 
-" Use tab for trigger completion with characters ahead and navigate.
-" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
-" other plugin before putting this into your config.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+let g:ale_fix_on_save = 0
+let g:ale_fixers = {}
+let g:ale_fixers['*'] = ['remove_trailing_lines', 'trim_whitespace']
+let g:ale_fixers.javascript = ['eslint']
+let g:ale_fixers.python = ["isort", "black"]
 
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
+let g:ale_linters = {}
+let g:ale_linters.sh = ['language_server']
+let g:ale_linters.markdown = ['vale', 'alex', 'markdownlint']
+let g:ale_linters.rst = ['vale', 'alex', 'rstcheck']
+let g:ale_linters.yaml = ['yamllint']
+let g:ale_linters.text = ['vale']
+let g:ale_linters.asciidoc = ['vale']
+let g:ale_linters.vim = ['vimls']
+let g:ale_linters.json = ['jsonlint']
+let g:ale_linters.python = ['jedils', 'flake8', 'mypy']
+let g:ale_linters.javascript = ['stylelint', 'eslint']
+let g:ale_linters.css = ["stylelint"]
+let g:ale_linter_aliases = {}
+let g:ale_linter_aliases.jsx = ['css', 'javascript']
+let g:ale_linter_aliases.gitcommit = ['text']
+
+"copen " open quickfix list on startup
+let g:ale_set_loclist = 0
+let g:ale_set_quickfix = 1
+let g:ale_open_list = 1
+let g:ale_list_window_size = 5
+let g:ale_keep_list_window_open = 1
+let g:ale_set_highlights = 0
+
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_insert_leave = 0
+let g:ale_lint_on_enter = 0
+
+let g:ale_echo_msg_error_str = '⛔'
+let g:ale_echo_msg_warning_str = '⚠'
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+
+let g:ale_sign_column_always = 1  " always show left column
+let g:ale_sign_error = '⛔'
+let g:ale_sign_info = 'ℹ'
+let g:ale_sign_offset = 1000000
+let g:ale_sign_style_error = '⛔'
+let g:ale_sign_style_warning = '⚠'
+let g:ale_sign_warning = '⚠'
+
+function! ALESearch()
+    call inputsave()
+    let search = input('Search symbol: ', expand('<cword>'))
+    call inputrestore()
+    execute "ALESymbolSearch ".search
 endfunction
 
-" Use <c-space> to trigger completion.
-if has('nvim')
-  inoremap <silent><expr> <c-space> coc#refresh()
-else
-  inoremap <silent><expr> <c-@> coc#refresh()
-endif
-
-" Make <CR> auto-select the first completion item and notify coc.nvim to
-" format on enter, <cr> could be remapped by other vim plugin
-inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
-                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-
-" Use `[g` and `]g` to navigate diagnostics
-" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
-nmap <silent> [g <Plug>(coc-diagnostic-prev)
-nmap <silent> ]g <Plug>(coc-diagnostic-next)
-
-" GoTo code navigation.
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
-
-" Use K to show documentation in preview window.
-nnoremap <silent> K :call <SID>show_documentation()<CR>
-
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  elseif (coc#rpc#ready())
-    call CocActionAsync('doHover')
-  else
-    execute '!' . &keywordprg . " " . expand('<cword>')
-  endif
-endfunction
-
-" Highlight the symbol and its references when holding the cursor.
-autocmd CursorHold * silent call CocActionAsync('highlight')
-
-" Symbol renaming.
-nmap <leader>rn <Plug>(coc-rename)
-
-" Formatting selected code.
-xmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
-"command! -nargs=0 W :call CocAction('format')<cr>:call CocAction('runCommand', 'editor.action.organizeImport')<cr>:w<cr>
-
-" Applying codeAction to the selected region.
-" Example: `<leader>aap` for current paragraph
-xmap <leader>a  <Plug>(coc-codeaction-selected)
-nmap <leader>a  <Plug>(coc-codeaction-selected)
-
-" Remap keys for applying codeAction to the current buffer.
-nmap <leader>ac  <Plug>(coc-codeaction)
-" Apply AutoFix to problem on the current line.
-nmap <leader>qf  <Plug>(coc-fix-current)
-nmap <C-f>  <Plug>(coc-fix-current)
-
-" Map function and class text objects
-" NOTE: Requires 'textDocument.documentSymbol' support from the language server.
-xmap if <Plug>(coc-funcobj-i)
-omap if <Plug>(coc-funcobj-i)
-xmap af <Plug>(coc-funcobj-a)
-omap af <Plug>(coc-funcobj-a)
-xmap ic <Plug>(coc-classobj-i)
-omap ic <Plug>(coc-classobj-i)
-xmap ac <Plug>(coc-classobj-a)
-omap ac <Plug>(coc-classobj-a)
+nmap <silent> <F5> :ALERename<CR>
+nmap <silent> <F6> :ALEGoToDefinition<CR>
+nmap <silent> <F7> :ALEFindReferences<CR>
+nmap <silent> <F8> :call ALESearch()<CR>
+nmap <silent> <leader>r :ALERename<CR>
+nmap <silent> <leader>d :ALEGoToDefinition<CR>
+nmap <silent> <leader>s :ALEFindReferences<CR>
 
 " ##################
 " ### EASY ALIGN ###
@@ -288,10 +270,6 @@ nmap ga <Plug>(EasyAlign)
 " ### OTHER PLUGINS ###
 " #####################
 
-let g:semanticTermColors = [28,1,2,3,4,5,6,7,25,9,10,34,12,13,14,15,125,124,19]
-nnoremap <F10> :SemanticHighlightToggle<cr>
-" autocmd FileType * SemanticHighlightToggle
-
 nnoremap <C-o> :Clap files<cr>
 "nnoremap <C-f> :Clap grep<cr>
 
@@ -301,9 +279,6 @@ let g:signify_update_on_focusgained = 1
 let g:vim_search_pulse_duration = 200
 let g:rainbow_active = 1
 
-au FileType spec map <buffer> <F5> <Plug>AddChangelogEntry
-let spec_chglog_packager = "Mehdi Abaakouk <sileht@sileht.net>"
-
 " ###################
 " ### SPELL CHECK ###
 " ###################
@@ -311,9 +286,6 @@ let spec_chglog_packager = "Mehdi Abaakouk <sileht@sileht.net>"
 autocmd FileType gitcommit,rst,mkd,markdown,jinja silent! call ToggleSpell()
 autocmd FileType gitcommit,rst,mkd,markdown,jinja set complete+=kspell
 
-map <F6> :w<CR>:!aspell -l en -c %<CR>:e %<CR>
-map <F7> :w<CR>:!aspell -l fr -c %<CR>:e %<CR>
-nmap <silent> <F8> :call ToggleSpell()<CR>
 
 let b:myLang=0
 let g:myLangList=["nospell", "en_us", "fr"]
@@ -328,6 +300,7 @@ function! ToggleSpell()
   echo "spell checking language:" g:myLangList[b:myLang]
 endfunction
 
+nmap <silent> <F9> :call ToggleSpell()<CR>
 " #########################
 " ### VARIOUS FUNCTIONS ###
 " #########################
@@ -335,12 +308,6 @@ function! InitializeDirectories()
     let parent = $HOME
     let prefix = 'vim'
     let dir_list = {'backup': 'backupdir','views': 'viewdir', 'swap': 'directory' }
-
-    " To specify a different directory in which to place the vimbackup,
-    " vimviews, vimundo, and vimswap files/directories, add the following to
-    " your .vimrc.before.local file:
-    "   let g:spf13_consolidated_directory = <full path to desired directory>
-    "   eg: let g:spf13_consolidated_directory = $HOME . '/.vim/'
     let common_dir = parent . '/.' . prefix
 
     for [dirname, settingname] in items(dir_list)
@@ -366,59 +333,21 @@ function! SetProjectRoot()
   lcd %:p:h
   let git_dir = trim(system("git rev-parse --show-toplevel"))
   let is_not_git_dir = matchstr(git_dir, '^fatal:.*')
-  if empty(is_not_git_dir)
-"    if isdirectory(git_dir."/.tox/pep8")
-"      call coc#config("python", {"linting": { 
-"        \ "mypyPath": git_dir."/.tox/pep8/bin/mypy", 
-"        \ "mypyEnabled": v:true,
-"        \ "flake8Path": git_dir."/.tox/pep8/bin/flake8",
-"        \ "flake8Enabled": v:true
-"        \ }})
-"    endif
-    for p in [".tox/py39", "venv"]
-      if isdirectory(git_dir."/".p)
-        call coc#config("python", {"pythonPath": git_dir."/".p."/bin/python"})
-        break
-      endif
+  if expand('%:e') == "py" && empty(is_not_git_dir) && isdirectory(git_dir."/.tox/pep8")
+    let b:ale_fix_on_save = 1
+    let b:ale_python_jedils_executable = git_dir."/.tox/pep8/bin/jedi-language-server"
+    let b:ale_python_mypy_executable = git_dir."/.tox/pep8/bin/mypy"
+    let b:ale_python_flake8_executable = git_dir."/.tox/pep8/bin/flake8"
+    let b:ale_python_black_executable = git_dir."/.tox/pep8/bin/black"
+    let b:ale_python_isort_executable = git_dir."/.tox/pep8/bin/isort"
+
+    for package in ["jedi-language-server"]
+        if !filereadable(git_dir."/.tox/pep8/bin/".package)
+            call system(git_dir."/.tox/pep8/bin/pip install ".package)
+        endif
     endfor
   endif
 endfunction
-
-
-augroup CocWrite
-"autocmd BufWritePre *.py call CocAction('format')
-autocmd BufWritePre *.py call CocAction('runCommand', 'editor.action.organizeImport')
-augroup END
-
-
-let g:ale_disable_lsp = 1
-let g:ale_completion_enabled = 0
-"let g:ale_completion_delay = 5
-"set omnifunc=ale#completion#OmniFunc
-"set completeopt+=menuone
-"set completeopt+=noinsert
-
-let g:ale_sign_column_always = 1  " always show left column
-let g:ale_open_list = 1
-let g:ale_list_window_size = 7
-let g:ale_list_vertical = 0
-let g:ale_keep_list_window_open = 1
-let g:ale_set_highlights = 0
-let g:ale_lint_on_text_changed = 'never'
-let g:ale_lint_on_insert_leave = 0
-let g:ale_lint_on_enter = 0
-
-let g:ale_echo_msg_error_str = 'E'
-let g:ale_echo_msg_warning_str = 'W'
-let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
-
-let g:ale_sign_error = '⛔'
-let g:ale_sign_info = 'ℹ'
-let g:ale_sign_offset = 1000000
-let g:ale_sign_style_error = '⛔'
-let g:ale_sign_style_warning = '⚠'
-let g:ale_sign_warning = '⚠'
-
 
 " follow symlink and set working directory
 autocmd BufEnter * call SetProjectRoot()
