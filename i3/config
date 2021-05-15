@@ -52,7 +52,8 @@ for_window [title="Bluetooth Devices"] floating enable
 # no_focus [class="Chromium"]
 
 # start application
-bindsym $mod+Return exec st
+#bindsym $mod+Return exec st
+bindsym $mod+Return exec alacritty
 # bindsym $mod+b exec /home/sileht/logiciel/firefox/firefox
 bindsym $mod+b exec firefox  #--profile-directory=Default
 bindsym $mod+c exec st -t 'gizmo.sileht.net' -e zsh -i -c "ssh -tqxkAC gizmo"
@@ -62,7 +63,8 @@ bindsym $mod+k exec sound-controller
 bindsym Print exec flameshot gui
 bindsym Shift+Print exec kazam
 bindsym --release $mod+l exec --no-startup-id mate-screensaver-command -l
-bindsym $mod+x exec --no-startup-id pcmanfm /home/sileht/
+# bindsym $mod+x exec --no-startup-id pcmanfm /home/sileht/
+bindsym $mod+x exec --no-startup-id alacritty -e ranger
 bindsym $mod+s exec --no-startup-id rofi -show file-browser
 # kill focused window
 bindsym $mod+Shift+a kill

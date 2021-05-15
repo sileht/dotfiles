@@ -12,13 +12,12 @@
     - '~/.config/ranger'
     - '~/.config/nvim'
     - '~/.ssh'
+    - '~/.ctag'
 
 - link:
     ~/.config/ranger: ranger
-    ~/.config/dunst: dunst
     ~/.config/rofi: rofi
     ~/.config/nvim/init.vim: nvim.vim
-    ~/.ctags: ctags
     ~/.Xresources: Xresources
     ~/.gitconfig: gitconfig
     ~/.gitignore-global: gitignore-global
@@ -42,4 +41,3 @@
 - shell:
     # - chsh -s $(which zsh)
     - git submodule update --init --recursive
-    #- python3 -m pip install --user --upgrade -r ~/.env/requirements-py3.txt

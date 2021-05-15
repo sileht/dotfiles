@@ -1,8 +1,0 @@
-#!/bin/bash
-# GPL2+
-# wrapper for khard
-
-khard email --remove-first-line -p "$@" | while IFS=$'\t' read email name type; do
-    echo "Name: $name"
-    echo "EMAIL: $email"
-done

@@ -14,7 +14,6 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'bling/vim-bufferline'
 Plug 'ryanoasis/vim-devicons'
-"Plug 'eugen0329/vim-esearch'
 Plug 'lambdalisue/suda.vim'
 " Text navigation
 Plug 'nacitar/terminalkeys.vim'
@@ -24,23 +23,30 @@ Plug 'tmux-plugins/vim-tmux-focus-events'
 
 Plug 'rhysd/vim-grammarous'
 
-Plug 'liuchengxu/vim-clap'
+Plug 'liuchengxu/vim-clap'      " CTRL+o
 
 Plug 'lilydjwg/colorizer'       " color hexa code (eg: #0F12AB)
 Plug 'luochen1990/rainbow'      " special parenthesis colors
 Plug 'inside/vim-search-pulse'
-Plug 'brooth/far.vim'
 
 " Language
 Plug 'dense-analysis/ale'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'sheerun/vim-polyglot'
+Plug 'tbodt/deoplete-tabnine', { 'do': './install.sh' }
+
+Plug 'fszymanski/deoplete-emoji'
+Plug 'tpope/vim-rhubarb'        " GitHub ticket completion
+"Plug 'sileht/vim-linear'       " Linear ticket completion
+Plug '~/workspace/sileht/vim-linear/'
+
+Plug 'sheerun/vim-polyglot'     " Syntax highlight for all languages
 
 Plug 'tpope/vim-fugitive'
 Plug 'mhinz/vim-signify'
 
-call plug#end()
+Plug 'junegunn/vim-github-dashboard'
 
+call plug#end()
 
 set encoding=utf8
 scriptencoding utf-8
@@ -185,6 +191,7 @@ nmap <leader>9 <Plug>AirlineSelectTab9
 nmap <S-left>  <Plug>AirlineSelectPrevTab
 nmap <S-right> <Plug>AirlineSelectNextTab
 
+
 " ###########
 " ### ALE ###
 " ###########
@@ -192,12 +199,12 @@ nmap <S-right> <Plug>AirlineSelectNextTab
 
 " Only use errors and fixers reporting of ALE
 let g:deoplete#enable_at_startup = 1
-let g:ale_completion_enabled = 0
-"
 call deoplete#custom#option('sources', {
-\ '_': ['ale'],
-\})
-
+    \ '_': ['ale'],
+    \})
+"'tabnine', 'emoji'],
+"
+let g:ale_completion_enabled = 0
 let g:ale_fix_on_save = 0
 let g:ale_fixers = {}
 let g:ale_fixers['*'] = ['remove_trailing_lines', 'trim_whitespace']
@@ -222,6 +229,8 @@ let g:ale_linter_aliases.jsx = ['css', 'javascript']
 let g:ale_linter_aliases.gitcommit = ['text']
 
 "copen " open quickfix list on startup
+"let g:ale_set_balloons = 1
+"let g:ale_hover_to_floating_preview = 1
 let g:ale_set_loclist = 0
 let g:ale_set_quickfix = 1
 let g:ale_open_list = 1
@@ -229,9 +238,9 @@ let g:ale_list_window_size = 5
 let g:ale_keep_list_window_open = 1
 let g:ale_set_highlights = 0
 
-let g:ale_lint_on_text_changed = 'never'
-let g:ale_lint_on_insert_leave = 0
-let g:ale_lint_on_enter = 0
+"let g:ale_lint_on_text_changed = 'never'
+"let g:ale_lint_on_insert_leave = 0
+"let g:ale_lint_on_enter = 0
 
 let g:ale_echo_msg_error_str = '⛔'
 let g:ale_echo_msg_warning_str = '⚠'
@@ -252,6 +261,7 @@ function! ALESearch()
     execute "ALESymbolSearch ".search
 endfunction
 
+nmap <silent> <F4> :GrammarousCheck<CR>
 nmap <silent> <F5> :ALERename<CR>
 nmap <silent> <F6> :ALEGoToDefinition<CR>
 nmap <silent> <F7> :ALEFindReferences<CR>
@@ -271,14 +281,27 @@ nmap ga <Plug>(EasyAlign)
 " ### OTHER PLUGINS ###
 " #####################
 
-nnoremap <C-o> :Clap files<cr>
-"nnoremap <C-f> :Clap grep<cr>
+"nnoremap <C-m> :Clap quickfix<cr>
+nnoremap <C-p> :Clap grep2<cr>
+nnoremap <C-o> :Clap gfiles<cr>
 
 cmap w!! :w suda://%<CR>:e!<CR>
 
+let g:LINEAR_TOKEN = $LINEAR_TOKEN
+let g:LINEAR_STATE_IDS = ["22f2b6eb-f794-4cc7-8212-ad0094d16a2a", "cdd327d2-7875-4636-ba9d-adccf335d888"]
+
+let g:github_dashboard = { 'username': 'sileht', 'password': $GITHUB_TOKEN }
 let g:signify_update_on_focusgained = 1
 let g:vim_search_pulse_duration = 200
 let g:rainbow_active = 1
+
+function! MyOmni(findstart, base) abort
+    let s:linear_items = linear#Complete(a:findstart, a:base)
+    return s:linear_items
+    "let s:gh_items = rhubarb#Complete(a:findstart, a:base)
+    return s:linear_items + s:gh_items
+endfunction
+autocmd FileType gitcommit setlocal omnifunc=MyOmni
 
 " ###################
 " ### SPELL CHECK ###
@@ -329,6 +352,24 @@ function! InitializeDirectories()
 endfunction
 call InitializeDirectories()
 
+function! CommandInBuffer(name, cmd)
+    function! s:OnEvent(job_id, data, event) dict
+        if a:event == 'stdout'
+            echom a:data[0]
+        elseif a:event == 'stderr'
+            echom a:data[0]
+        else
+            echom self.name." finished"
+        endif
+    endfunction
+    let s:callbacks = {
+    \ 'on_stdout': function('s:OnEvent'),
+    \ 'on_stderr': function('s:OnEvent'),
+    \ 'on_exit': function('s:OnEvent')
+    \ }
+    let job = jobstart(a:cmd, extend({'name': a:name}, s:callbacks))
+endfunction
+
 function! SetProjectRoot()
   " default to the current file's directory
   lcd %:p:h
@@ -342,11 +383,17 @@ function! SetProjectRoot()
     let b:ale_python_black_executable = git_dir."/.tox/pep8/bin/black"
     let b:ale_python_isort_executable = git_dir."/.tox/pep8/bin/isort"
 
+    let packages = []
     for package in ["jedi-language-server"]
         if !filereadable(git_dir."/.tox/pep8/bin/".package)
-            call system(git_dir."/.tox/pep8/bin/pip install ".package)
+            call add(packages, package)
         endif
     endfor
+    if len(packages)
+        let pip_cmd = "pip install ".join(packages, " ")
+        let full_pip_cmd = git_dir."/.tox/pep8/bin/".pip_cmd
+        call CommandInBuffer(pip_cmd, full_pip_cmd)
+    endif
   endif
 endfunction
 

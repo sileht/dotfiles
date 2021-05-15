@@ -1,6 +1,7 @@
 [[ ! -o rcs ]] && return
 
 source ~/.env/zinit/zinit.zsh
+source ~/.creds
 
 # automatically remove duplicates from these arrays
 typeset -gU path cdpath fpath manpath fignore
@@ -28,7 +29,6 @@ zinit wait lucid light-mode for \
   \
   from"gh-r" as"program" mv"Bitwarden-*-x86_64.AppImage -> bitwarden" bpick"Bitwarden-*-x86_64.AppImage" bitwarden/desktop \
   from"gh-r" as"program" junegunn/fzf-bin \
-  from"gh-r" as"program" mv"xurls_*_linux_amd64 -> xurls" bpick"xurls_*_linux_amd64" @mvdan/xurls \
   from"gh-r" as"program" bpick"pack-*-linux.tgz" buildpacks/pack \
   from"gh-r" as"program" mv"sentry-cli-Linux-x86_64 -> sentry-cli" bpick"sentry-cli-Linux-x86_64" @getsentry/sentry-cli \
   from"gh-r" as"program" mv"docker* -> docker-compose" bpick"*linux*" docker/compose \
@@ -36,16 +36,20 @@ zinit wait lucid light-mode for \
   from"gh-r" as"program" pick"gh*/bin/gh" bpick"*gh_*_linux_amd64.tar.gz" cli/cli \
   from"gh-r" as"program" bpick"*stripe_*_linux_x86_64.tar.gz" stripe/stripe-cli \
   from"gh-r" as"program" bpick"vale_*_Linux_64-bit.tar.gz" errata-ai/vale \
+  from"gh-r" as"program" mv"maple-x86_64-unknown-linux-musl -> maple" liuchengxu/vim-clap \
   \
   atinit"mkdir -p $HOME/.local/share/nvim/site/autoload && ln -sf \$(pwd)/plug.vim $HOME/.local/share/nvim/site/autoload/plug.vim" nocompile'!' junegunn/vim-plug \
   \
-  as"program" make"zinit_install" pick"st" sileht/st \
-  \
   as"program" pick"bin/git-dsf" zdharma/zsh-diff-so-fancy \
+
+
+#  as"program" make"zinit_install" pick"st" sileht/st \
+#  from"gh-r" as"program" mv"xurls_*_linux_amd64 -> xurls" bpick"xurls_*_linux_amd64" @mvdan/xurls \
 
 zinit ice \
     pip'git-pull-request;
         ghp-import;
+        pynvim;
         rstcheck;' \
     node'git-split-diffs;
         vim-language-server;

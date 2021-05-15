@@ -1,7 +1,0 @@
-# other
-pynvim
-
-pulsectl
-
-ghp-import
-git-pull-request
