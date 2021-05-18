@@ -6,7 +6,7 @@
 
 [alias]
     b = "!f() { git -c color.ui=always branch --sort=-committerdate --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))' | head ${1:--25} ; }; f"
-    bl = "!f() { git checkout $(git branch --sort=-committerdate --format='%(refname:short)' | sed -n '2p') ; }; f"
+    bl = "!f() { git checkout $(git branch --sort=-committerdate --format='%(HEAD) %(refname:short)' | grep -v -e '^*' | head -1) ; }; f"
 
     pr = "!f() { git r ; git pull-request \"$@\"; }; f"
     t = "!f() { git branch --set-upstream-to=origin/${1:-main}; }; f"

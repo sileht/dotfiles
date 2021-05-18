@@ -45,7 +45,10 @@ output() {
     color_7="%{F#009966}"
     color_8="%{F#009966}"
 
-    headset_connected=$(bluetoothctl info 4C:87:5D:06:32:13 | grep "Connected: yes")
+    local headset_connected=
+    case $SELECTED_SINK_NAME in
+        bluez_output.4C_87_5D_06_32_13.*) headset_connected=1
+    esac
 
     if [ "$headset_connected" ] ; then
         headset_file="$HOME/.headset-last-vol"
