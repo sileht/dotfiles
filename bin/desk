@@ -321,7 +321,10 @@ def get_selection(title, options):
 
 
 def get_curent_layout(outputs):
-    primary = [o for o in outputs if o.primary][0]
+    primary = [o for o in outputs if o.primary]
+    if not primary:
+        return
+    primary = primary[0]
     monitors = {"primary": primary}
     for o in outputs:
         if not o.switched_on or o.primary:
@@ -396,7 +399,7 @@ def show_menu(outputs, current_layout, dry_run):
         if len(layout.positions) <= len(monitors) and layout != current_layout:
             layouts[layout.label] = layout
 
-    layouts["wakeup all monitors"] = "wakeup"
+    layouts["💤 wakeup all monitors"] = "wakeup"
 
     layout_label, layout = get_selection("Layout", layouts)
     if not layout:

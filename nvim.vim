@@ -1,7 +1,7 @@
 set nocompatible
 
 " Add some missing filetype extentions
-"autocmd BufNewFile,BufRead *.jsx set filetype=javascript.jsx
+autocmd BufNewFile,BufRead *.jsx set filetype=javascript.jsx
 autocmd BufNewFile,BufRead *.yaml set filetype=yaml
 autocmd BufNewFile,BufRead *.j2	  set filetype=jinja
 
@@ -209,6 +209,7 @@ let g:ale_fix_on_save = 0
 let g:ale_fixers = {}
 let g:ale_fixers['*'] = ['remove_trailing_lines', 'trim_whitespace']
 let g:ale_fixers.javascript = ['eslint']
+let g:ale_fixers.jsx = ['eslint']
 let g:ale_fixers.python = ["isort", "black"]
 let g:ale_fixers.json = ['fixjson', 'jq']
 

@@ -56,8 +56,8 @@ for_window [title="Bluetooth Devices"] floating enable
 bindsym $mod+Return exec alacritty
 # bindsym $mod+b exec /home/sileht/logiciel/firefox/firefox
 bindsym $mod+b exec firefox  #--profile-directory=Default
-bindsym $mod+c exec st -t 'gizmo.sileht.net' -e zsh -i -c "ssh -tqxkAC gizmo"
-bindsym $mod+Shift+c exec st -t 'gizmo.sileht.net' -e mosh -a gizmo
+bindsym $mod+c exec alacritty -t 'gizmo.sileht.net' -e zsh -i -c "ssh -tqxkAC gizmo"
+bindsym $mod+Shift+c exec alacritty -t 'gizmo.sileht.net' -e mosh -a gizmo
 bindsym $mod+k exec sound-controller
 
 bindsym Print exec flameshot gui
