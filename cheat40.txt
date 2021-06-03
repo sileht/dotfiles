@@ -1,0 +1,16 @@
+ALE  {{{4
+GrammarousCheck          <F4>
+ALERename                <F5>
+ALEGoToDefinition        <F6>
+ALEFindReferences        <F7>
+call ALESearch()         <F8>
+ALERename                <leader>r
+ALEGoToDefinition        <leader>d
+ALEFindReferences        <leader>s
+EasyAlign                ga
+Clap grep2               <C-p>
+Clap gfiles              <C-o>
+}}}
+
+
+

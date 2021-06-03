@@ -45,6 +45,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'mhinz/vim-signify'
 
 Plug 'junegunn/vim-github-dashboard'
+Plug 'lifepillar/vim-cheat40'
 
 call plug#end()
 

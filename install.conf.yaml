@@ -18,6 +18,7 @@
     ~/.config/ranger: ranger
     ~/.config/rofi: rofi
     ~/.config/nvim/init.vim: nvim.vim
+    ~/.config/nvim/cheat40.txt: cheat40.txt
     ~/.Xresources: Xresources
     ~/.gitconfig: gitconfig
     ~/.gitignore-global: gitignore-global
