@@ -17,9 +17,9 @@ autoload -Uz add-zsh-hook
 mkdir -p $ZPFX
 zinit light sileht/z-a-bin-gem-node
 
-# atinit"zicompinit; zicdreplay" atload"fast-theme -s|grep -q sv-orple || fast-theme sv-orple" zdharma/fast-syntax-highlighting \
+#  atinit"zicompinit; zicdreplay" zdharma/fast-syntax-highlighting \
 zinit wait lucid light-mode for \
-  atinit"zicompinit; zicdreplay" zdharma/fast-syntax-highlighting \
+  atinit"zicompinit; zicdreplay" atload"fast-theme -s|grep -q sv-orple || fast-theme sv-orple" zdharma/fast-syntax-highlighting \
   atload"_zsh_autosuggest_start" zsh-users/zsh-autosuggestions \
   blockf atpull'zinit creinstall -q .' zsh-users/zsh-completions \
   zdharma/history-search-multi-word \
