@@ -377,25 +377,31 @@ function! SetProjectRoot()
   lcd %:p:h
   let git_dir = trim(system("git rev-parse --show-toplevel"))
   let is_not_git_dir = matchstr(git_dir, '^fatal:.*')
-  if expand('%:e') == "py" && empty(is_not_git_dir) && isdirectory(git_dir."/.tox/pep8")
+  if empty(is_not_git_dir) && isdirectory(git_dir."/.tox/pep8")
     let b:ale_fix_on_save = 1
-    let b:ale_python_jedils_executable = git_dir."/.tox/pep8/bin/jedi-language-server"
-    let b:ale_python_mypy_executable = git_dir."/.tox/pep8/bin/mypy"
-    let b:ale_python_flake8_executable = git_dir."/.tox/pep8/bin/flake8"
-    let b:ale_python_black_executable = git_dir."/.tox/pep8/bin/black"
-    let b:ale_python_isort_executable = git_dir."/.tox/pep8/bin/isort"
-
-    let packages = []
-    for package in ["jedi-language-server"]
-        if !filereadable(git_dir."/.tox/pep8/bin/".package)
-            call add(packages, package)
-        endif
-    endfor
-    if len(packages)
-        let pip_cmd = "pip install ".join(packages, " ")
-        let full_pip_cmd = git_dir."/.tox/pep8/bin/".pip_cmd
-        call CommandInBuffer(pip_cmd, full_pip_cmd)
+    if expand('%:e') == "py"
+      let b:ale_python_jedils_executable = git_dir."/.tox/pep8/bin/jedi-language-server"
+      let b:ale_python_mypy_executable = git_dir."/.tox/pep8/bin/mypy"
+      let b:ale_python_flake8_executable = git_dir."/.tox/pep8/bin/flake8"
+      let b:ale_python_black_executable = git_dir."/.tox/pep8/bin/black"
+      let b:ale_python_isort_executable = git_dir."/.tox/pep8/bin/isort"
+      let packages = []
+      for package in ["jedi-language-server"]
+          if !filereadable(git_dir."/.tox/pep8/bin/".package)
+              call add(packages, package)
+          endif
+      endfor
+      if len(packages)
+          let pip_cmd = "pip install ".join(packages, " ")
+          let full_pip_cmd = git_dir."/.tox/pep8/bin/".pip_cmd
+          call CommandInBuffer(pip_cmd, full_pip_cmd)
+      endif
     endif
+
+    if expand('%:e') == "yaml"
+      let b:ale_yaml_yamllint_options = "-c ".git_dir."/.yamllint.yml"
+    endif
+
   endif
 endfunction
 
