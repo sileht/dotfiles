@@ -118,13 +118,18 @@ def _get_bluetooth_items():
 
 
 HIDDEN_PROFILES = (
-    "input:analog-stereo",  # We keep only the duplex
-    "output:analog-stereo",  # We keep only the duplex
-    "pro-audio",
+#    "input:analog-stereo",  # We keep only the duplex
+#    "output:analog-stereo",  # We keep only the duplex
     "*iec958*",
-    #    "input:mono-fallback",
+#    "input:mono-fallback",
+    "a2dp-sink-sbc",
+    "headset-head-unit",
+    "a2dp-sink",
 )
 
+FAVORITE_PROFILES = [
+    "pro-audio"
+]
 
 def _get_pulseaudio_cards_profiles(pulse, mode="sink"):
     if mode == "sink":
@@ -142,11 +147,17 @@ def _get_pulseaudio_cards_profiles(pulse, mode="sink"):
     items = {}
     cards = pulse.card_list()
     for card in reversed(cards):
+        have_pro_audio = any(p for p in card.profile_list if p.name == "pro-audio")
         for profile in reversed(card.profile_list):
             if not profile.available:
                 continue
-            if any(p for p in HIDDEN_PROFILES if fnmatch.fnmatch(profile.name, p)):
-                continue
+            if have_pro_audio:
+                if profile.name != "pro-audio":
+                    continue
+            else:
+                print(f"{card.name} {profile.name}")
+                if any(p for p in HIDDEN_PROFILES if fnmatch.fnmatch(profile.name, p)):
+                    continue
             if mode == "sink" and profile.n_sinks == 0:
                 continue
             if mode == "source" and profile.n_sources == 0:
@@ -158,7 +169,6 @@ def _get_pulseaudio_cards_profiles(pulse, mode="sink"):
                 card.index == default_index and profile.name == card.profile_active.name
             ) or (profile.name == "off" and default_name == "auto_null"):
                 selected = True
-            print(card.proplist)
             if card.proplist["device.api"].endswith("bluez5"):
                 icon = "audio-headphones"
             elif mode == "sink":
