@@ -10,9 +10,10 @@ call plug#begin('~/.local/share/nvim/plugged')
 " Style
 Plug 'chriskempson/base16-vim'
 Plug 'ryanoasis/vim-devicons'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'bling/vim-bufferline'
+Plug 'itchyny/lightline.vim'
+Plug 'maximbaz/lightline-ale'
+Plug 'mengelbrecht/lightline-bufferline'
+Plug 'daviesjamie/vim-base16-lightline'
 Plug 'ryanoasis/vim-devicons'
 Plug 'lambdalisue/suda.vim'
 " Text navigation
@@ -160,38 +161,64 @@ endif
 
 set cursorline
 set laststatus=2        " Show statusbar
+"set showtabline=2       " Show tabline
 
-" ###############
-" ### AIRLINE ###
-" ###############
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#buffer_idx_mode = 1
-let g:airline#extensions#ale#enabled = 1
-let g:airline_theme = 'base16_eighties'
+" #################
+" ### LIGHTLINE ###
+" #################
+let g:lightline#bufferline#number_separator = ':'
+let g:lightline#bufferline#icon_position    = 'right'
+let g:lightline#bufferline#show_number      = 1
+let g:lightline#bufferline#shorten_path     = 1
+let g:lightline#bufferline#unicode_symbols  = 1
+let g:lightline#bufferline#unnamed          = '[No Name]'
+let g:lightline#bufferline#enable_devicons  = 1
+let g:lightline#bufferline#number_map       = {
+\ 0: '⁰', 1: '¹', 2: '²', 3: '³', 4: '⁴',
+\ 5: '⁵', 6: '⁶', 7: '⁷', 8: '⁸', 9: '⁹'}
+"let g:lightline#bufferline#composed_number_map = {
+"\ 1:  '⑴ ', 2:  '⑵ ', 3:  '⑶ ', 4:  '⑷ ', 5:  '⑸ ',
+"\ 6:  '⑹ ', 7:  '⑺ ', 8:  '⑻ ', 9:  '⑼ ', 10: '⑽ ',
+"\ 11: '⑾ ', 12: '⑿ ', 13: '⒀ ', 14: '⒁ ', 15: '⒂ ',
+"\ 16: '⒃ ', 17: '⒄ ', 18: '⒅ ', 19: '⒆ ', 20: '⒇ '}
 
-nmap <leader>& <Plug>AirlineSelectTab1
-nmap <leader>é <Plug>AirlineSelectTab2
-nmap <leader>" <Plug>AirlineSelectTab3
-nmap <leader>' <Plug>AirlineSelectTab4
-nmap <leader>( <Plug>AirlineSelectTab5
-nmap <leader>- <Plug>AirlineSelectTab6
-nmap <leader>è <Plug>AirlineSelectTab7
-nmap <leader>_ <Plug>AirlineSelectTab8
-nmap <leader>ç <Plug>AirlineSelectTab9
+let g:lightline                    = {}
+let g:lightline.colorscheme        = 'base16'
+let g:lightline.active             = {}
+let g:lightline.active.left        = [['mode', 'paste', 'readonly', 'modified', 'buffers']]
+let g:lightline.active.right       = [['lineinfo'], ['percent'], ['gitbranch', 'fileformat', 'fileencoding', 'filetype']]
+let g:lightline.inactive           = {}
+let g:lightline.inactive.left      = [['filename']]
+let g:lightline.inactive.right     = [['lineinfo'], ['percent'], ['fileformat', 'fileencoding', 'filetype']]
+let g:lightline.component_expand   = {'buffers': 'lightline#bufferline#buffers'}
+let g:lightline.component_type     = {'buffers': 'tabsel'}
+let g:lightline.separator          = { 'left': "\ue0b0", 'right': "\ue0b2" }
+let g:lightline.subseparator       = { 'left': "\ue0b1", 'right': "\ue0b3" }
+let g:lightline.component_function = { 'gitbranch': 'FugitiveHead' }
 
-nmap <leader>1 <Plug>AirlineSelectTab1
-nmap <leader>2 <Plug>AirlineSelectTab2
-nmap <leader>3 <Plug>AirlineSelectTab3
-nmap <leader>4 <Plug>AirlineSelectTab4
-nmap <leader>5 <Plug>AirlineSelectTab5
-nmap <leader>6 <Plug>AirlineSelectTab6
-nmap <leader>7 <Plug>AirlineSelectTab7
-nmap <leader>8 <Plug>AirlineSelectTab8
-nmap <leader>9 <Plug>AirlineSelectTab9
-nmap <S-left>  <Plug>AirlineSelectPrevTab
-nmap <S-right> <Plug>AirlineSelectNextTab
-
+nmap <Leader>1 <Plug>lightline#bufferline#go(1)
+nmap <Leader>2 <Plug>lightline#bufferline#go(2)
+nmap <Leader>3 <Plug>lightline#bufferline#go(3)
+nmap <Leader>4 <Plug>lightline#bufferline#go(4)
+nmap <Leader>5 <Plug>lightline#bufferline#go(5)
+nmap <Leader>6 <Plug>lightline#bufferline#go(6)
+nmap <Leader>7 <Plug>lightline#bufferline#go(7)
+nmap <Leader>8 <Plug>lightline#bufferline#go(8)
+nmap <Leader>9 <Plug>lightline#bufferline#go(9)
+nmap <Leader>0 <Plug>lightline#bufferline#go(10)
+nmap <Leader>c1 <Plug>lightline#bufferline#delete(1)
+nmap <Leader>c2 <Plug>lightline#bufferline#delete(2)
+nmap <Leader>c3 <Plug>lightline#bufferline#delete(3)
+nmap <Leader>c4 <Plug>lightline#bufferline#delete(4)
+nmap <Leader>c5 <Plug>lightline#bufferline#delete(5)
+nmap <Leader>c6 <Plug>lightline#bufferline#delete(6)
+nmap <Leader>c7 <Plug>lightline#bufferline#delete(7)
+nmap <Leader>c8 <Plug>lightline#bufferline#delete(8)
+nmap <Leader>c9 <Plug>lightline#bufferline#delete(9)
+nmap <Leader>c0 <Plug>lightline#bufferline#delete(10)
+nmap <S-left>  :bprevious<Enter>
+nmap <S-right> :bnext<Enter>
+autocmd BufWritePost,TextChanged,TextChangedI * call lightline#update()
 
 " ###########
 " ### ALE ###
@@ -233,11 +260,12 @@ let g:ale_linter_aliases.gitcommit = ['text']
 "copen " open quickfix list on startup
 "let g:ale_set_balloons = 1
 "let g:ale_hover_to_floating_preview = 1
-let g:ale_set_loclist = 0
-let g:ale_set_quickfix = 1
+let g:ale_set_loclist = 1
+let g:ale_set_quickfix = 0
 let g:ale_open_list = 1
+"autocmd BufUnload * if empty(&bt) | lclose | endif
 let g:ale_list_window_size = 5
-let g:ale_keep_list_window_open = 1
+let g:ale_keep_list_window_open = 0
 let g:ale_set_highlights = 0
 
 "let g:ale_lint_on_text_changed = 'never'
