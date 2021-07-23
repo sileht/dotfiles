@@ -300,7 +300,7 @@ zcompileall(){
 
 upgrade() {
     (yes | sudo pacman -Suy)
-    # sudo remove-orphaned-kernels
+    sudo remove-orphaned-kernels
     sudo pacman -Rns $(pacman -Qtdq)
     sudo paccache -ruk0
     (cd ~/.env && git diff --quiet && git pull --rebase --recurse-submodules && ./install ) # Only pull if not dirty
