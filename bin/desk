@@ -248,6 +248,15 @@ class OnAutoRightLayout(Layout):
     predefined = {"right": "eDP-1"}
 
 
+class OnAutoBottomLayout(Layout):
+    label = "   (auto)"
+    command = (
+        "xrandr --output {primary} --auto --primary "
+        "--output {bottom} --auto --below {primary}"
+    )
+    predefined = {"bottom": "eDP-1"}
+
+
 class OnAutoOneScreenLayout(Layout):
     label = " (eDP-1)"
     command = "xrandr --output {primary} --auto --primary"
@@ -289,6 +298,7 @@ class BothSideLayout(Layout):
 
 LAYOUTS = (
     OnAutoRightLayout,
+    OnAutoBottomLayout,
     OnAutoOneScreenLayout,
     OneScreenLayout,
     VerticalLayout,
@@ -391,7 +401,6 @@ def show_menu(outputs, current_layout, dry_run):
 
     for o in outputs:
         monitors[f"{o.icon} {o.name}: {o.monitor_vendor} | {o.monitor_model}"] = o.name
-
 
     layouts = {}
     for layout in LAYOUTS:
