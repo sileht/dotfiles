@@ -50,6 +50,7 @@ for_window [title="Bluetooth Devices"] floating enable
 #for_window [class="^.*"] border normal
 #for_window [class="^.*"] border pixel 2
 # no_focus [class="Chromium"]
+for_window [urgent="latest"] focus
 
 # start application
 #bindsym $mod+Return exec st
@@ -77,6 +78,7 @@ bindsym $mod+m exec --no-startup-id "rofi -show calc -modi calc -no-show-match -
 #exec "picom --config ~/.env/picom.conf"
 exec /home/sileht/.env/bin/unsplash
 exec_always polybar-start.sh
+exec_always i3-workspace-auto-switch.sh
 
 #exec pcmanfm -d
 
