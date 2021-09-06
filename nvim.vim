@@ -21,6 +21,8 @@ Plug 'nacitar/terminalkeys.vim'
 Plug 'junegunn/vim-easy-align'
 " File/Tag browsing
 Plug 'tmux-plugins/vim-tmux-focus-events'
+" Plug 'psliwka/vim-smoothie'
+Plug 'joeytwiddle/sexy_scroller.vim'
 
 Plug 'rhysd/vim-grammarous'
 
@@ -268,7 +270,7 @@ let g:ale_list_window_size = 5
 let g:ale_keep_list_window_open = 0
 let g:ale_set_highlights = 0
 
-"let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_text_changed = 'never'
 "let g:ale_lint_on_insert_leave = 0
 "let g:ale_lint_on_enter = 0
 
