@@ -9,6 +9,7 @@ import shlex
 import subprocess
 import time
 
+from first import first
 import pulsectl
 
 
@@ -118,36 +119,35 @@ def _get_bluetooth_items():
 
 
 HIDDEN_PROFILES = (
-#    "input:analog-stereo",  # We keep only the duplex
-#    "output:analog-stereo",  # We keep only the duplex
+    "input:analog-stereo",  # We keep only the duplex
+    "output:analog-stereo",  # We keep only the duplex
     "*iec958*",
 #    "input:mono-fallback",
     "a2dp-sink-sbc",
     "headset-head-unit",
+    "headset-head-unit-cvsd",
     "a2dp-sink",
+    "pro-audio",
 )
 
-FAVORITE_PROFILES = [
-    "pro-audio"
-]
 
 def _get_pulseaudio_cards_profiles(pulse, mode="sink"):
     if mode == "sink":
         default_name = pulse.server_info().default_sink_name
-        default_index = [
+        default_index = first([
             sink.card for sink in pulse.sink_list() if sink.name == default_name
-        ][0]
+        ])
     elif mode == "source":
         default_name = pulse.server_info().default_source_name
-        default_index = [
+        default_index = first([
             source.card for source in pulse.source_list() if source.name == default_name
-        ][0]
+        ])
     else:
         raise RuntimeError(f"wrong mode: {mode}")
     items = {}
     cards = pulse.card_list()
     for card in reversed(cards):
-        have_pro_audio = any(p for p in card.profile_list if p.name == "pro-audio")
+        have_pro_audio = False # any(p for p in card.profile_list if p.name == "pro-audio")
         for profile in reversed(card.profile_list):
             if not profile.available:
                 continue
@@ -166,7 +166,7 @@ def _get_pulseaudio_cards_profiles(pulse, mode="sink"):
             # print(profile)
             selected = False
             if (
-                card.index == default_index and profile.name == card.profile_active.name
+                default_index is not None and card.index == default_index and profile.name == card.profile_active.name
             ) or (profile.name == "off" and default_name == "auto_null"):
                 selected = True
             if card.proplist["device.api"].endswith("bluez5"):
