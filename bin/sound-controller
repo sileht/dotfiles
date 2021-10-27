@@ -14,9 +14,15 @@ import pulsectl
 
 
 def _run(cmd, timeout=None):
-    return subprocess.run(
-        shlex.split(cmd), check=True, stdout=subprocess.PIPE, text=True, timeout=timeout
-    ).stdout
+    if cmd[0] == "!":
+        cmds = shlex.split(cmd[1:])
+        subprocess.Popen(cmds, start_new_session=True)
+        return ""
+    else:
+        cmds = shlex.split(cmd)
+        return subprocess.run(
+            cmds, check=True, stdout=subprocess.PIPE, text=True, timeout=timeout
+        ).stdout
 
 
 def _is_bluetooth_on():
@@ -28,10 +34,11 @@ def _is_bluetooth_on():
 
 
 def _select_input(pulse, card, profile):
-    pulse.card_profile_set(card, profile.name)
+    if card.profile_active.name != profile.name:
+        pulse.card_profile_set(card, profile.name)
 
     sources = []
-    while not sources:
+    for _ in range(30):
         time.sleep(0.1)
         sources = [
             source
@@ -40,6 +47,12 @@ def _select_input(pulse, card, profile):
             or source.name == "auto_null"
             or profile.name == "off"
         ]
+        if sources:
+            break
+
+    if not sources:
+        print(f"FAIL to select source `{profile.name}` on `{card}`")
+        return
 
     source_output = sources[0]
     pulse.default_set(source_output)
@@ -48,10 +61,12 @@ def _select_input(pulse, card, profile):
 
 
 def _select_output(pulse, card, profile):
-    pulse.card_profile_set(card, profile.name)
+    if card.profile_active.name != profile.name:
+        print(f"Set PROFILE {card.profile_active.name} vs {profile.name}")
+        pulse.card_profile_set(card, profile.name)
 
     sinks = []
-    while not sinks:
+    for _ in range(30):
         time.sleep(0.1)
         sinks = [
             sink
@@ -60,6 +75,12 @@ def _select_output(pulse, card, profile):
             or sink.name == "auto_null"
             or profile.name == "off"
         ]
+        if sinks:
+            break
+
+    if not sinks:
+        print(f"FAIL to select sink `{profile.name}` on `{card}`")
+        return
 
     sink_output = sinks[0]
     pulse.default_set(sink_output)
@@ -102,18 +123,24 @@ def _get_bluetooth_items():
 
             if "Audio Sink" in info["UUID"]:
                 if connected:
-                    items[
-                        f"<b>{prefix} Disconnect</b> {suffix}"
-                    ] = f"bluetoothctl disconnect {mac}"
+                    items[f"<b>{prefix} Disconnect</b> {suffix}"] = [
+                        f"bluetoothctl disconnect {mac}",
+                    ]
                 else:
-                    items[f"{prefix} Connect {suffix}"] = f"bluetoothctl connect {mac}"
+                    items[f"{prefix} Connect {suffix}"] = [
+                        f"bluetoothctl connect {mac}",
+                        f"!sound-controller",
+                    ]
 
-            items[f"{prefix}Unpair{suffix}"] = f"bluetoothctl remove {mac}"
+            items[f"{prefix}Unpair{suffix}"] = [
+                f"bluetoothctl remove {mac}",
+            ]
         else:
             items[f"{prefix}Pair{suffix}"] = [
                 f"bluetoothctl trust {mac}",
                 f"bluetoothctl pair {mac}",
                 f"bluetoothctl connect {mac}",
+                f"!sound-controller",
             ]
     return items
 
@@ -121,9 +148,15 @@ def _get_bluetooth_items():
 HIDDEN_PROFILES = (
     "input:analog-stereo",  # We keep only the duplex
     "output:analog-stereo",  # We keep only the duplex
+    "output:hdmi-surround-extra1",
+    "output:hdmi-surround71-extra1",
+    "output:hdmi-surround-extra1+input:analog-stereo",
+    "output:hdmi-surround71-extra1+input:analog-stereo",
+    "output:hdmi-stereo-extra1+input:analog-stereo",
     "*iec958*",
-#    "input:mono-fallback",
-    "a2dp-sink-sbc",
+    #    "input:mono-fallback",
+    #"a2dp-sink-sbc",
+    "a2dp-sink-sbc_xq",
     "headset-head-unit",
     "headset-head-unit-cvsd",
     "a2dp-sink",
@@ -134,20 +167,26 @@ HIDDEN_PROFILES = (
 def _get_pulseaudio_cards_profiles(pulse, mode="sink"):
     if mode == "sink":
         default_name = pulse.server_info().default_sink_name
-        default_index = first([
-            sink.card for sink in pulse.sink_list() if sink.name == default_name
-        ])
+        default_index = first(
+            [sink.card for sink in pulse.sink_list() if sink.name == default_name]
+        )
     elif mode == "source":
         default_name = pulse.server_info().default_source_name
-        default_index = first([
-            source.card for source in pulse.source_list() if source.name == default_name
-        ])
+        default_index = first(
+            [
+                source.card
+                for source in pulse.source_list()
+                if source.name == default_name
+            ]
+        )
     else:
         raise RuntimeError(f"wrong mode: {mode}")
     items = {}
     cards = pulse.card_list()
     for card in reversed(cards):
-        have_pro_audio = False # any(p for p in card.profile_list if p.name == "pro-audio")
+        have_pro_audio = (
+            False  # any(p for p in card.profile_list if p.name == "pro-audio")
+        )
         for profile in reversed(card.profile_list):
             if not profile.available:
                 continue
@@ -166,7 +205,9 @@ def _get_pulseaudio_cards_profiles(pulse, mode="sink"):
             # print(profile)
             selected = False
             if (
-                default_index is not None and card.index == default_index and profile.name == card.profile_active.name
+                default_index is not None
+                and card.index == default_index
+                and profile.name == card.profile_active.name
             ) or (profile.name == "off" and default_name == "auto_null"):
                 selected = True
             if card.proplist["device.api"].endswith("bluez5"):

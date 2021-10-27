@@ -42,3 +42,7 @@
 - shell:
     # - chsh -s $(which zsh)
     - git submodule update --init --recursive
+    - pip install -U --user pipx
+    - pipx install git-pull-request
+    - pipx install reno
+    - pipx install rstcheck

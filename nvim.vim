@@ -24,6 +24,8 @@ Plug 'tmux-plugins/vim-tmux-focus-events'
 " Plug 'psliwka/vim-smoothie'
 Plug 'joeytwiddle/sexy_scroller.vim'
 
+Plug 'tpope/vim-dotenv'
+
 Plug 'rhysd/vim-grammarous'
 
 Plug 'liuchengxu/vim-clap'      " CTRL+o
@@ -34,10 +36,11 @@ Plug 'inside/vim-search-pulse'
 
 " Language
 Plug 'dense-analysis/ale'
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'tbodt/deoplete-tabnine', { 'do': './install.sh' }
+"Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+"Plug 'tbodt/deoplete-tabnine', { 'do': './install.sh' }
 
-Plug 'fszymanski/deoplete-emoji'
+"Plug 'fszymanski/deoplete-emoji'
+Plug 'dpelle/vim-Grammalecte'
 Plug 'tpope/vim-rhubarb'        " GitHub ticket completion
 "Plug 'sileht/vim-linear'       " Linear ticket completion
 Plug '~/workspace/sileht/vim-linear/'
@@ -49,6 +52,7 @@ Plug 'mhinz/vim-signify'
 
 Plug 'junegunn/vim-github-dashboard'
 Plug 'lifepillar/vim-cheat40'
+Plug 'github/copilot.vim'
 
 call plug#end()
 
@@ -228,10 +232,10 @@ autocmd BufWritePost,TextChanged,TextChangedI * call lightline#update()
 
 
 " Only use errors and fixers reporting of ALE
-let g:deoplete#enable_at_startup = 1
-call deoplete#custom#option('sources', {
-    \ '_': ['ale'],
-    \})
+"let g:deoplete#enable_at_startup = 1
+"call deoplete#custom#option('sources', {
+"    \ '_': ['ale'],
+"    \})
 "'tabnine', 'emoji'],
 "
 let g:ale_completion_enabled = 0
@@ -271,8 +275,8 @@ let g:ale_keep_list_window_open = 0
 let g:ale_set_highlights = 0
 
 let g:ale_lint_on_text_changed = 'never'
-"let g:ale_lint_on_insert_leave = 0
-"let g:ale_lint_on_enter = 0
+" let g:ale_lint_on_insert_leave = 0
+" let g:ale_lint_on_enter = 0
 
 let g:ale_echo_msg_error_str = '⛔'
 let g:ale_echo_msg_warning_str = '⚠'
@@ -319,10 +323,11 @@ nnoremap <C-o> :Clap gfiles<cr>
 
 cmap w!! :w suda://%<CR>:e!<CR>
 
-let g:LINEAR_TOKEN = $LINEAR_TOKEN
-let g:LINEAR_STATE_IDS = ["22f2b6eb-f794-4cc7-8212-ad0094d16a2a", "cdd327d2-7875-4636-ba9d-adccf335d888"]
+source ~/.creds.vimrc
+"let g:LINEAR_STATE_IDS = ["22f2b6eb-f794-4cc7-8212-ad0094d16a2a"] 
+"let g:LINEAR_STATE_IDS = ["cdd327d2-7875-4636-ba9d-adccf335d888"]
 
-let g:github_dashboard = { 'username': 'sileht', 'password': $GITHUB_TOKEN }
+let g:github_dashboard = { 'username': 'sileht', 'password': g:GITHUB_TOKEN }
 let g:signify_update_on_focusgained = 1
 let g:vim_search_pulse_duration = 200
 let g:rainbow_active = 1

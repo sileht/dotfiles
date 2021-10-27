@@ -29,8 +29,8 @@ smart_borders on
 # gaps top 34
 
 # <colorclass> <border> <background> <text> <indicator> <child_border>
-# client.focused          #279881 #279881 #F9F9F9 #2f9b85 #279881
-client.focused          #0D47A1 #0D47A1 #F9F9F9 #2f9b85 #0D47A1
+#client.focused          #2eb398 #2eb398 #F9F9F9 #2f9b85 #2eb398   # beryl
+client.focused          #0D47A1 #0D47A1 #F9F9F9 #2f9b85 #0D47A1  # doder
 client.focused_inactive #2E2E2E #1E1E1E #888888 #292D2E #2E2E2E
 client.unfocused        #2E2E2E #2E2E2E #888888 #292D2E #2E2E2E
 client.placeholder      #000000 #2E2E2E #F9F9F9 #000000 #000000
@@ -53,10 +53,8 @@ for_window [title="Bluetooth Devices"] floating enable
 for_window [urgent="latest"] focus
 
 # start application
-#bindsym $mod+Return exec st
 bindsym $mod+Return exec alacritty
-# bindsym $mod+b exec /home/sileht/logiciel/firefox/firefox
-bindsym $mod+b exec firefox  #--profile-directory=Default
+bindsym $mod+b exec google-chrome-stable
 bindsym $mod+c exec alacritty -t 'gizmo.sileht.net' -e zsh -i -c "ssh -tqxkAC gizmo"
 bindsym $mod+Shift+c exec alacritty -t 'gizmo.sileht.net' -e mosh -a gizmo
 bindsym $mod+k exec sound-controller
@@ -64,9 +62,9 @@ bindsym $mod+k exec sound-controller
 bindsym Print exec flameshot gui
 bindsym Shift+Print exec kazam
 bindsym --release $mod+l exec --no-startup-id mate-screensaver-command -l
-# bindsym $mod+x exec --no-startup-id pcmanfm /home/sileht/
-bindsym $mod+x exec --no-startup-id alacritty -e ranger
-bindsym $mod+s exec --no-startup-id rofi -show file-browser
+bindsym $mod+x exec --no-startup-id pcmanfm /home/sileht/
+bindsym $mod+s exec --no-startup-id alacritty -e ranger
+# bindsym $mod+s exec --no-startup-id rofi -show file-browser
 # kill focused window
 bindsym $mod+Shift+a kill
 

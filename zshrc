@@ -1,7 +1,11 @@
 [[ ! -o rcs ]] && return
 
-source ~/.env/zinit/zinit.zsh
-source ~/.creds
+if [ -d /workspaces/.codespaces/.persistedshare/dotfiles ]; then
+    source /workspaces/.codespaces/.persistedshare/dotfiles/zinit/zinit.zsh
+else
+    source ~/.env/zinit/zinit.zsh
+fi
+# source ~/.creds
 
 # automatically remove duplicates from these arrays
 typeset -gU path cdpath fpath manpath fignore
@@ -44,11 +48,6 @@ zinit wait lucid light-mode for \
 
 
 zinit ice \
-    pip'git-pull-request;
-        ghp-import;
-        pynvim;
-        reno;
-        rstcheck;' \
     node'git-split-diffs;
         vim-language-server;
         stylelint;
@@ -60,9 +59,6 @@ zinit ice \
         bash-language-server;
         markdownlint' \
     sbin'p:venv/bin/git-pull-request;
-        p:venv/bin/ghp-import;
-        p:venv/bin/rstcheck;
-        p:venv/bin/reno;
         n:node_modules/.bin/markdown-it;
         n:node_modules/.bin/alex;
         n:node_modules/.bin/fixjson;
@@ -300,12 +296,13 @@ upgrade() {
     sudo remove-orphaned-kernels
     sudo pacman -Rns $(pacman -Qtdq)
     sudo paccache -ruk0
+    pkill -f polybar-update.sh
     (cd ~/.env && git diff --quiet && git pull --rebase --recurse-submodules && ./install ) # Only pull if not dirty
+    pipx upgrade-all
     (cd ~/.env && zinit self-update && git commit -m "sync zinit" zinit && git push origin master )
     zinit update -q --parallel
     zinit delete --clean -y
     nvim "+set nomore" +PlugClean! +PlugUpdate! +qall
-    pkill -f polybar-update.sh
 }
 
 mka () { time schedtool -B -n 1 -e ionice -n 1 make -j $(nproc) "$@" }
