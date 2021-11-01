@@ -36,7 +36,7 @@ Plug 'inside/vim-search-pulse'
 
 " Language
 Plug 'dense-analysis/ale'
-"Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 "Plug 'tbodt/deoplete-tabnine', { 'do': './install.sh' }
 
 "Plug 'fszymanski/deoplete-emoji'
@@ -52,7 +52,7 @@ Plug 'mhinz/vim-signify'
 
 Plug 'junegunn/vim-github-dashboard'
 Plug 'lifepillar/vim-cheat40'
-Plug 'github/copilot.vim'
+"Plug 'github/copilot.vim'
 
 call plug#end()
 
@@ -232,10 +232,10 @@ autocmd BufWritePost,TextChanged,TextChangedI * call lightline#update()
 
 
 " Only use errors and fixers reporting of ALE
-"let g:deoplete#enable_at_startup = 1
-"call deoplete#custom#option('sources', {
-"    \ '_': ['ale'],
-"    \})
+let g:deoplete#enable_at_startup = 1
+call deoplete#custom#option('sources', {
+    \ '_': ['ale'],
+    \})
 "'tabnine', 'emoji'],
 "
 let g:ale_completion_enabled = 0

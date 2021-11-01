@@ -1,9 +1,6 @@
 [submodule "tmux/plugins/tpm"]
 	path = tmux/plugins/tpm
 	url = https://github.com/tmux-plugins/tpm.git
-[submodule "st"]
-	path = st
-	url = https://github.com/sileht/st.git
 [submodule "nord-dircolors"]
 	path = nord-dircolors
 	url = https://github.com/arcticicestudio/nord-dircolors
@@ -18,4 +15,4 @@
 	url = https://github.com/anishathalye/dotbot
 [submodule "zinit"]
 	path = zinit
-	url = https://github.com/zdharma/zinit.git
+	url = https://github.com/zdharma-continuum/zinit.git
