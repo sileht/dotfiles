@@ -1,0 +1,61 @@
+{
+    "default_path": "/home/sileht/.bin-bin",
+    "bins": {
+        "/home/sileht/.bin-bin/bin": {
+            "path": "/home/sileht/.bin-bin/bin",
+            "remote_name": "bin",
+            "version": "v0.9.1",
+            "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "url": "github.com/marcosnils/bin",
+            "provider": "github"
+        },
+        "/home/sileht/.bin-bin/bitwarden.appimage": {
+            "path": "/home/sileht/.bin-bin/bitwarden.appimage",
+            "remote_name": "bitwarden.appimage",
+            "version": "v1.29.1",
+            "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "url": "https://github.com/bitwarden/desktop",
+            "provider": "github"
+        },
+        "/home/sileht/.bin-bin/exa": {
+            "path": "/home/sileht/.bin-bin/exa",
+            "remote_name": "exa",
+            "version": "v0.10.1",
+            "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "url": "https://github.com/ogham/exa",
+            "provider": "github"
+        },
+        "/home/sileht/.bin-bin/gh": {
+            "path": "/home/sileht/.bin-bin/gh",
+            "remote_name": "gh",
+            "version": "v2.2.0",
+            "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "url": "https://github.com/cli/cli",
+            "provider": "github"
+        },
+        "/home/sileht/.bin-bin/pack": {
+            "path": "/home/sileht/.bin-bin/pack",
+            "remote_name": "pack",
+            "version": "v0.21.1",
+            "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "url": "https://github.com/buildpacks/pack",
+            "provider": "github"
+        },
+        "/home/sileht/.bin-bin/sentry-cli": {
+            "path": "/home/sileht/.bin-bin/sentry-cli",
+            "remote_name": "sentry-cli",
+            "version": "1.71.0",
+            "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "url": "https://github.com/getsentry/sentry-cli",
+            "provider": "github"
+        },
+        "/home/sileht/.bin-bin/stripe": {
+            "path": "/home/sileht/.bin-bin/stripe",
+            "remote_name": "stripe",
+            "version": "v1.7.6",
+            "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "url": "github.com/stripe/stripe-cli",
+            "provider": "github"
+        }
+    }
+}

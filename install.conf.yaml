@@ -18,6 +18,7 @@
     ~/.config/ranger: ranger
     ~/.config/rofi: rofi
     ~/.config/nvim/init.vim: nvim.vim
+    ~/.config/bin/config.json: bin-config.json
     ~/.config/nvim/cheat40.txt: cheat40.txt
     ~/.Xresources: Xresources
     ~/.gitconfig: gitconfig
@@ -46,3 +47,16 @@
     - pipx install git-pull-request
     - pipx install reno
     - pipx install rstcheck
+    - mkdir -p ~/.node-bin
+    - cd ~/.node-bin && yarn add \
+        git-split-diffs \
+        vim-language-server \
+        stylelint \
+        stylelint-config-standard \
+        jsonlint \
+        alex \
+        fixjson \
+        prettier \
+        bash-language-server \
+        markdownlint
+    - cd ~/.node-bin && yarn upgrade
