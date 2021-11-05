@@ -92,7 +92,7 @@ complete -o nospace -o default -o bashdefault -F _python_argcomplete pipx
 znap function _pip_completion pip       'eval "$( pip completion --zsh )"'
 compctl -K    _pip_completion pip
 
-zstyle ':autocomplete:*' min-delay 0.4
+zstyle ':autocomplete:*' min-delay 0.2
 zstyle ':autocomplete:*' min-input 0
 #zstyle ':autocomplete:*' widget-style menu-complete
 
@@ -253,8 +253,8 @@ upgrade() {
     sudo paccache -ruk0
     pkill -f polybar-update.sh
     (cd ~/.env && git diff --quiet && git pull --rebase --recurse-submodules && ./install ) # Only pull if not dirty
-    (cd ~/.env/zsh-znap && git pull --rebase)
-    (cd ~/.env && git commit -m "update znap" --no-edit zsh-znap )
+    (cd ~/.env/znap/zsh-snap && git pull --rebase)
+    (cd ~/.env && git commit -m "update znap" --no-edit znap/zsh-snap )
     znap pull
     pipx upgrade-all
     nvim "+set nomore" +PlugClean! +PlugUpdate! +qall

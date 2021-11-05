@@ -142,3 +142,11 @@
 	repo = /home/sileht/.env/fast-syntax-highlighting
 	repo = /home/sileht/.env/history-search-multi-word
 	repo = /home/sileht/.env/zsh-history-substring-search
+	repo = /home/sileht/.env/znap/exa
+	repo = /home/sileht/.env/znap/pure
+	repo = /home/sileht/.env/znap/zcolors
+	repo = /home/sileht/.env/znap/zsh-autocomplete
+	repo = /home/sileht/.env/znap/zsh-autosuggestions
+	repo = /home/sileht/.env/znap/zsh-completions
+	repo = /home/sileht/.env/znap/zsh-snap
+	repo = /home/sileht/.env/znap/zsh-syntax-highlighting
