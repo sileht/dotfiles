@@ -62,6 +62,7 @@ select-word-style bash
 # PLUGINS #
 ###########
 
+zstyle ':znap:*:*' git-maintenance off
 if [ -d /workspaces/.codespaces/.persistedshare/dotfiles ]; then
     source /workspaces/.codespaces/.persistedshare/dotfiles/znap/zsh-snap/znap.zsh
 else
@@ -69,19 +70,12 @@ else
 fi
 znap prompt sindresorhus/pure
 
-alias -s whatevertomakeautocomplehappy=nvim
 znap source marlonrichert/zsh-autocomplete
-znap source marlonrichert/zcolors
-znap eval zcolors zcolors
-
-#znap source zdharma-continuum/fast-syntax-highlighting
-#znap source zdharma-continuum/history-search-multi-word
-
+znap source zsh-users/zsh-autosuggestions
 znap source zsh-users/zsh-syntax-highlighting
 znap source zsh-users/zsh-completions
-znap source zsh-users/zsh-autosuggestions
-#znap install ogham/exa
-#znap source zsh-users/zsh-history-substring-search
+znap source marlonrichert/zcolors
+znap eval zcolors zcolors
 
 znap function _python_argcomplete pipx  'eval "$( register-python-argcomplete pipx  )"'
 complete -o nospace -o default -o bashdefault -F _python_argcomplete pipx
@@ -92,9 +86,13 @@ complete -o nospace -o default -o bashdefault -F _python_argcomplete pipx
 znap function _pip_completion pip       'eval "$( pip completion --zsh )"'
 compctl -K    _pip_completion pip
 
-zstyle ':autocomplete:*' min-delay 0.2
-zstyle ':autocomplete:*' min-input 0
+zstyle ':autocomplete:*' min-delay 1
+zstyle ':autocomplete:*' min-input 3
+zstyle ':autocomplete:*' insert-unambiguous yes
 #zstyle ':autocomplete:*' widget-style menu-complete
+zstyle ':autocomplete:*' widget-style menu-select
+#zstyle ':autocomplete:*' fzf-completion yes
+
 
 #    node'git-split-diffs;
 #        vim-language-server;
@@ -379,29 +377,6 @@ function fwget(){
     else
        echo " * No attachement found"
     fi
-}
-
-# CD STUFF
-function cd () {
-if [[ -z $2 ]]; then
-  if [[ -f $1 ]]; then
-    builtin cd $1:h
-  else
-    if [[ $1 = ".." ]]; then
-        new_pwd=${PWD%/*}
-        [ -z "$new_pwd" ] && new_pwd="/"
-        builtin cd $new_pwd
-    else
-        builtin cd $1
-    fi
-  fi
-else
-  if [[ -z $3 ]]; then
-    builtin cd $1 $2
-  else
-    echo cd: too many arguments
-  fi
-fi
 }
 
 diclean () {
