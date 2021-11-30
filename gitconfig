@@ -43,7 +43,7 @@
 [push]
 	default = simple
 [diff]
-	tool = vimdiff
+    tool = vimdiff
 	colorMoved = zebra
 [branch]
     autosetuprebase = always
@@ -123,7 +123,7 @@
 	remotebranch = 13 normal
 	stash = 8 normal
 	grafted = 1 normal italic
-	HEAD = 14 normal italic
+	HEAD = 14 normal dim
 [maintenance]
 	repo = /home/sileht/.env/asdf
 	repo = /home/sileht/.env/base16-shell
@@ -142,11 +142,3 @@
 	repo = /home/sileht/.env/fast-syntax-highlighting
 	repo = /home/sileht/.env/history-search-multi-word
 	repo = /home/sileht/.env/zsh-history-substring-search
-	repo = /home/sileht/.env/znap/exa
-	repo = /home/sileht/.env/znap/pure
-	repo = /home/sileht/.env/znap/zcolors
-	repo = /home/sileht/.env/znap/zsh-autocomplete
-	repo = /home/sileht/.env/znap/zsh-autosuggestions
-	repo = /home/sileht/.env/znap/zsh-completions
-	repo = /home/sileht/.env/znap/zsh-snap
-	repo = /home/sileht/.env/znap/zsh-syntax-highlighting
