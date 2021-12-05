@@ -4,10 +4,10 @@
         "/home/sileht/.bin-bin/bin": {
             "path": "/home/sileht/.bin-bin/bin",
             "remote_name": "bin",
-            "version": "v0.9.1",
+            "version": "v0.10.1",
             "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-            "url": "github.com/marcosnils/bin",
-            "provider": "github"
+            "url": "https://github.com/marcosnils/bin/releases/tag/v0.10.1",
+            "provider": ""
         },
         "/home/sileht/.bin-bin/bitwarden.appimage": {
             "path": "/home/sileht/.bin-bin/bitwarden.appimage",
@@ -28,18 +28,18 @@
         "/home/sileht/.bin-bin/gh": {
             "path": "/home/sileht/.bin-bin/gh",
             "remote_name": "gh",
-            "version": "v2.2.0",
+            "version": "v2.3.0",
             "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-            "url": "https://github.com/cli/cli",
-            "provider": "github"
+            "url": "https://github.com/cli/cli/releases/tag/v2.3.0",
+            "provider": ""
         },
         "/home/sileht/.bin-bin/pack": {
             "path": "/home/sileht/.bin-bin/pack",
             "remote_name": "pack",
-            "version": "v0.21.1",
+            "version": "v0.22.0",
             "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-            "url": "https://github.com/buildpacks/pack",
-            "provider": "github"
+            "url": "https://github.com/buildpacks/pack/releases/tag/v0.22.0",
+            "provider": ""
         },
         "/home/sileht/.bin-bin/sentry-cli": {
             "path": "/home/sileht/.bin-bin/sentry-cli",
@@ -52,10 +52,10 @@
         "/home/sileht/.bin-bin/stripe": {
             "path": "/home/sileht/.bin-bin/stripe",
             "remote_name": "stripe",
-            "version": "v1.7.6",
+            "version": "v1.7.8",
             "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-            "url": "github.com/stripe/stripe-cli",
-            "provider": "github"
+            "url": "https://github.com/stripe/stripe-cli/releases/tag/v1.7.8",
+            "provider": ""
         }
     }
 }
