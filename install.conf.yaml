@@ -34,8 +34,6 @@
     ~/.xsessionrc: xsessionrc
     ~/.xsession: xsessionrc
     ~/.wgetrc: wgetrc
-    ~/.zlogin: zlogin
-    ~/.zlogout: zlogout
     ~/.zprofile: zprofile
     ~/.zshenv: zshenv
     ~/.zshrc: zshrc

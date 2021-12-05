@@ -1,6 +1,6 @@
-export PATH="/usr/lib/ccache:$HOME/.env/bin:$HOME/.bin:$HOME/.local/bin:$HOME/.bin-bin:$HOME/.pyenv/shims:$HOME/.env/node/node_modules/.bin;/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/games:/usr/games:/var/lib/snapd/snap/bin"
-[ -n "$VIRTUAL_ENV" ] && export PATH=$VIRTUAL_ENV/bin:$PATH
-if [ -x /usr/bin/gnome-keyring-daemon -a -z "$SSH_AUTH_SOCK" ]; then
-    eval $(/usr/bin/gnome-keyring-daemon --start)
-    export SSH_AUTH_SOCK
-fi
+export PATH="/usr/lib/ccache:$HOME/.env/bin:$HOME/.bin:$HOME/.local/bin:$HOME/.local/npi/node_modules/.bin:$HOME/.bin-bin:$HOME/.pyenv/shims:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/games:/usr/games:/var/lib/snapd/snap/npm_upgradebin"
+#[ -n "$VIRTUAL_ENV" ] && export PATH=$VIRTUAL_ENV/bin:$PATH
+#if [ -x /usr/bin/gnome-keyring-daemon -a -z "$SSH_AUTH_SOCK" ]; then
+#    eval $(/usr/bin/gnome-keyring-daemon --start)
+#    export SSH_AUTH_SOCK
+#fi

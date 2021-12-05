@@ -28,7 +28,8 @@ Plug 'tpope/vim-dotenv'
 
 Plug 'rhysd/vim-grammarous'
 
-Plug 'liuchengxu/vim-clap'      " CTRL+o
+Plug 'liuchengxu/vim-clap', { 'do': ':Clap install-binary' }  " CTRL+o
+Plug 'akinsho/toggleterm.nvim'
 
 Plug 'lilydjwg/colorizer'       " color hexa code (eg: #0F12AB)
 Plug 'luochen1990/rainbow'      " special parenthesis colors
@@ -49,6 +50,7 @@ Plug 'sheerun/vim-polyglot'     " Syntax highlight for all languages
 
 Plug 'tpope/vim-fugitive'
 Plug 'mhinz/vim-signify'
+Plug 'kdheepak/lazygit.nvim'
 
 Plug 'junegunn/vim-github-dashboard'
 Plug 'lifepillar/vim-cheat40'
@@ -319,6 +321,25 @@ nmap ga <Plug>(EasyAlign)
 " ### OTHER PLUGINS ###
 " #####################
 
+lua << EOF
+require("toggleterm").setup{
+    shell = "zsh"
+}
+function _G.set_terminal_keymaps()
+  local opts = {noremap = true}
+  vim.api.nvim_buf_set_keymap(0, 't', '<esc>', [[<C-\><C-n>]], opts)
+  vim.api.nvim_buf_set_keymap(0, 't', 'jk', [[<C-\><C-n>]], opts)
+  vim.api.nvim_buf_set_keymap(0, 't', '<C-h>', [[<C-\><C-n><C-W>h]], opts)
+  vim.api.nvim_buf_set_keymap(0, 't', '<C-j>', [[<C-\><C-n><C-W>j]], opts)
+  vim.api.nvim_buf_set_keymap(0, 't', '<C-k>', [[<C-\><C-n><C-W>k]], opts)
+  vim.api.nvim_buf_set_keymap(0, 't', '<C-l>', [[<C-\><C-n><C-W>l]], opts)
+end
+EOF
+
+autocmd! TermOpen term://*toggleterm#* lua set_terminal_keymaps()
+nnoremap <silent> <c-t> :ToggleTerm<CR>
+nnoremap <silent> <leader>gg :LazyGit<CR>
+
 "nnoremap <C-m> :Clap quickfix<cr>
 nnoremap <C-p> :Clap grep2<cr>
 nnoremap <C-o> :Clap gfiles<cr>
@@ -411,7 +432,11 @@ endfunction
 
 function! SetProjectRoot()
   " default to the current file's directory
-  lcd %:p:h
+  let current_file_dir = expand("%:p:h")
+  if empty(current_file_dir) || !isdirectory(current_file_dir)
+      return
+  endif
+  exe "lcd " . current_file_dir
   let git_dir = trim(system("git rev-parse --show-toplevel"))
   let is_not_git_dir = matchstr(git_dir, '^fatal:.*')
   if empty(is_not_git_dir) && isdirectory(git_dir."/.tox/pep8")

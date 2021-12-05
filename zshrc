@@ -86,35 +86,26 @@ complete -o nospace -o default -o bashdefault -F _python_argcomplete pipx
 znap function _pip_completion pip       'eval "$( pip completion --zsh )"'
 compctl -K    _pip_completion pip
 
-zstyle ':autocomplete:*' min-delay 1
-zstyle ':autocomplete:*' min-input 3
-zstyle ':autocomplete:*' insert-unambiguous yes
+zstyle ':autocomplete:*' min-delay 0
+zstyle ':autocomplete:*' min-input 2
+#zstyle ':autocomplete:*' insert-unambiguous yes
 #zstyle ':autocomplete:*' widget-style menu-complete
 zstyle ':autocomplete:*' widget-style menu-select
 #zstyle ':autocomplete:*' fzf-completion yes
 
 
-#    node'git-split-diffs;
-#        vim-language-server;
-#        stylelint;
-#        stylelint-config-standard;
-#        jsonlint;
-#        alex;
-#        fixjson;
-#        prettier;
-#        bash-language-server;
-#        markdownlint' \
-#    sbin'p:venv/bin/git-pull-request;
-#        n:node_modules/.bin/markdown-it;
-#        n:node_modules/.bin/alex;
-#        n:node_modules/.bin/fixjson;
-#        n:node_modules/.bin/prettier;
-#        n:node_modules/.bin/stylelint;
-#        n:node_modules/.bin/jsonlint;
-#        n:node_modules/.bin/bash-language-server;
-#        n:node_modules/.bin/git-split-diffs;
-#        n:node_modules/.bin/vim-language-server'
-#zinit load zdharma-continuum/null
+NPM_PACKAGES=(
+    git-split-diffs
+    vim-language-server
+    stylelint
+    stylelint-config-standard
+    jsonlint
+    alex
+    fixjson
+    prettier
+    bash-language-server
+    markdownlint
+)
 
 #########
 # THEME #
@@ -166,13 +157,14 @@ HISTSIZE=10000
 SAVEHIST=$HISTSIZE
 LISTMAX=1000
 #setopt bang_hist          # treat ! specially like csh did
-setopt hist_ignore_dups   # ignore duplicates in the history
-setopt extended_history   # save timestamp and duration with each event
-setopt hist_find_no_dups  # skip over non-contiguous duplicates when searching history
-setopt hist_ignore_space  # don't store commands starting with a space in the history file
-setopt hist_no_store      # don't store history/fc -l invocations
-setopt hist_reduce_blanks # remove superfluous blanks from each command line
-setopt histverify         # when using ! cmds, confirm first
+#setopt hist_ignore_dups   # ignore duplicates in the history
+setopt hist_ignore_all_dups  # remove previous command in history in case of duplicates
+setopt extended_history      # save timestamp and duration with each event
+setopt hist_find_no_dups     # skip over non-contiguous duplicates when searching history
+setopt hist_ignore_space     # don't store commands starting with a space in the history file
+setopt hist_no_store         # don't store history/fc -l invocations
+setopt hist_reduce_blanks    # remove superfluous blanks from each command line
+setopt histverify            # when using ! cmds, confirm first
 
 ###############
 # Interactive #
@@ -205,12 +197,11 @@ set -C                 # Don't ecrase file with >, use >| (overwrite) or >> (app
 ##############
 #setopt auto_list         # automatically list choices on an ambiguous completion
 #setopt auto_menu         # use menu after the second completion request
-setopt rec_exact         # recognise exact matches even if they're ambiguous
-setopt always_to_end     # move cursor to end of word being completed
-setopt correct           # try to correct the spelling if possible
-setopt correctall        # correct all arguments, not just the command
-setopt completeinword    # not just at the end
-setopt always_to_end     # move to cursor to the end after completion
+# setopt rec_exact         # recognise exact matches even if they're ambiguous
+# setopt always_to_end     # move cursor to end of word being completed
+# setopt correct           # try to correct the spelling if possible
+# setopt correctall        # correct all arguments, not just the command
+# setopt completeinword    # not just at the end
 #setopt chase_dots        # Replace ../ by the right directory
 #setopt complete_aliases
 #setopt listpacked        # Small list
@@ -218,30 +209,37 @@ setopt always_to_end     # move to cursor to the end after completion
 #setopt auto_param_keys   # be magic about adding/removing final characters on tab completion
 #setopt auto_param_slash  # be magic about adding/removing final characters on tab completion
 #setopt auto_remove_slash # be magic about adding/removing final characters on tab completion
-zmodload zsh/complist    # load fancy completion list and menu handler
+#zmodload zsh/complist    # load fancy completion list and menu handler
 
 # Use cache
 zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path $ZVARDIR/compcache
 ## allow one error for every three characters typed in approximate completer
-zstyle -e ':completion:*:approximate:*' max-errors 'reply=( $(( ($#PREFIX+$#SUFFIX)/3 )) numeric )'
+#zstyle -e ':completion:*:approximate:*' max-errors 'reply=( $(( ($#PREFIX+$#SUFFIX)/3 )) numeric )'
 ## match uppercase from lowercase
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
-zrecompile ~/.zprofile ~/.zshenv ~/.zlogin ~/.zlogout ~/.zshrc | while read pre file post; do
-    case "$post" in
-      succeeded) rm -f "${file%:}".old;;
-      *) :;;
-    esac
-  done
+#zrecompile ~/.zprofile ~/.zshenv ~/.zshrc | while read pre file post; do
+#    case "$post" in
+#      succeeded) rm -f "${file%:}".old;;
+#      *) :;;
+#    esac
+#  done
 
 
-zcompileall(){
-    for file in ~/.zprofile ~/.zshenv ~/.zlogin ~/.zlogout ~/.zshrc ; do
-        rm -f $file.zwc
-        rm -f $file.zwc.old
-        zcompile $file
-    done
+#zcompileall(){
+#    for file in ~/.zprofile ~/.zshenv ~/.zshrc ; do
+#        rm -f $file.zwc
+#        rm -f $file.zwc.old
+#        zcompile $file
+#    done
+#}
+
+npi() {
+    local dir=$HOME/.local/npi
+    mkdir -p $dir
+    cd $dir
+    npm install --no-fund --no-audit --no-save --no-package-lock $NPM_PACKAGES
 }
 
 upgrade() {
@@ -255,6 +253,8 @@ upgrade() {
     (cd ~/.env && git commit -m "update znap" --no-edit znap/zsh-snap )
     znap pull
     pipx upgrade-all
+    npi
+    bin update -y
     nvim "+set nomore" +PlugClean! +PlugUpdate! +qall
 }
 
@@ -272,21 +272,6 @@ function i() { sp="$(cat $ZVARDIR/.saved_dir 2>/dev/null)"; [ -d $sp -a -r $sp ]
 function ii() { p=$(cat $ZVARDIR/.saved_dir_* | fzf) ; cd $p ; s ; }
 function zshexit() {
     rm -f $ZVARDIR/.saved_dir_$$
-}
-function p() {
-    local -a working_dirs=($(ls -1d ~/workspace/*/${1}*/.git/.. | sed -e 's@/\.git/\.\./@@g'))
-    if [ ${#working_dirs[@]} -eq 1 ] ; then
-        cd "${working_dirs}" ; s ; return
-    else
-        for wd in ${working_dirs[@]}; do
-            if [ "$(basename $wd)" == "${1}" ]; then
-                cd "$wd"; s; return
-            fi
-        done
-        select wd in ${working_dirs[@]}; do
-            cd "$wd"; s; return
-        done
-    fi
 }
 i
 add-zsh-hook chpwd s
@@ -330,21 +315,19 @@ alias r="ranger"
 alias psql="sudo -i -u postgres psql"
 # alias pyclean='find . \( -type f -name "*.py[co]" \) -o \( -type d -path "*__pycache__*" \) ! -path "./.tox*" -delete"'
 alias pyclean='find . \( -type f -name "*.py[co]" \) ! -path "./.tox*" -delete'
-alias getaptkey='sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com'
 alias more=less
 
 # FIND STUFF
 alias locate='noglob locate'
 alias find='noglob find'
 alias qf='find . -iname '
-function sfind(){ find "$@" | egrep -v '(Binary|binaire|\.svn|\.git|\.bzr)' ; }
 
 # GREP STUFF
 alias grep='grep --color=auto'
 alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
 function sgrep(){ grep "$@" --color=always 2>&1| grep -v -e 'binary' -e binaire -e '\.svn'  -e '\.git/' -e '\.bzr/' -e '\.mypy_cache/' -e 'node_modules/' -e '.tox/'; }
-function g(){ sgrep "$@" | more }
+function g(){ sgrep "$@" | less }
 
 # ZSH STUFF
 alias zmv="nocorrect noglob zmv"
@@ -463,21 +446,7 @@ function utox() {
 
 alias etox="nocorrect etox"
 alias utox="nocorrect utox"
-alias upip="pip install -U --upgrade-strategy eager"
 
-function sgpg(){
-    gpg_run_path=$(gpgconf --list-dirs socketdir)
-    if [ -L $gpg_run_path/S.gpg-agent ]; then
-        echo "* gpg-agent uses local systemd sockets"
-        rm -rf $gpg_run_path
-        systemctl --user start gpg-agent.socket gpg-agent-ssh.socket gpg-agent-extra.socket gpg-agent-browser.socket dirmngr.socket gpg-agent.service
-    else
-        echo "* gpg-agent uses ssh forwarded sockets"
-        systemctl --user stop gpg-agent.socket gpg-agent-ssh.socket gpg-agent-extra.socket gpg-agent-browser.socket dirmngr.socket gpg-agent.service
-        rm -rf $gpg_run_path
-        source ~/.zlogin
-    fi
-}
 ##########
 # SCREEN #
 ##########
@@ -494,8 +463,3 @@ __ssh_auth_sock_fix() {
 
 # precmd_functions+=(__ssh_auth_sock_fix)
 __ssh_auth_sock_fix
-
-INSIDE_TMUX_SCREEN="$WINDOW$TMUX_PANE"
-if [ "$HOST" == "gizmo" -a ! "$INSIDE_TMUX_SCREEN" ]; then
-    sc ; exit 0;
-fi
