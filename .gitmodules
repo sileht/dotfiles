@@ -13,9 +13,6 @@
 [submodule "dotbot"]
 	path = dotbot
 	url = https://github.com/anishathalye/dotbot
-[submodule "zinit"]
-	path = zinit
-	url = https://github.com/zdharma-continuum/zinit.git
 [submodule "zsh-snap"]
 	path = znap/zsh-snap
 	url = https://github.com/marlonrichert/zsh-snap.git
