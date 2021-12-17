@@ -4,18 +4,26 @@
         "/home/sileht/.bin-bin/bin": {
             "path": "/home/sileht/.bin-bin/bin",
             "remote_name": "bin",
-            "version": "v0.10.1",
+            "version": "v0.11.0",
             "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-            "url": "https://github.com/marcosnils/bin/releases/tag/v0.10.1",
+            "url": "https://github.com/marcosnils/bin/releases/tag/v0.11.0",
             "provider": ""
         },
         "/home/sileht/.bin-bin/bitwarden.appimage": {
             "path": "/home/sileht/.bin-bin/bitwarden.appimage",
             "remote_name": "bitwarden.appimage",
-            "version": "v1.29.1",
+            "version": "v1.30.0",
             "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-            "url": "https://github.com/bitwarden/desktop",
-            "provider": "github"
+            "url": "https://github.com/bitwarden/desktop/releases/tag/v1.30.0",
+            "provider": ""
+        },
+        "/home/sileht/.bin-bin/deno": {
+            "path": "/home/sileht/.bin-bin/deno",
+            "remote_name": "deno",
+            "version": "v1.17.0",
+            "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "url": "https://github.com/denoland/deno/releases/tag/v1.17.0",
+            "provider": ""
         },
         "/home/sileht/.bin-bin/exa": {
             "path": "/home/sileht/.bin-bin/exa",
@@ -36,9 +44,9 @@
         "/home/sileht/.bin-bin/pack": {
             "path": "/home/sileht/.bin-bin/pack",
             "remote_name": "pack",
-            "version": "v0.22.0",
+            "version": "v0.23.0",
             "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-            "url": "https://github.com/buildpacks/pack/releases/tag/v0.22.0",
+            "url": "https://github.com/buildpacks/pack/releases/tag/v0.23.0",
             "provider": ""
         },
         "/home/sileht/.bin-bin/sentry-cli": {
@@ -52,10 +60,26 @@
         "/home/sileht/.bin-bin/stripe": {
             "path": "/home/sileht/.bin-bin/stripe",
             "remote_name": "stripe",
-            "version": "v1.7.8",
+            "version": "v1.7.9",
             "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-            "url": "https://github.com/stripe/stripe-cli/releases/tag/v1.7.8",
+            "url": "https://github.com/stripe/stripe-cli/releases/tag/v1.7.9",
             "provider": ""
+        },
+        "/home/sileht/.bin-bin/taplo": {
+            "path": "/home/sileht/.bin-bin/taplo",
+            "remote_name": "taplo",
+            "version": "release-cli-0.5.0",
+            "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "url": "https://github.com/tamasfe/taplo/",
+            "provider": "github"
+        },
+        "/home/sileht/.bin-bin/vale": {
+            "path": "/home/sileht/.bin-bin/vale",
+            "remote_name": "vale",
+            "version": "v2.13.0",
+            "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "url": "https://github.com/errata-ai/vale",
+            "provider": "github"
         }
     }
 }

@@ -45,3 +45,4 @@
     - pipx install git-pull-request
     - pipx install reno
     - pipx install rstcheck
+    - pipx install jedi-language-server

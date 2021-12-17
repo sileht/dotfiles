@@ -9,52 +9,39 @@ call plug#begin('~/.local/share/nvim/plugged')
 
 " Style
 Plug 'chriskempson/base16-vim'
-Plug 'ryanoasis/vim-devicons'
-Plug 'itchyny/lightline.vim'
-Plug 'maximbaz/lightline-ale'
-Plug 'mengelbrecht/lightline-bufferline'
-Plug 'daviesjamie/vim-base16-lightline'
-Plug 'ryanoasis/vim-devicons'
+
+Plug 'nvim-lualine/lualine.nvim'
+Plug 'kdheepak/tabline.nvim'
+Plug 'kyazdani42/nvim-web-devicons'
+
 Plug 'lambdalisue/suda.vim'
 " Text navigation
 Plug 'nacitar/terminalkeys.vim'
 Plug 'junegunn/vim-easy-align'
-" File/Tag browsing
-Plug 'tmux-plugins/vim-tmux-focus-events'
-" Plug 'psliwka/vim-smoothie'
-Plug 'joeytwiddle/sexy_scroller.vim'
+"""
+Plug 'nvim-treesitter/nvim-treesitter'  " syntax color
+Plug 'romainl/vim-cool'                 " auto hlsearch
+Plug 'nvim-lua/plenary.nvim'            " Job
+Plug 'nvim-telescope/telescope.nvim'    " find <leader>pX
+Plug 'folke/trouble.nvim'               " fancy diagnostic
+Plug 'jose-elias-alvarez/null-ls.nvim'  " fixer and linter
 
-Plug 'tpope/vim-dotenv'
+Plug 'neovim/nvim-lspconfig'
+Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}            " complete
+Plug 'ms-jpq/coq.artifacts', {'branch': 'artifacts'} " complete
 
-Plug 'rhysd/vim-grammarous'
 
-Plug 'liuchengxu/vim-clap', { 'do': ':Clap install-binary' }  " CTRL+o
-Plug 'akinsho/toggleterm.nvim'
-
-Plug 'lilydjwg/colorizer'       " color hexa code (eg: #0F12AB)
-Plug 'luochen1990/rainbow'      " special parenthesis colors
-Plug 'inside/vim-search-pulse'
-
-" Language
-Plug 'dense-analysis/ale'
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-"Plug 'tbodt/deoplete-tabnine', { 'do': './install.sh' }
-
-"Plug 'fszymanski/deoplete-emoji'
-Plug 'dpelle/vim-Grammalecte'
-Plug 'tpope/vim-rhubarb'        " GitHub ticket completion
-"Plug 'sileht/vim-linear'       " Linear ticket completion
+""""Plug 'tpope/vim-rhubarb'        " GitHub ticket completion
+""""Plug 'sileht/vim-linear'       " Linear ticket completion
 Plug '~/workspace/sileht/vim-linear/'
 
-Plug 'sheerun/vim-polyglot'     " Syntax highlight for all languages
-
-Plug 'tpope/vim-fugitive'
-Plug 'mhinz/vim-signify'
-Plug 'kdheepak/lazygit.nvim'
-
-Plug 'junegunn/vim-github-dashboard'
-Plug 'lifepillar/vim-cheat40'
-"Plug 'github/copilot.vim'
+"Plug 'tpope/vim-fugitive'
+"Plug 'mhinz/vim-signify'
+"Plug 'kdheepak/lazygit.nvim'
+"""
+""""Plug 'junegunn/vim-github-dashboard'
+"Plug 'lifepillar/vim-cheat40'
+""""Plug 'github/copilot.vim'
 
 call plug#end()
 
@@ -128,7 +115,6 @@ endif
 
 nnoremap P "0p                            " Paste last yank
 nnoremap Y y$                             " Yank from the cursor to the end of the line, to be consistent with C and D.
-nmap <silent> <leader>/ :nohlsearch<CR>   " Clean hlsearch on new search
 command! R execute "source ~/.config/nvim/init.vim"
 
 " ###############
@@ -137,20 +123,6 @@ command! R execute "source ~/.config/nvim/init.vim"
 
 autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
     \| exe "normal! g'\"" | endif
-" Cut at 80 for some filetype
-"autocmd FileType c,cpp,java,go,php,javascript,javascriptreact,puppet,rst set textwidth=79
-"autocmd FileType python set textwidth=90
-
-" libvirt C style, skip me if editorconfig is present ?
-"autocmd BufWritePre,BufRead *.c setlocal smartindent cindent cinoptions=(0,:0,l1,t0,L3
-"autocmd BufWritePre,BufRead *.h setlocal smartindent cindent cinoptions=(0,:0,l1,t0,L3
-
-""autocmd BufWritePre,BufRead *.cpp setlocal shiftwidth=4 expandtab tabstop=4 softtabstop=4
-""autocmd BufWritePre,BufRead *.c setlocal shiftwidth=4 expandtab tabstop=4 softtabstop=4
-""autocmd BufWritePre,BufRead *.h setlocal shiftwidth=4 expandtab tabstop=4 softtabstop=4
-
-" Javascript people like 2 chars sep
-"autocmd FileType javascript,javascriptreact set shiftwidth=2 tabstop=4 softtabstop=4
 
 
 match ErrorMsg /\s\+$\| \+\ze\t/
@@ -158,7 +130,7 @@ match ErrorMsg /\s\+$\| \+\ze\t/
 " ##############
 " ### Themes ###
 " ##############
-"set t_Co=256            " Enable 256 colors to stop the CSApprox warning and make xterm vim shine
+""set t_Co=256            " Enable 256 colors to stop the CSApprox warning and make xterm vim shine
 let base16colorspace=256
 if filereadable(expand("~/.vimrc_background"))
   source ~/.vimrc_background
@@ -166,149 +138,203 @@ else
   colorscheme base16-eighties
 endif
 
-
 set cursorline
 set laststatus=2        " Show statusbar
-"set showtabline=2       " Show tabline
+set showtabline=1       " Show tabline
 
-" #################
-" ### LIGHTLINE ###
-" #################
-let g:lightline#bufferline#number_separator = ':'
-let g:lightline#bufferline#icon_position    = 'right'
-let g:lightline#bufferline#show_number      = 1
-let g:lightline#bufferline#shorten_path     = 1
-let g:lightline#bufferline#unicode_symbols  = 1
-let g:lightline#bufferline#unnamed          = '[No Name]'
-let g:lightline#bufferline#enable_devicons  = 1
-let g:lightline#bufferline#number_map       = {
-\ 0: '⁰', 1: '¹', 2: '²', 3: '³', 4: '⁴',
-\ 5: '⁵', 6: '⁶', 7: '⁷', 8: '⁸', 9: '⁹'}
-"let g:lightline#bufferline#composed_number_map = {
-"\ 1:  '⑴ ', 2:  '⑵ ', 3:  '⑶ ', 4:  '⑷ ', 5:  '⑸ ',
-"\ 6:  '⑹ ', 7:  '⑺ ', 8:  '⑻ ', 9:  '⑼ ', 10: '⑽ ',
-"\ 11: '⑾ ', 12: '⑿ ', 13: '⒀ ', 14: '⒁ ', 15: '⒂ ',
-"\ 16: '⒃ ', 17: '⒄ ', 18: '⒅ ', 19: '⒆ ', 20: '⒇ '}
+" ##################
+" ### LSP CONFIG ###
+" ##################
 
-let g:lightline                    = {}
-let g:lightline.colorscheme        = 'base16'
-let g:lightline.active             = {}
-let g:lightline.active.left        = [['mode', 'paste', 'readonly', 'modified', 'buffers']]
-let g:lightline.active.right       = [['lineinfo'], ['percent'], ['gitbranch', 'fileformat', 'fileencoding', 'filetype']]
-let g:lightline.inactive           = {}
-let g:lightline.inactive.left      = [['filename']]
-let g:lightline.inactive.right     = [['lineinfo'], ['percent'], ['fileformat', 'fileencoding', 'filetype']]
-let g:lightline.component_expand   = {'buffers': 'lightline#bufferline#buffers'}
-let g:lightline.component_type     = {'buffers': 'tabsel'}
-let g:lightline.separator          = { 'left': "\ue0b0", 'right': "\ue0b2" }
-let g:lightline.subseparator       = { 'left': "\ue0b1", 'right': "\ue0b3" }
-let g:lightline.component_function = { 'gitbranch': 'FugitiveHead' }
+let g:coq_settings = { 'auto_start': 'shut-up', 'clients': {} }
+let g:coq_settings.clients.snippets = { 'enabled': v:false }
 
-nmap <Leader>1 <Plug>lightline#bufferline#go(1)
-nmap <Leader>2 <Plug>lightline#bufferline#go(2)
-nmap <Leader>3 <Plug>lightline#bufferline#go(3)
-nmap <Leader>4 <Plug>lightline#bufferline#go(4)
-nmap <Leader>5 <Plug>lightline#bufferline#go(5)
-nmap <Leader>6 <Plug>lightline#bufferline#go(6)
-nmap <Leader>7 <Plug>lightline#bufferline#go(7)
-nmap <Leader>8 <Plug>lightline#bufferline#go(8)
-nmap <Leader>9 <Plug>lightline#bufferline#go(9)
-nmap <Leader>0 <Plug>lightline#bufferline#go(10)
-nmap <Leader>c1 <Plug>lightline#bufferline#delete(1)
-nmap <Leader>c2 <Plug>lightline#bufferline#delete(2)
-nmap <Leader>c3 <Plug>lightline#bufferline#delete(3)
-nmap <Leader>c4 <Plug>lightline#bufferline#delete(4)
-nmap <Leader>c5 <Plug>lightline#bufferline#delete(5)
-nmap <Leader>c6 <Plug>lightline#bufferline#delete(6)
-nmap <Leader>c7 <Plug>lightline#bufferline#delete(7)
-nmap <Leader>c8 <Plug>lightline#bufferline#delete(8)
-nmap <Leader>c9 <Plug>lightline#bufferline#delete(9)
-nmap <Leader>c0 <Plug>lightline#bufferline#delete(10)
-nmap <S-left>  :bprevious<Enter>
-nmap <S-right> :bnext<Enter>
-autocmd BufWritePost,TextChanged,TextChangedI * call lightline#update()
+lua << EOF
+local lspconfig = require('lspconfig')
+local lspconfig_configs = require('lspconfig.configs')
+local coq = require('coq')
+local null_ls = require('null-ls')
 
-" ###########
-" ### ALE ###
-" ###########
+require('tabline').setup({enable = false})
+require('lualine').setup({
+  tabline = {
+    lualine_a = {},
+    lualine_b = {},
+    lualine_c = { require'tabline'.tabline_buffers },
+    lualine_x = { require'tabline'.tabline_tabs },
+    lualine_y = {},
+    lualine_z = {},
+  },
+})
+require('telescope').setup()
+require("trouble").setup({
+    auto_open = true,
+    auto_close = true,
+    use_diagnostic_signs = true,
+    auto_preview = true,
+})
+require('nvim-treesitter.configs').setup({
+  ensure_installed = "maintained",
+  indent = {
+    enable = true,
+  },
+  incremental_selection = {
+    enable = true,
+  },
+  highlight = {
+    additional_vim_regex_highlighting = true,
+    enable = true,
+  }
+})
 
+vim.diagnostic.config({virtual_text = false, sign = false, underline = false,})
 
-" Only use errors and fixers reporting of ALE
-let g:deoplete#enable_at_startup = 1
-call deoplete#custom#option('sources', {
-    \ '_': ['ale'],
-    \})
-"'tabnine', 'emoji'],
-"
-let g:ale_completion_enabled = 0
-let g:ale_fix_on_save = 0
-let g:ale_fixers = {}
-let g:ale_fixers['*'] = ['remove_trailing_lines', 'trim_whitespace']
-let g:ale_fixers.javascript = ['eslint']
-let g:ale_fixers.jsx = ['eslint']
-let g:ale_fixers.python = ["isort", "black"]
-let g:ale_fixers.json = ['fixjson', 'jq']
+-- Use an on_attach function to only map the following keys
+-- after the language server attaches to the current buffer
+local on_attach = function(client, bufnr)
+  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
 
-let g:ale_linters = {}
-let g:ale_linters.sh = ['language_server']
-let g:ale_linters.markdown = ['vale', 'alex', 'markdownlint']
-let g:ale_linters.rst = ['vale', 'alex', 'rstcheck']
-let g:ale_linters.yaml = ['yamllint']
-let g:ale_linters.text = ['vale']
-let g:ale_linters.asciidoc = ['vale']
-let g:ale_linters.vim = ['vimls']
-let g:ale_linters.json = ['jsonlint', 'jq']
-let g:ale_linters.python = ['jedils', 'flake8', 'mypy']
-let g:ale_linters.javascript = ['stylelint', 'eslint']
-let g:ale_linters.css = ["stylelint"]
-let g:ale_linter_aliases = {}
-let g:ale_linter_aliases.jsx = ['css', 'javascript']
-let g:ale_linter_aliases.gitcommit = ['text']
+  -- vim.o.completeopt = 'menuone,noselect'
 
-"copen " open quickfix list on startup
-"let g:ale_set_balloons = 1
-"let g:ale_hover_to_floating_preview = 1
-let g:ale_set_loclist = 1
-let g:ale_set_quickfix = 0
-let g:ale_open_list = 1
-"autocmd BufUnload * if empty(&bt) | lclose | endif
-let g:ale_list_window_size = 5
-let g:ale_keep_list_window_open = 0
-let g:ale_set_highlights = 0
+  -- Enable completion triggered by <c-x><c-o>
+  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-let g:ale_vim_vimls_executable = 'npx vim-language-server'
+  -- Mappings.
+  local opts = { noremap=true, silent=true }
 
-let g:ale_lint_on_text_changed = 'never'
-" let g:ale_lint_on_insert_leave = 0
-" let g:ale_lint_on_enter = 0
+  buf_set_keymap('n', '<F5>', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+  buf_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+  buf_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+  buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+  buf_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
+  buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+  buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+  buf_set_keymap('n', '<leader>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+  buf_set_keymap('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
 
-let g:ale_echo_msg_error_str = '⛔'
-let g:ale_echo_msg_warning_str = '⚠'
-let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+  if client.resolved_capabilities.document_formatting then
+    vim.cmd("autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()")
+  end
+end
 
-let g:ale_sign_column_always = 1  " always show left column
-let g:ale_sign_error = '⛔'
-let g:ale_sign_info = 'ℹ'
-let g:ale_sign_offset = 1000000
-let g:ale_sign_style_error = '⛔'
-let g:ale_sign_style_warning = '⚠'
-let g:ale_sign_warning = '⚠'
+local log_to_message = function(chan_id, data, name)
+  for _, d in ipairs(data) do
+    print(d);
+  end
+end
 
-function! ALESearch()
-    call inputsave()
-    let search = input('Search symbol: ', expand('<cword>'))
-    call inputrestore()
-    execute "ALESymbolSearch ".search
-endfunction
+-- html: Enable (broadcasting) snippet capability for completion
+-- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#html
+local vscode_lsp_capabilities = vim.lsp.protocol.make_client_capabilities()
+vscode_lsp_capabilities.textDocument.completion.completionItem.snippetSupport = true
 
-nmap <silent> <F4> :GrammarousCheck<CR>
-nmap <silent> <F5> :ALERename<CR>
-nmap <silent> <F6> :ALEGoToDefinition<CR>
-nmap <silent> <F7> :ALEFindReferences<CR>
-nmap <silent> <F8> :call ALESearch()<CR>
-nmap <silent> <leader>r :ALERename<CR>
-nmap <silent> <leader>d :ALEGoToDefinition<CR>
-nmap <silent> <leader>s :ALEFindReferences<CR>
+local lsp_options = {
+  common = {
+    on_attach = on_attach,
+    flags = {
+      debounce_text_changes = 150,
+    },
+  },
+  html = {
+    capabilities = vscode_lsp_capabilities,
+  },
+  jsonls = {
+    capabilities = vscode_lsp_capabilities,
+  },
+  eslint = {
+    on_attach = function(client, bufnr)
+      vim.cmd("autocmd BufWritePre <buffer> :EslintFixAll")
+      return on_attach(client, bufnr)
+    end
+  },
+  jedi_language_server = {
+    on_new_config = function(new_config, new_root_dir)
+      local venv = new_root_dir .. '/.tox/pep8';
+      if vim.fn.isdirectory(venv) ~= 0 then
+          local venv_jedi_bin = venv .. '/bin/jedi-language-server';
+          if vim.fn.filereadable(venv_jedi_bin) == 0 then
+            local pip_cmd = venv .. '/bin/pip'
+            local full_pip_cmd = pip_cmd .. ' install jedi-language-server'
+            vim.fn.jobstart(venv .. '/bin/pip install jedi-language-server', {
+                on_stdout = log_to_message,
+                on_stderr = log_to_message,
+                on_exit = function()
+                    for _, client in ipairs(vim.lsp.get_active_clients()) do
+                        print(client.name)
+                        if (client.name == "jedi_language_server") then
+                            client.stop()
+                        end
+                    end
+                    lspconfig_configs.jedi_language_server.launch()
+                    --vim.api.nvim_command('LspStop python')
+                    --vim.api.nvim_command('LspRestart python')
+                end
+            })
+          else
+            new_config.cmd = {venv_jedi_bin};
+          end
+      end
+      return new_config;
+    end
+  }
+}
+local servers = { 'vimls', 'eslint', 'bashls', 'stylelint_lsp', 'yamlls', 'jedi_language_server', 'html', 'jsonls', 'taplo', 'yamlls' }
+for _, lsp in ipairs(servers) do
+  local options = vim.deepcopy(lsp_options.common)
+  if (lsp_options[lsp] ~= nil) then
+    options = vim.tbl_extend("force", options, lsp_options[lsp])
+  end
+  lspconfig[lsp].setup(coq.lsp_ensure_capabilities(options))
+end
+
+require("null-ls").setup({
+    debug = false,
+    on_attach = on_attach,
+    sources = {
+        null_ls.builtins.diagnostics.mypy.with({
+           prefer_local = ".tox/pep8/bin",
+        }),
+        null_ls.builtins.diagnostics.flake8.with({
+            prefer_local = ".tox/pep8/bin",
+        }),
+        null_ls.builtins.formatting.isort.with({
+            prefer_local = ".tox/pep8/bin",
+        }),
+        null_ls.builtins.formatting.black.with({
+            prefer_local = ".tox/pep8/bin",
+        }),
+
+        null_ls.builtins.diagnostics.yamllint,
+        null_ls.builtins.formatting.fixjson,
+        null_ls.builtins.formatting.stylelint,
+        null_ls.builtins.formatting.eslint_d,
+        null_ls.builtins.diagnostics.eslint,
+        null_ls.builtins.diagnostics.vale,
+        null_ls.builtins.diagnostics.yamllint,
+        null_ls.builtins.diagnostics.shellcheck,
+
+        null_ls.builtins.code_actions.eslint_d,
+        null_ls.builtins.code_actions.refactoring,
+        null_ls.builtins.code_actions.gitsigns,
+        null_ls.builtins.code_actions.shellcheck,
+        null_ls.builtins.code_actions.gitrebase,
+
+        null_ls.builtins.formatting.trim_whitespace,
+        null_ls.builtins.formatting.trim_newlines,
+        null_ls.builtins.hover.dictionary,
+    },
+})
+
+EOF
+
+nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>
+nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
+nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
+nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
+
+nmap <S-left>  :TablineBufferPrevious<Enter>
+nmap <S-right> :TablineBufferNext<Enter>
 
 " ##################
 " ### EASY ALIGN ###
@@ -321,38 +347,13 @@ nmap ga <Plug>(EasyAlign)
 " ### OTHER PLUGINS ###
 " #####################
 
-lua << EOF
-require("toggleterm").setup{
-    shell = "zsh"
-}
-function _G.set_terminal_keymaps()
-  local opts = {noremap = true}
-  vim.api.nvim_buf_set_keymap(0, 't', '<esc>', [[<C-\><C-n>]], opts)
-  vim.api.nvim_buf_set_keymap(0, 't', 'jk', [[<C-\><C-n>]], opts)
-  vim.api.nvim_buf_set_keymap(0, 't', '<C-h>', [[<C-\><C-n><C-W>h]], opts)
-  vim.api.nvim_buf_set_keymap(0, 't', '<C-j>', [[<C-\><C-n><C-W>j]], opts)
-  vim.api.nvim_buf_set_keymap(0, 't', '<C-k>', [[<C-\><C-n><C-W>k]], opts)
-  vim.api.nvim_buf_set_keymap(0, 't', '<C-l>', [[<C-\><C-n><C-W>l]], opts)
-end
-EOF
-
-autocmd! TermOpen term://*toggleterm#* lua set_terminal_keymaps()
-nnoremap <silent> <c-t> :ToggleTerm<CR>
-nnoremap <silent> <leader>gg :LazyGit<CR>
-
-"nnoremap <C-m> :Clap quickfix<cr>
-nnoremap <C-p> :Clap grep2<cr>
-nnoremap <C-o> :Clap gfiles<cr>
-
 cmap w!! :w suda://%<CR>:e!<CR>
 
 source ~/.creds.vimrc
-"let g:LINEAR_STATE_IDS = ["22f2b6eb-f794-4cc7-8212-ad0094d16a2a"] 
+"let g:LINEAR_STATE_IDS = ["22f2b6eb-f794-4cc7-8212-ad0094d16a2a"]
 "let g:LINEAR_STATE_IDS = ["cdd327d2-7875-4636-ba9d-adccf335d888"]
 
 let g:github_dashboard = { 'username': 'sileht', 'password': g:GITHUB_TOKEN }
-let g:signify_update_on_focusgained = 1
-let g:vim_search_pulse_duration = 200
 let g:rainbow_active = 1
 
 function! MyOmni(findstart, base) abort
@@ -363,28 +364,6 @@ function! MyOmni(findstart, base) abort
 endfunction
 autocmd FileType gitcommit setlocal omnifunc=MyOmni
 
-" ###################
-" ### SPELL CHECK ###
-" ###################
-" Use en_us spell and completion per default for markdown and rst
-autocmd FileType gitcommit,rst,mkd,markdown,jinja silent! call ToggleSpell()
-autocmd FileType gitcommit,rst,mkd,markdown,jinja set complete+=kspell
-
-
-let b:myLang=0
-let g:myLangList=["nospell", "en_us", "fr"]
-function! ToggleSpell()
-  let b:myLang=b:myLang+1
-  if b:myLang>=len(g:myLangList) | let b:myLang=0 | endif
-  if b:myLang==0
-    setlocal nospell
-  else
-    execute "setlocal spell spelllang=".get(g:myLangList, b:myLang)
-  endif
-  echo "spell checking language:" g:myLangList[b:myLang]
-endfunction
-
-nmap <silent> <F9> :call ToggleSpell()<CR>
 " #########################
 " ### VARIOUS FUNCTIONS ###
 " #########################
@@ -412,71 +391,16 @@ function! InitializeDirectories()
 endfunction
 call InitializeDirectories()
 
-function! CommandInBuffer(name, cmd)
-    function! s:OnEvent(job_id, data, event) dict
-        if a:event == 'stdout'
-            echom a:data[0]
-        elseif a:event == 'stderr'
-            echom a:data[0]
-        else
-            echom self.name." finished"
-        endif
-    endfunction
-    let s:callbacks = {
-    \ 'on_stdout': function('s:OnEvent'),
-    \ 'on_stderr': function('s:OnEvent'),
-    \ 'on_exit': function('s:OnEvent')
-    \ }
-    let job = jobstart(a:cmd, extend({'name': a:name}, s:callbacks))
-endfunction
-
 function! SetProjectRoot()
-  " default to the current file's directory
   let current_file_dir = expand("%:p:h")
   if empty(current_file_dir) || !isdirectory(current_file_dir)
       return
   endif
   exe "lcd " . current_file_dir
-  let git_dir = trim(system("git rev-parse --show-toplevel"))
-  let is_not_git_dir = matchstr(git_dir, '^fatal:.*')
-  if empty(is_not_git_dir) && isdirectory(git_dir."/.tox/pep8")
-    let b:ale_fix_on_save = 1
-    if expand('%:e') == "py"
-      let b:ale_python_jedils_executable = git_dir."/.tox/pep8/bin/jedi-language-server"
-      let b:ale_python_mypy_executable = git_dir."/.tox/pep8/bin/mypy"
-      let b:ale_python_flake8_executable = git_dir."/.tox/pep8/bin/flake8"
-      let b:ale_python_black_executable = git_dir."/.tox/pep8/bin/black"
-      let b:ale_python_isort_executable = git_dir."/.tox/pep8/bin/isort"
-      let packages = []
-      for package in ["jedi-language-server"]
-          if !filereadable(git_dir."/.tox/pep8/bin/".package)
-              call add(packages, package)
-          endif
-      endfor
-      if len(packages)
-          let pip_cmd = "pip install ".join(packages, " ")
-          let full_pip_cmd = git_dir."/.tox/pep8/bin/".pip_cmd
-          call CommandInBuffer(pip_cmd, full_pip_cmd)
-      endif
-    endif
-
-    if expand('%:e') == "yaml"
-      let b:ale_yaml_yamllint_options = "-c ".git_dir."/.yamllint.yml"
-    endif
-
-  endif
 endfunction
 
 " follow symlink and set working directory
 autocmd BufEnter * call SetProjectRoot()
-
-"" netrw: follow symlink and set working directory
-"autocmd CursorMoved silent *
-"  " short circuit for non-netrw files
-"  \ if &filetype == 'netrw' |
-"  \   call FollowSymlink() |
-"  \   call SetProjectRoot() |
-"  \ endif
 
 packloadall
 silent! helptags ALL
