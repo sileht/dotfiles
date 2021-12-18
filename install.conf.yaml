@@ -17,7 +17,7 @@
 - link:
     ~/.config/ranger: ranger
     ~/.config/rofi: rofi
-    ~/.config/nvim/init.vim: nvim.vim
+    ~/.config/nvim: nvim
     ~/.config/bin/config.json: bin-config.json
     ~/.Xresources: Xresources
     ~/.gitconfig: gitconfig
