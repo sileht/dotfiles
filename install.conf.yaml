@@ -19,7 +19,6 @@
     ~/.config/rofi: rofi
     ~/.config/nvim/init.vim: nvim.vim
     ~/.config/bin/config.json: bin-config.json
-    ~/.config/nvim/cheat40.txt: cheat40.txt
     ~/.Xresources: Xresources
     ~/.gitconfig: gitconfig
     ~/.gitignore-global: gitignore-global

@@ -9,10 +9,10 @@ call plug#begin('~/.local/share/nvim/plugged')
 
 " Style
 Plug 'chriskempson/base16-vim'
-
 Plug 'nvim-lualine/lualine.nvim'
 Plug 'kdheepak/tabline.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
+Plug 'psliwka/vim-smoothie'
 
 Plug 'lambdalisue/suda.vim'
 " Text navigation
@@ -33,15 +33,8 @@ Plug 'ms-jpq/coq.artifacts', {'branch': 'artifacts'} " complete
 Plug 'preservim/nerdtree'
 
 """"Plug 'tpope/vim-rhubarb'        " GitHub ticket completion
-""""Plug 'sileht/vim-linear'       " Linear ticket completion
 Plug '~/workspace/sileht/vim-linear/'
-
-"Plug 'tpope/vim-fugitive'
-"Plug 'mhinz/vim-signify'
 """
-""""Plug 'junegunn/vim-github-dashboard'
-Plug 'lifepillar/vim-cheat40'
-""""Plug 'github/copilot.vim'
 
 call plug#end()
 
@@ -63,8 +56,8 @@ set undolevels=1000             " Maximum number of changes that can be undone
 set undoreload=10000            " Maximum number lines to save for undo on a buffer reload
 set backspace=indent,eol,start  " Backspace for dummies
 set linespace=0                 " No extra spaces between rows
-"set number                      " Line numbers on
-"set relativenumber              " 0 is current line
+set number                      " Line numbers on
+set relativenumber              " 0 is current line
 set showmatch                   " Show matching brackets/parenthesis
 set incsearch                   " Find as you type search
 "set hlsearch                    " Highlight search terms
@@ -140,13 +133,12 @@ endif
 
 set cursorline
 set laststatus=2        " Show statusbar
-set showtabline=1       " Show tabline
+"set showtabline=1       " Show tabline
 
 " ##################
 " ### LSP CONFIG ###
 " ##################
 
-let g:cheat40_use_default = 0
 let g:coq_settings = { 'auto_start': 'shut-up', 'clients': {} }
 let g:coq_settings.clients.snippets = { 'enabled': v:false }
 
@@ -156,15 +148,50 @@ local lspconfig_configs = require('lspconfig.configs')
 local coq = require('coq')
 local null_ls = require('null-ls')
 
+local tricks_and_tips_str = [[
+<F5> 🠮 lsp.rename
+gD 🠮 lsp.delaration
+gd 🠮 lsp.definition
+gr 🠮 lsp.refereances
+K 🠮 lsp.hover_doc
+gi 🠮 lsp.implementation
+<C-k> 🠮 lsp.signature
+<leader>D 🠮 lsp.typedef
+<leader>ca 🠮 lsp.codeaction
+<leader>fp 🠮 telescope.builtin
+<leader>fc 🠮 telescope.git_commits
+<leader>fs 🠮 telescope.lsp_symbols
+<leader>ff 🠮 telescope.find_files
+<leader>fg 🠮 telescope.live_grep
+<leader>fb 🠮 telescope.buffers
+<leader>fh 🠮 telescope.help_tags
+<leader>e 🠮 NERDTree
+ga 🠮 EasyAlign
+]]
+
+tricks_and_tips = {}
+for line in tricks_and_tips_str:gmatch("[^\r\n]+") do
+  tricks_and_tips[#tricks_and_tips + 1] = line
+end
+
+local tricks_and_tips_selected = ""
+local function set_tricks_and_tips()
+  local i = math.random(#tricks_and_tips)
+  tricks_and_tips_selected = tricks_and_tips[i]
+  vim.defer_fn(set_tricks_and_tips, 30000)
+end
+
+set_tricks_and_tips()
+
+
+local function get_tricks_and_tips()
+  return "     " .. tricks_and_tips_selected .. " "
+end
+
 require('tabline').setup({enable = false})
 require('lualine').setup({
-  tabline = {
-    lualine_a = {},
-    lualine_b = {},
-    lualine_c = { require'tabline'.tabline_buffers },
-    lualine_x = { require'tabline'.tabline_tabs },
-    lualine_y = {},
-    lualine_z = {},
+  sections = {
+    lualine_c = { require'tabline'.tabline_buffers, get_tricks_and_tips },
   },
 })
 require('telescope').setup()
@@ -214,6 +241,7 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', '<leader>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
   buf_set_keymap('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
 
+  -- vim.cmd("Cheat40")
   if client.resolved_capabilities.document_formatting then
     vim.cmd("autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()")
   end
@@ -305,7 +333,6 @@ require("null-ls").setup({
         null_ls.builtins.formatting.black.with({
             prefer_local = ".tox/pep8/bin",
         }),
-
         null_ls.builtins.diagnostics.yamllint,
         null_ls.builtins.formatting.fixjson,
         null_ls.builtins.formatting.stylelint,
@@ -405,7 +432,7 @@ function! SetProjectRoot()
 endfunction
 
 " follow symlink and set working directory
-autocmd BufEnter * call SetProjectRoot()
+autocmd BufEnter <buffer> call SetProjectRoot()
 
 
 packloadall
