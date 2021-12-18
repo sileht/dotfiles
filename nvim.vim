@@ -30,6 +30,7 @@ Plug 'neovim/nvim-lspconfig'
 Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}            " complete
 Plug 'ms-jpq/coq.artifacts', {'branch': 'artifacts'} " complete
 
+Plug 'preservim/nerdtree'
 
 """"Plug 'tpope/vim-rhubarb'        " GitHub ticket completion
 """"Plug 'sileht/vim-linear'       " Linear ticket completion
@@ -37,10 +38,9 @@ Plug '~/workspace/sileht/vim-linear/'
 
 "Plug 'tpope/vim-fugitive'
 "Plug 'mhinz/vim-signify'
-"Plug 'kdheepak/lazygit.nvim'
 """
 """"Plug 'junegunn/vim-github-dashboard'
-"Plug 'lifepillar/vim-cheat40'
+Plug 'lifepillar/vim-cheat40'
 """"Plug 'github/copilot.vim'
 
 call plug#end()
@@ -146,6 +146,7 @@ set showtabline=1       " Show tabline
 " ### LSP CONFIG ###
 " ##################
 
+let g:cheat40_use_default = 0
 let g:coq_settings = { 'auto_start': 'shut-up', 'clients': {} }
 let g:coq_settings.clients.snippets = { 'enabled': v:false }
 
@@ -328,6 +329,11 @@ require("null-ls").setup({
 
 EOF
 
+nnoremap <silent> <leader>e :NERDTreeToggle<CR>
+
+nnoremap <Leader>fp <cmd>lua require('telescope.builtin').builtin()<cr>
+nnoremap <Leader>fc <cmd>lua require('telescope.builtin').git_commits()<cr>
+nnoremap <leader>fs <cmd>lua require('telescope.builtin').lsp_document_symbols()<cr>
 nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>
 nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
 nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
@@ -354,7 +360,6 @@ source ~/.creds.vimrc
 "let g:LINEAR_STATE_IDS = ["cdd327d2-7875-4636-ba9d-adccf335d888"]
 
 let g:github_dashboard = { 'username': 'sileht', 'password': g:GITHUB_TOKEN }
-let g:rainbow_active = 1
 
 function! MyOmni(findstart, base) abort
     let s:linear_items = linear#Complete(a:findstart, a:base)
@@ -401,6 +406,7 @@ endfunction
 
 " follow symlink and set working directory
 autocmd BufEnter * call SetProjectRoot()
+
 
 packloadall
 silent! helptags ALL

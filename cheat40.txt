@@ -1,16 +1,28 @@
-ALE  {{{4
-GrammarousCheck          <F4>
-ALERename                <F5>
-ALEGoToDefinition        <F6>
-ALEFindReferences        <F7>
-call ALESearch()         <F8>
-ALERename                <leader>r
-ALEGoToDefinition        <leader>d
-ALEFindReferences        <leader>s
-EasyAlign                ga
-Clap grep2               <C-p>
-Clap gfiles              <C-o>
+Tricks & Tips
+
+LSP {{{4
+rename         <F5>
+delaration     gD
+definition     gd
+refereances    gr
+Hover doc      K
+implementation gi
+signature      <C-k>
+typedef        <leader>D
+codeaction     <leader>ca
 }}}
 
+Telescope {{{4
+builtin        <leader>fp
+git_commits    <leader>fc
+lsp_symbols    <leader>fs
+find_files     <leader>ff
+live_grep      <leader>fg
+buffers        <leader>fb
+help_tags      <leader>fh
+}}}
 
-
+Other  {{{4
+NERDTree       <leader>e
+EasyAlign      ga
+}}}
