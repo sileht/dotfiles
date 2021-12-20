@@ -2,7 +2,7 @@
 vim.cmd([[
 nnoremap P "0p                            " Paste last yank
 nnoremap Y y$                             " Yank from the cursor to the end of the line, to be consistent with C and D.
-command! R execute "source ~/.config/nvim/init.vim"
+command! R execute "source ~/.config/nvim/init.lua | PackerSync"
 
 nnoremap <leader>x <cmd>TroubleToggle<cr>
 nnoremap <silent> <leader>e :NERDTreeToggle<CR>
@@ -25,14 +25,10 @@ nnoremap <leader>D <cmd>lua vim.lsp.buf.type_definition()<cr>
 nnoremap <leader>ca <cmd>lua vim.lsp.buf.code_action()<cr>
 nnoremap <silent> <F11> :set spell!<cr>
 
-nmap <S-left>  :TablineBufferPrevious<Enter>
-nmap <S-right> :TablineBufferNext<Enter>
+nmap <S-left>  :bp<Enter>
+nmap <S-right> :bn<Enter>
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 cmap w!! :w suda://%<CR>:e!<CR>
 
-augroup packer_user_config
-  autocmd!
-  autocmd BufWritePost plugins.lua source <afile> | PackerSync
-augroup end
 ]])

@@ -96,6 +96,7 @@ zstyle ':autocomplete:*' widget-style menu-select
 
 
 NPM_PACKAGES=(
+    @emacs-grammarly/unofficial-grammarly-language-server
     eslint_d
     npm-check-updates
     git-split-diffs

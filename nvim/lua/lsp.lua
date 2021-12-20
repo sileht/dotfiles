@@ -51,6 +51,32 @@ local lsp_options = {
             return on_attach(client, bufnr)
         end
     },
+    dmypy_ls = {
+        on_new_config = function(new_config, new_root_dir)
+            local venv = new_root_dir .. '/.tox/pep8';
+            if vim.fn.isdirectory(venv) ~= 0 then
+                local venv_dmypy_bin = venv .. '/bin/dmypy-ls';
+                if vim.fn.filereadable(venv_dmypy_bin) == 0 then
+                    vim.fn.jobstart(venv .. '/bin/pip install dmypy-ls', {
+                        on_stdout = log_to_message,
+                        on_stderr = log_to_message,
+                        on_exit = function()
+                            for _, client in ipairs(vim.lsp.get_active_clients()) do
+                                if (client.name == "dmypy_ls") then
+                                    client.stop()
+                                end
+                            end
+                            lspconfig_configs.dmypy_ls.launch()
+                            --vim.api.nvim_command('LspStop python')
+                            --vim.api.nvim_command('LspRestart python')
+                        end
+                    })
+                else
+                    new_config.cmd = {venv_dmypy_bin};
+                end
+            end
+        end
+    },
     jedi_language_server = {
         on_new_config = function(new_config, new_root_dir)
             local venv = new_root_dir .. '/.tox/pep8';
@@ -62,7 +88,6 @@ local lsp_options = {
                         on_stderr = log_to_message,
                         on_exit = function()
                             for _, client in ipairs(vim.lsp.get_active_clients()) do
-                                print(client.name)
                                 if (client.name == "jedi_language_server") then
                                     client.stop()
                                 end
@@ -80,18 +105,30 @@ local lsp_options = {
         end
     }
 }
+
+lspconfig_configs["dmypy_ls"] = {
+    default_config = {
+        cmd = { 'dmypy-ls' },
+        filetypes = { 'python' },
+        root_dir = lspconfig.util.root_pattern('pyproject.toml', 'setup.py', 'setup.cfg', 'requirements.txt', 'Pipfile'),
+        single_file_support = true,
+    },
+}
+
 local servers = {
     'vimls',
     'eslint',
     'bashls',
 --  'stylelint_lsp',
     'yamlls',
-    'jedi_language_server',
+ --   'jedi_language_server',
     'html',
     'jsonls',
     'taplo',
     'yamlls',
     'sumneko_lua',
+    'grammarly',
+    'dmypy_ls',
 }
 for _, lsp in ipairs(servers) do
     local options = vim.deepcopy(lsp_options.common)
@@ -101,39 +138,70 @@ for _, lsp in ipairs(servers) do
     lspconfig[lsp].setup(coq.lsp_ensure_capabilities(options))
 end
 
-require("null-ls").setup({
-    debug = false,
-    on_attach = on_attach,
-    sources = {
-        null_ls.builtins.diagnostics.mypy.with({
-            prefer_local = ".tox/pep8/bin",
-        }),
-        null_ls.builtins.diagnostics.flake8.with({
-            prefer_local = ".tox/pep8/bin",
-        }),
-        null_ls.builtins.formatting.isort.with({
-            prefer_local = ".tox/pep8/bin",
-        }),
-        null_ls.builtins.formatting.black.with({
-            prefer_local = ".tox/pep8/bin",
-        }),
-        null_ls.builtins.diagnostics.yamllint,
-        null_ls.builtins.formatting.fixjson,
-        null_ls.builtins.formatting.stylelint,
-        null_ls.builtins.formatting.eslint_d,
-        null_ls.builtins.diagnostics.eslint,
-        null_ls.builtins.diagnostics.vale,
-        null_ls.builtins.diagnostics.yamllint,
-        null_ls.builtins.diagnostics.shellcheck,
 
-        null_ls.builtins.code_actions.eslint_d,
-        null_ls.builtins.code_actions.refactoring,
-        null_ls.builtins.code_actions.gitsigns,
-        null_ls.builtins.code_actions.shellcheck,
-        null_ls.builtins.code_actions.gitrebase,
-
-        null_ls.builtins.formatting.trim_whitespace,
-        null_ls.builtins.formatting.trim_newlines,
-        null_ls.builtins.hover.dictionary,
-    },
-})
+-- require("null-ls").setup({
+--     debug = false,
+--     on_attach = function(client, bufnr)
+--         on_attach(client, bufnr)
+--         -- if vim.bo.filetype == "python" then
+--         --     local get_root_dir = lspconfig.util.root_pattern(".tox", ".git")
+--         --     local root_dir = get_root_dir(vim.api.nvim_buf_get_name(bufnr), vim.api.nvim_get_current_buf())
+--         --     local venv = root_dir .. '/.tox/pep8'
+--         --     if vim.fn.isdirectory(venv) ~= 0 then
+--         --         os.execute("unbuffer -p " .. venv .. '/bin/dmypy --status-file /tmp/dmypy-' .. bufnr .. '.json restart')
+--         --     end
+--         -- end
+--     end,
+--     sources = {
+--         -- null_ls.builtins.diagnostics.mypy.with({
+--         --     prefer_local = ".tox/pep8/bin",
+--         --     command = "dmypy",
+--         --     args = function(params)
+--         --         return {
+--         --             "--status-file",
+--         --             "/tmp/dmypy-" .. params.bufnr .. ".json",
+--         --             "run",
+--         --             "--",
+--         --             "--hide-error-codes",
+--         --             "--hide-error-context",
+--         --             "--no-color-output",
+--         --             "--show-column-numbers",
+--         --             "--show-error-codes",
+--         --             "--no-error-summary",
+--         --             "--no-pretty",
+--         --             "--shadow-file",
+--         --             params.bufname,
+--         --             params.temp_path,
+--         --             params.bufname,
+--         --         }
+--         --     end
+--         -- }),
+--         -- null_ls.builtins.diagnostics.flake8.with({
+--         --     prefer_local = ".tox/pep8/bin",
+--         -- }),
+--         null_ls.builtins.formatting.isort.with({
+--             prefer_local = ".tox/pep8/bin",
+--         }),
+--         null_ls.builtins.formatting.black.with({
+--             prefer_local = ".tox/pep8/bin",
+--         }),
+--         null_ls.builtins.diagnostics.yamllint,
+--         null_ls.builtins.formatting.fixjson,
+--         null_ls.builtins.formatting.stylelint,
+--         null_ls.builtins.formatting.eslint_d,
+--         null_ls.builtins.diagnostics.eslint,
+--         null_ls.builtins.diagnostics.vale,
+--         null_ls.builtins.diagnostics.yamllint,
+--         null_ls.builtins.diagnostics.shellcheck,
+--
+--         null_ls.builtins.code_actions.eslint_d,
+--         null_ls.builtins.code_actions.refactoring,
+--         null_ls.builtins.code_actions.gitsigns,
+--         null_ls.builtins.code_actions.shellcheck,
+--         null_ls.builtins.code_actions.gitrebase,
+--
+--         null_ls.builtins.formatting.trim_whitespace,
+--         null_ls.builtins.formatting.trim_newlines,
+--         null_ls.builtins.hover.dictionary,
+--     },
+-- })

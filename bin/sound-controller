@@ -9,8 +9,8 @@ import shlex
 import subprocess
 import time
 
-from first import first
 import pulsectl
+from first import first
 
 
 def _run(cmd, timeout=None):
@@ -148,14 +148,38 @@ def _get_bluetooth_items():
 HIDDEN_PROFILES = (
     "input:analog-stereo",  # We keep only the duplex
     "output:analog-stereo",  # We keep only the duplex
-    "output:hdmi-surround-extra1",
-    "output:hdmi-surround71-extra1",
-    "output:hdmi-surround-extra1+input:analog-stereo",
-    "output:hdmi-surround71-extra1+input:analog-stereo",
+    "output:hdmi-surround51",
+    "output:hdmi-surround51:analog-stereo",
+    "output:hdmi-surround+input:analog-stereo",
+    "output:hdmi-surround71",
+    "output:hdmi-surround71+input:analog-stereo",
+    "output:hdmi-surround51-extra?",
+    "output:hdmi-surround51-extra?+input:analog-stereo",
+    "output:hdmi-surround71-extra?",
+    "output:hdmi-surround71-extra?+input:analog-stereo",
+    "output:hdmi-stereo+input:analog-stereo",
     "output:hdmi-stereo-extra1+input:analog-stereo",
+    "output:hdmi-stereo-extra2+input:analog-stereo",
+    "output:hdmi-stereo-extra3+input:analog-stereo",
+    "output:hdmi-stereo-extra4+input:analog-stereo",
+    "output:hdmi-stereo-extra5+input:analog-stereo",
+    "output:hdmi-stereo-extra6+input:analog-stereo",
+    "output:hdmi-stereo-extra7+input:analog-stereo",
+    "output:hdmi-surround-extra2",
+    "output:hdmi-surround-extra3",
+    "output:hdmi-surround-extra4",
+    "output:hdmi-surround-extra5",
+    "output:hdmi-surround-extra6",
+    "output:hdmi-surround-extra7",
+    "output:hdmi-surround-extra2+input:analog-stereo",
+    "output:hdmi-surround-extra3+input:analog-stereo",
+    "output:hdmi-surround-extra4+input:analog-stereo",
+    "output:hdmi-surround-extra5+input:analog-stereo",
+    "output:hdmi-surround-extra6+input:analog-stereo",
+    "output:hdmi-surround-extra7+input:analog-stereo",
     "*iec958*",
     #    "input:mono-fallback",
-    #"a2dp-sink-sbc",
+    # "a2dp-sink-sbc",
     "a2dp-sink-sbc_xq",
     "headset-head-unit",
     "headset-head-unit-cvsd",
@@ -210,14 +234,19 @@ def _get_pulseaudio_cards_profiles(pulse, mode="sink"):
                 and profile.name == card.profile_active.name
             ) or (profile.name == "off" and default_name == "auto_null"):
                 selected = True
-            if card.proplist["device.api"].endswith("bluez5"):
-                icon = "audio-headphones"
-            elif mode == "sink":
-                icon = "audio-speakers"
-            elif mode == "source":
-                icon = "audio-input-microphone"
+            print(profile.n_sinks)
+            print(card.proplist)
+            if "device.icon_name" in card.proplist:
+                icon = card.proplist["device.icon_name"]
             else:
-                raise RuntimeError(f"wrong mode: {mode}")
+                if card.proplist["device.api"].endswith("bluez5"):
+                    icon = "audio-headphones"
+                elif mode == "sink":
+                    icon = "audio-speakers"
+                elif mode == "source":
+                    icon = "audio-input-microphone"
+                else:
+                    raise RuntimeError(f"wrong mode: {mode}")
             label = f"{card.proplist['device.description']} | {profile.description} <span lang='{mode}' />"
             if selected:
                 label = f"<b>{label}</b>"

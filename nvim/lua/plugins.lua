@@ -16,9 +16,13 @@ return require('packer').startup({
 
         use 'kyazdani42/nvim-web-devicons'
 
-        use {'nvim-lualine/lualine.nvim',
-            requires = {'kyazdani42/nvim-web-devicons', opt = true},
+        use {'kdheepak/tabline.nvim',
+            requires = {
+                {'nvim-lualine/lualine.nvim', requires = {'kyazdani42/nvim-web-devicons'}},
+                {'kyazdani42/nvim-web-devicons'},
+            },
             config = function()
+                require('tabline').setup({enable = false})
                 require('lualine').setup({
                     sections = {
                         lualine_c = {
@@ -39,13 +43,6 @@ return require('packer').startup({
                     },
                 })
             end
-        }
-        use {'kdheepak/tabline.nvim',
-            requires = {
-                { 'nvim-lualine/lualine.nvim', opt=true },
-                {'kyazdani42/nvim-web-devicons', opt = true}
-            },
-            config = function() require('tabline').setup({enable = false}) end
         }
 
         -- smooth scroll
@@ -103,7 +100,8 @@ return require('packer').startup({
                     group = false,
                     padding = false,
                     auto_open = true,
-                    auto_close = true,
+                    auto_close = false,
+                    indent_lines = false,
                     mode = "document_diagnostics",
                 })
             end
@@ -111,9 +109,6 @@ return require('packer').startup({
 
         -- diag colors
         use 'folke/lsp-colors.nvim'
-
-        -- fixer and linter
-        use 'jose-elias-alvarez/null-ls.nvim'
 
         -- completion
         vim.g.coq_settings = {
@@ -125,25 +120,25 @@ return require('packer').startup({
             }
         }
 
-        use { 'ms-jpq/coq_nvim',
-            branch = 'coq',
-            run = ":COQdeps",
-            requires = {
-                { "ms-jpq/coq.thirdparty",
-                    config = function()
-                        require("coq_3p") {
-                            { src = "nvimlua", short_name = "nLUA" },
-                            { src = "copilot", short_name = "COP", tmp_accept_key = "<c-r>" },
-                        }
-                    end
-                },
-                {'ms-jpq/coq.artifacts', branch = 'artifacts' }
-            },
+        use { 'waylonwalker/Telegraph.nvim',
+            requires = { "nvim-lua/plenary.nvim" },
         }
 
-        -- lsp
+        -- lsp, fixer and linter
         use { 'neovim/nvim-lspconfig',
-            requires = {'ms-jpq/coq_nvim', "jose-elias-alvarez/null-ls.nvim"},
+            requires = {
+                { 'ms-jpq/coq_nvim',
+                    branch = 'coq',
+                    run = ":COQdeps",
+                    requires = {
+                        {'ms-jpq/coq.artifacts', branch = 'artifacts' }
+                    },
+                },
+                {
+                    "jose-elias-alvarez/null-ls.nvim",
+                    requires = { "nvim-lua/plenary.nvim" },
+                },
+            },
             config = function()
                 require("lsp")
             end

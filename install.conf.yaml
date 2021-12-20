@@ -45,3 +45,4 @@
     - pipx install reno
     - pipx install rstcheck
     - pipx install jedi-language-server
+    - pipx install dmypy-ls
