@@ -236,17 +236,14 @@ def _get_pulseaudio_cards_profiles(pulse, mode="sink"):
                 selected = True
             print(profile.n_sinks)
             print(card.proplist)
-            if "device.icon_name" in card.proplist:
-                icon = card.proplist["device.icon_name"]
+            if "device.api" in card.proplist and "bluez" in card.proplist["device.api"]:
+                icon = "audio-headphones"
+            elif mode == "sink":
+                icon = "audio-speakers"
+            elif mode == "source":
+                icon = "audio-input-microphone"
             else:
-                if card.proplist["device.api"].endswith("bluez5"):
-                    icon = "audio-headphones"
-                elif mode == "sink":
-                    icon = "audio-speakers"
-                elif mode == "source":
-                    icon = "audio-input-microphone"
-                else:
-                    raise RuntimeError(f"wrong mode: {mode}")
+                raise RuntimeError(f"wrong mode: {mode}")
             label = f"{card.proplist['device.description']} | {profile.description} <span lang='{mode}' />"
             if selected:
                 label = f"<b>{label}</b>"

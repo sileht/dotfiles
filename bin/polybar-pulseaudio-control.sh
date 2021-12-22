@@ -8,8 +8,8 @@ SINK_NICKNAMES[alsa_output.usb-*]=""
 SINK_NICKNAMES[alsa_output.pci-0000_00_??.?.pro-output*]="🔊"
 SINK_NICKNAMES[alsa_output.pci-0000_00_??.?.analog-stereo]="🔊"
 SINK_NICKNAMES[alsa_output.pci-0000_00_??.?.hdmi-stereo]=""
-SINK_NICKNAMES[bluez_output.??_??_??_??_??_??.headset-head-unit*]=""
-SINK_NICKNAMES[bluez_output.??_??_??_??_??_??.a2dp-sink*]="🎧"
+SINK_NICKNAMES[bluez_*.??_??_??_??_??_??.headset-head-unit*]=""
+SINK_NICKNAMES[bluez_*.??_??_??_??_??_??.a2dp?sink*]="🎧"
 
 if ! pactl info &>/dev/null; then
     echo "No pulseaudio" >&2
