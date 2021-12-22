@@ -177,7 +177,7 @@ _G.packer_plugins = {
     url = "https://github.com/nacitar/terminalkeys.vim"
   },
   ["trouble.nvim"] = {
-    config = { "\27LJ\1\2ö\1\0\0\2\0\b\0\f4\0\0\0007\0\1\0007\0\2\0003\1\3\0>\0\2\0014\0\4\0%\1\5\0>\0\2\0027\0\6\0003\1\a\0>\0\2\1G\0\1\0\1\0\b\14auto_open\2\25use_diagnostic_signs\2\vheight\3\6\15auto_close\1\ngroup\1\17indent_lines\1\tmode\25document_diagnostics\fpadding\1\nsetup\ftrouble\frequire\1\0\3\17virtual_text\2\14underline\1\tsign\2\vconfig\15diagnostic\bvim\0" },
+    config = { "\27LJ\1\2ö\1\0\0\2\0\b\0\f4\0\0\0007\0\1\0007\0\2\0003\1\3\0>\0\2\0014\0\4\0%\1\5\0>\0\2\0027\0\6\0003\1\a\0>\0\2\1G\0\1\0\1\0\b\14auto_open\2\25use_diagnostic_signs\2\vheight\3\6\15auto_close\1\ngroup\1\17indent_lines\1\tmode\25document_diagnostics\fpadding\1\nsetup\ftrouble\frequire\1\0\3\17virtual_text\1\14underline\1\tsign\2\vconfig\15diagnostic\bvim\0" },
     loaded = true,
     path = "/home/sileht/.local/share/nvim/site/pack/packer/start/trouble.nvim",
     url = "https://github.com/folke/trouble.nvim"
@@ -231,7 +231,7 @@ try_loadstring("\27LJ\1\2#\0\0\2\0\2\0\0044\0\0\0%\1\1\0>\0\2\1G\0\1\0\blsp\freq
 time([[Config for nvim-lspconfig]], false)
 -- Config for: trouble.nvim
 time([[Config for trouble.nvim]], true)
-try_loadstring("\27LJ\1\2ö\1\0\0\2\0\b\0\f4\0\0\0007\0\1\0007\0\2\0003\1\3\0>\0\2\0014\0\4\0%\1\5\0>\0\2\0027\0\6\0003\1\a\0>\0\2\1G\0\1\0\1\0\b\14auto_open\2\25use_diagnostic_signs\2\vheight\3\6\15auto_close\1\ngroup\1\17indent_lines\1\tmode\25document_diagnostics\fpadding\1\nsetup\ftrouble\frequire\1\0\3\17virtual_text\2\14underline\1\tsign\2\vconfig\15diagnostic\bvim\0", "config", "trouble.nvim")
+try_loadstring("\27LJ\1\2ö\1\0\0\2\0\b\0\f4\0\0\0007\0\1\0007\0\2\0003\1\3\0>\0\2\0014\0\4\0%\1\5\0>\0\2\0027\0\6\0003\1\a\0>\0\2\1G\0\1\0\1\0\b\14auto_open\2\25use_diagnostic_signs\2\vheight\3\6\15auto_close\1\ngroup\1\17indent_lines\1\tmode\25document_diagnostics\fpadding\1\nsetup\ftrouble\frequire\1\0\3\17virtual_text\1\14underline\1\tsign\2\vconfig\15diagnostic\bvim\0", "config", "trouble.nvim")
 time([[Config for trouble.nvim]], false)
 -- Config for: spellsitter.nvim
 time([[Config for spellsitter.nvim]], true)

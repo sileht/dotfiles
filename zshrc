@@ -270,7 +270,7 @@ upgrade() {
         pipx upgrade-all
         npi
         bin update -y
-        nvim "+set nomore" +PlugClean! +PlugUpdate! +qall
+        nvim --headless -c "autocmd\ User\ PackerComplete\ quitall" -c "PackerSync"
     )
 }
 

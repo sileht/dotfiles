@@ -93,7 +93,7 @@ return require('packer').startup({
         -- fancy diagnostic
         use {'folke/trouble.nvim',
             config = function()
-                vim.diagnostic.config({virtual_text = true, sign = true, underline = false})
+                vim.diagnostic.config({virtual_text = false, sign = true, underline = false})
                 require("trouble").setup({
                     height = 6,
                     use_diagnostic_signs = true,

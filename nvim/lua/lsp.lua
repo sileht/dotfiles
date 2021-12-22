@@ -51,6 +51,9 @@ local lsp_options = {
             return on_attach(client, bufnr)
         end
     },
+    grammarly = {
+        filetypes = { 'markdown', 'gitcommit', 'rst' },
+    },
     dmypy_ls = {
         on_new_config = function(new_config, new_root_dir)
             local venv = new_root_dir .. '/.tox/pep8';
@@ -121,7 +124,7 @@ local servers = {
     'bashls',
 --  'stylelint_lsp',
     'yamlls',
- --   'jedi_language_server',
+    'jedi_language_server',
     'html',
     'jsonls',
     'taplo',
@@ -139,69 +142,33 @@ for _, lsp in ipairs(servers) do
 end
 
 
--- require("null-ls").setup({
---     debug = false,
---     on_attach = function(client, bufnr)
---         on_attach(client, bufnr)
---         -- if vim.bo.filetype == "python" then
---         --     local get_root_dir = lspconfig.util.root_pattern(".tox", ".git")
---         --     local root_dir = get_root_dir(vim.api.nvim_buf_get_name(bufnr), vim.api.nvim_get_current_buf())
---         --     local venv = root_dir .. '/.tox/pep8'
---         --     if vim.fn.isdirectory(venv) ~= 0 then
---         --         os.execute("unbuffer -p " .. venv .. '/bin/dmypy --status-file /tmp/dmypy-' .. bufnr .. '.json restart')
---         --     end
---         -- end
---     end,
---     sources = {
---         -- null_ls.builtins.diagnostics.mypy.with({
---         --     prefer_local = ".tox/pep8/bin",
---         --     command = "dmypy",
---         --     args = function(params)
---         --         return {
---         --             "--status-file",
---         --             "/tmp/dmypy-" .. params.bufnr .. ".json",
---         --             "run",
---         --             "--",
---         --             "--hide-error-codes",
---         --             "--hide-error-context",
---         --             "--no-color-output",
---         --             "--show-column-numbers",
---         --             "--show-error-codes",
---         --             "--no-error-summary",
---         --             "--no-pretty",
---         --             "--shadow-file",
---         --             params.bufname,
---         --             params.temp_path,
---         --             params.bufname,
---         --         }
---         --     end
---         -- }),
---         -- null_ls.builtins.diagnostics.flake8.with({
---         --     prefer_local = ".tox/pep8/bin",
---         -- }),
---         null_ls.builtins.formatting.isort.with({
---             prefer_local = ".tox/pep8/bin",
---         }),
---         null_ls.builtins.formatting.black.with({
---             prefer_local = ".tox/pep8/bin",
---         }),
---         null_ls.builtins.diagnostics.yamllint,
---         null_ls.builtins.formatting.fixjson,
---         null_ls.builtins.formatting.stylelint,
---         null_ls.builtins.formatting.eslint_d,
---         null_ls.builtins.diagnostics.eslint,
---         null_ls.builtins.diagnostics.vale,
---         null_ls.builtins.diagnostics.yamllint,
---         null_ls.builtins.diagnostics.shellcheck,
---
---         null_ls.builtins.code_actions.eslint_d,
---         null_ls.builtins.code_actions.refactoring,
---         null_ls.builtins.code_actions.gitsigns,
---         null_ls.builtins.code_actions.shellcheck,
---         null_ls.builtins.code_actions.gitrebase,
---
---         null_ls.builtins.formatting.trim_whitespace,
---         null_ls.builtins.formatting.trim_newlines,
---         null_ls.builtins.hover.dictionary,
---     },
--- })
+require("null-ls").setup({
+    debug = false,
+    on_attach = on_attach,
+    sources = {
+        null_ls.builtins.formatting.isort.with({
+            prefer_local = ".tox/pep8/bin",
+        }),
+        null_ls.builtins.formatting.black.with({
+            prefer_local = ".tox/pep8/bin",
+        }),
+        null_ls.builtins.diagnostics.yamllint,
+        null_ls.builtins.formatting.fixjson,
+        null_ls.builtins.formatting.stylelint,
+        null_ls.builtins.formatting.eslint_d,
+        null_ls.builtins.diagnostics.eslint,
+        null_ls.builtins.diagnostics.vale,
+        null_ls.builtins.diagnostics.yamllint,
+        null_ls.builtins.diagnostics.shellcheck,
+
+        null_ls.builtins.code_actions.eslint_d,
+        null_ls.builtins.code_actions.refactoring,
+        null_ls.builtins.code_actions.gitsigns,
+        null_ls.builtins.code_actions.shellcheck,
+        null_ls.builtins.code_actions.gitrebase,
+
+        null_ls.builtins.formatting.trim_whitespace,
+        null_ls.builtins.formatting.trim_newlines,
+        null_ls.builtins.hover.dictionary,
+    },
+})

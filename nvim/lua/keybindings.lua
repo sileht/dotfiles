@@ -1,9 +1,38 @@
 
+local focus_mode = false
+
+function ToggleFocus()
+    focus_mode = not focus_mode
+    if focus_mode then
+        print("focus layout")
+        vim.opt.laststatus = 0
+        vim.opt.number = false
+        vim.opt.relativenumber = false
+        vim.opt.signcolumn = "no"
+        require('gitsigns.config').config.signcolumn = false
+        require('gitsigns.actions').refresh()
+        require("scrollview").scrollview_disable()
+        require("trouble").close()
+    else
+        print("normal layout")
+        vim.opt.laststatus = 2
+        vim.opt.number = true
+        vim.opt.relativenumber = true
+        vim.opt.signcolumn = "yes"
+        require('gitsigns.config').config.signcolumn = true
+        require('gitsigns.actions').refresh()
+        require("scrollview").scrollview_enable()
+        require("trouble").open()
+        vim.cmd("wincmd p")
+    end
+end
+
 vim.cmd([[
 nnoremap P "0p                            " Paste last yank
 nnoremap Y y$                             " Yank from the cursor to the end of the line, to be consistent with C and D.
 command! R execute "source ~/.config/nvim/init.lua | PackerSync"
 
+nnoremap <F12> <cmd>lua ToggleFocus()<cr>
 nnoremap <leader>x <cmd>TroubleToggle<cr>
 nnoremap <silent> <leader>e :NERDTreeToggle<CR>
 nnoremap <Leader>t <cmd>lua require('tricks_and_tips').change()<cr>

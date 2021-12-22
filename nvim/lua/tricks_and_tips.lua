@@ -20,6 +20,7 @@ gi 🠮 lsp.implementation
 <leader>fh 🠮 telescope.help_tags
 <leader>gb 🠮 git blame
 <leader>e 🠮 NERDTree
+<leader>x 🠮 Trouble diagnostic
 ga 🠮 EasyAlign
 ]]
 
