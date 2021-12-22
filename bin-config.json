@@ -36,9 +36,9 @@
         "/home/sileht/.bin-bin/gh": {
             "path": "/home/sileht/.bin-bin/gh",
             "remote_name": "gh",
-            "version": "v2.3.0",
+            "version": "v2.4.0",
             "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-            "url": "https://github.com/cli/cli/releases/tag/v2.3.0",
+            "url": "https://github.com/cli/cli/releases/tag/v2.4.0",
             "provider": ""
         },
         "/home/sileht/.bin-bin/pack": {
