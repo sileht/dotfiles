@@ -5,4 +5,6 @@ if [ -n "$used" ]; then
     color="%{F#FF0000}"
     text="📷"
     echo "${color}${text}"
+else
+    echo ""
 fi
