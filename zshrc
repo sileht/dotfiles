@@ -296,6 +296,7 @@ upgrade() {
         (cd ~/.env/znap/zsh-snap && git pull --rebase)
         (cd ~/.env && git commit -m "update znap" --no-edit znap/zsh-snap )
         znap pull
+        echo
         title "PIP"
         pip install -q -U --user $PIP_PACKAGES
         title "PIPX"
