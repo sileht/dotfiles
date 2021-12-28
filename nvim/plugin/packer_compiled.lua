@@ -69,26 +69,31 @@ end
 time([[try_loadstring definition]], false)
 time([[Defining packer_plugins]], true)
 _G.packer_plugins = {
-  ["Telegraph.nvim"] = {
-    loaded = true,
-    path = "/home/sileht/.local/share/nvim/site/pack/packer/start/Telegraph.nvim",
-    url = "https://github.com/waylonwalker/Telegraph.nvim"
-  },
   ["base16-vim"] = {
-    config = { "\27LJ\1\2é\1\0\0\3\0\n\1\0254\0\0\0007\0\1\0'\1\0\1:\1\2\0004\0\0\0007\0\3\0007\0\4\0004\1\0\0007\1\3\0017\1\5\1%\2\6\0>\1\2\0=\0\0\2\b\0\0\0T\0\5€4\0\0\0007\0\a\0%\1\b\0>\0\2\1T\0\4€4\0\0\0007\0\a\0%\1\t\0>\0\2\1G\0\1\0 colorscheme base16-eighties\31source ~/.vimrc_background\bcmd\24~/.vimrc_background\vexpand\17filereadable\afn\21base16colorspace\6g\bvim\0\0" },
+    config = { "\27LJ\1\2”\2\0\0\3\0\v\1\0294\0\0\0007\0\1\0'\1\0\1:\1\2\0004\0\0\0007\0\3\0007\0\4\0004\1\0\0007\1\3\0017\1\5\1%\2\6\0>\1\2\0=\0\0\2\b\0\0\0T\0\5€4\0\0\0007\0\a\0%\1\b\0>\0\2\1T\0\4€4\0\0\0007\0\a\0%\1\t\0>\0\2\0014\0\0\0007\0\a\0%\1\n\0>\0\2\1G\0\1\0\31hi cursorlinenr cterm=none colorscheme base16-eighties\31source ~/.vimrc_background\bcmd\24~/.vimrc_background\vexpand\17filereadable\afn\21base16colorspace\6g\bvim\0\0" },
     loaded = true,
     path = "/home/sileht/.local/share/nvim/site/pack/packer/start/base16-vim",
     url = "https://github.com/chriskempson/base16-vim"
   },
-  ["coq.artifacts"] = {
+  ["cmp-buffer"] = {
     loaded = true,
-    path = "/home/sileht/.local/share/nvim/site/pack/packer/start/coq.artifacts",
-    url = "https://github.com/ms-jpq/coq.artifacts"
+    path = "/home/sileht/.local/share/nvim/site/pack/packer/start/cmp-buffer",
+    url = "https://github.com/hrsh7th/cmp-buffer"
   },
-  coq_nvim = {
+  ["cmp-cmdline"] = {
     loaded = true,
-    path = "/home/sileht/.local/share/nvim/site/pack/packer/start/coq_nvim",
-    url = "https://github.com/ms-jpq/coq_nvim"
+    path = "/home/sileht/.local/share/nvim/site/pack/packer/start/cmp-cmdline",
+    url = "https://github.com/hrsh7th/cmp-cmdline"
+  },
+  ["cmp-nvim-lsp"] = {
+    loaded = true,
+    path = "/home/sileht/.local/share/nvim/site/pack/packer/start/cmp-nvim-lsp",
+    url = "https://github.com/hrsh7th/cmp-nvim-lsp"
+  },
+  ["cmp-path"] = {
+    loaded = true,
+    path = "/home/sileht/.local/share/nvim/site/pack/packer/start/cmp-path",
+    url = "https://github.com/hrsh7th/cmp-path"
   },
   ["gitsigns.nvim"] = {
     config = { "\27LJ\1\0026\0\0\2\0\3\0\0064\0\0\0%\1\1\0>\0\2\0027\0\2\0>\0\1\1G\0\1\0\nsetup\rgitsigns\frequire\0" },
@@ -116,8 +121,13 @@ _G.packer_plugins = {
     path = "/home/sileht/.local/share/nvim/site/pack/packer/start/null-ls.nvim",
     url = "https://github.com/jose-elias-alvarez/null-ls.nvim"
   },
+  ["nvim-cmp"] = {
+    loaded = true,
+    path = "/home/sileht/.local/share/nvim/site/pack/packer/start/nvim-cmp",
+    url = "https://github.com/hrsh7th/nvim-cmp"
+  },
   ["nvim-lspconfig"] = {
-    config = { "\27LJ\1\2#\0\0\2\0\2\0\0044\0\0\0%\1\1\0>\0\2\1G\0\1\0\blsp\frequire\0" },
+    config = { "\27LJ\1\2›\3\0\0\b\0\21\00044\0\0\0%\1\1\0>\0\2\0014\0\0\0%\1\2\0>\0\2\0014\0\0\0%\1\3\0>\0\2\0027\1\4\0003\2\f\0007\3\5\0007\3\6\0032\4\6\0003\5\a\0;\5\1\0043\5\b\0;\5\2\0043\5\t\0;\5\3\0043\5\n\0;\5\4\0043\5\v\0;\5\5\4>\3\2\2:\3\6\2>\1\2\0017\1\4\0007\1\r\1%\2\14\0003\3\16\0002\4\3\0003\5\15\0;\5\1\4:\4\6\3>\1\3\0017\1\4\0007\1\r\1%\2\17\0003\3\20\0007\4\5\0007\4\6\0042\5\3\0003\6\18\0;\6\1\0052\6\3\0003\a\19\0;\a\1\6>\4\3\2:\4\6\3>\1\3\1G\0\1\0\1\0\0\1\0\1\tname\fcmdline\1\0\1\tname\tpath\6:\1\0\0\1\0\1\tname\vbuffer\6/\fcmdline\1\0\0\1\0\1\tname\fcmdline\1\0\1\tname\vlinear\1\0\1\tname\tpath\1\0\1\tname\vbuffer\1\0\1\tname\rnvim_lsp\fsources\vconfig\nsetup\bcmp\22linear_cmp_source\blsp\frequire\0" },
     loaded = true,
     path = "/home/sileht/.local/share/nvim/site/pack/packer/start/nvim-lspconfig",
     url = "https://github.com/neovim/nvim-lspconfig"
@@ -132,6 +142,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/sileht/.local/share/nvim/site/pack/packer/start/nvim-treesitter",
     url = "https://github.com/nvim-treesitter/nvim-treesitter"
+  },
+  ["nvim-treesitter-textobjects"] = {
+    loaded = true,
+    path = "/home/sileht/.local/share/nvim/site/pack/packer/start/nvim-treesitter-textobjects",
+    url = "https://github.com/nvim-treesitter/nvim-treesitter-textobjects"
   },
   ["nvim-web-devicons"] = {
     loaded = true,
@@ -153,6 +168,12 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/sileht/.local/share/nvim/site/pack/packer/start/spellsitter.nvim",
     url = "https://github.com/lewis6991/spellsitter.nvim"
+  },
+  ["stabilize.nvim"] = {
+    config = { "\27LJ\1\0027\0\0\2\0\3\0\0064\0\0\0%\1\1\0>\0\2\0027\0\2\0>\0\1\1G\0\1\0\nsetup\14stabilize\frequire\0" },
+    loaded = true,
+    path = "/home/sileht/.local/share/nvim/site/pack/packer/start/stabilize.nvim",
+    url = "https://github.com/luukvbaal/stabilize.nvim"
   },
   ["suda.vim"] = {
     loaded = true,
@@ -177,7 +198,7 @@ _G.packer_plugins = {
     url = "https://github.com/nacitar/terminalkeys.vim"
   },
   ["trouble.nvim"] = {
-    config = { "\27LJ\1\2ö\1\0\0\2\0\b\0\f4\0\0\0007\0\1\0007\0\2\0003\1\3\0>\0\2\0014\0\4\0%\1\5\0>\0\2\0027\0\6\0003\1\a\0>\0\2\1G\0\1\0\1\0\b\14auto_open\2\25use_diagnostic_signs\2\vheight\3\6\15auto_close\1\ngroup\1\17indent_lines\1\tmode\25document_diagnostics\fpadding\1\nsetup\ftrouble\frequire\1\0\3\17virtual_text\1\14underline\1\tsign\2\vconfig\15diagnostic\bvim\0" },
+    config = { "\27LJ\1\2ª\1\0\0\2\0\4\0\a4\0\0\0%\1\1\0>\0\2\0027\0\2\0003\1\3\0>\0\2\1G\0\1\0\1\0\b\14auto_open\2\25use_diagnostic_signs\2\vheight\3\6\15auto_close\2\ngroup\1\17indent_lines\1\tmode\25document_diagnostics\fpadding\1\nsetup\ftrouble\frequire\0" },
     loaded = true,
     path = "/home/sileht/.local/share/nvim/site/pack/packer/start/trouble.nvim",
     url = "https://github.com/folke/trouble.nvim"
@@ -191,52 +212,46 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/sileht/.local/share/nvim/site/pack/packer/start/vim-easy-align",
     url = "https://github.com/junegunn/vim-easy-align"
-  },
-  ["vim-linear"] = {
-    loaded = true,
-    path = "/home/sileht/.local/share/nvim/site/pack/packer/start/vim-linear",
-    url = "/home/sileht/workspace/sileht/vim-linear/"
-  },
-  ["vim-smoothie"] = {
-    loaded = true,
-    path = "/home/sileht/.local/share/nvim/site/pack/packer/start/vim-smoothie",
-    url = "https://github.com/psliwka/vim-smoothie"
   }
 }
 
 time([[Defining packer_plugins]], false)
--- Config for: nvim-treesitter
-time([[Config for nvim-treesitter]], true)
-try_loadstring("\27LJ\1\2†\2\0\0\4\0\f\0\0154\0\0\0%\1\1\0>\0\2\0027\0\2\0003\1\3\0003\2\4\0003\3\5\0:\3\6\2:\2\a\0013\2\b\0:\2\t\0013\2\n\0:\2\v\1>\0\2\1G\0\1\0\14highlight\1\0\2&additional_vim_regex_highlighting\2\venable\2\26incremental_selection\1\0\1\venable\2\vindent\fdisable\1\2\0\0\vpython\1\0\1\venable\2\1\0\1\21ensure_installed\15maintained\nsetup\28nvim-treesitter.configs\frequire\0", "config", "nvim-treesitter")
-time([[Config for nvim-treesitter]], false)
--- Config for: telescope.nvim
-time([[Config for telescope.nvim]], true)
-try_loadstring("\27LJ\1\0027\0\0\2\0\3\0\0064\0\0\0%\1\1\0>\0\2\0027\0\2\0>\0\1\1G\0\1\0\nsetup\14telescope\frequire\0", "config", "telescope.nvim")
-time([[Config for telescope.nvim]], false)
+-- Config for: nvim-lspconfig
+time([[Config for nvim-lspconfig]], true)
+try_loadstring("\27LJ\1\2›\3\0\0\b\0\21\00044\0\0\0%\1\1\0>\0\2\0014\0\0\0%\1\2\0>\0\2\0014\0\0\0%\1\3\0>\0\2\0027\1\4\0003\2\f\0007\3\5\0007\3\6\0032\4\6\0003\5\a\0;\5\1\0043\5\b\0;\5\2\0043\5\t\0;\5\3\0043\5\n\0;\5\4\0043\5\v\0;\5\5\4>\3\2\2:\3\6\2>\1\2\0017\1\4\0007\1\r\1%\2\14\0003\3\16\0002\4\3\0003\5\15\0;\5\1\4:\4\6\3>\1\3\0017\1\4\0007\1\r\1%\2\17\0003\3\20\0007\4\5\0007\4\6\0042\5\3\0003\6\18\0;\6\1\0052\6\3\0003\a\19\0;\a\1\6>\4\3\2:\4\6\3>\1\3\1G\0\1\0\1\0\0\1\0\1\tname\fcmdline\1\0\1\tname\tpath\6:\1\0\0\1\0\1\tname\vbuffer\6/\fcmdline\1\0\0\1\0\1\tname\fcmdline\1\0\1\tname\vlinear\1\0\1\tname\tpath\1\0\1\tname\vbuffer\1\0\1\tname\rnvim_lsp\fsources\vconfig\nsetup\bcmp\22linear_cmp_source\blsp\frequire\0", "config", "nvim-lspconfig")
+time([[Config for nvim-lspconfig]], false)
 -- Config for: tabline.nvim
 time([[Config for tabline.nvim]], true)
 try_loadstring("\27LJ\1\2ã\3\0\0\6\0\24\00034\0\0\0%\1\1\0>\0\2\0027\0\2\0003\1\3\0>\0\2\0014\0\0\0%\1\4\0>\0\2\0027\0\2\0003\1\n\0003\2\b\0002\3\3\0004\4\0\0%\5\1\0>\4\2\0027\4\5\4;\4\1\0034\4\0\0%\5\6\0>\4\2\0027\4\a\4;\4\2\3:\3\t\2:\2\v\0013\2\r\0003\3\f\0:\3\14\0023\3\15\0:\3\16\0022\3\3\0004\4\0\0%\5\1\0>\4\2\0027\4\5\4;\4\1\0034\4\0\0%\5\6\0>\4\2\0027\4\a\4;\4\2\3:\3\t\0023\3\17\0:\3\18\0023\3\19\0:\3\20\0023\3\21\0:\3\22\2:\2\23\1>\0\2\1G\0\1\0\22inactive_sections\14lualine_z\1\2\0\0\rlocation\14lualine_y\1\2\0\0\rprogress\14lualine_x\1\4\0\0\rencoding\15fileformat\rfiletype\14lualine_b\1\4\0\0\vbranch\tdiff\16diagnostics\14lualine_a\1\0\0\1\2\0\0\tmode\rsections\1\0\0\14lualine_c\1\0\0\vstatus\20tricks_and_tips\20tabline_buffers\flualine\1\0\1\venable\1\nsetup\ftabline\frequire\0", "config", "tabline.nvim")
 time([[Config for tabline.nvim]], false)
 -- Config for: base16-vim
 time([[Config for base16-vim]], true)
-try_loadstring("\27LJ\1\2é\1\0\0\3\0\n\1\0254\0\0\0007\0\1\0'\1\0\1:\1\2\0004\0\0\0007\0\3\0007\0\4\0004\1\0\0007\1\3\0017\1\5\1%\2\6\0>\1\2\0=\0\0\2\b\0\0\0T\0\5€4\0\0\0007\0\a\0%\1\b\0>\0\2\1T\0\4€4\0\0\0007\0\a\0%\1\t\0>\0\2\1G\0\1\0 colorscheme base16-eighties\31source ~/.vimrc_background\bcmd\24~/.vimrc_background\vexpand\17filereadable\afn\21base16colorspace\6g\bvim\0\0", "config", "base16-vim")
+try_loadstring("\27LJ\1\2”\2\0\0\3\0\v\1\0294\0\0\0007\0\1\0'\1\0\1:\1\2\0004\0\0\0007\0\3\0007\0\4\0004\1\0\0007\1\3\0017\1\5\1%\2\6\0>\1\2\0=\0\0\2\b\0\0\0T\0\5€4\0\0\0007\0\a\0%\1\b\0>\0\2\1T\0\4€4\0\0\0007\0\a\0%\1\t\0>\0\2\0014\0\0\0007\0\a\0%\1\n\0>\0\2\1G\0\1\0\31hi cursorlinenr cterm=none colorscheme base16-eighties\31source ~/.vimrc_background\bcmd\24~/.vimrc_background\vexpand\17filereadable\afn\21base16colorspace\6g\bvim\0\0", "config", "base16-vim")
 time([[Config for base16-vim]], false)
--- Config for: gitsigns.nvim
-time([[Config for gitsigns.nvim]], true)
-try_loadstring("\27LJ\1\0026\0\0\2\0\3\0\0064\0\0\0%\1\1\0>\0\2\0027\0\2\0>\0\1\1G\0\1\0\nsetup\rgitsigns\frequire\0", "config", "gitsigns.nvim")
-time([[Config for gitsigns.nvim]], false)
--- Config for: nvim-lspconfig
-time([[Config for nvim-lspconfig]], true)
-try_loadstring("\27LJ\1\2#\0\0\2\0\2\0\0044\0\0\0%\1\1\0>\0\2\1G\0\1\0\blsp\frequire\0", "config", "nvim-lspconfig")
-time([[Config for nvim-lspconfig]], false)
--- Config for: trouble.nvim
-time([[Config for trouble.nvim]], true)
-try_loadstring("\27LJ\1\2ö\1\0\0\2\0\b\0\f4\0\0\0007\0\1\0007\0\2\0003\1\3\0>\0\2\0014\0\4\0%\1\5\0>\0\2\0027\0\6\0003\1\a\0>\0\2\1G\0\1\0\1\0\b\14auto_open\2\25use_diagnostic_signs\2\vheight\3\6\15auto_close\1\ngroup\1\17indent_lines\1\tmode\25document_diagnostics\fpadding\1\nsetup\ftrouble\frequire\1\0\3\17virtual_text\1\14underline\1\tsign\2\vconfig\15diagnostic\bvim\0", "config", "trouble.nvim")
-time([[Config for trouble.nvim]], false)
 -- Config for: spellsitter.nvim
 time([[Config for spellsitter.nvim]], true)
 try_loadstring("\27LJ\1\0029\0\0\2\0\3\0\0064\0\0\0%\1\1\0>\0\2\0027\0\2\0>\0\1\1G\0\1\0\nsetup\16spellsitter\frequire\0", "config", "spellsitter.nvim")
 time([[Config for spellsitter.nvim]], false)
+-- Config for: trouble.nvim
+time([[Config for trouble.nvim]], true)
+try_loadstring("\27LJ\1\2ª\1\0\0\2\0\4\0\a4\0\0\0%\1\1\0>\0\2\0027\0\2\0003\1\3\0>\0\2\1G\0\1\0\1\0\b\14auto_open\2\25use_diagnostic_signs\2\vheight\3\6\15auto_close\2\ngroup\1\17indent_lines\1\tmode\25document_diagnostics\fpadding\1\nsetup\ftrouble\frequire\0", "config", "trouble.nvim")
+time([[Config for trouble.nvim]], false)
+-- Config for: gitsigns.nvim
+time([[Config for gitsigns.nvim]], true)
+try_loadstring("\27LJ\1\0026\0\0\2\0\3\0\0064\0\0\0%\1\1\0>\0\2\0027\0\2\0>\0\1\1G\0\1\0\nsetup\rgitsigns\frequire\0", "config", "gitsigns.nvim")
+time([[Config for gitsigns.nvim]], false)
+-- Config for: stabilize.nvim
+time([[Config for stabilize.nvim]], true)
+try_loadstring("\27LJ\1\0027\0\0\2\0\3\0\0064\0\0\0%\1\1\0>\0\2\0027\0\2\0>\0\1\1G\0\1\0\nsetup\14stabilize\frequire\0", "config", "stabilize.nvim")
+time([[Config for stabilize.nvim]], false)
+-- Config for: telescope.nvim
+time([[Config for telescope.nvim]], true)
+try_loadstring("\27LJ\1\0027\0\0\2\0\3\0\0064\0\0\0%\1\1\0>\0\2\0027\0\2\0>\0\1\1G\0\1\0\nsetup\14telescope\frequire\0", "config", "telescope.nvim")
+time([[Config for telescope.nvim]], false)
+-- Config for: nvim-treesitter
+time([[Config for nvim-treesitter]], true)
+try_loadstring("\27LJ\1\2†\2\0\0\4\0\f\0\0154\0\0\0%\1\1\0>\0\2\0027\0\2\0003\1\3\0003\2\4\0003\3\5\0:\3\6\2:\2\a\0013\2\b\0:\2\t\0013\2\n\0:\2\v\1>\0\2\1G\0\1\0\14highlight\1\0\2&additional_vim_regex_highlighting\2\venable\2\26incremental_selection\1\0\1\venable\2\vindent\fdisable\1\2\0\0\vpython\1\0\1\venable\2\1\0\1\21ensure_installed\15maintained\nsetup\28nvim-treesitter.configs\frequire\0", "config", "nvim-treesitter")
+time([[Config for nvim-treesitter]], false)
 if should_profile then save_profiles() end
 
 end)

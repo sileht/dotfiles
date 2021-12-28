@@ -47,12 +47,19 @@ vim.opt.spellsuggest = "best,9"
 -- vim.opt.ttimeout = true
 -- vim.opt.ttimeoutlen = 50
 
+vim.opt.completeopt = "menu,menuone,noselect"
 
 vim.g.mapleader = ","
 vim.g.maplocalleader = ";"
 
+-- Highlight on yank
+vim.cmd [[
+  augroup YankHighlight
+    autocmd!
+    autocmd TextYankPost * silent! lua vim.highlight.on_yank()
+  augroup end
+]]
 
-vim.cmd("autocmd FileType gitcommit setlocal omnifunc=linear#Complete")
 -- Restore cursor position
 vim.cmd([[autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
     \| exe "normal! g'\"" | endif]])

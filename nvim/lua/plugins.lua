@@ -10,11 +10,9 @@ return require('packer').startup({
             else
                 vim.cmd("colorscheme base16-eighties")
             end
+            vim.cmd("hi cursorlinenr cterm=none")
         end
         }
-
-
-        use 'kyazdani42/nvim-web-devicons'
 
         use {'kdheepak/tabline.nvim',
             requires = {
@@ -45,12 +43,16 @@ return require('packer').startup({
             end
         }
 
+        -- no jump when qf/loc open
+        use {
+            "luukvbaal/stabilize.nvim",
+            config = function() require("stabilize").setup() end
+        }
         -- smooth scroll
-        use 'psliwka/vim-smoothie'
+        -- use 'psliwka/vim-smoothie'
 
         -- sudo
         use 'lambdalisue/suda.vim'
-
 
         -- screen/tmux keys fix
         use 'nacitar/terminalkeys.vim'
@@ -78,6 +80,7 @@ return require('packer').startup({
                 })
             end
         }
+        use 'nvim-treesitter/nvim-treesitter-textobjects'
 
         -- auto hlsearch
         use 'romainl/vim-cool'
@@ -93,47 +96,33 @@ return require('packer').startup({
         -- fancy diagnostic
         use {'folke/trouble.nvim',
             config = function()
-                vim.diagnostic.config({virtual_text = false, sign = true, underline = false})
                 require("trouble").setup({
                     height = 6,
                     use_diagnostic_signs = true,
                     group = false,
                     padding = false,
                     auto_open = true,
-                    auto_close = false,
+                    auto_close = true,
                     indent_lines = false,
                     mode = "document_diagnostics",
                 })
             end
         }
-
-        -- diag colors
         use 'folke/lsp-colors.nvim'
 
-        -- completion
-        vim.g.coq_settings = {
-            auto_start = 'shut-up',
-            clients = {
-                snippets = {
-                    enabled = false,
-                },
-            }
-        }
-
-        use { 'waylonwalker/Telegraph.nvim',
-            requires = { "nvim-lua/plenary.nvim" },
-        }
-
-        -- lsp, fixer and linter
+        -- lsp, completion, fixer and linter
         use { 'neovim/nvim-lspconfig',
             requires = {
-                { 'ms-jpq/coq_nvim',
-                    branch = 'coq',
-                    run = ":COQdeps",
+                -- completion
+                { 'hrsh7th/nvim-cmp',
                     requires = {
-                        {'ms-jpq/coq.artifacts', branch = 'artifacts' }
-                    },
+                        { 'hrsh7th/cmp-nvim-lsp' },
+                        { 'hrsh7th/cmp-buffer' },
+                        { 'hrsh7th/cmp-path' },
+                        { 'hrsh7th/cmp-cmdline' },
+                    }
                 },
+                -- cli fixer, linter
                 {
                     "jose-elias-alvarez/null-ls.nvim",
                     requires = { "nvim-lua/plenary.nvim" },
@@ -141,6 +130,19 @@ return require('packer').startup({
             },
             config = function()
                 require("lsp")
+                require("linear_cmp_source")
+                local cmp = require('cmp')
+                cmp.setup({
+                    sources = cmp.config.sources({
+                        { name = 'nvim_lsp' },
+                        { name = 'buffer' },
+                        { name = 'path' },
+                        { name = 'linear' },
+                        { name = 'cmdline' },
+                    }),
+                })
+                cmp.setup.cmdline('/', {sources = {{ name = 'buffer' }}})
+                cmp.setup.cmdline(':', {sources = cmp.config.sources({{ name = 'path' }}, {{ name = 'cmdline' }})})
             end
         }
 
@@ -161,7 +163,6 @@ return require('packer').startup({
             end
         }
         use 'dstein64/nvim-scrollview'
-        use '~/workspace/sileht/vim-linear/'
 
     end,
 })

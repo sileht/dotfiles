@@ -31,6 +31,10 @@ vim.cmd([[
 nnoremap P "0p                            " Paste last yank
 nnoremap Y y$                             " Yank from the cursor to the end of the line, to be consistent with C and D.
 command! R execute "source ~/.config/nvim/init.lua | PackerSync"
+augroup packer_user_config
+  autocmd!
+  autocmd BufWritePost *.lua source <afile> | PackerCompile
+augroup end
 
 nnoremap <F12> <cmd>lua ToggleFocus()<cr>
 nnoremap <leader>x <cmd>TroubleToggle<cr>
