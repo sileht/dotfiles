@@ -303,7 +303,7 @@ upgrade() {
         pipx upgrade-all
         pipxi
         title "NPM"
-        npip
+        npi
         title "BIN"
         bin update -y
         title "NVIM"
