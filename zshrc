@@ -88,12 +88,27 @@ compctl -K    _pip_completion pip
 
 zstyle ':autocomplete:*' min-delay 0
 zstyle ':autocomplete:*' min-input 2
-# zstyle ':autocomplete:*' insert-unambiguous yes
+zstyle ':autocomplete:*' insert-unambiguous yes
 # zstyle ':autocomplete:*' widget-style menu-complete
 zstyle ':autocomplete:*' widget-style menu-select
 # zstyle ':autocomplete:*' widget-style complete-word
 # zstyle ':autocomplete:*' fzf-completion yes
 
+
+PIP_PACKAGES=(
+    pipx
+    pulsectl
+)
+
+PIPX_PACKAGES=(
+    poetry
+    git-pull-request
+    reno
+    rstcheck
+    jedi-language-server
+    dmypy-ls
+    flake8-ls
+)
 
 NPM_PACKAGES=(
     @emacs-grammarly/unofficial-grammarly-language-server
@@ -253,24 +268,46 @@ npi() {
         npm install --no-fund --no-audit --no-save --no-package-lock $NPM_PACKAGES
     )
 }
+pipxi() {
+    (
+        add-zsh-hook -d chpwd s
+        local dir=$HOME/.local/pipx/venvs/
+        for package in $PIPX_PACKAGES ; do
+            if [ ! $dir/$package ]; then
+                pipx install $package
+            fi
+        done
+
+    )
+}
 
 upgrade() {
     (
         add-zsh-hook -d chpwd s
-
+        local title() { echo ; echo "# $1 #" ; echo; }
+        title "PACMAN"
         (yes | sudo pacman -Suy)
         sudo remove-orphaned-kernels
         sudo pacman -Rns $(pacman -Qtdq)
         sudo paccache -ruk0
-        pkill -f polybar-update.sh
+        title "ENV"
         (cd ~/.env && git diff --quiet && git pull --rebase --recurse-submodules && ./install ) # Only pull if not dirty
+        title "ZSNAP"
         (cd ~/.env/znap/zsh-snap && git pull --rebase)
         (cd ~/.env && git commit -m "update znap" --no-edit znap/zsh-snap )
         znap pull
+        title "PIP"
+        pip install -q -U --user $PIP_PACKAGES
+        title "PIPX"
         pipx upgrade-all
-        npi
+        pipxi
+        title "NPM"
+        npip
+        title "BIN"
         bin update -y
+        title "NVIM"
         nvim --headless -c "autocmd\ User\ PackerComplete\ quitall" -c "PackerSync"
+        pkill -f polybar-update.sh
     )
 }
 
@@ -342,8 +379,25 @@ alias qf='find . -iname '
 alias grep='grep --color=auto'
 alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
-function sgrep(){ grep "$@" --color=always 2>&1| grep -v -e 'binary' -e binaire -e '\.svn'  -e '\.git/' -e '\.bzr/' -e '\.mypy_cache/' -e 'node_modules/' -e '.tox/'; }
-function g(){ sgrep "$@" | less }
+function sgrep() {
+    local GREP_ARGS=(
+      --devices=skip
+      --colour=always
+      --with-filename
+      --line-number
+      --dereference-recursive
+      --binary-files=without-match
+      --exclude-dir=.git
+      --exclude-dir=.tags
+      --exclude-dir=.bzr
+      --exclude-dir=.tox
+      --exclude-dir=.svn
+      --exclude-dir=.mypy_cache
+      --exclude-dir=__pycache__
+      --exclude-dir=node_modules
+  )
+  grep $GREP_ARGS $@
+}
 
 # ZSH STUFF
 alias zmv="nocorrect noglob zmv"
