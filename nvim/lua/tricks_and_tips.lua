@@ -2,26 +2,26 @@ local M = {}
 
 M.tricks_and_tips_selected = ""
 M.tricks_and_tips = [[
-<F5> 🠮 lsp.rename
-gD 🠮 lsp.delaration
-gd 🠮 lsp.definition
-gr 🠮 lsp.refereances
-K 🠮 lsp.hover_doc
-gi 🠮 lsp.implementation
-<C-k> 🠮 lsp.signature
-<leader>D 🠮 lsp.typedef
-<leader>ca 🠮 lsp.codeaction
-<leader>fp 🠮 telescope.builtin
-<leader>fc 🠮 telescope.git_commits
-<leader>fs 🠮 telescope.lsp_symbols
-<leader>ff 🠮 telescope.find_files
-<leader>fg 🠮 telescope.live_grep
-<leader>fb 🠮 telescope.buffers
-<leader>fh 🠮 telescope.help_tags
-<leader>gb 🠮 git blame
-<leader>e 🠮 NERDTree
-<leader>x 🠮 Trouble diagnostic
-ga 🠮 EasyAlign
+<F5> -> lsp.rename
+gD -> lsp.delaration
+gd -> lsp.definition
+gr -> lsp.refereances
+K -> lsp.hover_doc
+gi -> lsp.implementation
+<C-k> -> lsp.signature
+<leader>D -> lsp.typedef
+<leader>ca -> lsp.codeaction
+<leader>fp -> telescope.builtin
+<leader>fc -> telescope.git_commits
+<leader>fs -> telescope.lsp_symbols
+<leader>ff -> telescope.find_files
+<leader>fg -> telescope.live_grep
+<leader>fb -> telescope.buffers
+<leader>fh -> telescope.help_tags
+<leader>gb -> git blame
+<leader>e -> NERDTree
+<leader>x -> Trouble diagnostic
+ga -> EasyAlign
 ]]
 
 function M.change()

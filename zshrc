@@ -2,6 +2,10 @@
 
 # source ~/.creds
 
+[ -f /opt/homebrew/bin/brew ] && eval "$(/opt/homebrew/bin/brew shellenv)"
+[ -f $HOME/.iterm2_shell_integration.zsh ] && source $HOME/.iterm2_shell_integration.zsh
+fpath+=(/opt/homebrew/share/zsh/site-functions)
+
 # automatically remove duplicates from these arrays
 typeset -gU path cdpath fpath manpath fignore
 
@@ -111,7 +115,9 @@ PIPX_PACKAGES=(
 )
 
 NPM_PACKAGES=(
+    @taplo/cli
     @emacs-grammarly/unofficial-grammarly-language-server
+    @sentry/cli
     eslint_d
     npm-check-updates
     git-split-diffs
@@ -273,7 +279,7 @@ pipxi() {
         add-zsh-hook -d chpwd s
         local dir=$HOME/.local/pipx/venvs/
         for package in $PIPX_PACKAGES ; do
-            if [ ! $dir/$package ]; then
+            if [ ! -e $dir/$package ]; then
                 pipx install $package
             fi
         done
@@ -285,11 +291,20 @@ upgrade() {
     (
         add-zsh-hook -d chpwd s
         local title() { echo ; echo "# $1 #" ; echo; }
-        title "PACMAN"
-        (yes | sudo pacman -Suy)
-        sudo remove-orphaned-kernels
-        sudo pacman -Rns $(pacman -Qtdq)
-        sudo paccache -ruk0
+        if (( $+commands[brew] )); then
+            title "BREW"
+            brew update
+        fi
+        if (( $+commands[pacman] )); then
+            title "PACMAN"
+            (yes | sudo pacman -Suy)
+            sudo remove-orphaned-kernels
+            sudo pacman -Rns $(pacman -Qtdq)
+            sudo paccache -ruk0
+            pkill -f polybar-update.sh
+            title "PIP"
+            python3 -m pip install -q -U --user $PIP_PACKAGES
+        fi
         title "ENV"
         (cd ~/.env && git diff --quiet && git pull --rebase --recurse-submodules && ./install ) # Only pull if not dirty
         title "ZSNAP"
@@ -297,18 +312,17 @@ upgrade() {
         (cd ~/.env && git commit -m "update znap" --no-edit znap/zsh-snap )
         znap pull
         echo
-        title "PIP"
-        pip install -q -U --user $PIP_PACKAGES
         title "PIPX"
         pipx upgrade-all
         pipxi
         title "NPM"
         npi
-        title "BIN"
-        bin update -y
+        if (( $+commands[bin] )) then
+            title "BIN"
+            bin update -y
+        fi
         title "NVIM"
         nvim --headless -c "autocmd\ User\ PackerComplete\ quitall" -c "PackerSync"
-        pkill -f polybar-update.sh
     )
 }
 
@@ -320,7 +334,7 @@ unban(){ sudo iptables -D INPUT -s "$1" -j DROP }
 alias idletask='schedtool -D -n 19 -e ionice -c 3'
 alias batchtask='schedtool -B -n 1 -e ionice -n 1'
 
-function cdt() { cd $(mktemp -td cdt.$(date '+%Y%m%d-%H%M%S').XXXXXXXX) ; pwd }
+function cdt() { cd $(mktemp -d -t cdt.$(date '+%Y%m%d-%H%M%S').XXXXXXXX) ; pwd }
 function s() { pwd >| $ZVARDIR/.saved_dir; pwd >| $ZVARDIR/.saved_dir_$$; }
 function i() { sp="$(cat $ZVARDIR/.saved_dir 2>/dev/null)"; [ -d $sp -a -r $sp ] && cd $sp }
 function ii() { p=$(cat $ZVARDIR/.saved_dir_* | fzf) ; cd $p ; s ; }
@@ -333,7 +347,7 @@ add-zsh-hook chpwd s
 alias Q='exec zsh'
 #alias sc="screen -RDD"
 function sc() { tmux attach -d 2>/dev/null || tmux new-session ; }
-alias open="xdg-open"
+if (( $+commands[xdg-open] )) then alias open="xdg-open" ; fi
 alias rm="nocorrect rm -i"
 alias mv="nocorrect mv -i"
 alias cp="nocorrect cp -i"
@@ -475,7 +489,7 @@ update-widevine() {
     wget -q "https://dl.google.com/widevine-cdm/${widevine_version}-linux-x64.zip" -O- | busybox unzip - -d ~/.local/lib libwidevinecdm.so
 }
 
-alias tox="eatmydata tox";
+#alias tox="eatmydata tox";
 
 function etox() {
     zparseopts -D e+:=env
@@ -494,7 +508,8 @@ function etox() {
                 tox -e$e --notest
             fi
             source $VIRTUAL_ENV/bin/activate
-            eatmydata $*
+            #eatmydata $*
+            $*
             deactivate
         done
     done
@@ -534,3 +549,6 @@ __ssh_auth_sock_fix() {
 
 # precmd_functions+=(__ssh_auth_sock_fix)
 __ssh_auth_sock_fix
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
