@@ -42,7 +42,6 @@ source.complete = function(self, params, callback)
   end
 
   local token = vim.fn.getenv("LINEAR_TOKEN")
-  print(token)
   if (token == vim.NIL) then
       return
   end

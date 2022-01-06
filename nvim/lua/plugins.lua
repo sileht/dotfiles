@@ -94,21 +94,24 @@ return require('packer').startup({
         }
 
         -- fancy diagnostic
-        use {'folke/trouble.nvim',
+        use {
+            'https://gitlab.com/yorickpeterse/nvim-pqf.git',
             config = function()
-                require("trouble").setup({
-                    height = 6,
-                    use_diagnostic_signs = true,
-                    group = false,
-                    padding = false,
-                    auto_open = true,
-                    auto_close = true,
-                    indent_lines = false,
-                    mode = "document_diagnostics",
+                require('pqf').setup()
+            end
+        }
+        use {'kevinhwang91/nvim-bqf',
+            ft = 'qf',
+            config = function()
+                require("bqf").setup({
+                    auto_enable = true,
                 })
             end
         }
-        use 'folke/lsp-colors.nvim'
+        use {'junegunn/fzf', run = function()
+            vim.fn['fzf#install']()
+        end
+        }
 
         -- lsp, completion, fixer and linter
         use { 'neovim/nvim-lspconfig',

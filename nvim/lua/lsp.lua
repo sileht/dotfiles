@@ -127,7 +127,7 @@ local servers = {
     'yamlls',
     'jedi_language_server',
     'html',
-    'jsonls',
+--    'jsonls',
     'taplo',
     'yamlls',
     'sumneko_lua',
@@ -154,10 +154,10 @@ require("null-ls").setup({
         null_ls.builtins.formatting.black.with({
             prefer_local = ".tox/pep8/bin",
         }),
-        null_ls.builtins.diagnostics.yamllint,
         null_ls.builtins.formatting.fixjson,
         null_ls.builtins.formatting.stylelint,
         null_ls.builtins.formatting.eslint_d,
+
         null_ls.builtins.diagnostics.eslint,
         null_ls.builtins.diagnostics.vale,
         null_ls.builtins.diagnostics.yamllint,

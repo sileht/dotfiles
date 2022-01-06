@@ -1,6 +1,7 @@
 
 
 
+vim.opt.termguicolors = true
 vim.opt.shell = "/bin/sh"
 vim.opt.cursorline = true
 vim.opt.laststatus = 2                    -- Show statusbar
@@ -51,6 +52,9 @@ vim.opt.completeopt = "menu,menuone,noselect"
 
 vim.g.mapleader = ","
 vim.g.maplocalleader = ";"
+
+vim.opt.updatetime = 1500
+
 
 -- Highlight on yank
 vim.cmd [[

@@ -7,4 +7,4 @@ i3/i3pystatus/
 config/nvim/.netrwhist
 znap/*
 !znap/zsh-snap
-nvim/plugin
+nvim/plugin/packer_compiled.lua

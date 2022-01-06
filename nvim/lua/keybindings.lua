@@ -13,6 +13,7 @@ function ToggleFocus()
         require('gitsigns.actions').refresh()
         require("scrollview").scrollview_disable()
         require("trouble").close()
+        vim.cmd("cclose")
     else
         print("normal layout")
         vim.opt.laststatus = 2
@@ -22,8 +23,8 @@ function ToggleFocus()
         require('gitsigns.config').config.signcolumn = true
         require('gitsigns.actions').refresh()
         require("scrollview").scrollview_enable()
-        require("trouble").open()
         vim.cmd("wincmd p")
+        vim.cmd("copen")
     end
 end
 
@@ -37,7 +38,6 @@ augroup packer_user_config
 augroup end
 
 nnoremap <F12> <cmd>lua ToggleFocus()<cr>
-nnoremap <leader>x <cmd>TroubleToggle<cr>
 nnoremap <silent> <leader>e :NERDTreeToggle<CR>
 nnoremap <Leader>t <cmd>lua require('tricks_and_tips').change()<cr>
 nnoremap <Leader>fp <cmd>lua require('telescope.builtin').builtin()<cr>
