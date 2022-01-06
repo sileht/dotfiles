@@ -19,7 +19,7 @@
     ~/.config/rofi: rofi
     ~/.config/nvim: nvim
     ~/.config/bin/config.json: bin-config.json
-    ~/.Xresources: Xresources
+    #~/.Xresources: Xresources
     ~/.gitconfig: gitconfig
     ~/.gitignore-global: gitignore-global
     # ~/.gnupg/gpg.conf: gpg.conf
