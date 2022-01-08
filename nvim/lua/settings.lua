@@ -55,7 +55,6 @@ vim.g.maplocalleader = ";"
 
 vim.opt.updatetime = 1500
 
-
 -- Highlight on yank
 vim.cmd [[
   augroup YankHighlight

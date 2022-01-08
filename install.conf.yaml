@@ -36,6 +36,7 @@
     ~/.zprofile: zprofile
     ~/.zshenv: zshenv
     ~/.zshrc: zshrc
+    ~/.skhdrc: skhdrc
 
 - shell:
     # - chsh -s $(which zsh)

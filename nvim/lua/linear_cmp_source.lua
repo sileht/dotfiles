@@ -8,30 +8,27 @@ end
 
 ---Return this M is available in current context or not. (Optional)
 ---@return boolean
-source.is_available = function(self)
-  return true
+source.is_available = function()
+  return vim.bo.filetype == "gitcommit"
 end
 ---Return the debug name of this source. (Optional)
 ---@return string
-source.get_debug_name = function(self)
+source.get_debug_name = function()
   return 'linear'
 end
 ---Return keyword pattern for triggering completion. (Optional)
 ---If this is ommited, nvim-cmp will use default keyword pattern. See |cmp-config.completion.keyword_pattern|
 ---@return string
-source.get_keyword_pattern = function(self)
+source.get_keyword_pattern = function()
   -- return 'MRG.*'
   return [[\%(closes\|resolves\|related\|fixes\)]]
 end
 ---Return trigger characters for triggering completion. (Optional)
-source.get_trigger_characters = function(self)
+source.get_trigger_characters = function()
   return { ' ' }
 end
 
----Invoke completion. (Required)
----@param params cmp.SourceCompletionApiParams
----@param callback fun(response: lsp.CompletionResponse|nil)
-source.complete = function(self, params, callback)
+source.complete = function(self, _, callback)
   local filter = function(v)
       return v
   end
@@ -41,7 +38,11 @@ source.complete = function(self, params, callback)
       return
   end
 
-  local token = vim.fn.getenv("LINEAR_TOKEN")
+  local file = io.open(vim.env.HOME .. "/.linear_token", "rb")
+  local token = file:read "*a"
+  token = token:gsub("%s+", "")
+  file:close()
+  -- local token = vim.fn.getenv("LINEAR_TOKEN")
   if (token == vim.NIL) then
       return
   end
@@ -88,16 +89,10 @@ source.complete = function(self, params, callback)
     end)
   })
 end
----Resolve completion item. (Optional)
----@param completion_item lsp.CompletionItem
----@param callback fun(completion_item: lsp.CompletionItem|nil)
-source.resolve = function(self, completion_item, callback)
+source.resolve = function(_, completion_item, callback)
   callback(completion_item)
 end
----Execute command after item was accepted.
----@param completion_item lsp.CompletionItem
----@param callback fun(completion_item: lsp.CompletionItem|nil)
-source.execute = function(self, completion_item, callback)
+source.execute = function(_, completion_item, callback)
   callback(completion_item)
 end
 

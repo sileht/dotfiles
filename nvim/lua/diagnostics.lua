@@ -1,6 +1,7 @@
 local M = {}
 
 M.signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
+M.open = true
 
 function M.setup()
     vim.diagnostic.config({
@@ -16,11 +17,17 @@ function M.setup()
     local default_hanlder = vim.lsp.handlers["textDocument/publishDiagnostics"]
     vim.lsp.handlers["textDocument/publishDiagnostics"] = function(...)
         default_hanlder(...)
-        vim.diagnostic.setqflist()
-        vim.api.nvim_command("wincmd p")
+        vim.diagnostic.setqflist({ open=false })
+        local items = vim.fn.getqflist()
+        if vim.tbl_isempty(items) then
+            vim.cmd("cclose")
+        else
+            vim.cmd("copen")
+            vim.cmd("wincmd p")
+        end
+        M.open = false
     end
 
-    vim.diagnostic.setqflist()
 
     for type, icon in pairs(M.signs) do
         local hl = "DiagnosticSign" .. type

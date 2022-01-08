@@ -46,7 +46,11 @@ return require('packer').startup({
         -- no jump when qf/loc open
         use {
             "luukvbaal/stabilize.nvim",
-            config = function() require("stabilize").setup() end
+            config = function()
+                require("stabilize").setup({
+                    nested = "QuickFixCmdPost,DiagnosticChanged *"
+                })
+            end
         }
         -- smooth scroll
         -- use 'psliwka/vim-smoothie'
@@ -105,6 +109,10 @@ return require('packer').startup({
             config = function()
                 require("bqf").setup({
                     auto_enable = true,
+                    auto_resize_height = true,
+                    preview = {
+                        auto_preview = false,
+                    }
                 })
             end
         }
