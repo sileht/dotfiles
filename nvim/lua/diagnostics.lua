@@ -17,6 +17,9 @@ function M.setup()
     local default_hanlder = vim.lsp.handlers["textDocument/publishDiagnostics"]
     vim.lsp.handlers["textDocument/publishDiagnostics"] = function(...)
         default_hanlder(...)
+    end
+
+    function fgoo()
         vim.diagnostic.setqflist({ open=false })
         local items = vim.fn.getqflist()
         if vim.tbl_isempty(items) then

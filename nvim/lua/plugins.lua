@@ -44,6 +44,7 @@ return require('packer').startup({
         }
 
         -- no jump when qf/loc open
+        --[[
         use {
             "luukvbaal/stabilize.nvim",
             config = function()
@@ -52,6 +53,7 @@ return require('packer').startup({
                 })
             end
         }
+        ]]--
         -- smooth scroll
         -- use 'psliwka/vim-smoothie'
 
@@ -97,7 +99,18 @@ return require('packer').startup({
             end
         }
 
+        use {
+            "folke/trouble.nvim",
+            requires = "kyazdani42/nvim-web-devicons",
+            config = function()
+                require("trouble").setup({
+                    auto_open = true,
+                    auto_close = true,
+                })
+            end
+        }
         -- fancy diagnostic
+        --[[
         use {
             'https://gitlab.com/yorickpeterse/nvim-pqf.git',
             config = function()
@@ -120,6 +133,7 @@ return require('packer').startup({
             vim.fn['fzf#install']()
         end
         }
+    ]]--
 
         -- lsp, completion, fixer and linter
         use { 'neovim/nvim-lspconfig',
