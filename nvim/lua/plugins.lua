@@ -44,7 +44,7 @@ return require('packer').startup({
         }
 
         -- no jump when qf/loc open
-        --[[
+    --[[
         use {
             "luukvbaal/stabilize.nvim",
             config = function()
@@ -53,9 +53,9 @@ return require('packer').startup({
                 })
             end
         }
-        ]]--
         -- smooth scroll
-        -- use 'psliwka/vim-smoothie'
+        use 'psliwka/vim-smoothie'
+    ]]--
 
         -- sudo
         use 'lambdalisue/suda.vim'
@@ -88,53 +88,27 @@ return require('packer').startup({
         }
         use 'nvim-treesitter/nvim-treesitter-textobjects'
 
+        --[[
+        use { 'ibhagwan/fzf-lua',
+            requires = { 'kyazdani42/nvim-web-devicons' },
+            config = function()
+                require('fzf-lua').quickfix({ fzf_opts = {['--layout'] = 'reverse-list'} })
+            end
+        }
+        ]]--
+
         -- auto hlsearch
         use 'romainl/vim-cool'
 
         -- find/grep/files/... <leader>pX
+        --[[
         use { 'nvim-telescope/telescope.nvim',
             requires = { {'nvim-lua/plenary.nvim'} },
             config = function()
                 require('telescope').setup()
             end
         }
-
-        use {
-            "folke/trouble.nvim",
-            requires = "kyazdani42/nvim-web-devicons",
-            config = function()
-                require("trouble").setup({
-                    auto_open = true,
-                    auto_close = true,
-                })
-            end
-        }
-        -- fancy diagnostic
-        --[[
-        use {
-            'https://gitlab.com/yorickpeterse/nvim-pqf.git',
-            config = function()
-                require('pqf').setup()
-            end
-        }
-        use {'kevinhwang91/nvim-bqf',
-            ft = 'qf',
-            config = function()
-                require("bqf").setup({
-                    auto_enable = true,
-                    auto_resize_height = true,
-                    preview = {
-                        auto_preview = false,
-                    }
-                })
-            end
-        }
-        use {'junegunn/fzf', run = function()
-            vim.fn['fzf#install']()
-        end
-        }
-    ]]--
-
+        ]]--
         -- lsp, completion, fixer and linter
         use { 'neovim/nvim-lspconfig',
             requires = {
@@ -152,6 +126,9 @@ return require('packer').startup({
                     "jose-elias-alvarez/null-ls.nvim",
                     requires = { "nvim-lua/plenary.nvim" },
                 },
+                {
+                    "onsails/lspkind-nvim",
+                },
             },
             config = function()
                 require("lsp")
@@ -165,6 +142,18 @@ return require('packer').startup({
                         { name = 'linear' },
                         { name = 'cmdline' },
                     }),
+                    formatting = {
+                        format = require('lspkind').cmp_format({
+                            with_text = false, -- do not show text alongside icons
+                            maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
+
+                            -- The function below will be called before any actual modifications from lspkind
+                            -- so that you can provide more controls on popup customization. (See [#30](https://github.com/onsails/lspkind-nvim/pull/30))
+                            before = function (_, vim_item)
+                                return vim_item
+                            end
+                        })
+                    }
                 })
                 cmp.setup.cmdline('/', {sources = {{ name = 'buffer' }}})
                 cmp.setup.cmdline(':', {sources = cmp.config.sources({{ name = 'path' }}, {{ name = 'cmdline' }})})
@@ -188,6 +177,5 @@ return require('packer').startup({
             end
         }
         use 'dstein64/nvim-scrollview'
-
     end,
 })

@@ -84,6 +84,7 @@ local lsp_options = {
     grammarly = {
         filetypes = { 'markdown', 'gitcommit', 'rst' },
     },
+    --[[--
     flake8_ls = {
         on_new_config = on_new_config_tox_binary_install("flake8-ls"),
     },
@@ -94,6 +95,7 @@ local lsp_options = {
             )(new_config, new_root_dir)
         end
     },
+    --]]--
     jedi_language_server = {
         on_new_config = on_new_config_tox_binary_install("jedi-language-server"),
     },
@@ -132,8 +134,9 @@ local servers = {
     'yamlls',
     'sumneko_lua',
     'grammarly',
-    'dmypy_ls',
-    'flake8_ls',
+    --'dmypy_ls',
+    --'flake8_ls',
+    --'tsserver',
 }
 for _, lsp in ipairs(servers) do
     local options = vim.deepcopy(lsp_options.common)
@@ -145,9 +148,15 @@ end
 
 
 require("null-ls").setup({
-    debug = false,
+    debug = true,
     on_attach = on_attach,
     sources = {
+        null_ls.builtins.diagnostics.mypy.with({
+            prefer_local = ".tox/pep8/bin",
+        }),
+        null_ls.builtins.diagnostics.flake8.with({
+            prefer_local = ".tox/pep8/bin",
+        }),
         null_ls.builtins.formatting.isort.with({
             prefer_local = ".tox/pep8/bin",
         }),
@@ -156,14 +165,22 @@ require("null-ls").setup({
         }),
         null_ls.builtins.formatting.fixjson,
         null_ls.builtins.formatting.stylelint,
-        null_ls.builtins.formatting.eslint_d,
-
-        null_ls.builtins.diagnostics.eslint,
+        --[[--
+        null_ls.builtins.formatting.eslint.with({
+            prefer_local = "node_modules/.bin/eslint"
+        }),
+        null_ls.builtins.diagnostics.eslint.with({
+            prefer_local = "node_modules/.bin/eslint"
+        }),
+        null_ls.builtins.code_actions.eslint.with({
+            prefer_local = "node_modules/.bin/eslint"
+        }),
+        --]]--
         null_ls.builtins.diagnostics.vale,
         null_ls.builtins.diagnostics.yamllint,
         null_ls.builtins.diagnostics.shellcheck,
 
-        null_ls.builtins.code_actions.eslint_d,
+
         null_ls.builtins.code_actions.refactoring,
         null_ls.builtins.code_actions.gitsigns,
         null_ls.builtins.code_actions.shellcheck,

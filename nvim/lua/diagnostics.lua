@@ -1,41 +1,71 @@
 local M = {}
 
 M.signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
-M.open = true
+M.qfsigns = { E = " ", W = " ", H = " ", N = " ", I = " " }
 
 function M.setup()
     vim.diagnostic.config({
-        -- virtual_text = { spacing = 4, prefix = "●" },
-        virtual_text = false,
+        virtual_text = { spacing = 4, prefix = "●" },
         sign = true,
         underline = false,
         update_in_insert = false,
         severity_sort = true,
     })
-    vim.api.nvim_command("autocmd CursorHold <buffer> lua vim.diagnostic.open_float({focusable=false})")
-
-    local default_hanlder = vim.lsp.handlers["textDocument/publishDiagnostics"]
-    vim.lsp.handlers["textDocument/publishDiagnostics"] = function(...)
-        default_hanlder(...)
-    end
-
-    function fgoo()
-        vim.diagnostic.setqflist({ open=false })
-        local items = vim.fn.getqflist()
-        if vim.tbl_isempty(items) then
-            vim.cmd("cclose")
-        else
-            vim.cmd("copen")
-            vim.cmd("wincmd p")
-        end
-        M.open = false
-    end
-
+    --vim.cmd("autocmd CursorHold <buffer> lua vim.diagnostic.open_float({focusable=false})")
+    vim.cmd("copen")
+    vim.cmd("autocmd DiagnosticChanged * lua vim.diagnostic.setqflist({open = false })")
 
     for type, icon in pairs(M.signs) do
         local hl = "DiagnosticSign" .. type
         vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
     end
+    vim.o.quickfixtextfunc = "{info -> v:lua.require('diagnostics').qftf(info)}"
 end
 
+function M.qftf(info)
+    local items
+    local ret = {}
+    if info.quickfix == 1 then
+        items = vim.fn.getqflist({id = info.id, items = 0}).items
+    else
+        items = vim.fn.getloclist(info.winid, {id = info.id, items = 0}).items
+    end
+    --local limit = 15
+    --local fname_fmt1, fname_fmt2 = '%-' .. limit .. 's', '…%.' .. (limit - 1) .. 's'
+    local valid_fmt = '%s | %s%s [%d:%d]'
+    for i = info.start_idx, info.end_idx do
+        local e = items[i]
+        local fname = ''
+        local str
+        if e.valid == 1 then
+            if e.bufnr > 0 then
+                fname = vim.fn.bufname(e.bufnr)
+                if fname == '' then
+                    fname = '[No Name]'
+                else
+                    fname = fname:gsub('^' .. vim.env.HOME, '~')
+                end
+                -- char in fname may occur more than 1 width, ignore this issue in order to keep performance
+                --[[--
+                if #fname <= limit then
+                    fname = fname_fmt1:format(fname)
+                else
+                    fname = fname_fmt2:format(fname:sub(1 - limit))
+                end
+                --]]--
+            end
+            local lnum = e.lnum > 99999 and -1 or e.lnum
+            local col = e.col > 999 and -1 or e.col
+            local qtype = e.type:sub(1, 1):upper()
+            local qtype_icon = M.qfsigns[qtype]
+            local qtype_text = qtype or ' '
+            local qtype_ui = (qtype_icon or qtype_text)
+            str = valid_fmt:format(fname, qtype_ui, e.text, lnum, col)
+        else
+            str = e.text
+        end
+        table.insert(ret, str)
+    end
+    return ret
+end
 return M

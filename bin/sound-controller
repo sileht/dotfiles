@@ -136,6 +136,10 @@ def _get_bluetooth_items():
                 f"bluetoothctl remove {mac}",
             ]
         else:
+            items[f"{prefix} Connect {suffix}"] = [
+                f"bluetoothctl connect {mac}",
+                f"!sound-controller",
+            ]
             items[f"{prefix}Pair{suffix}"] = [
                 f"bluetoothctl trust {mac}",
                 f"bluetoothctl pair {mac}",
