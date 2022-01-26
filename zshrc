@@ -115,10 +115,13 @@ PIPX_PACKAGES=(
 )
 
 NPM_PACKAGES=(
+    typescript-language-server
+    npm-check-updates
     @taplo/cli
     @emacs-grammarly/unofficial-grammarly-language-server
     @sentry/cli
     eslint_d
+    eslint
     npm-check-updates
     git-split-diffs
     vim-language-server
