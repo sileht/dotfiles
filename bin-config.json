@@ -3,10 +3,10 @@
     "bins": {
         "/home/sileht/.bin-bin/bin": {
             "path": "/home/sileht/.bin-bin/bin",
-            "remote_name": "",
-            "version": "v0.12.1",
+            "remote_name": "bin",
+            "version": "v0.13.0",
             "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-            "url": "https://github.com/marcosnils/bin/releases/tag/v0.12.1",
+            "url": "https://github.com/marcosnils/bin/releases/tag/v0.13.0",
             "provider": "",
             "package_path": ""
         },
@@ -22,9 +22,9 @@
         "/home/sileht/.bin-bin/deno": {
             "path": "/home/sileht/.bin-bin/deno",
             "remote_name": "deno",
-            "version": "v1.18.0",
+            "version": "v1.18.1",
             "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-            "url": "https://github.com/denoland/deno/releases/tag/v1.18.0",
+            "url": "https://github.com/denoland/deno/releases/tag/v1.18.1",
             "provider": "",
             "package_path": "deno"
         },
@@ -67,11 +67,11 @@
         "/home/sileht/.bin-bin/stripe": {
             "path": "/home/sileht/.bin-bin/stripe",
             "remote_name": "stripe",
-            "version": "v1.7.9",
+            "version": "v1.7.10",
             "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-            "url": "https://github.com/stripe/stripe-cli/releases/tag/v1.7.9",
+            "url": "https://github.com/stripe/stripe-cli/releases/tag/v1.7.10",
             "provider": "",
-            "package_path": ""
+            "package_path": "stripe"
         },
         "/home/sileht/.bin-bin/taplo": {
             "path": "/home/sileht/.bin-bin/taplo",
