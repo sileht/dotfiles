@@ -12,8 +12,11 @@ function ToggleFocus()
         require('gitsigns.config').config.signcolumn = false
         require('gitsigns.actions').refresh()
         require("scrollview").scrollview_disable()
+        vim.cmd("cclose")
     else
         print("normal layout")
+        vim.cmd("copen")
+        vim.cmd("wincmd p")
         require("scrollview").scrollview_enable()
         require('gitsigns.actions').refresh()
         require('gitsigns.config').config.signcolumn = true

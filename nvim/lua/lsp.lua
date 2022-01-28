@@ -34,7 +34,13 @@ local on_new_config_tox_binary_install = function(name, args)
                     on_stdout = log_to_message,
                     on_stderr = log_to_message,
                     on_exit = function()
-                        vim.api.nvim_command('LspRestart')
+                        vim.fn.jobstart(venv .. '/bin/pip install -U pydantic', {
+                            on_stdout = log_to_message,
+                            on_stderr = log_to_message,
+                            on_exit = function()
+                                vim.api.nvim_command('LspRestart')
+                            end
+                        })
                     end
                 })
             else
@@ -179,7 +185,6 @@ require("null-ls").setup({
         null_ls.builtins.diagnostics.vale,
         null_ls.builtins.diagnostics.yamllint,
         null_ls.builtins.diagnostics.shellcheck,
-
 
         null_ls.builtins.code_actions.refactoring,
         null_ls.builtins.code_actions.gitsigns,

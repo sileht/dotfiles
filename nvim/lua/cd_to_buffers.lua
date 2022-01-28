@@ -8,7 +8,7 @@ function M.cd()
 end
 
 function M.setup()
-    vim.cmd("autocmd BufEnter * lua require('cd_to_buffers').cd()")
+    -- vim.cmd("autocmd BufEnter * lua require('cd_to_buffers').cd()")
 end
 
 return M

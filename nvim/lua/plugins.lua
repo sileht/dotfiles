@@ -101,14 +101,12 @@ return require('packer').startup({
         use 'romainl/vim-cool'
 
         -- find/grep/files/... <leader>pX
-        --[[
         use { 'nvim-telescope/telescope.nvim',
             requires = { {'nvim-lua/plenary.nvim'} },
             config = function()
                 require('telescope').setup()
             end
         }
-        ]]--
         -- lsp, completion, fixer and linter
         use { 'neovim/nvim-lspconfig',
             requires = {
