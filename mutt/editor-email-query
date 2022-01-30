@@ -1,3 +1,0 @@
-#!/bin/bash
-
-khard email -p --remove-first-line "$@" | awk '{print $1}'
