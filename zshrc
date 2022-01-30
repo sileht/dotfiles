@@ -364,7 +364,6 @@ alias man="LANG=C man"
 alias df="df -h"
 alias diff='diff -rNu'
 alias ip='ip -color'
-alias optimutt="find ~/.mutt/cache/headers -type f -exec tcbmgr optimize -nl {} \;"
 alias heroku="TERM=xterm heroku"
 function diffv() {
     diff "$@" | git-split-diffs --color=16m | less -RFX
@@ -385,12 +384,9 @@ alias vi="nvim"
 alias svi="sudo -E nvim"
 alias r="ranger"
 alias psql="sudo -i -u postgres psql"
-# alias pyclean='find . \( -type f -name "*.py[co]" \) -o \( -type d -path "*__pycache__*" \) ! -path "./.tox*" -delete"'
-alias pyclean='find . \( -type f -name "*.py[co]" \) ! -path "./.tox*" -delete'
 alias more=less
 
 # FIND STUFF
-alias locate='noglob locate'
 alias find='noglob find'
 alias qf='find . -iname '
 
@@ -487,14 +483,6 @@ sshrefresh(){
     done
 }
 
-update-widevine() {
-    rm -f ~/.local/lib/libwidevinecdm.so
-    widevine_version="$(wget -q -O- https://dl.google.com/widevine-cdm/current.txt)"
-    wget -q "https://dl.google.com/widevine-cdm/${widevine_version}-linux-x64.zip" -O- | busybox unzip - -d ~/.local/lib libwidevinecdm.so
-}
-
-#alias tox="eatmydata tox";
-
 function etox() {
     zparseopts -D e+:=env
     typeset -A helper
@@ -540,19 +528,6 @@ alias utox="nocorrect utox"
 ##########
 # SCREEN #
 ##########
-
-__ssh_auth_sock_fix() {
-    # Predictable SSH authentication socket location.
-    local SOCK="/tmp/ssh-agent-$USER-screen"
-    if [ -e "$SSH_AUTH_SOCK" -a "$SSH_AUTH_SOCK" != "$SOCK" ]; then
-        rm -f /tmp/ssh-agent-$USER-screen
-        ln -sf $SSH_AUTH_SOCK $SOCK
-        export SSH_AUTH_SOCK=$SOCK
-    fi
-}
-
-# precmd_functions+=(__ssh_auth_sock_fix)
-__ssh_auth_sock_fix
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
