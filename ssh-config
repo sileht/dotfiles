@@ -3,32 +3,20 @@
 ##########
 IgnoreUnknown RemoteCommand
 
-Host predator rt rrt eve-unlock
+Host predator rt eve-unlock
    User root
 
-Host rt rrt
+Host rt
    Port 22222
 
-Host alien billy gizmo eve bob rbob trudy predator joe.s joe
+Host eve predator
     ForwardAgent yes
-    #RemoteForward /home/sileht/.var/S.gpg-agent /run/user/1000/gnupg/S.gpg-agent.extra
-    #RemoteForward /home/sileht/.var/S.gpg-agent.ssh /run/user/1000/gnupg/S.gpg-agent.ssh
-    #RemoteForward /home/sileht/.var/S.gpg-agent.ssh /run/user/1000/keyring/ssh
-    #StreamLocalBindUnlink yes
     User sileht
     Port 5555
 
 
-Host gizmo eve predator rbob rrt
+Host eve predator
     Hostname %h.sileht.net
-
-Host joe.s
-    Hostname %hileht.net
-
-Host gizmo
-    AddressFamily inet
-    DynamicForward 9999
-    RemoteForward 62222 localhost:5555
 
 Host eve
     AddressFamily inet
@@ -89,48 +77,6 @@ Host *.te
 
 Host *.ring.nlnog.net
     User tetaneutral
-
-#############
-# JOLIBRAIN #
-#############
-
-Host *.j
-    ProxyCommand ssh utopialab.t nc %h %p
-    ForwardAgent yes
-    #RemoteForward /home/sileht/.var/S.gpg-agent.ssh /run/user/1000/keyring/ssh
-    #StreamLocalBindUnlink yes
-
-Host ceres.j
-    Hostname 10.10.77.67
-    DynamicForward 7777
-
-Host eris.j
-    Hostname 10.10.77.61
-    DynamicForward 7777
-
-Host neptune01t.j
-    Hostname 10.10.77.101
-
-Host neptune02t.j
-    Hostname 10.10.77.102
-
-Host neptune03t.j
-    Hostname 10.10.77.103
-
-Host neptune04t.j
-    Hostname 10.10.77.104
-
-Host neptune05t.j
-    Hostname 10.10.77.105
-
-
-Host erist cerest
-    ForwardAgent yes
-    #RemoteForward /home/sileht/.var/S.gpg-agent /run/user/1000/gnupg/S.gpg-agent.extra
-    #RemoteForward /home/sileht/.var/S.gpg-agent.ssh /run/user/1000/gnupg/S.gpg-agent.ssh
-    #RemoteForward /home/sileht/.var/S.gpg-agent.ssh /run/user/1000/keyring/ssh
-    #StreamLocalBindUnlink yes
-    User sileht
 
 ###########
 # DEFAULT #
