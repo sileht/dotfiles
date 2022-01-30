@@ -22,8 +22,6 @@
     #~/.Xresources: Xresources
     ~/.gitconfig: gitconfig
     ~/.gitignore-global: gitignore-global
-    # ~/.gnupg/gpg.conf: gpg.conf
-    # ~/.gnupg/gpg-agent.conf: gpg-agent.conf
     ~/.i3: i3
     ~/.mutt: mutt
     ~/.ssh/config: ssh-config
