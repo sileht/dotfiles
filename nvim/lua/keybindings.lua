@@ -57,8 +57,16 @@ nnoremap <leader>D <cmd>lua vim.lsp.buf.type_definition()<cr>
 nnoremap <leader>ca <cmd>lua vim.lsp.buf.code_action()<cr>
 nnoremap <silent> <F11> :set spell!<cr>
 
-nmap <S-left>  :bp<Enter>
-nmap <S-right> :bn<Enter>
+function! BSkipQuickFix(command)
+  let start_buffer = bufnr('%')
+  execute a:command
+  while &buftype ==# 'quickfix' && bufnr('%') != start_buffer
+    execute a:command
+  endwhile
+endfunction
+
+nmap <S-left>  :call BSkipQuickFix("bp")<Enter>
+nmap <S-right> :call BSkipQuickFix("bn")<Enter>
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 cmap w!! :w suda://%<CR>:e!<CR>

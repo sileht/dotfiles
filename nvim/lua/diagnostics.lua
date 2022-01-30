@@ -3,6 +3,58 @@ local M = {}
 M.signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
 M.qfsigns = { E = " ", W = " ", H = " ", N = " ", I = " " }
 
+local errlist_type_map = {
+  [vim.diagnostic.severity.ERROR] = 'E',
+  [vim.diagnostic.severity.WARN] = 'W',
+  [vim.diagnostic.severity.INFO] = 'I',
+  [vim.diagnostic.severity.HINT] = 'N',
+}
+
+
+function M.toqflist(diagnostics)
+  vim.validate {
+    diagnostics = {
+      diagnostics,
+      vim.tbl_islist,
+      "a list of diagnostics",
+    },
+  }
+
+  local list = {}
+  for _, v in ipairs(diagnostics) do
+    local item = {
+      bufnr = v.bufnr,
+      lnum = v.lnum + 1,
+      col = v.col and (v.col + 1) or nil,
+      end_lnum = v.end_lnum and (v.end_lnum + 1) or nil,
+      end_col = v.end_col and (v.end_col + 1) or nil,
+      -- copy of toqflist with only this line changed
+      text = v.message .. ' (' .. v.source .. ')',
+      type = errlist_type_map[v.severity] or 'E',
+    }
+    table.insert(list, item)
+  end
+  table.sort(list, function(a, b)
+    if a.bufnr == b.bufnr then
+      return a.lnum < b.lnum
+    else
+      return a.bufnr < b.bufnr
+    end
+  end)
+  return list
+end
+
+function M.setqflist()
+  local opts = {}
+  local title = "Diagnostics"
+  local bufnr = 0
+  -- Don't clamp line numbers since the quickfix list can already handle line
+  -- numbers beyond the end of the buffer
+  local diagnostics = vim.diagnostic.get(bufnr, opts, false)
+  local items = M.toqflist(diagnostics)
+  vim.fn.setqflist({}, ' ', { title = title, items = items })
+end
+
 function M.setup()
     vim.diagnostic.config({
         virtual_text = { spacing = 4, prefix = "●" },
@@ -13,7 +65,7 @@ function M.setup()
     })
     --vim.cmd("autocmd CursorHold <buffer> lua vim.diagnostic.open_float({focusable=false})")
     vim.cmd("copen")
-    vim.cmd("autocmd DiagnosticChanged * lua vim.diagnostic.setqflist({open = false })")
+    vim.cmd("autocmd DiagnosticChanged * lua require('diagnostics').setqflist()")
 
     for type, icon in pairs(M.signs) do
         local hl = "DiagnosticSign" .. type
