@@ -63,6 +63,14 @@ return require('packer').startup({
         -- screen/tmux keys fix
         use 'nacitar/terminalkeys.vim'
 
+        use {
+            's1n7ax/nvim-terminal',
+            config = function()
+                vim.o.hidden = true
+                require('nvim-terminal').setup()
+            end,
+        }
+
         -- easyalign ga
         use 'junegunn/vim-easy-align'
 

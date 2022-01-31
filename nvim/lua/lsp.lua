@@ -154,7 +154,7 @@ end
 
 
 require("null-ls").setup({
-    debug = true,
+    debug = false,
     on_attach = on_attach,
     sources = {
         null_ls.builtins.diagnostics.mypy.with({

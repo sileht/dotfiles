@@ -10,17 +10,15 @@ local errlist_type_map = {
   [vim.diagnostic.severity.HINT] = 'N',
 }
 
+function M.setqflist()
+  local opts = {}
+  local title = "Diagnostics"
+  local bufnr = 0
+  -- Don't clamp line numbers since the quickfix list can already handle line
+  -- numbers beyond the end of the buffer
+  local diagnostics = vim.diagnostic.get(bufnr, opts, false)
 
-function M.toqflist(diagnostics)
-  vim.validate {
-    diagnostics = {
-      diagnostics,
-      vim.tbl_islist,
-      "a list of diagnostics",
-    },
-  }
-
-  local list = {}
+  local items = {}
   for _, v in ipairs(diagnostics) do
     local item = {
       bufnr = v.bufnr,
@@ -32,26 +30,16 @@ function M.toqflist(diagnostics)
       text = v.message .. ' (' .. v.source .. ')',
       type = errlist_type_map[v.severity] or 'E',
     }
-    table.insert(list, item)
+    table.insert(items, item)
   end
-  table.sort(list, function(a, b)
+  table.sort(items, function(a, b)
     if a.bufnr == b.bufnr then
       return a.lnum < b.lnum
     else
       return a.bufnr < b.bufnr
     end
   end)
-  return list
-end
 
-function M.setqflist()
-  local opts = {}
-  local title = "Diagnostics"
-  local bufnr = 0
-  -- Don't clamp line numbers since the quickfix list can already handle line
-  -- numbers beyond the end of the buffer
-  local diagnostics = vim.diagnostic.get(bufnr, opts, false)
-  local items = M.toqflist(diagnostics)
   vim.fn.setqflist({}, ' ', { title = title, items = items })
 end
 
@@ -64,8 +52,9 @@ function M.setup()
         severity_sort = true,
     })
     --vim.cmd("autocmd CursorHold <buffer> lua vim.diagnostic.open_float({focusable=false})")
-    vim.cmd("copen")
+    vim.cmd("copen 5")
     vim.cmd("autocmd DiagnosticChanged * lua require('diagnostics').setqflist()")
+    vim.cmd("autocmd BufEnter * lua require('diagnostics').setqflist()")
 
     for type, icon in pairs(M.signs) do
         local hl = "DiagnosticSign" .. type
