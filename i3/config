@@ -59,6 +59,7 @@ bindsym $mod+b exec google-chrome-stable
 #bindsym $mod+Shift+c exec alacritty -t 'gizmo.sileht.net' -e mosh -a gizmo
 bindsym $mod+k exec sound-controller
 
+bindsym $mod+p exec flameshot gui
 bindsym Print exec flameshot gui
 bindsym Shift+Print exec kazam
 bindsym --release $mod+l exec --no-startup-id mate-screensaver-command -l
@@ -67,6 +68,7 @@ bindsym $mod+s exec --no-startup-id alacritty -e ranger
 # bindsym $mod+s exec --no-startup-id rofi -show file-browser
 # kill focused window
 bindsym $mod+Shift+a kill
+bindsym $mod+q kill
 
 bindsym $mod+colon exec --no-startup-id "rofimoji --action clipboard"
 bindsym $mod+r exec --no-startup-id rofi_menu
@@ -125,7 +127,7 @@ bindsym $mod+Shift+space floating toggle; resize set width 600 px height 600 px;
 bindsym $mod+space focus mode_toggle
 
 # focus the parent container
-bindsym $mod+q focus parent
+#bindsym $mod+q focus parent
 
 # focus the child container
 #bindsym $mod+d focus child
