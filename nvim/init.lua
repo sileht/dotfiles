@@ -1,6 +1,6 @@
 require('settings')
 require('plugins')
-require('keybindings')
+require('keybindings').setup_legacy_key()
 require('tricks_and_tips').setup()
 require('cd_to_buffers').setup()
 require('diagnostics').setup()

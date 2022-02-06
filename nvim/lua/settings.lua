@@ -41,6 +41,13 @@ vim.opt.splitbelow = true                 -- Puts new split windows to the botto
 -- vim.opt.matchpairs+ = "<:>"              -- Match, to be used with %
 vim.opt.pastetoggle = "<F12>"             -- pastetoggle (sane indentation on pastes)
 vim.opt.foldenable = false                -- No fold
+vim.opt.foldmethod = "manual"
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+
+vim.opt.linebreak = true                  --  Don't word wrap in the middle of words
+vim.opt.breakindent = true                -- Keep indentation aligned when line wrapping
+
+
 vim.opt.scrolloff = 10                    -- Again no fold
 vim.opt.spelllang = "en,fr"
 vim.opt.spellsuggest = "best,9"
