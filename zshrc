@@ -4,7 +4,7 @@
 
 [ -f /opt/homebrew/bin/brew ] && eval "$(/opt/homebrew/bin/brew shellenv)"
 [ -f $HOME/.iterm2_shell_integration.zsh ] && source $HOME/.iterm2_shell_integration.zsh
-fpath+=(/opt/homebrew/share/zsh/site-functions)
+fpath+=(/opt/homebrew/share/zsh/site-functions /home/linuxbrew/.linuxbrew/share/zsh/site-functions)
 
 # automatically remove duplicates from these arrays
 typeset -gU path cdpath fpath manpath fignore
@@ -116,6 +116,8 @@ PIPX_PACKAGES=(
 )
 
 NPM_PACKAGES=(
+    neovim
+    lua-fmt
     typescript-language-server
     npm-check-updates
     @taplo/cli
@@ -421,7 +423,7 @@ alias zcp='zmv -C'
 alias zln='zmv -L'
 alias xclip="xclip -selection c"
 
-alias ls="exa -F --group-directories-first"
+alias ls="exa -F --group-directories-first --icons"
 #alias ls="LC_COLLATE=POSIX ls -h --color=auto -bCF --group-directories-first"
 alias ll="ls -l"
 alias lla="ls -la"
