@@ -317,6 +317,8 @@ upgrade() {
         (cd ~/.env/znap/zsh-snap && git pull --rebase)
         (cd ~/.env && git commit -m "update znap" --no-edit znap/zsh-snap )
         znap pull
+        znap clean
+        znap compile
         echo
         title "PIPX"
         pipx upgrade-all
