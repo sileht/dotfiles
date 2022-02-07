@@ -18,8 +18,6 @@
     ~/.config/ranger: ranger
     ~/.config/rofi: rofi
     ~/.config/nvim: nvim
-    ~/.config/bin/config.json: bin-config.json
-    #~/.Xresources: Xresources
     ~/.gitconfig: gitconfig
     ~/.gitignore-global: gitignore-global
     ~/.i3: i3
