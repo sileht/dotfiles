@@ -27,6 +27,7 @@ smart_borders on
 
 # SET GAPS
 # gaps top 34
+gaps top 34
 
 # <colorclass> <border> <background> <text> <indicator> <child_border>
 #client.focused          #2eb398 #2eb398 #F9F9F9 #2f9b85 #2eb398   # beryl
@@ -46,6 +47,7 @@ for_window [class="pinentry"] floating enable
 for_window [class="Pavucontrol"] floating enable
 for_window [class="VirtualBox"] floating enable
 for_window [class="Mate-appearance-properties"] floating enable
+for_window [class="vokoscreenNG"] floating enable
 for_window [title="Bluetooth Devices"] floating enable
 #for_window [class="^.*"] border normal
 #for_window [class="^.*"] border pixel 2
@@ -60,8 +62,7 @@ bindsym $mod+b exec google-chrome-stable
 bindsym $mod+k exec sound-controller
 
 bindsym $mod+p exec flameshot gui
-bindsym Print exec flameshot gui
-bindsym Shift+Print exec kazam
+bindsym Shift+$mod+p exec vokoscreenNG
 bindsym --release $mod+l exec --no-startup-id mate-screensaver-command -l
 bindsym $mod+x exec --no-startup-id pcmanfm /home/sileht/
 bindsym $mod+s exec --no-startup-id alacritty -e ranger
@@ -79,6 +80,7 @@ bindsym $mod+m exec --no-startup-id "rofi -show calc -modi calc -no-show-match -
 exec /home/sileht/.env/bin/unsplash
 exec_always polybar-start.sh
 exec_always i3-workspace-auto-switch.sh
+exec blueman-applet
 
 #exec pcmanfm -d
 

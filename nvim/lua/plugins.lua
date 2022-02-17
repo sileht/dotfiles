@@ -51,18 +51,6 @@ return require("packer").startup(
       }
       --
 
-      -- no jump when qf/loc open
-      --[[
-        use {
-            "luukvbaal/stabilize.nvim",
-            config = function()
-                require("stabilize").setup({
-                    nested = "QuickFixCmdPost,DiagnosticChanged *"
-                })
-            end
-        }
-
-    ]]
       -- smooth scroll
       use "psliwka/vim-smoothie"
       use {
@@ -78,13 +66,6 @@ return require("packer").startup(
       -- screen/tmux keys fix
       use "nacitar/terminalkeys.vim"
 
-      --[[ use {
-            's1n7ax/nvim-terminal',
-            config = function()
-                vim.o.hidden = true
-                require('nvim-terminal').setup()
-            end,
-        } ]]
       -- easyalign ga
       use "junegunn/vim-easy-align"
 
@@ -107,6 +88,13 @@ return require("packer").startup(
         "folke/which-key.nvim",
         config = function()
           require("keybindings").setup_which_key()
+        end
+      }
+
+      use {
+        "kosayoda/nvim-lightbulb",
+        config = function()
+          vim.cmd [[autocmd CursorHold,CursorHoldI * lua require('nvim-lightbulb').update_lightbulb()]]
         end
       }
 
@@ -161,23 +149,23 @@ return require("packer").startup(
         end
       }
 
-      --
-
-      --[[
-        use { 'ibhagwan/fzf-lua',
-            requires = { 'kyazdani42/nvim-web-devicons' },
-            config = function()
-                require('fzf-lua').quickfix({ fzf_opts = {['--layout'] = 'reverse-list'} })
-            end
-        }
-        ]] use "romainl/vim-cool"
-
       -- find/grep/files/... <leader>pX
       use {
         "nvim-telescope/telescope.nvim",
         requires = {{"nvim-lua/plenary.nvim"}},
         config = function()
-          require("telescope").setup()
+          require("telescope").setup(
+            {
+              pickers = {
+                diagnostics = {
+                  theme = "dropdown",
+                  layout_config = {
+                    width = 300
+                  }
+                }
+              }
+            }
+          )
         end
       }
       -- lsp, completion, fixer and linter

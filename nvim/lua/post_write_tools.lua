@@ -1,21 +1,21 @@
 M = {}
 
-local get_python_venvdir = function()
+local get_local_env_path = function()
   local rootdir = require("utils").get_rootdir()
   if rootdir then
-    return rootdir .. "/.tox/pep8/bin/"
-  else
-    return ""
+    return rootdir .. "/.tox/pep8/bin/:" .. rootdir .. "/node_modules/.bin/:" .. vim.fn.getenv("PATH")
   end
+  return vim.fn.getenv("PATH")
 end
 
 function M.run_linter()
   local rootdir = require("utils").get_rootdir()
-  local prefix = get_python_venvdir()
-  require("lint.linters.flake8").cmd = prefix .. "flake8"
-  require("lint.linters.mypy").cmd = prefix .. "mypy"
-  require("lint.linters.mypy").cwd = rootdir
-  require("lint").try_lint()
+  local env = {PATH = get_local_env_path()}
+  local lint = require("lint")
+  lint.linters.flake8.env = env
+  lint.linters.mypy.env = env
+  lint.linters.eslint.env = env
+  lint.try_lint(nil, {cwd = rootdir})
 end
 
 function M.setup()
@@ -26,7 +26,7 @@ function M.setup()
           -- Configuration for psf/black and isort
           function()
             return {
-              exe = "sh -c 'export PATH=" .. get_python_venvdir() .. ":$PATH ;  black -| isort -'",
+              exe = "sh -c 'export PATH=" .. get_local_env_path() .. ";  black -| isort -'",
               args = {},
               stdin = true
             }
@@ -54,8 +54,9 @@ function M.setup()
     [[
           augroup FormatAndLintAutogroup
           autocmd!
-          autocmd BufWritePost *.py,*.jsx,*.lua FormatWrite
-          "autocmd BufWritePost *.py,*.jsx FormatWrite
+          autocmd BufWritePost *.py FormatWrite
+          autocmd BufWritePost *.jsx FormatWrite
+          autocmd BufWritePost *.lua FormatWrite
           autocmd BufWritePost <buffer> lua require("post_write_tools").run_linter()
           augroup END
       ]],

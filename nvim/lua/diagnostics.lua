@@ -48,7 +48,7 @@ end
 function M.setup()
   vim.diagnostic.config(
     {
-      --virtual_text = {spacing = 4, prefix = "●"},
+      -- virtual_text = {spacing = 4, prefix = "🔥"},
       virtual_text = false,
       sign = true,
       underline = true,

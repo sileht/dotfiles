@@ -6,7 +6,7 @@ DISPLAY_PRIMARY=$(xrandr | awk '/ connected primary/{print $1}')
 
 pkill -x polybar
 sleep 0.4
-TRAY_POSITION=center polybar -c ~/.env/polybar/config.ini top &
+TRAY_POSITION=right polybar -c ~/.env/polybar/config.ini top &
 for display in $DISPLAYS; do
     [ "$display" == "$DISPLAY_PRIMARY" ] && continue
     DISPLAY_AUX=${display} polybar -c ~/.env/polybar/config.ini aux &

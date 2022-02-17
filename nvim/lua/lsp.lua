@@ -1,5 +1,6 @@
-local on_attach = function(client, _)
+local on_attach = function(client, opts)
   -- vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+
   if client.resolved_capabilities.document_formatting then
     vim.cmd(
       [[
@@ -142,7 +143,7 @@ local servers = {
   -- 'stylelint_lsp',
   "yamlls",
   "jedi_language_server",
-  "html",
+  -- "html",
   -- 'jsonls',
   "taplo",
   "yamlls",
