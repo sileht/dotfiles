@@ -1,4 +1,4 @@
-local on_attach = function(client, opts)
+local on_attach = function(client, _)
   -- vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
   if client.resolved_capabilities.document_formatting then

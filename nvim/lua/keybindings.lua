@@ -29,12 +29,12 @@ function M.toggle_focus()
 end
 
 function M.setup_which_key()
-  wk = require("which-key")
+  local wk = require("which-key")
   wk.setup({})
   wk.register(
     {
       t = {"<cmd>lua require('tricks_and_tips').change()<cr>", "Tricks and Tips"},
-      d = {"<cmd>lua require('telescope.builtin').diagnostics()<cr>", "Telescope diagnostics"},
+      d = {"<cmd>lua require('telescope.builtin').diagnostics({bufnr=0})<cr>", "Telescope diagnostics"},
       fp = {"<cmd>lua require('telescope.builtin').builtin()<cr>", "Telescope builtin"},
       fc = {"<cmd>lua require('telescope.builtin').git_commits()<cr>", "Telescope git commit"},
       fs = {"<cmd>lua require('telescope.builtin').lsp_document_symbols()<cr>", "Telescope symbols"},
@@ -84,8 +84,8 @@ function! BSkipQuickFix(command)
   endwhile
 endfunction
 
-nmap <S-left>  :call BSkipQuickFix("bp")<Enter>
-nmap <S-right> :call BSkipQuickFix("bn")<Enter>
+nmap <silent> <S-left>  :call BSkipQuickFix("bp")<Enter>
+nmap <silent> <S-right> :call BSkipQuickFix("bn")<Enter>
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 cmap w!! :w suda://%<CR>:e!<CR>

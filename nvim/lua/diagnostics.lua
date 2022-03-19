@@ -56,7 +56,7 @@ function M.setup()
       severity_sort = true
     }
   )
-  vim.cmd("autocmd CursorHold <buffer> lua vim.diagnostic.open_float({focusable=false})")
+  -- vim.cmd("autocmd CursorHold <buffer> lua vim.diagnostic.open_float({focusable=false})")
   -- vim.cmd("copen 5")
   -- vim.cmd("autocmd BufEnter * lua require('diagnostics').setqflist()")
   -- vim.cmd("autocmd DiagnosticChanged * lua require('diagnostics').setqflist()")

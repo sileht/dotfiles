@@ -12,6 +12,14 @@ function M.run_linter()
   local rootdir = require("utils").get_rootdir()
   local env = {PATH = get_local_env_path()}
   local lint = require("lint")
+  lint.linters.mypy.args = {
+    "--show-column-numbers",
+    "--show-error-codes",
+    "--show-error-context",
+    "--no-color-output",
+    "--no-error-summary",
+    "--no-pretty"
+  }
   lint.linters.flake8.env = env
   lint.linters.mypy.env = env
   lint.linters.eslint.env = env
@@ -56,8 +64,9 @@ function M.setup()
           autocmd!
           autocmd BufWritePost *.py FormatWrite
           autocmd BufWritePost *.jsx FormatWrite
-          autocmd BufWritePost *.lua FormatWrite
+          "autocmd BufWritePost *.lua FormatWrite
           autocmd BufWritePost <buffer> lua require("post_write_tools").run_linter()
+          autocmd BufReadPost <buffer> lua require("post_write_tools").run_linter()
           augroup END
       ]],
     true

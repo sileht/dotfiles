@@ -6,17 +6,12 @@ return require("packer").startup(
       use "nvim-lua/plenary.nvim"
 
       use {
-        "chriskempson/base16-vim",
+        "sainnhe/sonokai",
         config = function()
-          vim.g.base16colorspace = 256
-          if vim.fn.filereadable(vim.fn.expand("~/.vimrc_background")) ~= 0 then
-            vim.cmd("source ~/.vimrc_background")
-          else
-            vim.cmd("colorscheme base16-eighties")
-          end
-          vim.cmd("hi cursorlinenr cterm=none")
+          vim.cmd("colorscheme sonokai")
         end
       }
+      -- use "folke/lsp-colors.nvim"
 
       use {
         "kdheepak/tabline.nvim",
@@ -149,6 +144,13 @@ return require("packer").startup(
         end
       }
 
+      -- use {
+      --   "simrat39/desktop-notify.nvim",
+      --   config = function()
+      --     require("desktop-notify").override_vim_notify()
+      --   end
+      -- }
+
       -- find/grep/files/... <leader>pX
       use {
         "nvim-telescope/telescope.nvim",
@@ -225,6 +227,24 @@ return require("packer").startup(
           )
           cmp.setup.cmdline("/", {sources = {{name = "buffer"}}})
           cmp.setup.cmdline(":", {sources = cmp.config.sources({{name = "path"}}, {{name = "cmdline"}})})
+        end
+      }
+
+      use {
+        "folke/trouble.nvim",
+        requires = "kyazdani42/nvim-web-devicons",
+        config = function()
+          require("trouble").setup(
+            {
+              auto_open = true,
+              auto_close = true,
+              group = false,
+              height = 5,
+              padding = false,
+              indent_lines = false,
+              mode = "workspace_diagnostics",
+            }
+          )
         end
       }
 
