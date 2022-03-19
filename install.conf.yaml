@@ -7,8 +7,6 @@
 - clean:
     - '~'
     - '~/.config'
-    - '~/.config/dunst'
-    - '~/.config/rofi'
     - '~/.config/ranger'
     - '~/.config/nvim'
     - '~/.ssh'
@@ -16,16 +14,12 @@
 
 - link:
     ~/.config/ranger: ranger
-    ~/.config/rofi: rofi
     ~/.config/nvim: nvim
     ~/.gitconfig: gitconfig
     ~/.gitignore-global: gitignore-global
-    ~/.i3: i3
     ~/.ssh/config: ssh-config
     ~/.tmux: tmux
     ~/.tmux.conf: tmux.conf
-    ~/.xsessionrc: xsessionrc
-    ~/.xsession: xsessionrc
     ~/.wgetrc: wgetrc
     ~/.zprofile: zprofile
     ~/.zshenv: zshenv
@@ -35,4 +29,3 @@
 - shell:
     # - chsh -s $(which zsh)
     - git submodule update --init --recursive
-

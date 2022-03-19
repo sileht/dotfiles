@@ -1,21 +1,33 @@
 [[ ! -o rcs ]] && return
 
-# source ~/.creds
-
-[ -f /opt/homebrew/bin/brew ] && eval "$(/opt/homebrew/bin/brew shellenv)"
-[ -f $HOME/.iterm2_shell_integration.zsh ] && source $HOME/.iterm2_shell_integration.zsh
-fpath+=(/opt/homebrew/share/zsh/site-functions /home/linuxbrew/.linuxbrew/share/zsh/site-functions)
-
 # automatically remove duplicates from these arrays
 typeset -gU path cdpath fpath manpath fignore
-
 autoload -U zmv             # programmable moving, copying, and linking
 autoload -U zrecompile      # allow zwc file recompiling
 autoload -Uz add-zsh-hook
 
+[ -f /opt/homebrew/bin/brew ] && eval "$(/opt/homebrew/bin/brew shellenv)"
+fpath+=(/opt/homebrew/share/zsh/site-functions)
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+HEROKU_AC_ZSH_SETUP_PATH=$HOME/Library/Caches/heroku/autocomplete/zsh_setup && test -f $HEROKU_AC_ZSH_SETUP_PATH && source $HEROKU_AC_ZSH_SETUP_PATH;
+
+# default macos
+#export PATH="$HOME/.local/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+# homebrew optional
+for gnubin in gnu-sed grep findutils coreutils bash; do
+    export PATH="/opt/homebrew/opt/${gnubin}/libexec/gnubin:$PATH"
+done
+# me
+export PATH="$HOME/.env/bin:$HOME/.local/npi/node_modules/.bin:$PATH"
+
+
 ############
 # BINDKEYS #
 ############
+
+KEYTIMEOUT=1
+
 bindkey -e              # load emacs bindkeys
 bindkey " " magic-space # also do history expansion on space
 
@@ -67,11 +79,7 @@ select-word-style bash
 ###########
 
 zstyle ':znap:*:*' git-maintenance off
-if [ -d /workspaces/.codespaces/.persistedshare/dotfiles ]; then
-    source /workspaces/.codespaces/.persistedshare/dotfiles/znap/zsh-snap/znap.zsh
-else
-    source ~/.env/znap/zsh-snap/znap.zsh
-fi
+source $HOME/.env/znap/zsh-snap/znap.zsh
 znap prompt sindresorhus/pure
 
 zstyle ':completion:*' menu select
@@ -161,18 +169,6 @@ zstyle :prompt:pure:git:stash show yes
 zstyle :prompt:pure:host color $host_color
 zstyle :prompt:pure:user color $host_color
 
-colormode() {
-    local mode="${1:=eighties}"
-    source ~/.env/base16-shell/scripts/base16-${mode}.sh
-    echo "colorscheme base16-${mode}" >| ~/.vimrc_background
-    echo "${mode}" >| ~/.colormode
-}
-alias lightmode="colormode one-light"
-#alias darkmode="colormode eighties"
-alias darkmode="colormode snazzy"
-_last_colormode="$(cat ~/.colormode 2>/dev/null)"
-colormode "$_last_colormode"
-
 #########
 # WATCH #
 #########
@@ -255,22 +251,6 @@ zstyle ':completion:*' cache-path $ZVARDIR/compcache
 ## match uppercase from lowercase
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
-#zrecompile ~/.zprofile ~/.zshenv ~/.zshrc | while read pre file post; do
-#    case "$post" in
-#      succeeded) rm -f "${file%:}".old;;
-#      *) :;;
-#    esac
-#  done
-
-
-#zcompileall(){
-#    for file in ~/.zprofile ~/.zshenv ~/.zshrc ; do
-#        rm -f $file.zwc
-#        rm -f $file.zwc.old
-#        zcompile $file
-#    done
-#}
-
 npi() {
     (
         add-zsh-hook -d chpwd s
@@ -297,20 +277,9 @@ upgrade() {
     (
         add-zsh-hook -d chpwd s
         local title() { echo ; echo "# $1 #" ; echo; }
-        if (( $+commands[brew] )); then
-            title "BREW"
-            brew update
-        fi
-        if (( $+commands[pacman] )); then
-            title "PACMAN"
-            (yes | sudo pacman -Suy)
-            sudo remove-orphaned-kernels
-            sudo pacman -Rns $(pacman -Qtdq)
-            sudo paccache -ruk0
-            pkill -f polybar-update.sh
-            title "PIP"
-            python3 -m pip install -q -U --user $PIP_PACKAGES
-        fi
+        title "BREW"
+        brew update
+        brew upgrade
         title "ENV"
         (cd ~/.env && git diff --quiet && git pull --rebase --recurse-submodules && ./install ) # Only pull if not dirty
         title "ZSNAP"
@@ -325,22 +294,10 @@ upgrade() {
         pipxi
         title "NPM"
         npi
-        if (( $+commands[bin] )) then
-            title "BIN"
-            bin update -y
-        fi
         title "NVIM"
         nvim --headless -c "autocmd\ User\ PackerComplete\ quitall" -c "PackerSync"
     )
 }
-
-mka () { time schedtool -B -n 1 -e ionice -n 1 make -j $(nproc) "$@" }
-imka () { time schedtool -D -n 19 -e ionice -c 3 make -j $(nproc) "$@" }
-masq (){ sudo iptables -t nat -A POSTROUTING -s "$1" ! -d "$1" -j MASQUERADE }
-ban(){ sudo iptables -I INPUT 1 -s "$1" -j DROP }
-unban(){ sudo iptables -D INPUT -s "$1" -j DROP }
-alias idletask='schedtool -D -n 19 -e ionice -c 3'
-alias batchtask='schedtool -B -n 1 -e ionice -n 1'
 
 function cdt() { cd $(mktemp -d -t cdt.$(date '+%Y%m%d-%H%M%S').XXXXXXXX) ; pwd }
 function s() { pwd >| $ZVARDIR/.saved_dir; pwd >| $ZVARDIR/.saved_dir_$$; }
@@ -353,7 +310,6 @@ i
 add-zsh-hook chpwd s
 
 alias Q='exec zsh'
-#alias sc="screen -RDD"
 function sc() { tmux attach -d 2>/dev/null || tmux new-session ; }
 if (( $+commands[xdg-open] )) then alias open="xdg-open" ; fi
 alias rm="nocorrect rm -i"
@@ -369,9 +325,16 @@ alias df="df -h"
 alias diff='diff -rNu'
 alias ip='ip -color'
 alias heroku="TERM=xterm heroku"
+alias r="ranger"
+alias psql="sudo -i -u postgres psql"
 function diffv() {
     diff "$@" | git-split-diffs --color=16m | less -RFX
 }
+
+
+# VIM stuff
+export EDITOR=nvim
+export VISUAL=nvim
 
 function nvim(){
     # Replace :123 by \s+123
@@ -386,8 +349,15 @@ function nvim(){
 alias vim="nvim"
 alias vi="nvim"
 alias svi="sudo -E nvim"
-alias r="ranger"
-alias psql="sudo -i -u postgres psql"
+
+# LESS stuff
+export LESS='--quit-if-one-screen --no-init --hilite-search --jump-target=0.5 --SILENT --raw-control-chars'
+export LESSHISTFILE=~/.var/less/history
+[[ -d ${LESSHISTFILE%/*} ]] || mkdir -p ${LESSHISTFILE%/*}
+export PAGER=less
+export LESSCOLOR=always
+export LESSCOLORIZER="highlight -O ansi"
+export LESSOPEN="|lesspipe %s"
 alias more=less
 
 # FIND STUFF
@@ -395,6 +365,8 @@ alias find='noglob find'
 alias qf='find . -iname '
 
 # GREP STUFF
+alias sed="gsed"
+alias grep="ggrep"
 alias grep='grep --color=auto'
 alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
@@ -423,7 +395,6 @@ alias zmv="nocorrect noglob zmv"
 alias mmv="nocorrect noglob zmv -W"
 alias zcp='zmv -C'
 alias zln='zmv -L'
-alias xclip="xclip -selection c"
 
 alias ls="exa -F --group-directories-first --icons"
 #alias ls="LC_COLLATE=POSIX ls -h --color=auto -bCF --group-directories-first"
@@ -451,6 +422,8 @@ function fwget(){
     fi
 }
 
+# Docker Stuffs
+export DOCKER_BUILDKIT=1
 diclean () {
     docker images -q -f dangling=true | xargs docker rmi
 }
@@ -463,6 +436,7 @@ dclean () {
     docker ps -a
 }
 
+# SSH stuff
 sshclean(){
     hostname=$(echo $1 | sed -e 's/.*@\([^@]*\)/\1/g' -e 's/\.t$/.tetaneutral.net/g')
     for i in $hostname $(getent ahosts $hostname | awk '{print $1}' | sort -u); do
@@ -483,10 +457,11 @@ sshrefresh(){
         if [ -z "$new" ]; then
             new=$(ssh-keyscan -p 2222 -H "$i")
         fi
-        [ "$new" ] && echo "$new" >> /home/sileht/.ssh/known_hosts
+        [ "$new" ] && echo "$new" >> $HOME/.ssh/known_hosts
     done
 }
 
+# Python stuff
 function etox() {
     zparseopts -D e+:=env
     typeset -A helper
@@ -496,22 +471,16 @@ function etox() {
     [ ! -d "$rootdir/.tox" ] && rootdir="../.."
     [ ! -d "$rootdir/.tox" ] && rootdir="../../.."
     [ ! -d "$rootdir/.tox" ] && rootdir="../../../.."
-    export OLDPATH=$PATH
     for item in ${(@v)helper}; do
         for e in "${(@s/,/)env[$item]}" ; do
-            export VIRTUAL_ENV=$rootdir/.tox/$e
-            if [ ! -d "$VIRTUAL_ENV" ] ; then
-                tox -e$e --notest
+            venv=$rootdir/.tox/$e
+            if [ ! -d "$venv" ] ; then
+                tox -e $e --notest
             fi
-            source $VIRTUAL_ENV/bin/activate
-            #eatmydata $*
-            $*
-            deactivate
+            TOXENV=$(tox --showconfig -e $e | sed -n -e "/^setenv/s/.*SetenvDict: {\(.*\)}/\1/gp" | sed -e "s/, '/\nexport /g" -e "s/': /=/g" -e "s/^'/export /g")
+            bash -c "eval $TOXENV ; source $venv/bin/activate ; $*"
         done
     done
-    export PATH=$OLDPATH
-    unset OLDPATH
-    unset VIRTUAL_ENV
 }
 
 function utox() {
@@ -528,10 +497,3 @@ function utox() {
 
 alias etox="nocorrect etox"
 alias utox="nocorrect utox"
-
-##########
-# SCREEN #
-##########
-
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-

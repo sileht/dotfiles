@@ -1,3 +1,0 @@
-#!/bin/bash
-
-exec rofi -combi-modi "window,run" -show combi
