@@ -64,7 +64,7 @@ function M.setup()
           autocmd!
           autocmd BufWritePost *.py FormatWrite
           autocmd BufWritePost *.jsx FormatWrite
-          "autocmd BufWritePost *.lua FormatWrite
+          autocmd BufWritePost *.lua FormatWrite
           autocmd BufWritePost <buffer> lua require("post_write_tools").run_linter()
           autocmd BufReadPost <buffer> lua require("post_write_tools").run_linter()
           augroup END

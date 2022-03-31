@@ -84,6 +84,9 @@ function! BSkipQuickFix(command)
   endwhile
 endfunction
 
+" https://github.com/neovim/neovim/issues/13628
+cnoremap bd silent! bd
+
 nmap <silent> <S-left>  :call BSkipQuickFix("bp")<Enter>
 nmap <silent> <S-right> :call BSkipQuickFix("bn")<Enter>
 xmap ga <Plug>(EasyAlign)

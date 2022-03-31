@@ -242,7 +242,7 @@ return require("packer").startup(
               height = 5,
               padding = false,
               indent_lines = false,
-              mode = "workspace_diagnostics",
+              mode = "workspace_diagnostics"
             }
           )
         end
