@@ -65,7 +65,7 @@ function M.setup()
     local hl = "DiagnosticSign" .. type
     vim.fn.sign_define(hl, {text = icon, texthl = hl, numhl = ""})
   end
-  vim.o.quickfixtextfunc = "{info -> v:lua.require('diagnostics').qftf(info)}"
+  -- vim.o.quickfixtextfunc = "{info -> v:lua.require('diagnostics').qftf(info)}"
 end
 
 function M.qftf(info)

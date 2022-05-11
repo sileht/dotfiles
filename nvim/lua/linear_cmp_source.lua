@@ -1,7 +1,7 @@
 local source = {}
 
 source.new = function()
-  local self = setmetatable({}, { __index = source })
+  local self = setmetatable({}, {__index = source})
   self.tickets = nil
   return self
 end
@@ -14,7 +14,7 @@ end
 ---Return the debug name of this source. (Optional)
 ---@return string
 source.get_debug_name = function()
-  return 'linear'
+  return "linear"
 end
 ---Return keyword pattern for triggering completion. (Optional)
 ---If this is ommited, nvim-cmp will use default keyword pattern. See |cmp-config.completion.keyword_pattern|
@@ -25,28 +25,30 @@ source.get_keyword_pattern = function()
 end
 ---Return trigger characters for triggering completion. (Optional)
 source.get_trigger_characters = function()
-  return { ' ' }
+  return {" "}
 end
 
 source.complete = function(self, _, callback)
   local filter = function(v)
-      return v
+    return v
   end
 
   if (self.tickets ~= nil) then
-      callback(vim.tbl_filter(filter, self.tickets))
-      return
+    callback(vim.tbl_filter(filter, self.tickets))
+    return
   end
 
-  local file = io.open(vim.env.HOME .. "/.linear_token", "rb")
+  local file = io.open(vim.env.HOME .. "/.linear-token", "rb")
   local token = file:read "*a"
   token = token:gsub("%s+", "")
   file:close()
   -- local token = vim.fn.getenv("LINEAR_TOKEN")
   if (token == vim.NIL) then
-      return
+    return
   end
-  local body = vim.fn.json_encode({
+  local body =
+    vim.fn.json_encode(
+    {
       query = [[
           {
               issues(first: 10, orderBy: updatedAt, filter: {
@@ -58,36 +60,44 @@ source.complete = function(self, _, callback)
               }
           }
       ]]
-  })
+    }
+  )
   local curl = require("plenary.curl")
-  curl.request({
-    method = "post",
-    url = "https://api.linear.app/graphql",
-    headers = {
-      accept = "application/json",
-      content_type = "application/json",
-      authorization = token,
-    },
-    body = body,
-   callback = vim.schedule_wrap(function(response)
-        if (response.status ~= 200) then
+  curl.request(
+    {
+      method = "post",
+      url = "https://api.linear.app/graphql",
+      headers = {
+        accept = "application/json",
+        content_type = "application/json",
+        authorization = token
+      },
+      body = body,
+      callback = vim.schedule_wrap(
+        function(response)
+          if (response.status ~= 200) then
             print("linear request failed: " .. response.body)
             return
-        end
-        local data = vim.fn.json_decode(response.body)
-        local items = {}
-        for _, node in ipairs(data.data.issues.nodes) do
+          end
+          local data = vim.fn.json_decode(response.body)
+          local items = {}
+          for _, node in ipairs(data.data.issues.nodes) do
             local label = node.identifier .. ": " .. node.title .. " [" .. node.state.name .. "]"
-            table.insert(items, {
+            table.insert(
+              items,
+              {
                 kind = 18,
                 label = label,
-                insertText = node.identifier,
-            })
+                insertText = node.identifier
+              }
+            )
+          end
+          self.tickets = items
+          callback(vim.tbl_filter(filter, items))
         end
-        self.tickets = items
-        callback(vim.tbl_filter(filter, items))
-    end)
-  })
+      )
+    }
+  )
 end
 source.resolve = function(_, completion_item, callback)
   callback(completion_item)
@@ -97,4 +107,4 @@ source.execute = function(_, completion_item, callback)
 end
 
 ---Register custom M to nvim-cmp.
-require('cmp').register_source('linear', source.new())
+require("cmp").register_source("linear", source.new())

@@ -24,7 +24,7 @@ function M.toggle_focus()
     vim.opt.signcolumn = "yes"
     vim.opt.relativenumber = true
     vim.opt.number = true
-    vim.opt.laststatus = 2
+    vim.opt.laststatus = 3
   end
 end
 

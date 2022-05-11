@@ -1,10 +1,13 @@
 
+-- New filetype lua nvim 0.7.m
+vim.g.do_filetype_lua = 1
+vim.g.did_load_filetypes = 0
 
-
+vim.opt.ttyfast = true
 vim.opt.termguicolors = true
 vim.opt.shell = "/bin/sh"
 vim.opt.cursorline = true
-vim.opt.laststatus = 2                    -- Show statusbar
+vim.opt.laststatus = 3                    -- Show statusbar
 vim.opt.mouse = ""
 vim.opt.hidden = true                     -- Allow buffer switching without saving
 vim.opt.backup = false
