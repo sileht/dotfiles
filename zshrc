@@ -19,7 +19,7 @@ for gnubin in gnu-sed grep findutils coreutils bash; do
     export PATH="/opt/homebrew/opt/${gnubin}/libexec/gnubin:$PATH"
 done
 # me
-export PATH="$HOME/.env/bin:$HOME/.local/npi/node_modules/.bin:$PATH"
+export PATH="$HOME/.env/bin:$HOME/.local/npi/node_modules/.bin:$HOME/.cargo/bin:$PATH"
 
 
 ############
@@ -129,7 +129,7 @@ NPM_PACKAGES=(
     typescript-language-server
     npm-check-updates
     @taplo/cli
-    @emacs-grammarly/unofficial-grammarly-language-server
+    @emacs-grammarly/grammarly-languageserver
     @sentry/cli
     eslint_d
     eslint
@@ -497,3 +497,20 @@ function utox() {
 
 alias etox="nocorrect etox"
 alias utox="nocorrect utox"
+
+function gbe() {
+    local n=${1:=-7}
+    for p in $HOME/workspace/mergify/engine*; do
+        echo "-- $p --";
+        (cd $p ; git b $n);
+        echo
+    done
+}
+function gbd() {
+    local n=${1:=-7}
+    for p in $HOME/workspace/mergify/dashboard*; do
+        echo "-- $p --";
+        (cd $p ; git b $n);
+        echo
+    done
+}
