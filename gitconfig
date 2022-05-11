@@ -47,6 +47,7 @@
 [diff]
     tool = vimdiff
 	colorMoved = zebra
+    #external = difft
 [branch]
     autosetuprebase = always
 [pretty]
@@ -71,37 +72,37 @@
 [split-diffs]
 	theme-name = github-dark-dim
 [color "status"]
-	branch = normal
+	branch = 14 normal
 	added = 10 normal
 	updated = 10 normal
-	localbranch = normal
+	localbranch = 14 normal
 	changed = 11 normal
 	header = normal
-	remotebranch = normal
+	remotebranch = 13 normal
 	nobranch = 1 normal italic
 	unmerged = 9 normal
 	untracked = normal dim
 [color "branch"]
-	plain = normal dim
-	remote = normal dim
-	current = normal
-	local = normal dim
-	upstream = normal
+	plain = 14 normal dim
+	remote = 13 normal dim
+	current = 14 normal
+	local = 14 normal dim
+	upstream = 13 normal
 [color "remote"]
 	hint = normal dim
 	success = 2 normal
 	error = 1 normal
 	warning = 3 normal
 [color "interactive"]
-	header = normal bold
+	header = 8 normal bold
 	prompt = 15 4
-	help = normal
+	help = 8 normal
 	error = 1 normal italic
 [color "diff"]
 	commit = 3 normal
 	newMoved = 14 normal
 	oldMovedAlternativeDimmed = 4 normal dim
-	frag = normal ul
+	frag = 8 normal ul
 	oldMovedAlternative = 12 normal dim
 	contextBold = normal bold
 	newBold = 10 normal bold
@@ -109,8 +110,8 @@
 	oldMoved = 14 normal dim
 	oldBold = 9 normal dim bold
 	newMovedDimmed = 6 normal
-	func = normal ul
-	meta = normal
+	func = 8 normal ul
+	meta = 8 normal
 	newDimmed = 2 normal
 	newMovedAlternative = 12 normal
 	new = 10 normal
@@ -120,12 +121,12 @@
 	oldDimmed = 1 normal dim
 	old = 9 normal dim
 [color "decorate"]
-	branch = normal
+	branch = 14 normal
 	tag = 3 normal
-	remotebranch = normal
-	stash = normal
+	remotebranch = 13 normal
+	stash = 8 normal
 	grafted = 1 normal italic
-	HEAD = normal dim
+	HEAD = 14 normal dim
 [maintenance]
 	repo = /home/sileht/.env/asdf
 	repo = /home/sileht/.env/base16-shell
@@ -144,3 +145,9 @@
 	repo = /home/sileht/.env/fast-syntax-highlighting
 	repo = /home/sileht/.env/history-search-multi-word
 	repo = /home/sileht/.env/zsh-history-substring-search
+[credential "https://github.com"]
+	helper = 
+	helper = !/opt/homebrew/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/opt/homebrew/bin/gh auth git-credential
