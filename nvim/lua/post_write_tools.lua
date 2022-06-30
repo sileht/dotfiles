@@ -1,4 +1,5 @@
 M = {}
+M.enabled = false
 
 local get_local_env_path = function()
     local rootdir = require("utils").get_rootdir()
@@ -57,7 +58,11 @@ function M.setup()
     require("lint").linters_by_ft = {
         python = { "mypy", "flake8" }
     }
+    M.enable()
 
+end
+
+function M.enable()
     vim.api.nvim_exec(
         [[
           augroup FormatAndLintAutogroup
@@ -69,8 +74,28 @@ function M.setup()
           autocmd BufReadPost * lua require("post_write_tools").run_linter()
           augroup END
       ]] ,
-        true
+      true
     )
+    M.enabled = true
 end
-
+function M.disable()
+    vim.api.nvim_exec(
+        [[
+          augroup FormatAndLintAutogroup
+          autocmd!
+          augroup END
+      ]] ,
+      true
+    )
+    M.enabled = false
+end
+function M.toggle()
+    if M.enabled then
+        M.disable()
+        print("post write tools disabled")
+    else
+        M.enable()
+        print("post write tools enabled")
+    end
+end
 return M

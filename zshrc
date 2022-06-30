@@ -19,7 +19,7 @@ for gnubin in gnu-sed grep findutils coreutils bash; do
     export PATH="/opt/homebrew/opt/${gnubin}/libexec/gnubin:$PATH"
 done
 # me
-export PATH="$HOME/.env/bin:$HOME/.local/npi/node_modules/.bin:$HOME/.cargo/bin:$PATH"
+export PATH="$HOME/.bin:$HOME/.env/bin:$HOME/.local/npi/node_modules/.bin:$HOME/.cargo/bin:$PATH"
 
 
 ############
@@ -114,13 +114,10 @@ PIP_PACKAGES=(
 )
 
 PIPX_PACKAGES=(
-    poetry
     git-pull-request
     reno
     rstcheck
     jedi-language-server
-    dmypy-ls
-    flake8-ls
 )
 
 NPM_PACKAGES=(
@@ -129,7 +126,7 @@ NPM_PACKAGES=(
     typescript-language-server
     npm-check-updates
     @taplo/cli
-    @emacs-grammarly/grammarly-languageserver
+    grammarly-languageserver
     @sentry/cli
     eslint_d
     eslint
@@ -296,6 +293,8 @@ upgrade() {
         npi
         title "NVIM"
         nvim --headless -c "autocmd\ User\ PackerComplete\ quitall" -c "PackerSync"
+        nvim --headless -c TSUpdateSync -c q
+        nvim --headless -c "autocmd\ User\ PackerComplete\ quitall" -c "PackerCompile" -c q
     )
 }
 

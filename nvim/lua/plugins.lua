@@ -129,7 +129,8 @@ return require("packer").startup(
             -- syntax colors
             use {
                 "nvim-treesitter/nvim-treesitter",
-                run = ":TSUpdate",
+                run = ":TSUpdateSync",
+                requires = { { "p00f/nvim-ts-rainbow" } },
                 config = function()
                     require("nvim-treesitter.configs").setup(
                         {
@@ -145,6 +146,11 @@ return require("packer").startup(
                             highlight = {
                                 enable = true,
                                 additional_vim_regex_highlighting = true
+                            },
+                            rainbow = {
+                                enable = true,
+                                extended_mode = true, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
+                                max_file_lines = nil, -- Do not enable for files with more than n lines, int
                             }
                         }
                     )

@@ -99,9 +99,9 @@ local lsp_options = {
             return on_attach(client, bufnr)
         end
     },
-    grammarly = {
-        filetypes = { "markdown", "gitcommit", "rst" }
-    },
+    --grammarly = {
+    --    filetypes = { "markdown", "gitcommit", "rst" }
+    --},
     --
     flake8_ls = {
         on_new_config = on_new_config_tox_binary_install("flake8-ls")

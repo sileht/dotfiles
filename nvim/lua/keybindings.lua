@@ -65,6 +65,7 @@ augroup packer_user_config
 augroup end
 
 nnoremap <F12> <cmd>lua require("keybindings").toggle_focus()<cr>
+nnoremap <F10> <cmd>lua require("post_write_tools").toggle()<cr>
 nnoremap <F5> <cmd>lua vim.lsp.buf.rename()<cr>
 nnoremap K <cmd>lua vim.lsp.buf.hover()<cr>
 nnoremap gP <cmd>lua vim.diagnostic.goto_prev()<cr>
