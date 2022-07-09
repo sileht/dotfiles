@@ -2,6 +2,5 @@
 #cmd + shift - return : open -a /Applications/iTerm.app ""
 cmd + shift - return : open -a /Applications/iTerm.app
 cmd - b : open -a /Applications/Google\ Chrome.app
-cmd - m : open -a /Applications/Rambox.app
 #cmd - p : open -a /System/Applications/Calendar.app
-cmd - s : open -a /Applications/Slack.app
+#cmd - s : open -a /Applications/Slack.app

@@ -14,6 +14,7 @@ function M.toggle_focus()
     require("gitsigns.config").config.signcolumn = false
     require("gitsigns.actions").refresh()
     require("scrollview").scrollview_disable()
+    require("trouble").close()
   else
     print("normal layout")
     --vim.cmd("copen")
@@ -25,6 +26,7 @@ function M.toggle_focus()
     vim.opt.relativenumber = true
     vim.opt.number = true
     vim.opt.laststatus = 3
+    require("trouble").open()
   end
 end
 
