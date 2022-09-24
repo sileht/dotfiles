@@ -115,7 +115,23 @@ return require("packer").startup(
 
       -- ranger
       use "kevinhwang91/rnvimr"
-
+      use {
+        "weilbith/nvim-code-action-menu",
+        cmd = "CodeActionMenu"
+      }
+      --
+      --[[
+      use {
+        "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
+        config = function()
+          require("lsp_lines").setup()
+        end
+      }
+            ]] use {
+        "kosayoda/nvim-lightbulb",
+        requires = "antoinemadec/FixCursorHold.nvim"
+      }
+      use {"f-person/git-blame.nvim"}
       use {
         "pwntester/octo.nvim",
         requires = {
@@ -253,7 +269,6 @@ return require("packer").startup(
                   {name = "path"},
                   {name = "linear"},
                   {name = "calc"},
-                  {name = "cmdline"},
                   {name = "emoji"}
                   --  {name = "fuzzy_buffer"}
                 }

@@ -135,7 +135,7 @@ lspconfig_configs["dmypy_ls"] = {
 }
 
 local servers = {
-  "vimls",
+  -- "vimls",
   "eslint",
   "bashls",
   -- 'stylelint_lsp',
@@ -143,10 +143,10 @@ local servers = {
   "jedi_language_server",
   -- "html",
   -- 'jsonls',
-  "taplo",
-  "yamlls",
+  -- "taplo",
+  "yamlls"
   -- "sumneko_lua",
-  "grammarly"
+  -- "grammarly"
   --'dmypy_ls',
   --"flake8_ls"
   --'tsserver',

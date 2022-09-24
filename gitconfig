@@ -72,37 +72,37 @@
 [split-diffs]
 	theme-name = github-dark-dim
 [color "status"]
-	branch = 14 normal
+	branch = normal
 	added = 10 normal
 	updated = 10 normal
-	localbranch = 14 normal
+	localbranch = normal
 	changed = 11 normal
 	header = normal
-	remotebranch = 13 normal
+	remotebranch = normal
 	nobranch = 1 normal italic
 	unmerged = 9 normal
 	untracked = normal dim
 [color "branch"]
-	plain = 14 normal dim
-	remote = 13 normal dim
-	current = 14 normal
-	local = 14 normal dim
-	upstream = 13 normal
+	plain = normal dim
+	remote = normal dim
+	current = normal
+	local = normal dim
+	upstream = normal
 [color "remote"]
 	hint = normal dim
 	success = 2 normal
 	error = 1 normal
 	warning = 3 normal
 [color "interactive"]
-	header = 8 normal bold
+	header = normal bold
 	prompt = 15 4
-	help = 8 normal
+	help = normal
 	error = 1 normal italic
 [color "diff"]
 	commit = 3 normal
 	newMoved = 14 normal
 	oldMovedAlternativeDimmed = 4 normal dim
-	frag = 8 normal ul
+	frag = normal ul
 	oldMovedAlternative = 12 normal dim
 	contextBold = normal bold
 	newBold = 10 normal bold
@@ -110,8 +110,8 @@
 	oldMoved = 14 normal dim
 	oldBold = 9 normal dim bold
 	newMovedDimmed = 6 normal
-	func = 8 normal ul
-	meta = 8 normal
+	func = normal ul
+	meta = normal
 	newDimmed = 2 normal
 	newMovedAlternative = 12 normal
 	new = 10 normal
@@ -121,12 +121,12 @@
 	oldDimmed = 1 normal dim
 	old = 9 normal dim
 [color "decorate"]
-	branch = 14 normal
+	branch = normal
 	tag = 3 normal
-	remotebranch = 13 normal
-	stash = 8 normal
+	remotebranch = normal
+	stash = normal
 	grafted = 1 normal italic
-	HEAD = 14 normal dim
+	HEAD = normal dim
 [maintenance]
 	repo = /home/sileht/.env/asdf
 	repo = /home/sileht/.env/base16-shell

@@ -60,15 +60,15 @@ key[Shift-Tab]="${terminfo[kcbt]}"
 [[ -n "${key[PageDown]}"  ]] && bindkey -- "${key[PageDown]}"   end-of-buffer-or-history
 [[ -n "${key[Shift-Tab]}" ]] && bindkey -- "${key[Shift-Tab]}"  reverse-menu-complete
 
-# Finally, make sure the terminal is in application mode, when zle is
-# active. Only then are the values from $terminfo valid.
-if (( ${+terminfo[smkx]} && ${+terminfo[rmkx]} )); then
-	autoload -Uz add-zle-hook-widget
-	function zle_application_mode_start { echoti smkx }
-	function zle_application_mode_stop { echoti rmkx }
-	add-zle-hook-widget -Uz zle-line-init zle_application_mode_start
-	add-zle-hook-widget -Uz zle-line-finish zle_application_mode_stop
-fi
+## Finally, make sure the terminal is in application mode, when zle is
+## active. Only then are the values from $terminfo valid.
+#if (( ${+terminfo[smkx]} && ${+terminfo[rmkx]} )); then
+#	autoload -Uz add-zle-hook-widget
+#	function zle_application_mode_start { echoti smkx }
+#	function zle_application_mode_stop { echoti rmkx }
+#	add-zle-hook-widget -Uz zle-line-init zle_application_mode_start
+#	add-zle-hook-widget -Uz zle-line-finish zle_application_mode_stop
+#fi
 
 
 autoload -U select-word-style
@@ -85,7 +85,8 @@ znap prompt sindresorhus/pure
 zstyle ':completion:*' menu select
 #znap source marlonrichert/zsh-autocomplete
 znap source zsh-users/zsh-autosuggestions
-znap source zsh-users/zsh-syntax-highlighting
+#znap source zsh-users/zsh-syntax-highlighting
+znap source z-shell/F-Sy-H
 znap source zsh-users/zsh-completions
 znap source marlonrichert/zcolors
 znap eval zcolors zcolors
@@ -121,6 +122,7 @@ PIPX_PACKAGES=(
 )
 
 NPM_PACKAGES=(
+    snyk
     neovim
     lua-fmt
     typescript-language-server
@@ -145,6 +147,7 @@ NPM_PACKAGES=(
     prettier
     bash-language-server
     markdownlint
+    npm-check-updates
 )
 
 #########
@@ -261,12 +264,38 @@ pipxi() {
     (
         add-zsh-hook -d chpwd s
         local dir=$HOME/.local/pipx/venvs/
+        local pipx_packages_installed=($(pipx list --short | awk '{print $1}'))
+        for package in $pipx_packages_installed ; do
+            if [[ $PIPX_PACKAGES[(Ie)$package] -eq 0 ]] ; then
+                pipx uninstall $package
+            fi
+        done
         for package in $PIPX_PACKAGES ; do
             if [ ! -e $dir/$package ]; then
                 pipx install $package
             fi
         done
+        pipx upgrade-all
 
+    )
+}
+vimi(){
+    (
+        nvim --headless -c "autocmd\ User\ PackerComplete\ quitall" -c "PackerSync"
+        nvim --headless -c TSUpdateSync -c q
+        nvim --headless -c "autocmd\ User\ PackerComplete\ quitall" -c "PackerCompile" -c q
+    )
+}
+
+snapi() {
+    (
+        add-zsh-hook -d chpwd s
+        (cd ~/.env/znap/zsh-snap && git pull --rebase)
+        (cd ~/.env && git commit -m "update znap" --no-edit znap/zsh-snap )
+        znap pull
+        znap clean
+        znap compile
+        echo
     )
 }
 
@@ -280,21 +309,13 @@ upgrade() {
         title "ENV"
         (cd ~/.env && git diff --quiet && git pull --rebase --recurse-submodules && ./install ) # Only pull if not dirty
         title "ZSNAP"
-        (cd ~/.env/znap/zsh-snap && git pull --rebase)
-        (cd ~/.env && git commit -m "update znap" --no-edit znap/zsh-snap )
-        znap pull
-        znap clean
-        znap compile
-        echo
+        snapi 
         title "PIPX"
-        pipx upgrade-all
         pipxi
         title "NPM"
         npi
         title "NVIM"
-        nvim --headless -c "autocmd\ User\ PackerComplete\ quitall" -c "PackerSync"
-        nvim --headless -c TSUpdateSync -c q
-        nvim --headless -c "autocmd\ User\ PackerComplete\ quitall" -c "PackerCompile" -c q
+        vimi
     )
 }
 
@@ -513,3 +534,4 @@ function gbd() {
         echo
     done
 }
+

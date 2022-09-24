@@ -15,6 +15,8 @@ function M.toggle_focus()
     require("gitsigns.actions").refresh()
     require("scrollview").scrollview_disable()
     require("trouble").close()
+    require("gitblame").disable()
+    vim.cmd("GitBlameDisable")
   else
     print("normal layout")
     --vim.cmd("copen")
@@ -27,6 +29,7 @@ function M.toggle_focus()
     vim.opt.number = true
     vim.opt.laststatus = 3
     require("trouble").open()
+    vim.cmd("GitBlameEnable")
   end
 end
 
@@ -40,6 +43,7 @@ function M.setup_which_key()
       fp = {"<cmd>lua require('telescope.builtin').builtin()<cr>", "Telescope builtin"},
       fc = {"<cmd>lua require('telescope.builtin').git_commits()<cr>", "Telescope git commit"},
       fs = {"<cmd>lua require('telescope.builtin').lsp_document_symbols()<cr>", "Telescope symbols"},
+      fr = {"<cmd>lua require('telescope.builtin').lsp_references()<cr>", "Telescope references"},
       fd = {"<cmd>lua require('telescope.builtin').lsp_type_definitions()<cr>", "Telescope type definitions"},
       fD = {"<cmd>lua require('telescope.builtin').lsp_definitions()<cr>", "Telescope definitions"},
       ff = {"<cmd>lua require('telescope.builtin').find_files()<cr>", "Telescope find"},
@@ -47,7 +51,8 @@ function M.setup_which_key()
       fb = {"<cmd>lua require('telescope.builtin').buffers()<cr>", "Telescope buffer"},
       fh = {"<cmd>lua require('telescope.builtin').help_tags()<cr>", "Telescope help tags"},
       D = {"<cmd>lua vim.lsp.buf.type_definition()<cr>", "Type definition"},
-      ca = {"<cmd>lua vim.lsp.buf.code_action()<cr>", "Code action"},
+      -- ca = {"<cmd>lua vim.lsp.buf.code_action()<cr>", "Code action"},
+      ca = {"<cmd>CodeActionMenu<cr>", "Code action"},
       j = {":HopWord<cr>", "Hop"},
       e = {":RnvimrToggle<cr>", "Explorer"}
     },
@@ -74,7 +79,8 @@ nnoremap gP <cmd>lua vim.diagnostic.goto_prev()<cr>
 nnoremap gN <cmd>lua vim.diagnostic.goto_next()<cr>
 nnoremap gD <cmd>lua vim.lsp.buf.declaration()<cr>
 nnoremap gd <cmd>lua vim.lsp.buf.definition()<cr>
-nnoremap gr <cmd>lua vim.lsp.buf.references()<cr>
+"nnoremap gr <cmd>lua vim.lsp.buf.references()<cr>
+nnoremap gr <cmd>lua require('telescope.builtin').lsp_references()<cr>
 nnoremap gi <cmd>lua vim.lsp.buf.implementation()<cr>
 nnoremap <C-k> <cmd>lua vim.lsp.buf.signature_help()<cr>
 nnoremap <silent> <F11> :set spell!<cr>
@@ -88,7 +94,8 @@ function! BSkipQuickFix(command)
 endfunction
 
 " https://github.com/neovim/neovim/issues/13628
-cnoremap bd silent! bd
+cnoreabbrev bd silent! bd
+cnoreabbrev bw silent! bw
 
 nmap <silent> <S-left>  :call BSkipQuickFix("bp")<Enter>
 nmap <silent> <S-right> :call BSkipQuickFix("bn")<Enter>
