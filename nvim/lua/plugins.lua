@@ -14,13 +14,7 @@ return require("packer").startup(
         end
       }
 
-      -- use {
-      --   "lukas-reineke/indent-blankline.nvim",
-      --   config = function()
-      --     require("indent_blankline").setup()
-      --   end
-      -- }
-      -- -- use "folke/lsp-colors.nvim"
+      -- Highlight arguments' definitions and usages, asynchronously, using Treesitter
       use {
         "m-demare/hlargs.nvim",
         requires = {"nvim-treesitter/nvim-treesitter"},
@@ -29,42 +23,57 @@ return require("packer").startup(
         end
       }
       use {
-        "kdheepak/tabline.nvim",
-        requires = {
-          {"nvim-lualine/lualine.nvim", requires = {"kyazdani42/nvim-web-devicons"}},
-          {"kyazdani42/nvim-web-devicons"}
-        },
+        "stevearc/aerial.nvim",
         config = function()
-          require("tabline").setup({enable = false})
+          require("aerial").setup(
+            {
+              on_attach = function(bufnr)
+                -- Toggle the aerial window with <leader>a
+                vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>a", "<cmd>AerialToggle!<CR>", {})
+                -- Jump forwards/backwards with '{' and '}'
+                vim.api.nvim_buf_set_keymap(bufnr, "n", "{", "<cmd>AerialPrev<CR>", {})
+                vim.api.nvim_buf_set_keymap(bufnr, "n", "}", "<cmd>AerialNext<CR>", {})
+                -- Jump up the tree with '[[' or ']]'
+                vim.api.nvim_buf_set_keymap(bufnr, "n", "[[", "<cmd>AerialPrevUp<CR>", {})
+                vim.api.nvim_buf_set_keymap(bufnr, "n", "]]", "<cmd>AerialNextUp<CR>", {})
+              end
+            }
+          )
+        end
+      }
+      use {
+        "nvim-lualine/lualine.nvim",
+        requires = {"kyazdani42/nvim-web-devicons"},
+        config = function()
+          local sections = {
+            lualine_a = {"mode"},
+            lualine_b = {"branch", "diff", "diagnostics"},
+            lualine_c = {
+              {"filename"},
+              require("tricks_and_tips").status
+            },
+            lualine_x = {"encoding", "fileformat", "filetype"},
+            lualine_y = {"progress"},
+            lualine_z = {"location"}
+          }
           require("lualine").setup(
             {
-              sections = {
-                lualine_c = {
-                  require("tabline").tabline_buffers,
-                  require("tricks_and_tips").status
-                }
-              },
-              inactive_sections = {
-                lualine_a = {"mode"},
-                lualine_b = {"branch", "diff", "diagnostics"},
-                lualine_c = {
-                  require("tabline").tabline_buffers,
-                  require("tricks_and_tips").status
-                },
-                lualine_x = {"encoding", "fileformat", "filetype"},
-                lualine_y = {"progress"},
-                lualine_z = {"location"}
+              sections = sections,
+              inactive_sections = sections,
+              tabline = {
+                lualine_a = {"buffers"},
+                lualine_b = {},
+                lualine_c = {},
+                lualine_x = {},
+                lualine_y = {},
+                lualine_z = {"tabs"}
               }
             }
           )
         end
       }
-      --
 
-      -- smooth scroll
-      --vim.g.smoothie_experimental_mappings = true
-      --use "psliwka/vim-smoothie"
-      --
+      -- fast comment
       use {
         "numToStr/Comment.nvim",
         config = function()
@@ -85,7 +94,7 @@ return require("packer").startup(
         "ruifm/gitlinker.nvim",
         requires = "nvim-lua/plenary.nvim",
         config = function()
-          require("gitlinker").setup()
+          require("gitlinker").setup({mappings = nil})
         end
       }
 
@@ -108,8 +117,9 @@ return require("packer").startup(
 
       use {
         "kosayoda/nvim-lightbulb",
+        requires = "antoinemadec/FixCursorHold.nvim",
         config = function()
-          vim.cmd [[autocmd CursorHold,CursorHoldI * lua require('nvim-lightbulb').update_lightbulb()]]
+          require("nvim-lightbulb").setup({autocmd = {enabled = true}})
         end
       }
 
@@ -118,30 +128,6 @@ return require("packer").startup(
       use {
         "weilbith/nvim-code-action-menu",
         cmd = "CodeActionMenu"
-      }
-      --
-      --[[
-      use {
-        "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
-        config = function()
-          require("lsp_lines").setup()
-        end
-      }
-            ]] use {
-        "kosayoda/nvim-lightbulb",
-        requires = "antoinemadec/FixCursorHold.nvim"
-      }
-      use {"f-person/git-blame.nvim"}
-      use {
-        "pwntester/octo.nvim",
-        requires = {
-          "nvim-lua/plenary.nvim",
-          "nvim-telescope/telescope.nvim",
-          "kyazdani42/nvim-web-devicons"
-        },
-        config = function()
-          require "octo".setup()
-        end
       }
       -- syntax colors
       use {
@@ -187,17 +173,13 @@ return require("packer").startup(
         end
       }
 
-      use {
-        "simrat39/desktop-notify.nvim",
-        config = function()
-          require("desktop-notify").override_vim_notify()
-        end
-      }
-
       -- find/grep/files/... <leader>pX
       use {
         "nvim-telescope/telescope.nvim",
-        requires = {{"nvim-lua/plenary.nvim"}},
+        requires = {
+          {"nvim-lua/plenary.nvim"},
+          {"nvim-telescope/telescope-fzf-native.nvim", run = "make"}
+        },
         config = function()
           local trouble = require("trouble.providers.telescope")
           require("telescope").setup(
@@ -218,9 +200,10 @@ return require("packer").startup(
               }
             }
           )
+          require("telescope").load_extension("fzf")
+          require("telescope").load_extension("aerial")
         end
       }
-      use {"nvim-telescope/telescope-fzf-native.nvim", run = "make"}
 
       -- lsp, completion, fixer and linter
       use {
@@ -233,12 +216,15 @@ return require("packer").startup(
               {"hrsh7th/cmp-buffer"},
               {"hrsh7th/cmp-calc"},
               {"hrsh7th/cmp-path"},
+              {"hrsh7th/cmp-vsnip"},
               {"hrsh7th/cmp-cmdline"},
               {"hrsh7th/cmp-emoji"},
               {"hrsh7th/cmp-nvim-lsp"},
               {"hrsh7th/cmp-nvim-lsp-document-symbol"},
               {"hrsh7th/cmp-nvim-lsp-signature-help"},
-              {"f3fora/cmp-spell"}
+              {"petertriho/cmp-git", requires = "nvim-lua/plenary.nvim"},
+              {"f3fora/cmp-spell"},
+              {"davidsierradz/cmp-conventionalcommits"}
               -- {"tzachar/cmp-fuzzy-buffer", requires = {"tzachar/fuzzy.nvim"}}
             }
           },
@@ -255,15 +241,21 @@ return require("packer").startup(
         config = function()
           require("lsp")
           require("post_write_tools").setup()
-          require("linear_cmp_source")
+          -- require("linear_cmp_source")
           local cmp = require("cmp")
           cmp.setup(
             {
+              snippet = {
+                expand = function(args)
+                  vim.fn["vsnip#anonymous"](args.body)
+                end
+              },
               sources = cmp.config.sources(
                 {
                   {name = "nvim_lsp"},
                   {name = "nvim_lsp_signature_help"},
                   {name = "nvim_lsp_document_symbol"},
+                  {name = "vsnip"},
                   {name = "spell"},
                   {name = "buffer"},
                   {name = "path"},
@@ -288,11 +280,12 @@ return require("packer").startup(
               },
               mapping = cmp.mapping.preset.insert(
                 {
-                  ["<C-d>"] = cmp.mapping.scroll_docs(-4),
+                  ["<C-b>"] = cmp.mapping.scroll_docs(-4),
                   ["<C-f>"] = cmp.mapping.scroll_docs(4),
-                  ["<C-Space>"] = cmp.mapping.complete(),
+                  ["<C-space>"] = cmp.mapping.complete(),
+                  ["<C-e>"] = cmp.mapping.abort(),
                   ["<CR>"] = cmp.mapping.confirm {
-                    behavior = cmp.ConfirmBehavior.Replace,
+                    --behavior = cmp.ConfirmBehavior.Replace,
                     select = true
                   },
                   ["<Tab>"] = cmp.mapping(
@@ -319,8 +312,28 @@ return require("packer").startup(
               )
             }
           )
-          cmp.setup.cmdline("/", {sources = {{name = "buffer"}}})
-          cmp.setup.cmdline(":", {sources = cmp.config.sources({{name = "path"}}, {{name = "cmdline"}})})
+          cmp.setup.filetype(
+            "gitcommit",
+            {
+              mapping = cmp.mapping.preset.cmdline(),
+              sources = cmp.config.sources({{name = "cmp_git"}}, {{name = "buffer"}}, {{name = "conventionalcommits"}})
+            }
+          )
+          cmp.setup.cmdline(
+            {"/", "?"},
+            {
+              mapping = cmp.mapping.preset.cmdline(),
+              sources = {{name = "buffer"}}
+            }
+          )
+          cmp.setup.cmdline(
+            ":",
+            {
+              mapping = cmp.mapping.preset.cmdline(),
+              sources = cmp.config.sources({{name = "path"}}, {{name = "cmdline"}})
+            }
+          )
+          require("cmp_git").setup()
         end
       }
 
@@ -345,9 +358,12 @@ return require("packer").startup(
             local is_headless = next(vim.api.nvim_list_uis()) == nil
             local win = vim.api.nvim_get_current_win()
             local buf = vim.api.nvim_get_current_buf()
-            return not is_headless and vim.api.nvim_buf_is_valid(buf) and vim.api.nvim_win_is_valid(win)
+            local already_done = vim.g.trouble_init_done and vim.g.trouble_init_done == 1
+            return not is_headless and not already_done and vim.api.nvim_buf_is_valid(buf) and
+              vim.api.nvim_win_is_valid(win)
           end
           if valid_display() then
+            vim.g.trouble_init_done = 1
             require("trouble").open({auto = false})
           end
         end
@@ -361,13 +377,6 @@ return require("packer").startup(
         end
       }
 
-      -- spell
-      use {
-        "lewis6991/spellsitter.nvim",
-        config = function()
-          require("spellsitter").setup()
-        end
-      }
       use "dstein64/nvim-scrollview"
     end
   }

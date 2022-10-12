@@ -31,65 +31,108 @@ KEYTIMEOUT=1
 bindkey -e              # load emacs bindkeys
 bindkey " " magic-space # also do history expansion on space
 
-typeset -g -A key
-
-key[Home]="${terminfo[khome]}"
-key[End]="${terminfo[kend]}"
-key[Insert]="${terminfo[kich1]}"
-key[Backspace]="${terminfo[kbs]}"
-key[Delete]="${terminfo[kdch1]}"
-key[Up]="${terminfo[kcuu1]}"
-key[Down]="${terminfo[kcud1]}"
-key[Left]="${terminfo[kcub1]}"
-key[Right]="${terminfo[kcuf1]}"
-key[PageUp]="${terminfo[kpp]}"
-key[PageDown]="${terminfo[knp]}"
-key[Shift-Tab]="${terminfo[kcbt]}"
-
-# setup key accordingly
-[[ -n "${key[Home]}"      ]] && bindkey -- "${key[Home]}"       beginning-of-line
-[[ -n "${key[End]}"       ]] && bindkey -- "${key[End]}"        end-of-line
-[[ -n "${key[Insert]}"    ]] && bindkey -- "${key[Insert]}"     overwrite-mode
-[[ -n "${key[Backspace]}" ]] && bindkey -- "${key[Backspace]}"  backward-delete-char
-[[ -n "${key[Delete]}"    ]] && bindkey -- "${key[Delete]}"     delete-char
-[[ -n "${key[Up]}"        ]] && bindkey -- "${key[Up]}"         up-line-or-history
-[[ -n "${key[Down]}"      ]] && bindkey -- "${key[Down]}"       down-line-or-history
-[[ -n "${key[Left]}"      ]] && bindkey -- "${key[Left]}"       backward-char
-[[ -n "${key[Right]}"     ]] && bindkey -- "${key[Right]}"      forward-char
-[[ -n "${key[PageUp]}"    ]] && bindkey -- "${key[PageUp]}"     beginning-of-buffer-or-history
-[[ -n "${key[PageDown]}"  ]] && bindkey -- "${key[PageDown]}"   end-of-buffer-or-history
-[[ -n "${key[Shift-Tab]}" ]] && bindkey -- "${key[Shift-Tab]}"  reverse-menu-complete
-
-## Finally, make sure the terminal is in application mode, when zle is
-## active. Only then are the values from $terminfo valid.
-#if (( ${+terminfo[smkx]} && ${+terminfo[rmkx]} )); then
-#	autoload -Uz add-zle-hook-widget
-#	function zle_application_mode_start { echoti smkx }
-#	function zle_application_mode_stop { echoti rmkx }
-#	add-zle-hook-widget -Uz zle-line-init zle_application_mode_start
-#	add-zle-hook-widget -Uz zle-line-finish zle_application_mode_stop
-#fi
-
-
-autoload -U select-word-style
-select-word-style bash
-
+#typeset -g -A key
+#
+#key[Home]="${terminfo[khome]}"
+#key[End]="${terminfo[kend]}"
+#key[Insert]="${terminfo[kich1]}"
+#key[Backspace]="${terminfo[kbs]}"
+#key[Delete]="${terminfo[kdch1]}"
+#key[Up]="${terminfo[kcuu1]}"
+#key[Down]="${terminfo[kcud1]}"
+#key[Left]="${terminfo[kcub1]}"
+#key[Right]="${terminfo[kcuf1]}"
+#key[PageUp]="${terminfo[kpp]}"
+#key[PageDown]="${terminfo[knp]}"
+#key[Shift-Tab]="${terminfo[kcbt]}"
+#
+## setup key accordingly
+#[[ -n "${key[Home]}"      ]] && bindkey -- "${key[Home]}"       beginning-of-line
+#[[ -n "${key[End]}"       ]] && bindkey -- "${key[End]}"        end-of-line
+#[[ -n "${key[Insert]}"    ]] && bindkey -- "${key[Insert]}"     overwrite-mode
+#[[ -n "${key[Backspace]}" ]] && bindkey -- "${key[Backspace]}"  backward-delete-char
+#[[ -n "${key[Delete]}"    ]] && bindkey -- "${key[Delete]}"     delete-char
+#[[ -n "${key[Up]}"        ]] && bindkey -- "${key[Up]}"         up-line-or-history
+#[[ -n "${key[Down]}"      ]] && bindkey -- "${key[Down]}"       down-line-or-history
+#[[ -n "${key[Left]}"      ]] && bindkey -- "${key[Left]}"       backward-char
+#[[ -n "${key[Right]}"     ]] && bindkey -- "${key[Right]}"      forward-char
+#[[ -n "${key[PageUp]}"    ]] && bindkey -- "${key[PageUp]}"     beginning-of-buffer-or-history
+#[[ -n "${key[PageDown]}"  ]] && bindkey -- "${key[PageDown]}"   end-of-buffer-or-history
+#[[ -n "${key[Shift-Tab]}" ]] && bindkey -- "${key[Shift-Tab]}"  reverse-menu-complete
+#
+### Finally, make sure the terminal is in application mode, when zle is
+### active. Only then are the values from $terminfo valid.
+##if (( ${+terminfo[smkx]} && ${+terminfo[rmkx]} )); then
+##	autoload -Uz add-zle-hook-widget
+##	function zle_application_mode_start { echoti smkx }
+##	function zle_application_mode_stop { echoti rmkx }
+##	add-zle-hook-widget -Uz zle-line-init zle_application_mode_start
+##	add-zle-hook-widget -Uz zle-line-finish zle_application_mode_stop
+##fi
+#
+#
+#autoload -U select-word-style
+#select-word-style bash
+#
 ###########
 # PLUGINS #
 ###########
 
-zstyle ':znap:*:*' git-maintenance off
+#zstyle ':znap:*:*' git-maintenance off
 source $HOME/.env/znap/zsh-snap/znap.zsh
 znap prompt sindresorhus/pure
 
 zstyle ':completion:*' menu select
-#znap source marlonrichert/zsh-autocomplete
-znap source zsh-users/zsh-autosuggestions
-#znap source zsh-users/zsh-syntax-highlighting
-znap source z-shell/F-Sy-H
+##znap source marlonrichert/zsh-autocomplete
 znap source zsh-users/zsh-completions
+
+## In-line suggestions
+ZSH_AUTOSUGGEST_ACCEPT_WIDGETS=()
+ZSH_AUTOSUGGEST_PARTIAL_ACCEPT_WIDGETS+=( forward-char forward-word end-of-line )
+ZSH_AUTOSUGGEST_STRATEGY=( history )
+ZSH_AUTOSUGGEST_HISTORY_IGNORE=$'(*\n*|?(#c80,)|*\\#:hist:push-line:)'
+znap source zsh-users/zsh-autosuggestions
+
+# Command-line syntax highlighting
+#ZSH_HIGHLIGHT_HIGHLIGHTERS=( main brackets )
+##znap source zsh-users/zsh-syntax-highlighting
+znap source z-shell/F-Sy-H
+
+znap source ael-code/zsh-colored-man-pages
+
+zmodload -F zsh/parameter p:functions_source
+
+# Better command line editing tools
+znap source marlonrichert/zsh-edit
+zstyle ':edit:*' word-chars '*?\'
+
+#znap source marlonrichert/zsh-hist  # History editing tools
+
+bind \
+    '^[o' 'open .' \
+    '^[l' 'git log' \
+    '^[s' 'git status -Mu --show-stash'
+
+# Replace some default keybindings with better built-in widgets.
+#bindkey \
+#    '^[q'   push-line-or-edit \
+#    '^V'    vi-quoted-insert
+
+# Alt-Shift-S: Prefix current or previous command line with `sudo`.
+.sudo() {
+  [[ -z $BUFFER ]] &&
+      zle .up-history
+  LBUFFER="sudo $LBUFFER"
+}
+zle -N .sudo
+bindkey '^[S' .sudo
+
 znap source marlonrichert/zcolors
 znap eval zcolors zcolors
+
+#znap source Aloxaf/fzf-tab
+
+znap eval iterm2 'curl -fsSL https://iterm2.com/shell_integration/zsh'
 
 znap function _python_argcomplete pipx  'eval "$( register-python-argcomplete pipx  )"'
 complete -o nospace -o default -o bashdefault -F _python_argcomplete pipx
@@ -122,7 +165,6 @@ PIPX_PACKAGES=(
 )
 
 NPM_PACKAGES=(
-    snyk
     neovim
     lua-fmt
     typescript-language-server
@@ -168,6 +210,15 @@ esac
 zstyle :prompt:pure:git:stash show yes
 zstyle :prompt:pure:host color $host_color
 zstyle :prompt:pure:user color $host_color
+
+# Cursor style when executing a command
+.prompt.cursor.blinking-underline() { print -n '\e[3 q'; true }
+add-zsh-hook preexec .prompt.cursor.blinking-underline
+
+ # Cursor style when the command line is active
+.prompt.cursor.blinking-bar()       { print -n '\e[5 q'; true }
+add-zsh-hook precmd  .prompt.cursor.blinking-bar
+.prompt.cursor.blinking-bar
 
 #########
 # WATCH #

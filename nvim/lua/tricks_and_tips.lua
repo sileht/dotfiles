@@ -1,8 +1,11 @@
 local M = {}
 
 M.tricks_and_tips_selected = ""
-M.tricks_and_tips = [[
+M.tricks_and_tips =
+  [[
 <F5> -> lsp.rename
+gcc -> line comment
+gbc -> block comment
 gD -> lsp.delaration
 gd -> lsp.definition
 gr -> lsp.refereances
@@ -19,7 +22,9 @@ gi -> lsp.implementation
 <leader>fb -> telescope.buffers
 <leader>fh -> telescope.help_tags
 <leader>gb -> git blame
-<leader>e -> NERDTree
+<leader>gd -> git delete lines
+<leader>gu -> github url
+<leader>e -> ranger
 <leader>x -> Trouble diagnostic
 ga -> EasyAlign
 ]]
@@ -39,7 +44,24 @@ function M.setup()
 end
 
 function M.status()
-    return "     " .. M.tricks_and_tips_selected .. " "
+  return "     " .. M.tricks_and_tips_selected .. " "
+end
+
+function M.show()
+  lines = {}
+  for s in M.tricks_and_tips:gmatch("[^\r\n]+") do
+    table.insert(lines, s)
+  end
+  require("plenary.popup").create(
+    lines,
+    {
+      title = "Tricks and tips",
+      width = 100,
+      height = 50,
+      border = true,
+      padding = {1, 1, 1, 1}
+    }
+  )
 end
 
 return M

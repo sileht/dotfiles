@@ -29,6 +29,7 @@ source.get_trigger_characters = function()
 end
 
 source.complete = function(self, _, callback)
+  return
   local filter = function(v)
     return v
   end

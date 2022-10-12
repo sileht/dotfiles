@@ -1,19 +1,19 @@
+local log_to_message = function(_, data, _)
+  for _, d in ipairs(data) do
+    print(d)
+  end
+end
+
 local on_attach = function(client, _)
-  if client.resolved_capabilities.document_formatting then
+  if client.server_capabilities.documentFormattingProvider then
     vim.cmd(
       [[
     augroup LspFormatting
         autocmd! * <buffer>
-        autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()
+        autocmd BufWritePre <buffer> lua vim.lsp.buf.format()
     augroup END
     ]]
     )
-  end
-end
-
-local log_to_message = function(_, data, _)
-  for _, d in ipairs(data) do
-    print(d)
   end
 end
 
@@ -92,8 +92,8 @@ local lsp_options = {
   },
   tsserver = {
     on_attach = function(client, bufnr)
-      client.resolved_capabilities.document_formatting = false
-      client.resolved_capabilities.document_range_formatting = false
+      client.server_capabilities.documentFormattingProvider = false
+      client.server_capabilities.documentRangeFormattingProvider = false
       return on_attach(client, bufnr)
     end
   },

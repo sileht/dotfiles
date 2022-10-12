@@ -15,8 +15,7 @@ function M.toggle_focus()
     require("gitsigns.actions").refresh()
     require("scrollview").scrollview_disable()
     require("trouble").close()
-    require("gitblame").disable()
-    vim.cmd("GitBlameDisable")
+    vim.opt.cmdheight = 0
   else
     print("normal layout")
     --vim.cmd("copen")
@@ -29,7 +28,7 @@ function M.toggle_focus()
     vim.opt.number = true
     vim.opt.laststatus = 3
     require("trouble").open()
-    vim.cmd("GitBlameEnable")
+    vim.opt.cmdheight = 1
   end
 end
 
@@ -38,11 +37,19 @@ function M.setup_which_key()
   wk.setup({})
   wk.register(
     {
+      gb = {"<cmd>lua require('gitsigns').blame_line({full=true})<cr>", "Git Blame"},
+      gd = {"<cmd>lua require('gitsigns').toggle_deleted()<cr>", "Git show deleted"},
+      gu = {
+        "<cmd>lua require('gitlinker').get_buf_range_url('n', {action_callback = require('gitlinker.actions').open_in_browser})<cr>",
+        "GitHub url"
+      },
       t = {"<cmd>lua require('tricks_and_tips').change()<cr>", "Tricks and Tips"},
+      T = {"<cmd>lua require('tricks_and_tips').show()<cr>", "Tricks and Tips"},
       d = {"<cmd>lua require('telescope.builtin').diagnostics({bufnr=0})<cr>", "Telescope diagnostics"},
       fp = {"<cmd>lua require('telescope.builtin').builtin()<cr>", "Telescope builtin"},
       fc = {"<cmd>lua require('telescope.builtin').git_commits()<cr>", "Telescope git commit"},
-      fs = {"<cmd>lua require('telescope.builtin').lsp_document_symbols()<cr>", "Telescope symbols"},
+      --fs = {"<cmd>lua require('telescope.builtin').lsp_document_symbols()<cr>", "Telescope symbols"},
+      fs = {"<cmd>lua require('telescope').extensions.aerial.aerial()<cr>", "Telescope symbols"},
       fr = {"<cmd>lua require('telescope.builtin').lsp_references()<cr>", "Telescope references"},
       fd = {"<cmd>lua require('telescope.builtin').lsp_type_definitions()<cr>", "Telescope type definitions"},
       fD = {"<cmd>lua require('telescope.builtin').lsp_definitions()<cr>", "Telescope definitions"},

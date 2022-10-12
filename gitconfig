@@ -145,6 +145,14 @@
 	repo = /home/sileht/.env/fast-syntax-highlighting
 	repo = /home/sileht/.env/history-search-multi-word
 	repo = /home/sileht/.env/zsh-history-substring-search
+	repo = /Users/sileht/.env/znap/F-Sy-H
+	repo = /Users/sileht/.env/znap/pure
+	repo = /Users/sileht/.env/znap/zcolors
+	repo = /Users/sileht/.env/znap/zsh-autosuggestions
+	repo = /Users/sileht/.env/znap/zsh-colored-man-pages
+	repo = /Users/sileht/.env/znap/zsh-completions
+	repo = /Users/sileht/.env/znap/zsh-snap
+	repo = /Users/sileht/.env/znap/zsh-edit
 [credential "https://github.com"]
 	helper = 
 	helper = !/opt/homebrew/bin/gh auth git-credential
