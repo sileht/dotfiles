@@ -1,10 +1,14 @@
+local lspconfig = require("lspconfig")
+local lsp_status = require("lsp-status")
+local lspconfig_configs = require("lspconfig.configs")
+
 local log_to_message = function(_, data, _)
   for _, d in ipairs(data) do
     print(d)
   end
 end
 
-local on_attach = function(client, _)
+local on_attach = function(client, bufnr)
   if client.server_capabilities.documentFormattingProvider then
     vim.cmd(
       [[
@@ -15,15 +19,14 @@ local on_attach = function(client, _)
     ]]
     )
   end
+  return lsp_status.on_attach(client, bufnr)
 end
 
-local lspconfig = require("lspconfig")
-local lspconfig_configs = require("lspconfig.configs")
-
-local cmp_capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities())
+local capabilities = require("cmp_nvim_lsp").default_capabilities()
 -- html: Enable (broadcasting) snippet capability for completion
 -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#html
-cmp_capabilities.textDocument.completion.completionItem.snippetSupport = true
+capabilities.textDocument.completion.completionItem.snippetSupport = true
+capabilities = vim.tbl_extend("keep", capabilities or {}, lsp_status.capabilities)
 
 local on_new_config_tox_binary_install = function(name, args)
   return function(new_config, new_root_dir)
@@ -64,7 +67,7 @@ end
 
 local lsp_options = {
   common = {
-    capabilities = cmp_capabilities,
+    capabilities = capabilities,
     on_attach = on_attach,
     flags = {
       debounce_text_changes = 150
@@ -85,10 +88,7 @@ local lsp_options = {
     }
   },
   eslint = {
-    on_attach = function(client, bufnr)
-      vim.cmd("autocmd BufWritePre <buffer> :EslintFixAll")
-      return on_attach(client, bufnr)
-    end
+    root_dir = lspconfig.util.root_pattern("package.json")
   },
   tsserver = {
     on_attach = function(client, bufnr)
@@ -114,7 +114,8 @@ local lsp_options = {
   },
   bashls = {
     filetypes = {"sh", "zsh"}
-  }
+  },
+  semgrep = {}
 }
 
 lspconfig_configs["flake8_ls"] = {
@@ -133,6 +134,14 @@ lspconfig_configs["dmypy_ls"] = {
     single_file_support = true
   }
 }
+lspconfig_configs["semgrep"] = {
+  default_config = {
+    cmd = {"semgrep", "lsp", "-l", "/Users/sileht/semgrep.log", "--debug", "--verbose"},
+    filetypes = {"python"},
+    root_dir = lspconfig.util.root_pattern("pyproject.toml", "setup.py", "setup.cfg", "requirements.txt", "Pipfile"),
+    single_file_support = true
+  }
+}
 
 local servers = {
   -- "vimls",
@@ -144,17 +153,22 @@ local servers = {
   -- "html",
   -- 'jsonls',
   -- "taplo",
-  "yamlls"
+  -- "semgrep",
+  "tsserver",
   -- "sumneko_lua",
   -- "grammarly"
   --'dmypy_ls',
   --"flake8_ls"
-  --'tsserver',
+  "yamlls"
 }
 for _, lsp in ipairs(servers) do
   local options = vim.deepcopy(lsp_options.common)
   if (lsp_options[lsp] ~= nil) then
     options = vim.tbl_extend("force", options, lsp_options[lsp])
+  end
+  if (lsp_status.extensions[lsp] ~= nil) then
+    handlers = lsp_status.extensions[lsp].setup()
+    options.handlers = handlers
   end
   lspconfig[lsp].setup(options)
 end

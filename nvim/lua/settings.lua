@@ -50,8 +50,8 @@ vim.opt.spelllang = "en,fr"
 vim.opt.spellsuggest = "best,9"
 
 vim.opt.ttimeout = true
-vim.opt.ttimeoutlen = 50
-vim.opt.timeoutlen = 50
+vim.opt.ttimeoutlen = 500
+vim.opt.timeoutlen = 500
 
 vim.opt.completeopt = "menu,menuone,noselect"
 
@@ -67,7 +67,6 @@ vim.cmd [[
     autocmd TextYankPost * silent! lua vim.highlight.on_yank()
   augroup end
 ]]
-vim.cmd [[autocmd CursorHold,CursorHoldI * lua require('nvim-lightbulb').update_lightbulb()]]
 
 -- Restore cursor position
 vim.cmd([[autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")

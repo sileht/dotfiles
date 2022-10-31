@@ -48,20 +48,11 @@ function M.status()
 end
 
 function M.show()
-  lines = {}
+  local lines = {}
   for s in M.tricks_and_tips:gmatch("[^\r\n]+") do
     table.insert(lines, s)
   end
-  require("plenary.popup").create(
-    lines,
-    {
-      title = "Tricks and tips",
-      width = 100,
-      height = 50,
-      border = true,
-      padding = {1, 1, 1, 1}
-    }
-  )
+  require("popup_helper").create("tricks_and_tips", lines)
 end
 
 return M

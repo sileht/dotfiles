@@ -5,7 +5,6 @@ return require("packer").startup(
     function(use)
       use "wbthomason/packer.nvim"
       use "nvim-lua/plenary.nvim"
-
       use {
         -- "sainnhe/sonokai",
         "folke/tokyonight.nvim",
@@ -14,43 +13,25 @@ return require("packer").startup(
         end
       }
 
-      -- Highlight arguments' definitions and usages, asynchronously, using Treesitter
-      use {
-        "m-demare/hlargs.nvim",
-        requires = {"nvim-treesitter/nvim-treesitter"},
-        config = function()
-          require("hlargs").setup()
-        end
-      }
-      use {
-        "stevearc/aerial.nvim",
-        config = function()
-          require("aerial").setup(
-            {
-              on_attach = function(bufnr)
-                -- Toggle the aerial window with <leader>a
-                vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>a", "<cmd>AerialToggle!<CR>", {})
-                -- Jump forwards/backwards with '{' and '}'
-                vim.api.nvim_buf_set_keymap(bufnr, "n", "{", "<cmd>AerialPrev<CR>", {})
-                vim.api.nvim_buf_set_keymap(bufnr, "n", "}", "<cmd>AerialNext<CR>", {})
-                -- Jump up the tree with '[[' or ']]'
-                vim.api.nvim_buf_set_keymap(bufnr, "n", "[[", "<cmd>AerialPrevUp<CR>", {})
-                vim.api.nvim_buf_set_keymap(bufnr, "n", "]]", "<cmd>AerialNextUp<CR>", {})
-              end
-            }
-          )
-        end
-      }
       use {
         "nvim-lualine/lualine.nvim",
-        requires = {"kyazdani42/nvim-web-devicons"},
+        requires = {
+          "kyazdani42/nvim-web-devicons",
+          {
+            "nvim-lua/lsp-status.nvim",
+            config = function()
+              require("lsp-status").register_progress()
+            end
+          }
+        },
         config = function()
           local sections = {
             lualine_a = {"mode"},
             lualine_b = {"branch", "diff", "diagnostics"},
             lualine_c = {
               {"filename"},
-              require("tricks_and_tips").status
+              -- require("tricks_and_tips").status,
+              require "lsp-status".status
             },
             lualine_x = {"encoding", "fileformat", "filetype"},
             lualine_y = {"progress"},
@@ -90,6 +71,7 @@ return require("packer").startup(
       -- easyalign ga
       use "junegunn/vim-easy-align"
 
+      -- LSP progress bar handler
       use {
         "ruifm/gitlinker.nvim",
         requires = "nvim-lua/plenary.nvim",
@@ -115,25 +97,18 @@ return require("packer").startup(
         end
       }
 
-      use {
-        "kosayoda/nvim-lightbulb",
-        requires = "antoinemadec/FixCursorHold.nvim",
-        config = function()
-          require("nvim-lightbulb").setup({autocmd = {enabled = true}})
-        end
-      }
-
       -- ranger
       use "kevinhwang91/rnvimr"
-      use {
-        "weilbith/nvim-code-action-menu",
-        cmd = "CodeActionMenu"
-      }
+
       -- syntax colors
       use {
         "nvim-treesitter/nvim-treesitter",
         run = ":TSUpdateSync",
-        requires = {{"p00f/nvim-ts-rainbow"}},
+        requires = {
+          "p00f/nvim-ts-rainbow",
+          "nvim-treesitter/nvim-treesitter-textobjects",
+          "romgrk/nvim-treesitter-context"
+        },
         config = function()
           require("nvim-treesitter.configs").setup(
             {
@@ -154,20 +129,26 @@ return require("packer").startup(
                 enable = true,
                 extended_mode = true, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
                 max_file_lines = nil -- Do not enable for files with more than n lines, int
+              },
+              textobjects = {
+                select = {
+                  enable = true,
+                  -- Automatically jump forward to textobj, similar to targets.vim
+                  lookahead = true,
+                  keymaps = {
+                    ["af"] = "@function.outer",
+                    ["if"] = "@function.inner",
+                    ["ac"] = "@class.outer",
+                    ["ic"] = "@class.inner"
+                  }
+                }
               }
             }
           )
-        end
-      }
-      use "nvim-treesitter/nvim-treesitter-textobjects" -- auto hlsearch
-      use {
-        "romgrk/nvim-treesitter-context",
-        after = {"nvim-treesitter"},
-        config = function()
           require("treesitter-context").setup(
             {
               enable = true,
-              throttle = true
+              max_lines = 3
             }
           )
         end
@@ -201,7 +182,6 @@ return require("packer").startup(
             }
           )
           require("telescope").load_extension("fzf")
-          require("telescope").load_extension("aerial")
         end
       }
 
@@ -228,15 +208,9 @@ return require("packer").startup(
               -- {"tzachar/cmp-fuzzy-buffer", requires = {"tzachar/fuzzy.nvim"}}
             }
           },
-          {
-            "onsails/lspkind-nvim"
-          },
-          {
-            "mfussenegger/nvim-lint"
-          },
-          {
-            "mhartington/formatter.nvim"
-          }
+          {"onsails/lspkind-nvim"},
+          {"mfussenegger/nvim-lint"},
+          {"mhartington/formatter.nvim"}
         },
         config = function()
           require("lsp")
@@ -376,8 +350,15 @@ return require("packer").startup(
           require("gitsigns").setup()
         end
       }
-
       use "dstein64/nvim-scrollview"
-    end
+    end,
+    config = {
+      autoremove = true,
+      display = {
+        open_fn = function()
+          return require("packer.util").float({border = "single"})
+        end
+      }
+    }
   }
 )

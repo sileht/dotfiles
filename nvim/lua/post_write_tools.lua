@@ -23,7 +23,6 @@ function M.run_linter()
   }
   lint.linters.flake8.env = env
   lint.linters.mypy.env = env
-  lint.linters.eslint.env = env
   lint.try_lint(nil, {cwd = rootdir})
 end
 
@@ -54,7 +53,6 @@ function M.setup()
       }
     }
   )
-
   require("lint").linters_by_ft = {
     python = {"mypy", "flake8"}
   }
@@ -67,8 +65,11 @@ function M.enable()
           augroup FormatAndLintAutogroup
           autocmd!
           autocmd BufWritePost *.py FormatWrite
-          autocmd BufWritePost *.jsx FormatWrite
           autocmd BufWritePost *.lua FormatWrite
+          autocmd BufWritePost *.jsx FormatWrite
+          autocmd BufWritePost *.tsx FormatWrite
+          autocmd BufWritePost *.ts FormatWrite
+          autocmd BufWritePre *.tsx,*.ts,*.jsx,*.js EslintFixAll
           autocmd BufWritePost * lua require("post_write_tools").run_linter()
           autocmd BufReadPost * lua require("post_write_tools").run_linter()
           augroup END

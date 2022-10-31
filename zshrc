@@ -172,17 +172,11 @@ NPM_PACKAGES=(
     @taplo/cli
     grammarly-languageserver
     @sentry/cli
-    eslint_d
-    eslint
+    vscode-langservers-extracted
     npm-check-updates
     git-split-diffs
     vim-language-server
     yaml-language-server
-    stylelint-lsp
-    vscode-langservers-extracted
-    diagnostic-languageserver
-    stylelint
-    stylelint-config-standard
     jsonlint
     alex
     fixjson
@@ -553,6 +547,8 @@ function etox() {
         done
     done
 }
+
+alias poetry-rebase-fix="git checkout HEAD poetry.lock; poetry lock --no-update && git add poetry.lock && git rebase --continue"
 
 function utox() {
     zparseopts -D e+:=env

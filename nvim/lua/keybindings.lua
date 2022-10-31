@@ -37,19 +37,38 @@ function M.setup_which_key()
   wk.setup({})
   wk.register(
     {
+      ["<C-k>"] = {"<cmd>lua vim.lsp.buf.signature_help()<cr>", "Show signature"},
+      ["<F5>"] = {"<cmd>lua vim.lsp.buf.rename()<cr>", "Rename"},
+      ["<F10>"] = {"<cmd>lua require('post_write_tools').toggle()<cr>", "Toggle FormatWrite"},
+      ["<F11>"] = {":set spell!<cr>", "Toggle spell"},
+      ["<F12>"] = {"<cmd>lua require('keybindings').toggle_focus()<cr>", "Show/Hide keybindings"},
+      K = {"<cmd>lua vim.lsp.buf.hover()<cr>", "Documentation"},
+      gP = {"<cmd>lua vim.diagnostic.goto_prev()<cr>", "Diagnostic previous"},
+      gN = {"<cmd>lua vim.diagnostic.goto_next()<cr>", "Diagnostic next"},
+      gD = {"<cmd>lua vim.lsp.buf.declaration()<cr>", "Go declaration"},
+      gd = {"<cmd>lua vim.lsp.buf.definition()<cr>", "Go definition"},
+      -- gr = {"<cmd>lua vim.lsp.buf.references()<cr>", "Go references"}
+      gr = {"<cmd>lua require('telescope.builtin').lsp_references()<cr>", "Go references"},
+      gi = {"<cmd>lua vim.lsp.buf.implementation()<cr>", "Go implementation"}
+      -- n = {[[<Cmd>execute('normal! ' . v:count1 . 'n')<CR><Cmd>lua require('hlslens').start()<CR>]], "Search next"},
+      -- N = {[[<Cmd>execute('normal! ' . v:count1 . 'N')<CR><Cmd>lua require('hlslens').start()<CR>]], "Search previous"}
+    }
+  )
+  wk.register(
+    {
+      s = {"<cmd>SymbolsOutline<CR>", "Symbols sidebar"},
       gb = {"<cmd>lua require('gitsigns').blame_line({full=true})<cr>", "Git Blame"},
       gd = {"<cmd>lua require('gitsigns').toggle_deleted()<cr>", "Git show deleted"},
-      gu = {
+      gy = {
         "<cmd>lua require('gitlinker').get_buf_range_url('n', {action_callback = require('gitlinker.actions').open_in_browser})<cr>",
-        "GitHub url"
+        "Open line in browser"
       },
-      t = {"<cmd>lua require('tricks_and_tips').change()<cr>", "Tricks and Tips"},
-      T = {"<cmd>lua require('tricks_and_tips').show()<cr>", "Tricks and Tips"},
+      T = {"<cmd>lua require('tricks_and_tips').change()<cr>", "Tricks and Tips"},
+      t = {"<cmd>lua require('tricks_and_tips').show()<cr>", "Tricks and Tips"},
       d = {"<cmd>lua require('telescope.builtin').diagnostics({bufnr=0})<cr>", "Telescope diagnostics"},
       fp = {"<cmd>lua require('telescope.builtin').builtin()<cr>", "Telescope builtin"},
       fc = {"<cmd>lua require('telescope.builtin').git_commits()<cr>", "Telescope git commit"},
-      --fs = {"<cmd>lua require('telescope.builtin').lsp_document_symbols()<cr>", "Telescope symbols"},
-      fs = {"<cmd>lua require('telescope').extensions.aerial.aerial()<cr>", "Telescope symbols"},
+      fs = {"<cmd>lua require('telescope.builtin').lsp_document_symbols()<cr>", "Telescope symbols"},
       fr = {"<cmd>lua require('telescope.builtin').lsp_references()<cr>", "Telescope references"},
       fd = {"<cmd>lua require('telescope.builtin').lsp_type_definitions()<cr>", "Telescope type definitions"},
       fD = {"<cmd>lua require('telescope.builtin').lsp_definitions()<cr>", "Telescope definitions"},
@@ -61,6 +80,7 @@ function M.setup_which_key()
       -- ca = {"<cmd>lua vim.lsp.buf.code_action()<cr>", "Code action"},
       ca = {"<cmd>CodeActionMenu<cr>", "Code action"},
       j = {":HopWord<cr>", "Hop"},
+      k = {""},
       e = {":RnvimrToggle<cr>", "Explorer"}
     },
     {prefix = "<leader>"}
@@ -78,20 +98,6 @@ augroup packer_user_config
   autocmd BufWritePost *.lua source <afile> | PackerCompile
 augroup end
 
-nnoremap <F12> <cmd>lua require("keybindings").toggle_focus()<cr>
-nnoremap <F10> <cmd>lua require("post_write_tools").toggle()<cr>
-nnoremap <F5> <cmd>lua vim.lsp.buf.rename()<cr>
-nnoremap K <cmd>lua vim.lsp.buf.hover()<cr>
-nnoremap gP <cmd>lua vim.diagnostic.goto_prev()<cr>
-nnoremap gN <cmd>lua vim.diagnostic.goto_next()<cr>
-nnoremap gD <cmd>lua vim.lsp.buf.declaration()<cr>
-nnoremap gd <cmd>lua vim.lsp.buf.definition()<cr>
-"nnoremap gr <cmd>lua vim.lsp.buf.references()<cr>
-nnoremap gr <cmd>lua require('telescope.builtin').lsp_references()<cr>
-nnoremap gi <cmd>lua vim.lsp.buf.implementation()<cr>
-nnoremap <C-k> <cmd>lua vim.lsp.buf.signature_help()<cr>
-nnoremap <silent> <F11> :set spell!<cr>
-
 function! BSkipQuickFix(command)
   let start_buffer = bufnr('%')
   execute a:command
@@ -101,8 +107,8 @@ function! BSkipQuickFix(command)
 endfunction
 
 " https://github.com/neovim/neovim/issues/13628
-cnoreabbrev bd silent! bd
-cnoreabbrev bw silent! bw
+" cnoreabbrev bd silent! bd
+" cnoreabbrev bw silent! bw
 
 nmap <silent> <S-left>  :call BSkipQuickFix("bp")<Enter>
 nmap <silent> <S-right> :call BSkipQuickFix("bn")<Enter>
