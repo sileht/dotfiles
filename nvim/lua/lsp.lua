@@ -146,7 +146,7 @@ lspconfig_configs["semgrep"] = {
 local servers = {
   -- "vimls",
   "eslint",
-  "bashls",
+  -- "bashls",
   -- 'stylelint_lsp',
   "yamlls",
   "jedi_language_server",

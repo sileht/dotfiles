@@ -165,6 +165,7 @@ PIPX_PACKAGES=(
 )
 
 NPM_PACKAGES=(
+    serve
     neovim
     lua-fmt
     typescript-language-server

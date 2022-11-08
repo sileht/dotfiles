@@ -1,5 +1,11 @@
 local M = {}
 
+function M.buffer_delete_workaround()
+  local buffer = vim.api.nvim_get_current_buf()
+  vim.cmd("bn")
+  vim.cmd("bdelete " .. buffer)
+end
+
 M.focus_mode = false
 
 function M.toggle_focus()
@@ -17,9 +23,6 @@ function M.toggle_focus()
     require("trouble").close()
     vim.opt.cmdheight = 0
   else
-    print("normal layout")
-    --vim.cmd("copen")
-    vim.cmd("wincmd p")
     require("scrollview").scrollview_enable()
     require("gitsigns.actions").refresh()
     require("gitsigns.config").config.signcolumn = true
@@ -29,6 +32,7 @@ function M.toggle_focus()
     vim.opt.laststatus = 3
     require("trouble").open()
     vim.opt.cmdheight = 1
+    vim.cmd("wincmd p")
   end
 end
 
@@ -106,9 +110,7 @@ function! BSkipQuickFix(command)
   endwhile
 endfunction
 
-" https://github.com/neovim/neovim/issues/13628
-" cnoreabbrev bd silent! bd
-" cnoreabbrev bw silent! bw
+cnoreabbrev bd :lua require('keybindings').buffer_delete_workaround()
 
 nmap <silent> <S-left>  :call BSkipQuickFix("bp")<Enter>
 nmap <silent> <S-right> :call BSkipQuickFix("bn")<Enter>

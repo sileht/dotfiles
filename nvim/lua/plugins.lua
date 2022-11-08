@@ -16,7 +16,7 @@ return require("packer").startup(
       use {
         "nvim-lualine/lualine.nvim",
         requires = {
-          "kyazdani42/nvim-web-devicons",
+          "nvim-tree/nvim-web-devicons",
           {
             "nvim-lua/lsp-status.nvim",
             config = function()
@@ -158,27 +158,20 @@ return require("packer").startup(
       use {
         "nvim-telescope/telescope.nvim",
         requires = {
+          {"nvim-tree/nvim-web-devicons"},
           {"nvim-lua/plenary.nvim"},
           {"nvim-telescope/telescope-fzf-native.nvim", run = "make"}
         },
         config = function()
-          local trouble = require("trouble.providers.telescope")
+          -- local trouble = require("trouble.providers.telescope")
+          defaults = require("telescope.themes").get_ivy({})
+          -- defaults.mappings = {
+          --  i = {["<c-t>"] = trouble.open_with_trouble},
+          --  n = {["<c-t>"] = trouble.open_with_trouble}
+          -- }
           require("telescope").setup(
             {
-              defaults = {
-                mappings = {
-                  i = {["<c-t>"] = trouble.open_with_trouble},
-                  n = {["<c-t>"] = trouble.open_with_trouble}
-                }
-              },
-              pickers = {
-                diagnostics = {
-                  theme = "dropdown",
-                  layout_config = {
-                    width = 300
-                  }
-                }
-              }
+              defaults = defaults
             }
           )
           require("telescope").load_extension("fzf")
@@ -313,7 +306,7 @@ return require("packer").startup(
 
       use {
         "folke/trouble.nvim",
-        requires = "kyazdani42/nvim-web-devicons",
+        requires = "nvim-tree/nvim-web-devicons",
         config = function()
           require("trouble").setup(
             {
@@ -342,7 +335,6 @@ return require("packer").startup(
           end
         end
       }
-
       -- git info
       use {
         "lewis6991/gitsigns.nvim",

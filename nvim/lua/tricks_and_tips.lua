@@ -52,7 +52,7 @@ function M.show()
   for s in M.tricks_and_tips:gmatch("[^\r\n]+") do
     table.insert(lines, s)
   end
-  require("popup_helper").create("tricks_and_tips", lines)
+  require("utils").create_popup("tricks_and_tips", lines)
 end
 
 return M
