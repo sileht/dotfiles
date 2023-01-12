@@ -12,8 +12,13 @@ fpath+=(/opt/homebrew/share/zsh/site-functions)
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 HEROKU_AC_ZSH_SETUP_PATH=$HOME/Library/Caches/heroku/autocomplete/zsh_setup && test -f $HEROKU_AC_ZSH_SETUP_PATH && source $HEROKU_AC_ZSH_SETUP_PATH;
 
+
 # default macos
 #export PATH="$HOME/.local/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+
+# znap adds ~/.local/bin
+source $HOME/.env/znap/zsh-snap/znap.zsh
+
 # homebrew optional
 for gnubin in gnu-sed grep findutils coreutils bash; do
     export PATH="/opt/homebrew/opt/${gnubin}/libexec/gnubin:$PATH"
@@ -79,7 +84,6 @@ bindkey " " magic-space # also do history expansion on space
 ###########
 
 #zstyle ':znap:*:*' git-maintenance off
-source $HOME/.env/znap/zsh-snap/znap.zsh
 znap prompt sindresorhus/pure
 
 zstyle ':completion:*' menu select
@@ -107,7 +111,6 @@ znap source marlonrichert/zsh-edit
 zstyle ':edit:*' word-chars '*?\'
 
 #znap source marlonrichert/zsh-hist  # History editing tools
-
 bind \
     '^[o' 'open .' \
     '^[l' 'git log' \
@@ -130,6 +133,8 @@ bindkey '^[S' .sudo
 znap source marlonrichert/zcolors
 znap eval zcolors zcolors
 
+export GREP_COLOR='mt=$GREP_COLOR'
+
 #znap source Aloxaf/fzf-tab
 
 znap eval iterm2 'curl -fsSL https://iterm2.com/shell_integration/zsh'
@@ -140,8 +145,8 @@ complete -o nospace -o default -o bashdefault -F _python_argcomplete pipx
 #znap function _pyenv pyenv              'eval "$( pyenv init - --no-rehash --path)"'
 #compctl -K    _pyenv pyenv
 
-znap function _pip_completion pip       'eval "$( pip completion --zsh )"'
-compctl -K    _pip_completion pip
+#znap function _pip_completion pip       'eval "$( pip completion --zsh )"'
+#compctl -K    _pip_completion pip
 
 zstyle ':autocomplete:*' min-delay 0
 zstyle ':autocomplete:*' min-input 2
@@ -152,19 +157,21 @@ zstyle ':autocomplete:*' widget-style menu-select
 # zstyle ':autocomplete:*' fzf-completion yes
 
 
-PIP_PACKAGES=(
-    pipx
-    pulsectl
-)
-
 PIPX_PACKAGES=(
     git-pull-request
     reno
     rstcheck
     jedi-language-server
+    anakin-language-server
+    nox
+    poethepoet
+    poetry
+    ipython
+    autoflake
 )
 
 NPM_PACKAGES=(
+    wrangler
     serve
     neovim
     lua-fmt
@@ -421,10 +428,11 @@ export LESS='--quit-if-one-screen --no-init --hilite-search --jump-target=0.5 --
 export LESSHISTFILE=~/.var/less/history
 [[ -d ${LESSHISTFILE%/*} ]] || mkdir -p ${LESSHISTFILE%/*}
 export PAGER=less
+#export PAGER=bat
 export LESSCOLOR=always
 export LESSCOLORIZER="highlight -O ansi"
 export LESSOPEN="|lesspipe %s"
-alias more=less
+alias more=$PAGER
 
 # FIND STUFF
 alias find='noglob find'
