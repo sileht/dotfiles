@@ -14,6 +14,15 @@ function M.dump(o)
   end
 end
 
+function M.get_venvdir(rootdir)
+  local handle = io.popen("~/.bin/poetry-env-info-fast " .. rootdir)
+  local venv = handle:read()
+  handle:close()
+  if vim.fn.isdirectory(venv) ~= 0 then
+    return venv
+  end
+end
+
 function M.get_rootdir()
   local lspconfig = require("lspconfig")
   local folders = vim.lsp.buf.list_workspace_folders()
@@ -26,6 +35,7 @@ function M.get_rootdir()
     "requirements.txt",
     "Pipfile",
     ".git",
+    ".venv",
     "package.json"
   )(vim.api.nvim_buf_get_name(0))
   -- print((rootdir or "") .. " vs " .. (rootdir2 or ""))

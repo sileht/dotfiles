@@ -81,8 +81,8 @@ function M.setup_which_key()
       fb = {"<cmd>lua require('telescope.builtin').buffers()<cr>", "Telescope buffer"},
       fh = {"<cmd>lua require('telescope.builtin').help_tags()<cr>", "Telescope help tags"},
       D = {"<cmd>lua vim.lsp.buf.type_definition()<cr>", "Type definition"},
-      -- ca = {"<cmd>lua vim.lsp.buf.code_action()<cr>", "Code action"},
-      ca = {"<cmd>CodeActionMenu<cr>", "Code action"},
+      ca = {"<cmd>lua vim.lsp.buf.code_action()<cr>", "Code action"},
+      -- ca = {"<cmd>CodeActionMenu<cr>", "Code action"},
       j = {":HopWord<cr>", "Hop"},
       k = {""},
       e = {":RnvimrToggle<cr>", "Explorer"}

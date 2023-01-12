@@ -1,5 +1,5 @@
 [user]
-	name = Mehdi Abaakouk
+	name = Mehdi ABAAKOUK
 	email = sileht@sileht.net
 	signingkey = A351AB805797B657D490BAD71892B42FCEAAEBC8
 [color]
@@ -10,6 +10,7 @@
     ps = push-stack
     b = "!f() { git -c color.ui=always branch --sort=-committerdate --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))' | head ${1:--25} ; }; f"
     bl = "!f() { git checkout $(git branch --sort=-committerdate --format='%(HEAD) %(refname:short)' | grep -v -e '^*' | head -1) ; }; f"
+    get-file = "!f() { git cat-file blob $1:$2 >| $2 ; }; f"
 
     pr = "!f() { git r ; git pull-request \"$@\"; }; f"
     t = "!f() { git branch --set-upstream-to=origin/${1:-main}; }; f"
@@ -72,61 +73,61 @@
 [split-diffs]
 	theme-name = github-dark-dim
 [color "status"]
-	branch = normal
+	branch = 6 normal
 	added = 10 normal
 	updated = 10 normal
-	localbranch = normal
+	localbranch = 6 normal
 	changed = 11 normal
 	header = normal
-	remotebranch = normal
+	remotebranch = 5 normal
 	nobranch = 1 normal italic
 	unmerged = 9 normal
 	untracked = normal dim
 [color "branch"]
-	plain = normal dim
-	remote = normal dim
-	current = normal
-	local = normal dim
-	upstream = normal
+	plain = 6 normal
+	remote = 5 normal
+	current = 6 normal reverse
+	local = 6 normal
+	upstream = 5 normal
 [color "remote"]
 	hint = normal dim
 	success = 2 normal
 	error = 1 normal
 	warning = 3 normal
 [color "interactive"]
-	header = normal bold
+	header = normal dim bold
 	prompt = 15 4
-	help = normal
+	help = normal dim
 	error = 1 normal italic
 [color "diff"]
 	commit = 3 normal
-	newMoved = 14 normal
+	newMoved = 11 normal
 	oldMovedAlternativeDimmed = 4 normal dim
-	frag = normal ul
-	oldMovedAlternative = 12 normal dim
+	frag = normal dim italic
+	oldMovedAlternative = 4 normal
 	contextBold = normal bold
 	newBold = 10 normal bold
 	context = normal
-	oldMoved = 14 normal dim
-	oldBold = 9 normal dim bold
-	newMovedDimmed = 6 normal
-	func = normal ul
-	meta = normal
-	newDimmed = 2 normal
+	oldMoved = 3 normal
+	oldBold = 1 normal bold
+	newMovedDimmed = 11 normal dim
+	func = normal dim italic
+	meta = normal dim
+	newDimmed = 10 normal dim
 	newMovedAlternative = 12 normal
 	new = 10 normal
-	newMovedAlternativeDimmed = 4 normal
+	newMovedAlternativeDimmed = 12 normal dim
 	whitespace = normal 9
-	oldMovedDimmed = 6 normal dim
+	oldMovedDimmed = 3 normal dim
 	oldDimmed = 1 normal dim
-	old = 9 normal dim
+	old = 1 normal
 [color "decorate"]
-	branch = normal
+	branch = 6 normal
 	tag = 3 normal
-	remotebranch = normal
-	stash = normal
+	remotebranch = 5 normal
+	stash = normal dim
 	grafted = 1 normal italic
-	HEAD = normal dim
+	HEAD = 6 normal italic
 [maintenance]
 	repo = /home/sileht/.env/asdf
 	repo = /home/sileht/.env/base16-shell
@@ -159,3 +160,10 @@
 [credential "https://gist.github.com"]
 	helper = 
 	helper = !/opt/homebrew/bin/gh auth git-credential
+[advice]
+	skippedCherryPicks = false
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true

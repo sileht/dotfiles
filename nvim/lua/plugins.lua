@@ -178,6 +178,9 @@ return require("packer").startup(
         end
       }
 
+      use 'ggandor/lightspeed.nvim'
+      use 'tpope/vim-fugitive'
+
       -- lsp, completion, fixer and linter
       use {
         "neovim/nvim-lspconfig",
