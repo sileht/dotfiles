@@ -12,11 +12,11 @@ local on_attach = function(client, bufnr)
     if client.server_capabilities.documentFormattingProvider then
         vim.cmd(
             [[
-    augroup LspFormatting
-        autocmd! * <buffer>
-        autocmd BufWritePre <buffer> lua vim.lsp.buf.format()
-    augroup END
-    ]]
+augroup LspFormatting
+    autocmd! * <buffer>
+    autocmd BufWritePre <buffer> lua vim.lsp.buf.format()
+augroup END
+]]
         )
     end
     return lsp_status.on_attach(client, bufnr)
@@ -29,36 +29,33 @@ local capabilities = require("cmp_nvim_lsp").default_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 capabilities = vim.tbl_extend("keep", capabilities or {}, lsp_status.capabilities)
 
-local on_new_config_set_virtualenv = function()
-    return function(new_config, new_root_dir)
-        --local handle = io.popen("poetry env info -p")
-        local handle = io.popen("~/.bin/poetry-env-info-fast " .. new_root_dir)
-        local venv = handle:read()
-        handle:close()
-        if vim.fn.isdirectory(venv) ~= 0 then
-            if new_config.cmd_env then
-                new_config.cmd_env.VIRTUAL_ENV = venv
-            else
-                new_config.cmd_env = { VIRTUAL_ENV = venv }
-            end
-            print("VENV SET")
-        end
-    end
+local on_new_config_pyright = function(new_config, new_root_dir)
+    new_config.settings.python.venvPath = new_root_dir
 end
-local on_new_config_poetry_binary_install = function(name, args)
+local on_new_config_poetry_binary_install = function(deps, name, cmd, args)
     return function(new_config, new_root_dir)
         local venv = require("utils").get_venvdir(new_root_dir)
-        if venv ~= nil then
-            local venv_bin_path = venv .. "/bin/" .. name
+        if vim.fn.isdirectory(venv) ~= 0 then
+            local venv_bin_path = venv .. "/bin/" .. cmd
             if vim.fn.filereadable(venv_bin_path) == 0 then
                 vim.fn.jobstart(
-                    venv .. "/bin/pip install " .. name,
+                    venv .. "/bin/pip install " .. deps,
                     {
                         on_stdout = log_to_message,
-                        on_stderr = log_to_message
+                        on_stderr = log_to_message,
+                        on_exit = function() vim.cmd("LspRestart " .. name) end
                     }
                 )
+
             else
+                local path = venv .. "/bin:" .. vim.fn.getenv("PATH")
+                if new_config.cmd_env then
+                    new_config.cmd_env.VIRTUAL_ENV = venv
+                    new_config.cmd_env.PATH = path
+                else
+                    new_config.cmd_env = { VIRTUAL_ENV = venv, PATH = path }
+                end
+
                 new_config.cmd = { venv_bin_path }
                 if (args ~= nil) then
                     for _, arg in ipairs(args) do
@@ -66,6 +63,8 @@ local on_new_config_poetry_binary_install = function(name, args)
                     end
                 end
             end
+        else
+            print("Virtual env detected but the directory is missing")
         end
     end
 end
@@ -81,10 +80,22 @@ local lsp_options = {
     html = {},
     jsonls = {},
     sumneko_lua = {
+        cmd = { "/opt/homebrew/bin/lua-language-server", "--logpath=~/sumneko.log", "--rpclog=true" };
         settings = {
             Lua = {
+                format = {
+                    enable = true,
+                    defaultConfig = {
+                        indent_style = "space",
+                        indent_size = "2",
+                    }
+                },
                 diagnostics = {
-                    globals = { "vim" }
+                    globals = { "vim" },
+                    severity = {
+                        ["action-after-return"] = "Info",
+                        ["undefined-global"] = "Ignore",
+                    },
                 },
                 telemetry = {
                     enable = false
@@ -105,8 +116,49 @@ local lsp_options = {
     grammarly = {
         filetypes = { "gitcommit" }
     },
+    pyright = {
+        on_new_config_pyright,
+        settings = {
+            python = {
+                exclude = { ".venv" },
+                venvPath = ".",
+                venv = ".venv",
+                stubPath = ".venv22",
+                pythonPath = ".venv/bin/python",
+                analysis = {
+                    reportUnusedVariable = "none"
+                }
+            }
+        }
+    },
+    pylsp = {
+        on_new_config = on_new_config_poetry_binary_install(
+            "python-lsp-server pyls-isort python-lsp-black pylsp-mypy", "pylsp"
+            ,
+            "pylsp"),
+        --on_new_config = on_new_config_set_virtualenv(),
+        settings = {
+            pylsp = {
+                plugins = {
+                    flake8 = { enabled = false },
+                    black = { enabled = true },
+                    isort = { enabled = true },
+                    mpypy = {
+                        enabled = false,
+                        live = false
+                    },
+                    rope_autoimport = { enabled = false },
+                    rope_completon = { enabled = false, eager = false },
+                    mccabe = { enabled = false },
+                    pyflakes = { enabled = false },
+                    pycodestyle = { enabled = false },
+                }
+            }
+        }
+    },
     jedi_language_server = {
-        on_new_config = on_new_config_poetry_binary_install("jedi-language-server")
+        on_new_config = on_new_config_poetry_binary_install("jedi-language-server", "jedi_language_server",
+            "jedi-language-server")
         --on_new_config = on_new_config_set_virtualenv()
     },
     bashls = {
@@ -127,9 +179,11 @@ lspconfig_configs["semgrep"] = {
 local servers = {
     "eslint",
     "jedi_language_server",
+    -- "pylsp",
+    --"pyright",
     -- "semgrep",
     "tsserver",
-    -- "sumneko_lua",
+    "sumneko_lua",
     "grammarly",
     "yamlls"
 }
@@ -139,7 +193,7 @@ for _, lsp in ipairs(servers) do
         options = vim.tbl_extend("force", options, lsp_options[lsp])
     end
     if (lsp_status.extensions[lsp] ~= nil) then
-        handlers = lsp_status.extensions[lsp].setup()
+        local handlers = lsp_status.extensions[lsp].setup()
         options.handlers = handlers
     end
     lspconfig[lsp].setup(options)

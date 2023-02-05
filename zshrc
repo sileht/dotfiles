@@ -163,6 +163,7 @@ PIPX_PACKAGES=(
     rstcheck
     jedi-language-server
     anakin-language-server
+    python-lsp-server
     nox
     poethepoet
     poetry
@@ -175,6 +176,7 @@ NPM_PACKAGES=(
     serve
     neovim
     lua-fmt
+    typescript
     typescript-language-server
     npm-check-updates
     @taplo/cli
@@ -326,6 +328,9 @@ pipxi() {
         for package in $PIPX_PACKAGES ; do
             if [ ! -e $dir/$package ]; then
                 pipx install $package
+                if [ $package == "python-lsp-server" ]; then
+                    pipx inject python-lsp-server pyls-isort python-lsp-black pylsp-mypy
+                fi
             fi
         done
         pipx upgrade-all
@@ -546,6 +551,7 @@ function etox() {
     [ ! -d "$rootdir/.tox" ] && rootdir="../../.."
     [ ! -d "$rootdir/.tox" ] && rootdir="../../../.."
     for item in ${(@v)helper}; do
+
         for e in "${(@s/,/)env[$item]}" ; do
             venv=$rootdir/.tox/$e
             if [ ! -d "$venv" ] ; then
@@ -558,36 +564,3 @@ function etox() {
 }
 
 alias poetry-rebase-fix="git checkout HEAD poetry.lock; poetry lock --no-update && git add poetry.lock && git rebase --continue"
-
-function utox() {
-    zparseopts -D e+:=env
-    typeset -A helper
-    helper=($(seq 1 ${#env}))
-    for item in ${(@v)helper}; do
-        for e in "${(@s/,/)env[$item]}" ; do
-            etox -e $e "$@" pip install -U pip
-            etox -e $e "$@" pip install -U --upgrade-strategy eager -e . $(tox --notest --showconfig | awk '/^\[testenv:'$e'\]$/{while ($1 != "deps") { getline ; }; print $0 ; }' | sed -e 's/\s*deps\s*=\s*\[\(.*\)\]/\1/g' | sed -e 's/, / /g')
-        done
-    done
-}
-
-alias etox="nocorrect etox"
-alias utox="nocorrect utox"
-
-function gbe() {
-    local n=${1:=-7}
-    for p in $HOME/workspace/mergify/engine*; do
-        echo "-- $p --";
-        (cd $p ; git b $n);
-        echo
-    done
-}
-function gbd() {
-    local n=${1:=-7}
-    for p in $HOME/workspace/mergify/dashboard*; do
-        echo "-- $p --";
-        (cd $p ; git b $n);
-        echo
-    done
-}
-

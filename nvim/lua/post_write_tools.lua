@@ -1,21 +1,6 @@
 M = {}
 M.enabled = false
 
-local get_local_env_path = function()
-    local rootdir = require("utils").get_rootdir()
-    local venv = require("utils").get_venvdir(rootdir)
-    local path = ""
-    if venv ~= nil then
-        path = path .. venv .. "/bin:"
-    end
-    node_modules_bin = rootdir .. "/node_modules/.bin"
-    if vim.fn.isdirectory(node_modules_bin) ~= 0 then
-        path = path .. node_modules_bin .. ":"
-    end
-    path = path .. vim.fn.getenv("PATH")
-    return path
-end
-
 function M.run_linter()
     local rootdir = require("utils").get_rootdir()
     local python_venv_bin = ""
@@ -60,16 +45,6 @@ function M.setup()
                         }
                     end
                 },
-                lua = {
-                    -- luafmt
-                    function()
-                        return {
-                            exe = "luafmt",
-                            args = { "--indent-count", 2, "--stdin" },
-                            stdin = true
-                        }
-                    end
-                }
             }
         }
     )
@@ -81,30 +56,23 @@ function M.setup()
 end
 
 function M.enable()
-    vim.api.nvim_exec(
-        [[
-          augroup FormatAndLintAutogroup
-          autocmd!
-          autocmd BufWritePost *.py FormatWrite
-          "autocmd BufWritePost *.lua FormatWrite
-          "autocmd BufWritePost *.jsx FormatWrite
-          "autocmd BufWritePost *.tsx FormatWrite
-          "autocmd BufWritePost *.ts FormatWrite
-          "autocmd BufWritePre *.tsx,*.ts,*.jsx,*.js EslintFixAll
-          autocmd BufWritePost * lua require("post_write_tools").run_linter()
-          autocmd BufReadPost * lua require("post_write_tools").run_linter()
-          augroup END
-      ]] ,
-        true
-    )
+    vim.api.nvim_exec([[
+augroup ManualFormatting
+  autocmd!
+  autocmd BufWritePost *.py FormatWrite
+  autocmd BufWritePre *.tsx,*.ts,*.jsx,*.js EslintFixAll
+  autocmd BufWritePost * lua require("post_write_tools").run_linter()
+  autocmd BufReadPost * lua require("post_write_tools").run_linter()
+augroup END
+    ]], true)
     M.enabled = true
 end
 
 function M.disable()
     vim.api.nvim_exec([[
-          augroup FormatAndLintAutogroup
-          autocmd!
-          augroup END
+augroup ManualFormatting
+    autocmd!
+augroup END
       ]], true)
     M.enabled = false
 end
