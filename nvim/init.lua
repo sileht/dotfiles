@@ -12,8 +12,5 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("settings")
+require("autocmd")
 require("lazy-plug")
---require("packer-plug")
-require("tricks_and_tips").setup()
-require("cd_to_buffers").setup()
-require("diagnostics").setup()

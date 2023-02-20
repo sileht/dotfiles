@@ -60,14 +60,19 @@ vim.g.maplocalleader = ";"
 
 vim.opt.updatetime = 1500
 
--- Highlight on yank
-vim.cmd [[
-  augroup YankHighlight
-    autocmd!
-    autocmd TextYankPost * silent! lua vim.highlight.on_yank()
-  augroup end
-]]
+vim.diagnostic.config(
+    {
+        -- virtual_text = {spacing = 4, prefix = "🔥"},
+        virtual_text = false,
+        sign = true,
+        underline = true,
+        update_in_insert = false,
+        severity_sort = true
+    }
+)
 
--- Restore cursor position
-vim.cmd([[autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
-    \| exe "normal! g'\"" | endif]])
+local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
+for type, icon in pairs(signs) do
+    local hl = "DiagnosticSign" .. type
+    vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
+end

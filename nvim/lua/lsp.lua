@@ -1,6 +1,5 @@
 local lspconfig = require("lspconfig")
 local lsp_status = require("lsp-status")
-local lspconfig_configs = require("lspconfig.configs")
 
 local log_to_message = function(_, data, _)
     for _, d in ipairs(data) do
@@ -10,14 +9,12 @@ end
 
 local on_attach = function(client, bufnr)
     if client.server_capabilities.documentFormattingProvider then
-        vim.cmd(
-            [[
-augroup LspFormatting
-    autocmd! * <buffer>
-    autocmd BufWritePre <buffer> lua vim.lsp.buf.format()
-augroup END
-]]
-        )
+        vim.api.nvim_create_augroup("LspFormatting", { clear = true })
+        vim.api.nvim_create_autocmd("BufWritePre", {
+            group = "LspFormatting",
+            pattern = "<buffer>",
+            callback = vim.lsp.buf.format
+        })
     end
     return lsp_status.on_attach(client, bufnr)
 end
@@ -29,9 +26,6 @@ local capabilities = require("cmp_nvim_lsp").default_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 capabilities = vim.tbl_extend("keep", capabilities or {}, lsp_status.capabilities)
 
-local on_new_config_pyright = function(new_config, new_root_dir)
-    new_config.settings.python.venvPath = new_root_dir
-end
 local on_new_config_poetry_binary_install = function(deps, name, cmd, args)
     return function(new_config, new_root_dir)
         local venv = require("utils").get_venvdir(new_root_dir)
@@ -46,7 +40,6 @@ local on_new_config_poetry_binary_install = function(deps, name, cmd, args)
                         on_exit = function() vim.cmd("LspRestart " .. name) end
                     }
                 )
-
             else
                 local path = venv .. "/bin:" .. vim.fn.getenv("PATH")
                 if new_config.cmd_env then
@@ -79,8 +72,8 @@ local lsp_options = {
     },
     html = {},
     jsonls = {},
-    sumneko_lua = {
-        cmd = { "/opt/homebrew/bin/lua-language-server", "--logpath=~/sumneko.log", "--rpclog=true" };
+    lua_ls = {
+        cmd = { "/opt/homebrew/bin/lua-language-server", "--logpath=~/sumneko.log", "--rpclog=true" },
         settings = {
             Lua = {
                 format = {
@@ -97,15 +90,11 @@ local lsp_options = {
                         ["undefined-global"] = "Ignore",
                     },
                 },
-                telemetry = {
-                    enable = false
-                }
+                telemetry = { enable = false }
             }
         }
     },
-    eslint = {
-        root_dir = lspconfig.util.root_pattern("package.json")
-    },
+    eslint = { root_dir = lspconfig.util.root_pattern("package.json") },
     tsserver = {
         on_attach = function(client, bufnr)
             client.server_capabilities.documentFormattingProvider = false
@@ -113,77 +102,20 @@ local lsp_options = {
             return on_attach(client, bufnr)
         end
     },
-    grammarly = {
-        filetypes = { "gitcommit" }
-    },
-    pyright = {
-        on_new_config_pyright,
-        settings = {
-            python = {
-                exclude = { ".venv" },
-                venvPath = ".",
-                venv = ".venv",
-                stubPath = ".venv22",
-                pythonPath = ".venv/bin/python",
-                analysis = {
-                    reportUnusedVariable = "none"
-                }
-            }
-        }
-    },
-    pylsp = {
-        on_new_config = on_new_config_poetry_binary_install(
-            "python-lsp-server pyls-isort python-lsp-black pylsp-mypy", "pylsp"
-            ,
-            "pylsp"),
-        --on_new_config = on_new_config_set_virtualenv(),
-        settings = {
-            pylsp = {
-                plugins = {
-                    flake8 = { enabled = false },
-                    black = { enabled = true },
-                    isort = { enabled = true },
-                    mpypy = {
-                        enabled = false,
-                        live = false
-                    },
-                    rope_autoimport = { enabled = false },
-                    rope_completon = { enabled = false, eager = false },
-                    mccabe = { enabled = false },
-                    pyflakes = { enabled = false },
-                    pycodestyle = { enabled = false },
-                }
-            }
-        }
-    },
+    grammarly = { filetypes = { "gitcommit" } },
     jedi_language_server = {
-        on_new_config = on_new_config_poetry_binary_install("jedi-language-server", "jedi_language_server",
-            "jedi-language-server")
-        --on_new_config = on_new_config_set_virtualenv()
+        on_new_config = on_new_config_poetry_binary_install(
+            "jedi-language-server", "jedi_language_server", "jedi-language-server"
+        )
     },
-    bashls = {
-        filetypes = { "sh", "zsh" }
-    },
-    semgrep = {}
-}
-
-lspconfig_configs["semgrep"] = {
-    default_config = {
-        cmd = { "semgrep", "lsp", "-l", "/Users/sileht/semgrep.log", "--debug", "--verbose" },
-        filetypes = { "python" },
-        root_dir = lspconfig.util.root_pattern("pyproject.toml", "setup.py", "setup.cfg", "requirements.txt", "Pipfile"),
-        single_file_support = true
-    }
+    bashls = { filetypes = { "sh", "zsh" } },
 }
 
 local servers = {
     "eslint",
     "jedi_language_server",
-    -- "pylsp",
-    --"pyright",
-    -- "semgrep",
     "tsserver",
-    "sumneko_lua",
+    "lua_ls",
     "grammarly",
     "yamlls"
 }

@@ -31,15 +31,15 @@ end
 function M.get_rootdir()
     local lspconfig = require("lspconfig")
     local rootdir = lspconfig.util.root_pattern(
-        "pyproject.toml",
-        "setup.py",
-        "setup.cfg",
-        "requirements.txt",
-        "Pipfile",
-        ".git",
-        ".venv",
-        "package.json"
-    )(vim.api.nvim_buf_get_name(0))
+            "pyproject.toml",
+            "setup.py",
+            "setup.cfg",
+            "requirements.txt",
+            "Pipfile",
+            ".git",
+            ".venv",
+            "package.json"
+        )(vim.api.nvim_buf_get_name(0))
     return rootdir
 end
 
@@ -96,6 +96,79 @@ function M.create_popup(name, what)
             group = augroup
         }
     )
+end
+
+function M.buffer_delete_workaround()
+    local buffer = vim.api.nvim_get_current_buf()
+    vim.cmd("bn")
+    vim.cmd("bdelete " .. buffer)
+end
+
+M.formatter = false
+M.focus_mode = false
+
+
+function M.formatter_python_callback()
+    return {
+        exe = "sh -c '" .. table.concat({
+            --"autoflake --remove-all-unused-imports -s -",
+            "black --fast - ",
+            "isort -"
+        }, " | ") .. "'",
+        args = {},
+        stdin = true
+    }
+end
+
+function M.toggle_formatter(opts)
+    if opts == nil then
+        opts = {}
+    end
+    M.formatter = not M.formatter
+    vim.api.nvim_create_augroup("ManualFormatting", { clear = true })
+    if M.formatter then
+        vim.api.nvim_create_autocmd("BufWritePost",
+            { group = "ManualFormatting", pattern = {"*.py", "*.lua"}, command = "FormatWrite" }
+        )
+        vim.api.nvim_create_autocmd("BufWritePre",
+            { group = "ManualFormatting", pattern = { "*.tsx", "*.ts", "*.jsx", "*.js" }, command = "FormatWrite" }
+        )
+    end
+    if opts.silent == nil then
+        if M.formatter then
+            print("formatter tools enabled")
+        else
+            print("formatter tools disabled")
+        end
+    end
+end
+
+function M.toggle_focus()
+    M.focus_mode = not M.focus_mode
+    if M.focus_mode then
+        --vim.cmd("cclose")
+        print("focus layout")
+        vim.opt.laststatus = 0
+        vim.opt.number = false
+        vim.opt.relativenumber = false
+        vim.opt.signcolumn = "no"
+        require("gitsigns.config").config.signcolumn = false
+        require("gitsigns.actions").refresh()
+        require("scrollview").scrollview_disable()
+        require("trouble").close()
+        vim.opt.cmdheight = 0
+    else
+        require("scrollview").scrollview_enable()
+        require("gitsigns.actions").refresh()
+        require("gitsigns.config").config.signcolumn = true
+        vim.opt.signcolumn = "yes"
+        vim.opt.relativenumber = true
+        vim.opt.number = true
+        vim.opt.laststatus = 3
+        require("trouble").open()
+        vim.opt.cmdheight = 1
+        vim.cmd("wincmd p")
+    end
 end
 
 return M

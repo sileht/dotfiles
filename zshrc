@@ -163,12 +163,11 @@ PIPX_PACKAGES=(
     rstcheck
     jedi-language-server
     anakin-language-server
-    python-lsp-server
+    #python-lsp-server
     nox
-    poethepoet
     poetry
     ipython
-    autoflake
+    #autoflake
 )
 
 NPM_PACKAGES=(
@@ -339,9 +338,8 @@ pipxi() {
 }
 vimi(){
     (
-        nvim --headless -c "autocmd\ User\ PackerComplete\ quitall" -c "PackerSync"
+        command nvim -c "lua require('lazy').sync({wait=1})" -c "sleep 100m" -c "qa"
         nvim --headless -c TSUpdateSync -c q
-        nvim --headless -c "autocmd\ User\ PackerComplete\ quitall" -c "PackerCompile" -c q
     )
 }
 
@@ -414,7 +412,7 @@ function diffv() {
 export EDITOR=nvim
 export VISUAL=nvim
 
-function nvim(){
+function nvim2(){
     # Replace :123 by \s+123
     local cmd="command nvim" arg new_arg
 	for arg in $@; do
@@ -462,6 +460,7 @@ function sgrep() {
       --exclude-dir=.bzr
       --exclude-dir=.tox
       --exclude-dir=.svn
+      --exclude-dir=.venv
       --exclude-dir=.mypy_cache
       --exclude-dir=__pycache__
       --exclude-dir=node_modules
@@ -540,27 +539,5 @@ sshrefresh(){
     done
 }
 
-# Python stuff
-function etox() {
-    zparseopts -D e+:=env
-    typeset -A helper
-    helper=($(seq 1 ${#env}))
-    rootdir="$(pwd)"
-    [ ! -d "$rootdir/.tox" ] && rootdir=".."
-    [ ! -d "$rootdir/.tox" ] && rootdir="../.."
-    [ ! -d "$rootdir/.tox" ] && rootdir="../../.."
-    [ ! -d "$rootdir/.tox" ] && rootdir="../../../.."
-    for item in ${(@v)helper}; do
-
-        for e in "${(@s/,/)env[$item]}" ; do
-            venv=$rootdir/.tox/$e
-            if [ ! -d "$venv" ] ; then
-                tox -e $e --notest
-            fi
-            TOXENV=$(tox --showconfig -e $e | sed -n -e "/^setenv/s/.*SetenvDict: {\(.*\)}/\1/gp" | sed -e "s/, '/\nexport /g" -e "s/': /=/g" -e "s/^'/export /g")
-            bash -c "eval $TOXENV ; source $venv/bin/activate ; $*"
-        done
-    done
-}
-
 alias poetry-rebase-fix="git checkout HEAD poetry.lock; poetry lock --no-update && git add poetry.lock && git rebase --continue"
+alias poe="poetry run poe"
