@@ -13,6 +13,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
         vim.highlight.on_yank({ higroup = 'IncSearch', timeout = '100' })
     end
 })
+
 vim.api.nvim_create_autocmd('BufEnter', {
     callback = function()
         local buftype = vim.fn.getbufvar(vim.fn.bufnr(), "&buftype")
@@ -27,7 +28,9 @@ vim.api.nvim_create_autocmd('BufEnter', {
     end
 })
 
-vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost" },
-    { pattern = "*.py", callback = require("linters").run_linter }
-)
-require("utils").toggle_formatter({ silent = true })
+vim.api.nvim_create_augroup("LspFormatting", { clear = true })
+vim.api.nvim_create_autocmd("BufWritePre", {
+    group = "LspFormatting",
+    pattern = "<buffer>",
+    callback = function() require("utils").may_format() end
+})

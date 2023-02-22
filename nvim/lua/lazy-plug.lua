@@ -90,6 +90,7 @@ require("lazy").setup({
     {
         "neovim/nvim-lspconfig",
         dependencies = {
+            "jose-elias-alvarez/null-ls.nvim",
             {
                 "hrsh7th/nvim-cmp",
                 dependencies = {
@@ -107,16 +108,6 @@ require("lazy").setup({
             },
         },
         config = function() require("lsp") end
-    },
-    { "mfussenegger/nvim-lint",
-        config = function()
-            require("lint").linters_by_ft = {
-                python = { "mypy", "flake8" }
-            }
-        end
-    },
-    { "mhartington/formatter.nvim",
-        opts = { filetype = { python = { require("utils").formatter_python_callback }, } }
     },
     {
         "folke/trouble.nvim",

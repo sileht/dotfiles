@@ -171,6 +171,7 @@ PIPX_PACKAGES=(
 )
 
 NPM_PACKAGES=(
+    commitlint-format-json
     wrangler
     serve
     neovim

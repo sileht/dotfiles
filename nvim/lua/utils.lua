@@ -104,42 +104,19 @@ function M.buffer_delete_workaround()
     vim.cmd("bdelete " .. buffer)
 end
 
-M.formatter = false
+M.formatter = true
+M.may_format = vim.lsp.buf.format
 M.focus_mode = false
 
 
-function M.formatter_python_callback()
-    return {
-        exe = "sh -c '" .. table.concat({
-            --"autoflake --remove-all-unused-imports -s -",
-            "black --fast - ",
-            "isort -"
-        }, " | ") .. "'",
-        args = {},
-        stdin = true
-    }
-end
-
-function M.toggle_formatter(opts)
-    if opts == nil then
-        opts = {}
-    end
+function M.toggle_formatter()
     M.formatter = not M.formatter
-    vim.api.nvim_create_augroup("ManualFormatting", { clear = true })
     if M.formatter then
-        vim.api.nvim_create_autocmd("BufWritePost",
-            { group = "ManualFormatting", pattern = { "*.py", "*.lua" }, command = "FormatWrite" }
-        )
-        vim.api.nvim_create_autocmd("BufWritePre",
-            { group = "ManualFormatting", pattern = { "*.tsx", "*.ts", "*.jsx", "*.js" }, command = "FormatWrite" }
-        )
-    end
-    if opts.silent == nil then
-        if M.formatter then
-            print("formatter tools enabled")
-        else
-            print("formatter tools disabled")
-        end
+        print("formatter tools enabled")
+        M.may_format = vim.lsp.buf.format
+    else
+        print("formatter tools disabled")
+        M.may_format = function() end
     end
 end
 
