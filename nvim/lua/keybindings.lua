@@ -11,7 +11,7 @@ require("which-key").register(
         ["gN"] = { function() vim.diagnostic.goto_next() end, "Diagnostic next" },
         ["gD"] = { function() vim.lsp.buf.declaration() end, "Go declaration" },
         ["gi"] = { function() vim.lsp.buf.implementation() end, "Go implementation" },
-        ["<leader>sr"] = { function() require('ssr').open() end, "SSR", mode = {"n", "x"} },
+        ["<leader>sr"] = { function() require('ssr').open() end, "SSR", mode = { "n", "x" } },
         ["gd"] = { function() require('telescope.builtin').lsp_definitions() end, "Go definitions" },
         ["gr"] = { function() require('telescope.builtin').lsp_references() end, "Go references" },
         ["<leader>gb"] = { function() require('gitsigns').blame_line({ full = true }) end, "Git Blame" },

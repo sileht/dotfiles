@@ -128,7 +128,7 @@ function M.toggle_formatter(opts)
     vim.api.nvim_create_augroup("ManualFormatting", { clear = true })
     if M.formatter then
         vim.api.nvim_create_autocmd("BufWritePost",
-            { group = "ManualFormatting", pattern = {"*.py", "*.lua"}, command = "FormatWrite" }
+            { group = "ManualFormatting", pattern = { "*.py", "*.lua" }, command = "FormatWrite" }
         )
         vim.api.nvim_create_autocmd("BufWritePre",
             { group = "ManualFormatting", pattern = { "*.tsx", "*.ts", "*.jsx", "*.js" }, command = "FormatWrite" }

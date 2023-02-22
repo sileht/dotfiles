@@ -1,5 +1,3 @@
-
-
 -- Restore cursor position
 vim.api.nvim_create_autocmd({ "BufReadPost" }, {
     pattern = { "*" },
@@ -28,4 +26,8 @@ vim.api.nvim_create_autocmd('BufEnter', {
         end
     end
 })
-require("utils").toggle_formatter({silent=true})
+
+vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost" },
+    { pattern = "*.py", callback = require("linters").run_linter }
+)
+require("utils").toggle_formatter({ silent = true })

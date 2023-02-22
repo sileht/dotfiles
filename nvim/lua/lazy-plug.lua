@@ -109,7 +109,11 @@ require("lazy").setup({
         config = function() require("lsp") end
     },
     { "mfussenegger/nvim-lint",
-        config = function() require("linters").setup() end
+        config = function()
+            require("lint").linters_by_ft = {
+                python = { "mypy", "flake8" }
+            }
+        end
     },
     { "mhartington/formatter.nvim",
         opts = { filetype = { python = { require("utils").formatter_python_callback }, } }

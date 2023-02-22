@@ -13,7 +13,7 @@ local on_attach = function(client, bufnr)
         vim.api.nvim_create_autocmd("BufWritePre", {
             group = "LspFormatting",
             pattern = "<buffer>",
-            callback = vim.lsp.buf.format
+            callback = function() vim.lsp.buf.format() end
         })
     end
     return lsp_status.on_attach(client, bufnr)
@@ -73,7 +73,6 @@ local lsp_options = {
     html = {},
     jsonls = {},
     lua_ls = {
-        cmd = { "/opt/homebrew/bin/lua-language-server", "--logpath=~/sumneko.log", "--rpclog=true" },
         settings = {
             Lua = {
                 format = {

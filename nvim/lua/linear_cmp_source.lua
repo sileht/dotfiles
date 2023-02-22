@@ -52,9 +52,9 @@ source.complete = function(self, _, callback)
         return
     end
     local body =
-    vim.fn.json_encode(
-        {
-            query = [[
+        vim.fn.json_encode(
+            {
+                query = [[
           {
               issues(first: 10, orderBy: updatedAt, filter: {
                   state: { name: { in: ["Todo", "In Progress", "In Review"] } }
@@ -65,8 +65,8 @@ source.complete = function(self, _, callback)
               }
           }
       ]]
-        }
-    )
+            }
+        )
     local curl = require("plenary.curl")
     curl.request(
         {

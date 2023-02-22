@@ -1,6 +1,5 @@
-
-local toggler = function (name, module, var)
-    local toggler_text = function() 
+local toggler = function(name, module, var)
+    local toggler_text = function()
         if require(module)[var] then
             return name .. " 󱨥"
         else
@@ -10,7 +9,7 @@ local toggler = function (name, module, var)
     local toggler_color = function()
         return { fg = require(module)[var] and '' or '#5e6c77' }
     end
-    return {toggler_text, color = toggler_color}
+    return { toggler_text, color = toggler_color }
 end
 
 local sections = {

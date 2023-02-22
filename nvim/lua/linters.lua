@@ -26,13 +26,4 @@ function M.run_linter()
     lint.try_lint(nil, { cwd = rootdir })
 end
 
-function M.setup()
-    require("lint").linters_by_ft = {
-        python = { "mypy", "flake8" }
-    }
-    vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost" },
-        { pattern = "*.py", callback = require("linters").run_linter }
-    )
-end
-
 return M
