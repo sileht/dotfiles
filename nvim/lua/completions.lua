@@ -1,7 +1,11 @@
 local cmp = require("cmp")
 cmp.setup(
     {
-        snippet = {},
+        snippet = {
+            expand = function(args)
+                vim.fn["vsnip#anonymous"](args.body)
+            end,
+        },
         sources = cmp.config.sources(
             {
                 { name = "nvim_lsp" },
@@ -76,7 +80,6 @@ cmp.setup.filetype(
         sources = cmp.config.sources(
             {
                 { name = "cmp_git" },
-                { name = "conventionalcommits" },
             },
             {
                 { name = "buffer" },

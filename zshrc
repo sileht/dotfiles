@@ -171,6 +171,7 @@ PIPX_PACKAGES=(
 )
 
 NPM_PACKAGES=(
+    diagnostic-languageserver
     commitlint-format-json
     wrangler
     serve

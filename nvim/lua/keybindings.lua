@@ -1,7 +1,7 @@
 require("which-key").setup()
 require("which-key").register(
     {
-        ["<F10>"] = { function() require('utils').toggle_formatter() end, "Toggle FormatWrite" },
+        ["<F10>"] = { function() require('formatter').toggle() end, "Toggle FormatWrite" },
         ["<F11>"] = { ":set spell!<cr>", "Toggle spell" },
         ["<F12>"] = { function() require('utils').toggle_focus() end, "Show/Hide keybindings" },
         ["<C-k>"] = { function() vim.lsp.buf.signature_help() end, "Show signature" },

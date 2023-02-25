@@ -1,0 +1,53 @@
+#!/opt/homebrew/bin/python3.11
+
+import sys
+import re
+import hashlib
+import base64
+import os.path
+import tomllib
+
+if sys.argv[1] == "-b":
+    mode = "base"
+    cwd = sys.argv[2]
+elif sys.argv[1] == "-e":
+    mode = "venv"
+    cwd = sys.argv[2]
+else:
+    mode = "both"
+    cwd = sys.argv[1]
+
+if not os.path.exists(f"{cwd}/pyproject.toml"):
+    sys.exit(0)
+
+def toml_get(filepath):
+    with open(filepath, 'rb') as f:
+        return tomllib.load(f)
+
+poetry = toml_get("/Users/sileht/Library/Preferences/pypoetry/config.toml")
+
+if poetry["virtualenvs"]["in-project"]:
+    venv = ".venv"
+    venv_base = cwd
+else:
+    venv_base = os.path.realpath(poetry["virtualenvs"]["path"])
+    pyproject = toml_get(f"{cwd}/pyproject.toml")
+    name = pyproject
+    if name is None:
+        sys.exit(0)
+
+    name = name.replace("_", "-").lower()
+    sanitized_name = re.sub(r'[ $`!*@"\\\r\n\t]', "_", name)[:42]
+    normalized_cwd = os.path.normcase(os.path.realpath(cwd))
+    h_bytes = hashlib.sha256(normalized_cwd.encode()).digest()
+    h_str = base64.urlsafe_b64encode(h_bytes).decode()[:8]
+
+    python_version = "py3.11"
+    venv=f"{sanitized_name}-{h_str}-{python_version}"
+
+if mode == "base":
+    print(venv_base)
+elif mode == "venv":
+    print(venv)
+else:
+    print(f"{venv_base}/{venv}")

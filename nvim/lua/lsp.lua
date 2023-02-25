@@ -8,10 +8,12 @@ local log_to_message = function(_, data, _)
 end
 
 local on_attach = function(client, bufnr)
-    -- if client.server_capabilities.documentFormattingProvider then
-    -- end
-    return lsp_status.on_attach(client, bufnr)
+    if client.server_capabilities.documentFormattingProvider then
+        require("formatter").on_attach(client, bufnr)
+    end
+    lsp_status.on_attach(client, bufnr)
 end
+
 
 -- vim.lsp.set_log_level("debug")
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
@@ -19,30 +21,6 @@ local capabilities = require("cmp_nvim_lsp").default_capabilities()
 -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#html
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 capabilities = vim.tbl_extend("keep", capabilities or {}, lsp_status.capabilities)
-
-
-local null_ls_python_opts = function(name, extra_opts)
-    local opts = {
-        dynamic_command = function(params)
-            local venv = require("utils").get_venvdir(params.root)
-            if vim.fn.isdirectory(venv) ~= 0 then
-                return venv .. "/bin/" .. name
-            else
-                return name
-            end
-        end,
-        env = function(params)
-            local venv = require("utils").get_venvdir(params.root)
-            if vim.fn.isdirectory(venv) ~= 0 then
-                local path = venv .. "/bin:" .. vim.fn.getenv("PATH")
-                return { VIRTUAL_ENV = venv, PATH = path }
-            else
-                return {}
-            end
-        end
-    }
-    return vim.tbl_deep_extend("force", opts, extra_opts or {})
-end
 
 local on_new_config_poetry_binary_install = function(deps, name, cmd, args)
     return function(new_config, new_root_dir)
@@ -75,7 +53,7 @@ local on_new_config_poetry_binary_install = function(deps, name, cmd, args)
                 end
             end
         else
-            print("Virtual env detected but the directory is missing")
+            --print("Virtual env detected but the directory is missing")
         end
     end
 end
@@ -126,28 +104,19 @@ local lsp_options = {
         )
     },
     bashls = { filetypes = { "sh", "zsh" } },
-}
-
-local null_ls = require("null-ls")
-null_ls.setup({
-    on_attach = on_attach,
-    sources = {
-        null_ls.builtins.formatting.black.with(null_ls_python_opts("black", {
-            extra_args = { "--fast" }
-        })),
-        null_ls.builtins.formatting.isort.with(null_ls_python_opts("isort")),
-        null_ls.builtins.diagnostics.flake8.with(null_ls_python_opts("flake8", {
-            method = null_ls.methods.DIAGNOSTICS_ON_SAVE
-        })),
-        null_ls.builtins.diagnostics.mypy.with(null_ls_python_opts("mypy", {
-            method = null_ls.methods.DIAGNOSTICS_ON_SAVE
-        })),
-        null_ls.builtins.diagnostics.yamllint.with(null_ls_python_opts("yamllint")),
-        null_ls.builtins.diagnostics.actionlint,
-        null_ls.builtins.diagnostics.commitlint,
-        null_ls.builtins.diagnostics.vulture.with({ extra_args = { "--min-confidence=70" } }),
+    diagnosticls = {
+        filetypes = { "python" },
+        init_options = {
+            formatters = {
+                black = { command = "black", args = { "--fast" } },
+                isort = { command = "isort", args = { "-" } }
+            },
+            formatFiletypes = {
+                python = { "black", "isort" }
+            }
+        }
     },
-})
+}
 
 local servers = {
     "eslint",
@@ -155,7 +124,8 @@ local servers = {
     "tsserver",
     "lua_ls",
     "grammarly",
-    "yamlls"
+    "yamlls",
+    "diagnosticls",
 }
 for _, lsp in ipairs(servers) do
     local options = vim.deepcopy(lsp_options.common)

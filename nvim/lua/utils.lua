@@ -1,24 +1,10 @@
 local M = {}
-function M.dump(o)
-    if type(o) == "table" then
-        local s = "{ "
-        for k, v in pairs(o) do
-            if type(k) ~= "number" then
-                k = '"' .. k .. '"'
-            end
-            s = s .. "[" .. k .. "] = " .. M.dump(v) .. ","
-        end
-        return s .. "} "
-    else
-        return tostring(o)
-    end
-end
 
 function M.get_venvdir(rootdir)
     --local handle = io.popen("poetry env info -p")
-    local handle = io.popen("~/.bin/poetry-env-info-fast " .. rootdir)
+    local handle = io.popen("~/.env/bin/poetry-env-info-fast " .. rootdir)
     if handle == nil then
-        print("~/.bin/poetry-env-info-fast failed")
+        print("~/.env/bin/poetry-env-info-fast failed")
         return
     end
     local venv = handle:read()
@@ -104,20 +90,10 @@ function M.buffer_delete_workaround()
     vim.cmd("bdelete " .. buffer)
 end
 
-M.formatter = true
-M.may_format = vim.lsp.buf.format
 M.focus_mode = false
 
-
-function M.toggle_formatter()
-    M.formatter = not M.formatter
-    if M.formatter then
-        print("formatter tools enabled")
-        M.may_format = vim.lsp.buf.format
-    else
-        print("formatter tools disabled")
-        M.may_format = function() end
-    end
+function M.focus_mode_enabled()
+    return M.focus_mode
 end
 
 function M.toggle_focus()
@@ -148,4 +124,10 @@ function M.toggle_focus()
     end
 end
 
+M.enhanced_experience_paths = {
+    "/Users/sileht/workspace/mergify/engine",
+    "/Users/sileht/workspace/mergify/dashboard",
+    "/Users/sileht/workspace/mergify/ui",
+    "/Users/sileht/.env/",
+}
 return M

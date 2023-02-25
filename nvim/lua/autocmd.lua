@@ -17,7 +17,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 vim.api.nvim_create_autocmd('BufEnter', {
     callback = function()
         local buftype = vim.fn.getbufvar(vim.fn.bufnr(), "&buftype")
-        if buftype == "quickfix" then
+        if buftype == "quickfix" or buftype == "nofile" then
             return
         else
             local current_file_dir = vim.fn.expand("%:p:h")
@@ -28,9 +28,21 @@ vim.api.nvim_create_autocmd('BufEnter', {
     end
 })
 
-vim.api.nvim_create_augroup("LspFormatting", { clear = true })
 vim.api.nvim_create_autocmd("BufWritePre", {
-    group = "LspFormatting",
-    pattern = "<buffer>",
-    callback = function() require("utils").may_format() end
+    pattern = "*",
+    callback = require("formatter").may_format
+})
+
+vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost" },
+    { pattern = "*.py", callback = require("linters").run_linter }
+)
+
+vim.api.nvim_create_autocmd("BufDelete", {
+    callback = function(params)
+        for namespace_id, namespace in pairs(vim.diagnostic.get_namespaces()) do
+            if string.find(namespace.name, "NULL_LS_SOURCE_") == 1 then
+                vim.diagnostic.reset(namespace_id, params.buf)
+            end
+        end
+    end
 })

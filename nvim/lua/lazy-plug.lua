@@ -26,10 +26,7 @@ require("lazy").setup({
     { "ruifm/gitlinker.nvim",    opts = { mappings = nil }, }, -- open in browser
     { "lewis6991/gitsigns.nvim", config = true, }, -- git info
     "dstein64/nvim-scrollview", -- scrollbar
-    {
-        "folke/which-key.nvim",
-        config = function() require("keybindings") end
-    },
+    { "folke/which-key.nvim", config = function() require("keybindings") end },
     {
         "nvim-lualine/lualine.nvim",
         dependencies = { "nvim-lua/lsp-status.nvim" },
@@ -90,24 +87,27 @@ require("lazy").setup({
     {
         "neovim/nvim-lspconfig",
         dependencies = {
-            "jose-elias-alvarez/null-ls.nvim",
             {
                 "hrsh7th/nvim-cmp",
                 dependencies = {
-                    { "hrsh7th/cmp-buffer" },
-                    { "hrsh7th/cmp-path" },
-                    { "hrsh7th/cmp-cmdline" },
-                    { "hrsh7th/cmp-nvim-lsp" },
-                    { "hrsh7th/cmp-nvim-lsp-document-symbol" },
-                    { "hrsh7th/cmp-nvim-lsp-signature-help" },
-                    { "petertriho/cmp-git" },
-                    { "onsails/lspkind-nvim" },
-                    { "davidsierradz/cmp-conventionalcommits" },
+                    "hrsh7th/cmp-vsnip",
+                    "hrsh7th/vim-vsnip",
+                    "hrsh7th/cmp-buffer",
+                    "hrsh7th/cmp-path",
+                    "hrsh7th/cmp-cmdline",
+                    "hrsh7th/cmp-nvim-lsp",
+                    "hrsh7th/cmp-nvim-lsp-document-symbol",
+                    "hrsh7th/cmp-nvim-lsp-signature-help",
+                    "petertriho/cmp-git",
+                    "onsails/lspkind-nvim",
                 },
                 config = function() require("completions") end
             },
         },
         config = function() require("lsp") end
+    },
+    { "mfussenegger/nvim-lint",
+        config = function() require("linters").setup() end
     },
     {
         "folke/trouble.nvim",
