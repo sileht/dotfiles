@@ -14,6 +14,13 @@ function M.get_venvdir(rootdir)
     end
 end
 
+function M.get_venv_binary(rootdir, name, callback)
+    local venv = require("utils").get_venvdir(rootdir)
+    if venv ~= nil and vim.fn.executable(venv .. "/bin/" .. name) then
+        callback(venv .. "/bin/" .. name)
+    end
+end
+
 function M.get_rootdir()
     local lspconfig = require("lspconfig")
     local rootdir = lspconfig.util.root_pattern(
@@ -30,12 +37,7 @@ function M.get_rootdir()
 end
 
 local function indent_lines(lines, offset)
-    return vim.tbl_map(
-        function(val)
-            return offset .. val
-        end,
-        lines
-    )
+    return vim.tbl_map(function(val) return offset .. val end, lines)
 end
 
 function M.create_popup(name, what)
@@ -75,12 +77,7 @@ function M.create_popup(name, what)
     vim.keymap.set("n", "q", close, { buffer = bufnr, nowait = true })
     vim.api.nvim_create_autocmd(
         { "BufDelete", "BufLeave", "BufHidden" },
-        {
-            once = true,
-            buffer = bufnr,
-            callback = close,
-            group = augroup
-        }
+        { once = true, buffer = bufnr, callback = close, group = augroup }
     )
 end
 

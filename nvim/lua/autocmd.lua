@@ -33,10 +33,6 @@ vim.api.nvim_create_autocmd("BufWritePre", {
     callback = require("formatter").may_format
 })
 
-vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost" },
-    { pattern = "*.py", callback = require("linters").run_linter }
-)
-
 vim.api.nvim_create_autocmd("BufDelete", {
     callback = function(params)
         for namespace_id, namespace in pairs(vim.diagnostic.get_namespaces()) do

@@ -26,7 +26,7 @@ require("lazy").setup({
     { "ruifm/gitlinker.nvim",    opts = { mappings = nil }, }, -- open in browser
     { "lewis6991/gitsigns.nvim", config = true, }, -- git info
     "dstein64/nvim-scrollview", -- scrollbar
-    { "folke/which-key.nvim", config = function() require("keybindings") end },
+    { "folke/which-key.nvim",  config = function() require("keybindings") end },
     {
         "nvim-lualine/lualine.nvim",
         dependencies = { "nvim-lua/lsp-status.nvim" },
@@ -100,15 +100,14 @@ require("lazy").setup({
                     "hrsh7th/cmp-nvim-lsp-signature-help",
                     "petertriho/cmp-git",
                     "onsails/lspkind-nvim",
+                    "lukas-reineke/cmp-under-comparator",
                 },
                 config = function() require("completions") end
             },
         },
         config = function() require("lsp") end
     },
-    { "mfussenegger/nvim-lint",
-        config = function() require("linters").setup() end
-    },
+    { "folke/lsp-colors.nvim", config = true },
     {
         "folke/trouble.nvim",
         config = function()
