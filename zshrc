@@ -172,7 +172,8 @@ PIPX_PACKAGES=(
 
 NPM_PACKAGES=(
     diagnostic-languageserver
-    commitlint-format-json
+    @microsoft/compose-language-service
+    dockerfile-language-server-nodejs
     wrangler
     serve
     neovim

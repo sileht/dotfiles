@@ -1,20 +1,18 @@
 local lspconfig = require("lspconfig")
 local lsp_status = require("lsp-status")
-
+local cmp_nvim_lsp = require("cmp_nvim_lsp")
 
 -- vim.lsp.set_log_level("debug")
-local capabilities = require("cmp_nvim_lsp").default_capabilities()
--- html: Enable (broadcasting) snippet capability for completion
--- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#html
-capabilities.textDocument.completion.completionItem.snippetSupport = true
-capabilities = vim.tbl_extend("keep", capabilities or {}, lsp_status.capabilities)
+
 
 
 local lsp_options = {
     common = {
-        capabilities = capabilities,
+        capabilities = vim.tbl_extend("keep",
+            cmp_nvim_lsp.default_capabilities(),
+            lsp_status.capabilities
+        ),
         on_attach = function(client, bufnr)
-            print(vim.inspect(client))
             if client.name == "tsserver" then
                 -- eslint is used instead
                 client.server_capabilities.documentFormattingProvider = false
@@ -31,8 +29,6 @@ local lsp_options = {
     },
     grammarly = { filetypes = { "gitcommit" } },
     bashls = { filetypes = { "sh", "zsh" } },
-    html = {},
-    jsonls = {},
     lua_ls = {
         settings = {
             Lua = {
@@ -54,20 +50,16 @@ local lsp_options = {
             }
         }
     },
-    eslint = {},
-    tsserver = {},
     jedi_language_server = {
         on_new_config = function(new_config, new_root_dir)
             local venv = require("utils").get_venvdir(new_root_dir)
             if venv ~= nil then
-                new_config.init_options = {
-                    workspace = { environmentPath = venv .. "/bin/python" }
-                }
+                new_config.init_options.workspace.environmentPath = venv .. "/bin/python"
             end
         end,
+        init_options = { workspace = {} }
     },
     diagnosticls = {
-        cmd = { "diagnostic-languageserver", "--stdio", "--log-level", "4" },
         on_new_config = function(new_config, new_root_dir)
             local venv = require("utils").get_venvdir(new_root_dir)
             if venv ~= nil then
@@ -106,8 +98,8 @@ local lsp_options = {
                 },
                 flake8 = {
                     sourceName = "flake8",
-                    command = "flake8",
                     rootPatterns = { ".git", "pyproject.toml", "setup.py" },
+                    command = "flake8",
                     args = {
                         "--format=%(row)d,%(col)d,%(code).1s,%(code)s: %(text)s",
                         "-"
@@ -132,8 +124,15 @@ local servers = {
     "tsserver",
     "lua_ls",
     "grammarly",
-    "yamlls",
     "diagnosticls",
+    "vimls",
+    "dockerls",
+    "marksman",
+    "docker_compose_language_service",
+    "html",
+    "yamlls",
+    "cssls",
+    "jsonls",
 }
 for _, lsp in ipairs(servers) do
     local options = vim.deepcopy(lsp_options.common)
@@ -141,8 +140,7 @@ for _, lsp in ipairs(servers) do
         options = vim.tbl_extend("force", options, lsp_options[lsp])
     end
     if (lsp_status.extensions[lsp] ~= nil) then
-        local handlers = lsp_status.extensions[lsp].setup()
-        options.handlers = handlers
+        options.handlers = lsp_status.extensions[lsp].setup()
     end
     lspconfig[lsp].setup(options)
 end
