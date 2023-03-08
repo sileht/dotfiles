@@ -29,6 +29,7 @@ local lsp_options = {
     },
     grammarly = { filetypes = { "gitcommit" } },
     bashls = { filetypes = { "sh", "zsh" } },
+    docker_compose_language_service = { filetypes = { "yaml.docker-compose" } },
     lua_ls = {
         settings = {
             Lua = {
@@ -42,8 +43,8 @@ local lsp_options = {
                 diagnostics = {
                     globals = { "vim" },
                     severity = {
-                        ["action-after-return"] = "Info",
-                        ["undefined-global"] = "Ignore",
+                            ["action-after-return"] = "Info",
+                            ["undefined-global"] = "Ignore",
                     },
                 },
                 telemetry = { enable = false }
@@ -67,6 +68,8 @@ local lsp_options = {
                 new_config.init_options.formatters.isort.command = venv .. "/bin/isort"
                 new_config.init_options.linters.flake8.command = venv .. "/bin/flake8"
                 new_config.init_options.linters.mypy.command = venv .. "/bin/mypy"
+                new_config.init_options.linters.pylint.command = venv .. "/bin/pylint"
+                new_config.init_options.linters.yamllint.command = venv .. "/bin/yamllint"
             end
         end,
         init_options = {
@@ -75,12 +78,28 @@ local lsp_options = {
                 black = { command = "black", args = { "--fast", "-q", "-" } },
                 isort = { command = "isort", args = { "-q", "-" } }
             },
-            filetypes = { python = { "flake8", "mypy" } },
+            filetypes = { python = { "flake8", "mypy" }, yaml = { "yamllint" } },
             linters = {
+                yamllint = {
+                    debounce = 10,
+                    sourceName = 'yamllint',
+                    command = "yamllint",
+                    rootPatterns = { ".git" },
+                    args = { "-f", "parsable", '%filepath' },
+                    formatPattern = {
+                        [[^.*:(\d+):(\d+): \[(\w+)\] (.*)$]],
+                        { line = 1, column = 2, security = 3, message = { '[yamllint] ', 4 } }
+                    },
+                    securities = {
+                        warning = 'warning',
+                        error = 'error'
+                    }
+                },
                 mypy = {
+                    debounce = 1000,
                     sourceName = "mypy",
-                    rootPatterns = { ".git", "pyproject.toml", "setup.py" },
                     command = "mypy",
+                    rootPatterns = { ".git", "pyproject.toml", "setup.py" },
                     args = {
                         '--show-error-codes',
                         '--hide-error-context',
@@ -112,6 +131,38 @@ local lsp_options = {
                         { line = 1, column = 2, security = 3, message = 4 }
                     },
                     securities = { W = "info", E = "warning", F = "info", C = "info", N = "hint" },
+                },
+                pylint = {
+                    debounce = 1000,
+                    sourceName = "pylint",
+                    command = "pylint",
+                    args = {
+                        "--output-format", "text",
+                        "--score", "no",
+                        "-E",
+                        "--msg-template", "'{line}:{column}:{category}:{msg} ({msg_id}:{symbol})'",
+                        "%file"
+                    },
+                    formatPattern = {
+                        "^(\\d+?):(\\d+?):([a-z]+?):(.*)$",
+                        {
+                            line = 1,
+                            column = 2,
+                            security = 3,
+                            message = 4
+                        }
+                    },
+                    rootPatterns = { ".git", "pyproject.toml", "setup.py" },
+                    securities = {
+                        informational = "hint",
+                        refactor = "info",
+                        convention = "info",
+                        warning = "warning",
+                        error = "error",
+                        fatal = "error"
+                    },
+                    offsetColumn = 1,
+                    formatLines = 1
                 }
             },
         }
@@ -127,12 +178,12 @@ local servers = {
     "diagnosticls",
     "vimls",
     "dockerls",
-    "marksman",
     "docker_compose_language_service",
+    "marksman",
     "html",
-    "yamlls",
     "cssls",
     "jsonls",
+    "yamlls",
 }
 for _, lsp in ipairs(servers) do
     local options = vim.deepcopy(lsp_options.common)

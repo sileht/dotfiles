@@ -35,10 +35,8 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 
 vim.api.nvim_create_autocmd("BufDelete", {
     callback = function(params)
-        for namespace_id, namespace in pairs(vim.diagnostic.get_namespaces()) do
-            if string.find(namespace.name, "NULL_LS_SOURCE_") == 1 then
-                vim.diagnostic.reset(namespace_id, params.buf)
-            end
+        for namespace_id, _ in pairs(vim.diagnostic.get_namespaces()) do
+            vim.diagnostic.reset(namespace_id, params.buf)
         end
     end
 })

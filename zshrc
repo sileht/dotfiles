@@ -166,6 +166,7 @@ PIPX_PACKAGES=(
     #python-lsp-server
     nox
     poetry
+    poethepoet
     ipython
     #autoflake
 )
@@ -543,4 +544,3 @@ sshrefresh(){
 }
 
 alias poetry-rebase-fix="git checkout HEAD poetry.lock; poetry lock --no-update && git add poetry.lock && git rebase --continue"
-alias poe="poetry run poe"

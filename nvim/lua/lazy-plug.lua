@@ -1,6 +1,7 @@
 require("lazy").setup({
     { "nvim-lua/plenary.nvim",    priority = 10000 },
-    { 'nvim-tree/nvim-web-devicons',
+    {
+        'nvim-tree/nvim-web-devicons',
         config = function()
             require('nvim-web-devicons').setup({
                 default = true,
@@ -14,18 +15,19 @@ require("lazy").setup({
     "tpope/vim-fugitive",
     "cshuaimin/ssr.nvim",
     -- "ziontee113/syntax-tree-surfer",
-    { "kevinhwang91/rnvimr", -- ranger, key: Alt+E
+    {
+        "kevinhwang91/rnvimr", -- ranger, key: Alt+E
         keys = {
             { "<leader>e", ":RnvimrToggle <cr>", desc = "Explorer (Ranger)" },
         }
     },
-    "lambdalisue/suda.vim", -- sudo
-    "nacitar/terminalkeys.vim", -- screen/tmux keys fix
-    "junegunn/vim-easy-align", -- easyalign ley: ga
-    { "numToStr/Comment.nvim",   config = true }, -- fast comment
+    "lambdalisue/suda.vim",                                    -- sudo
+    "nacitar/terminalkeys.vim",                                -- screen/tmux keys fix
+    "junegunn/vim-easy-align",                                 -- easyalign ley: ga
+    { "numToStr/Comment.nvim",   config = true },              -- fast comment
     { "ruifm/gitlinker.nvim",    opts = { mappings = nil }, }, -- open in browser
-    { "lewis6991/gitsigns.nvim", config = true, }, -- git info
-    "dstein64/nvim-scrollview", -- scrollbar
+    { "lewis6991/gitsigns.nvim", config = true, },             -- git info
+    "dstein64/nvim-scrollview",                                -- scrollbar
     { "folke/which-key.nvim",  config = function() require("keybindings") end },
     {
         "nvim-lualine/lualine.nvim",
@@ -54,10 +56,10 @@ require("lazy").setup({
                             -- Automatically jump forward to textobj, similar to targets.vim
                             lookahead = true,
                             keymaps = {
-                                ["af"] = "@function.outer",
-                                ["if"] = "@function.inner",
-                                ["ac"] = "@class.outer",
-                                ["ic"] = "@class.inner"
+                                    ["af"] = "@function.outer",
+                                    ["if"] = "@function.inner",
+                                    ["ac"] = "@class.outer",
+                                    ["ic"] = "@class.inner"
                             }
                         }
                     }
@@ -72,6 +74,7 @@ require("lazy").setup({
         "nvim-telescope/telescope.nvim",
         dependencies = {
             { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+            "aaronhallaert/ts-advanced-git-search.nvim",
         },
         config = function()
             local defaults = require("telescope.themes").get_ivy({})
@@ -80,6 +83,7 @@ require("lazy").setup({
             defaults.entry_prefix = "   "
             require("telescope").setup({ defaults = defaults })
             require("telescope").load_extension("fzf")
+            require("telescope").load_extension("advanced_git_search")
         end
     },
 

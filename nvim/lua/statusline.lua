@@ -1,9 +1,9 @@
 local toggler = function(name, module, var)
     local toggler_text = function()
         if require(module)[var]() then
-            return name .. " 󱨥"
+            return name .. " "
         else
-            return name .. " 󱨦"
+            return name .. " "
         end
     end
     local toggler_color = function()
