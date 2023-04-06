@@ -47,3 +47,4 @@ require("lsp-status").config({
     status_symbol = "",
 })
 require("lsp-status").register_progress()
+require("fidget").setup()

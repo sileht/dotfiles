@@ -2,7 +2,7 @@ local lspconfig = require("lspconfig")
 local lsp_status = require("lsp-status")
 local cmp_nvim_lsp = require("cmp_nvim_lsp")
 
--- vim.lsp.set_log_level("debug")
+--vim.lsp.set_log_level("info")
 
 
 
@@ -13,6 +13,9 @@ local lsp_options = {
             lsp_status.capabilities
         ),
         on_attach = function(client, bufnr)
+            if client.name == "ruff_lsp" then
+                client.server_capabilities.hoverProvider = false
+            end
             if client.name == "tsserver" then
                 -- eslint is used instead
                 client.server_capabilities.documentFormattingProvider = false
@@ -21,10 +24,20 @@ local lsp_options = {
             if client.server_capabilities.documentFormattingProvider then
                 require("formatter").on_attach(client, bufnr)
             end
+            if client.server_capabilities.codeLensProvider then
+                require('virtualtypes').on_attach(client, bufnr)
+            end
             lsp_status.on_attach(client, bufnr)
         end,
         flags = {
             debounce_text_changes = 150
+        }
+    },
+    ruff_lsp = {
+        init_options = {
+            settings = {
+                args = {},
+            }
         }
     },
     grammarly = { filetypes = { "gitcommit" } },
@@ -43,13 +56,26 @@ local lsp_options = {
                 diagnostics = {
                     globals = { "vim" },
                     severity = {
-                            ["action-after-return"] = "Info",
-                            ["undefined-global"] = "Ignore",
+                        ["action-after-return"] = "Info",
+                        ["undefined-global"] = "Ignore",
                     },
                 },
                 telemetry = { enable = false }
             }
         }
+    },
+    pyright = {
+        on_new_config = function(new_config, new_root_dir)
+            local venv = require("utils").get_venvdir(new_root_dir)
+            if venv ~= nil then
+                new_config.settings = {
+                    python = {
+                        pythonPath = venv .. "/bin/python",
+                        venvPath = venv,
+                    }
+                }
+            end
+        end
     },
     jedi_language_server = {
         on_new_config = function(new_config, new_root_dir)
@@ -60,122 +86,35 @@ local lsp_options = {
         end,
         init_options = { workspace = {} }
     },
-    diagnosticls = {
-        on_new_config = function(new_config, new_root_dir)
-            local venv = require("utils").get_venvdir(new_root_dir)
-            if venv ~= nil then
-                new_config.init_options.formatters.black.command = venv .. "/bin/black"
-                new_config.init_options.formatters.isort.command = venv .. "/bin/isort"
-                new_config.init_options.linters.flake8.command = venv .. "/bin/flake8"
-                new_config.init_options.linters.mypy.command = venv .. "/bin/mypy"
-                new_config.init_options.linters.pylint.command = venv .. "/bin/pylint"
-                new_config.init_options.linters.yamllint.command = venv .. "/bin/yamllint"
-            end
-        end,
-        init_options = {
-            formatFiletypes = { python = { "black", "isort" } },
-            formatters = {
-                black = { command = "black", args = { "--fast", "-q", "-" } },
-                isort = { command = "isort", args = { "-q", "-" } }
-            },
-            filetypes = { python = { "flake8", "mypy" }, yaml = { "yamllint" } },
-            linters = {
-                yamllint = {
-                    debounce = 10,
-                    sourceName = 'yamllint',
-                    command = "yamllint",
-                    rootPatterns = { ".git" },
-                    args = { "-f", "parsable", '%filepath' },
-                    formatPattern = {
-                        [[^.*:(\d+):(\d+): \[(\w+)\] (.*)$]],
-                        { line = 1, column = 2, security = 3, message = { '[yamllint] ', 4 } }
-                    },
-                    securities = {
-                        warning = 'warning',
-                        error = 'error'
-                    }
-                },
-                mypy = {
-                    debounce = 1000,
-                    sourceName = "mypy",
-                    command = "mypy",
-                    rootPatterns = { ".git", "pyproject.toml", "setup.py" },
-                    args = {
-                        '--show-error-codes',
-                        '--hide-error-context',
-                        "--show-column-numbers",
-                        "--no-color-output",
-                        "--no-error-summary",
-                        '--no-pretty',
-                        "%file"
-                    },
-                    formatPattern = {
-                        "^.*:(\\d+?):(\\d+?): ([a-zA-Z]+?): (.*)$",
-                        { line = 1, column = 2, security = 3, message = 4 },
-                    },
-                    securities = { error = "error", warning = "warning", note = "hint" },
-                },
-                flake8 = {
-                    sourceName = "flake8",
-                    rootPatterns = { ".git", "pyproject.toml", "setup.py" },
-                    command = "flake8",
-                    args = {
-                        "--format=%(row)d,%(col)d,%(code).1s,%(code)s: %(text)s",
-                        "-"
-                    },
-                    offsetLine = 0,
-                    offsetColumn = 0,
-                    formatLines = 1,
-                    formatPattern = {
-                        "(\\d+),(\\d+),([A-Z]),(.*)(\\r|\\n)*$",
-                        { line = 1, column = 2, security = 3, message = 4 }
-                    },
-                    securities = { W = "info", E = "warning", F = "info", C = "info", N = "hint" },
-                },
-                pylint = {
-                    debounce = 1000,
-                    sourceName = "pylint",
-                    command = "pylint",
-                    args = {
-                        "--output-format", "text",
-                        "--score", "no",
-                        "-E",
-                        "--msg-template", "'{line}:{column}:{category}:{msg} ({msg_id}:{symbol})'",
-                        "%file"
-                    },
-                    formatPattern = {
-                        "^(\\d+?):(\\d+?):([a-z]+?):(.*)$",
-                        {
-                            line = 1,
-                            column = 2,
-                            security = 3,
-                            message = 4
-                        }
-                    },
-                    rootPatterns = { ".git", "pyproject.toml", "setup.py" },
-                    securities = {
-                        informational = "hint",
-                        refactor = "info",
-                        convention = "info",
-                        warning = "warning",
-                        error = "error",
-                        fatal = "error"
-                    },
-                    offsetColumn = 1,
-                    formatLines = 1
-                }
-            },
-        }
-    },
 }
 
+local null_ls = require("null-ls")
+local null_ls_sources = {
+    null_ls.builtins.formatting.black.with({ only_local = ".venv/bin", extra_args = { "--fast" } }),
+    -- null_ls.builtins.formatting.isort.with({ only_local = ".venv/bin" }),
+    -- null_ls.builtins.diagnostics.flake8.with({
+    --    only_local = ".venv/bin",
+    -- method = null_ls.methods.DIAGNOSTICS_ON_SAVE,
+    -- }),
+    null_ls.builtins.diagnostics.mypy.with({
+        only_local = ".venv/bin",
+        method = null_ls.methods.DIAGNOSTICS_ON_SAVE,
+    }),
+    null_ls.builtins.diagnostics.yamllint,
+    --null_ls.builtins.diagnostics.actionlint,
+    --null_ls.builtins.diagnostics.commitlint,
+    --null_ls.builtins.diagnostics.vulture.with({ extra_args = { "--min-confidence=70" } }),
+}
+null_ls.setup({ on_attach = lsp_options.common.on_attach, sources = null_ls_sources })
+
 local servers = {
+    --"pyright",
+    "ruff_lsp",
     "eslint",
     "jedi_language_server",
     "tsserver",
     "lua_ls",
     "grammarly",
-    "diagnosticls",
     "vimls",
     "dockerls",
     "docker_compose_language_service",
@@ -183,7 +122,7 @@ local servers = {
     "html",
     "cssls",
     "jsonls",
-    "yamlls",
+    --"yamlls",
 }
 for _, lsp in ipairs(servers) do
     local options = vim.deepcopy(lsp_options.common)

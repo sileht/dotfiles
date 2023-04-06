@@ -1,6 +1,6 @@
 vim.opt.ttyfast = true
 vim.opt.termguicolors = true
-vim.opt.shell = "/bin/sh"
+vim.opt.shell = "/bin/zsh"
 vim.opt.cursorline = true
 vim.opt.laststatus = 3 -- Show statusbar
 vim.opt.mouse = ""

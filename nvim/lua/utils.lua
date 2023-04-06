@@ -24,15 +24,15 @@ end
 function M.get_rootdir()
     local lspconfig = require("lspconfig")
     local rootdir = lspconfig.util.root_pattern(
-            "pyproject.toml",
-            "setup.py",
-            "setup.cfg",
-            "requirements.txt",
-            "Pipfile",
-            ".git",
-            ".venv",
-            "package.json"
-        )(vim.api.nvim_buf_get_name(0))
+        "pyproject.toml",
+        "setup.py",
+        "setup.cfg",
+        "requirements.txt",
+        "Pipfile",
+        ".git",
+        ".venv",
+        "package.json"
+    )(vim.api.nvim_buf_get_name(0))
     return rootdir
 end
 

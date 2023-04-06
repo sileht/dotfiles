@@ -8,19 +8,18 @@ require("lazy").setup({
             })
         end
     },
+    "jubnzv/virtual-types.nvim",
+    -- { "olimorris/onedarkpro.nvim", priority = 1000, config = function() vim.cmd("colorscheme onedark_dark") end },
     { "mhartington/oceanic-next", config = function() vim.cmd("colorscheme OceanicNext") end },
     -- { "folke/tokyonight.nvim", config = function() vim.cmd("colorscheme tokyonight") end }
 
+    "mfussenegger/nvim-lint",
     "tpope/vim-repeat",
     "tpope/vim-fugitive",
     "cshuaimin/ssr.nvim",
     -- "ziontee113/syntax-tree-surfer",
-    {
-        "kevinhwang91/rnvimr", -- ranger, key: Alt+E
-        keys = {
-            { "<leader>e", ":RnvimrToggle <cr>", desc = "Explorer (Ranger)" },
-        }
-    },
+    "kevinhwang91/rnvimr",
+    { 'akinsho/toggleterm.nvim', opts = { terminal_mappings = true, insert_mappings = true } },
     "lambdalisue/suda.vim",                                    -- sudo
     "nacitar/terminalkeys.vim",                                -- screen/tmux keys fix
     "junegunn/vim-easy-align",                                 -- easyalign ley: ga
@@ -31,7 +30,10 @@ require("lazy").setup({
     { "folke/which-key.nvim",  config = function() require("keybindings") end },
     {
         "nvim-lualine/lualine.nvim",
-        dependencies = { "nvim-lua/lsp-status.nvim" },
+        dependencies = {
+            "nvim-lua/lsp-status.nvim",
+            "j-hui/fidget.nvim",
+        },
         config = function() require("statusline") end
     },
     -- syntax colors
@@ -56,10 +58,10 @@ require("lazy").setup({
                             -- Automatically jump forward to textobj, similar to targets.vim
                             lookahead = true,
                             keymaps = {
-                                    ["af"] = "@function.outer",
-                                    ["if"] = "@function.inner",
-                                    ["ac"] = "@class.outer",
-                                    ["ic"] = "@class.inner"
+                                ["af"] = "@function.outer",
+                                ["if"] = "@function.inner",
+                                ["ac"] = "@class.outer",
+                                ["ic"] = "@class.inner"
                             }
                         }
                     }
@@ -91,6 +93,7 @@ require("lazy").setup({
     {
         "neovim/nvim-lspconfig",
         dependencies = {
+            "jose-elias-alvarez/null-ls.nvim",
             {
                 "hrsh7th/nvim-cmp",
                 dependencies = {
@@ -105,6 +108,7 @@ require("lazy").setup({
                     "petertriho/cmp-git",
                     "onsails/lspkind-nvim",
                     "lukas-reineke/cmp-under-comparator",
+                    { "zbirenbaum/copilot-cmp", dependencies = { "zbirenbaum/copilot.lua" } },
                 },
                 config = function() require("completions") end
             },
@@ -114,6 +118,7 @@ require("lazy").setup({
     { "folke/lsp-colors.nvim", config = true },
     {
         "folke/trouble.nvim",
+        build = ";git cherry-pick 114aa495e8133f54e42b3c7ffa230a0297fc34d",
         config = function()
             require("trouble").setup(
                 {
