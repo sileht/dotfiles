@@ -158,9 +158,11 @@ zstyle ':autocomplete:*' widget-style menu-select
 
 
 PIPX_PACKAGES=(
+    ruff-lsp
     git-pull-request
     reno
     rstcheck
+    ranger-fm
     jedi-language-server
     anakin-language-server
     #python-lsp-server
@@ -168,7 +170,9 @@ PIPX_PACKAGES=(
     poetry
     poethepoet
     ipython
+    pyright
     #autoflake
+    ddev
 )
 
 NPM_PACKAGES=(
@@ -330,9 +334,10 @@ pipxi() {
         done
         for package in $PIPX_PACKAGES ; do
             if [ ! -e $dir/$package ]; then
-                pipx install $package
-                if [ $package == "python-lsp-server" ]; then
-                    pipx inject python-lsp-server pyls-isort python-lsp-black pylsp-mypy
+                if [ $package == "ddev" ]; then
+                    pipx install ddev --python /opt/homebrew/bin/python3.8
+                else
+                    pipx install $package
                 fi
             fi
         done
