@@ -106,15 +106,15 @@ znap source ael-code/zsh-colored-man-pages
 
 zmodload -F zsh/parameter p:functions_source
 
-# Better command line editing tools
-znap source marlonrichert/zsh-edit
-zstyle ':edit:*' word-chars '*?\'
-
-#znap source marlonrichert/zsh-hist  # History editing tools
-bind \
-    '^[o' 'open .' \
-    '^[l' 'git log' \
-    '^[s' 'git status -Mu --show-stash'
+## Better command line editing tools
+#znap source marlonrichert/zsh-edit
+#zstyle ':edit:*' word-chars '*?\'
+#
+##znap source marlonrichert/zsh-hist  # History editing tools
+#bind \
+#    '^[o' 'open .' \
+#    '^[l' 'git log' \
+#    '^[s' 'git status -Mu --show-stash'
 
 # Replace some default keybindings with better built-in widgets.
 #bindkey \

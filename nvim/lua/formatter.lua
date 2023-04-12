@@ -1,12 +1,14 @@
 return {
     may_format = function()
         if vim.b.formatter_enabled then
-            vim.lsp.buf.code_action({
-                filter = function(a)
-                    return a.kind == "source.fixAll"
-                end,
-                apply = true
-            })
+            --[[  if vim.bo.filetype == "python" then
+                for _, action in ipairs({ "fixAll", "organizeImports" }) do
+                    vim.lsp.buf.code_action({
+                        filter = function(a) return a.kind == "source." .. action end,
+                        apply = true
+                    })
+                end
+            end ]]
             vim.lsp.buf.format()
         end
     end,

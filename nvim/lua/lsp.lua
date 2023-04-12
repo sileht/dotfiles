@@ -91,17 +91,27 @@ local lsp_options = {
 local null_ls = require("null-ls")
 local null_ls_sources = {
     null_ls.builtins.formatting.black.with({ only_local = ".venv/bin", extra_args = { "--fast" } }),
-    -- null_ls.builtins.formatting.isort.with({ only_local = ".venv/bin" }),
-    -- null_ls.builtins.diagnostics.flake8.with({
-    --    only_local = ".venv/bin",
-    -- method = null_ls.methods.DIAGNOSTICS_ON_SAVE,
-    -- }),
+    null_ls.builtins.formatting.ruff.with({ only_local = ".venv/bin" }),
+    null_ls.builtins.formatting.isort.with({ only_local = ".venv/bin" }),
+    null_ls.builtins.diagnostics.flake8.with({
+        only_local = ".venv/bin",
+        condition = function(utils)
+            return utils.root_has_file({ ".flake8" })
+        end,
+        -- method = null_ls.methods.DIAGNOSTICS_ON_SAVE,
+    }),
     null_ls.builtins.diagnostics.mypy.with({
         only_local = ".venv/bin",
         method = null_ls.methods.DIAGNOSTICS_ON_SAVE,
     }),
-    null_ls.builtins.diagnostics.yamllint,
-    --null_ls.builtins.diagnostics.actionlint,
+    null_ls.builtins.diagnostics.yamllint.with({
+        only_local = ".venv/bin",
+    }),
+    null_ls.builtins.diagnostics.actionlint.with({
+        runtime_condition = function(params)
+            return params.lsp_params.textDocument.uri:match(".github/workflow") ~= nil
+        end,
+    })
     --null_ls.builtins.diagnostics.commitlint,
     --null_ls.builtins.diagnostics.vulture.with({ extra_args = { "--min-confidence=70" } }),
 }
@@ -110,18 +120,21 @@ null_ls.setup({ on_attach = lsp_options.common.on_attach, sources = null_ls_sour
 local servers = {
     --"pyright",
     "ruff_lsp",
-    "eslint",
     "jedi_language_server",
+
+    "eslint",
     "tsserver",
+
+    "html",
+    "cssls",
+
     "lua_ls",
-    "grammarly",
     "vimls",
     "dockerls",
     "docker_compose_language_service",
     "marksman",
-    "html",
-    "cssls",
     "jsonls",
+    "grammarly",
     --"yamlls",
 }
 for _, lsp in ipairs(servers) do
