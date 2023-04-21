@@ -21,12 +21,10 @@ local lsp_options = {
                 client.server_capabilities.documentFormattingProvider = false
                 client.server_capabilities.documentRangeFormattingProvider = false
             end
-            if client.server_capabilities.documentFormattingProvider then
-                require("formatter").on_attach(client, bufnr)
-            end
             if client.server_capabilities.codeLensProvider then
                 require('virtualtypes').on_attach(client, bufnr)
             end
+            require("formatter").on_attach(client, bufnr)
             lsp_status.on_attach(client, bufnr)
         end,
         flags = {
@@ -91,7 +89,10 @@ local lsp_options = {
 local null_ls = require("null-ls")
 local null_ls_sources = {
     null_ls.builtins.formatting.black.with({ only_local = ".venv/bin", extra_args = { "--fast" } }),
-    null_ls.builtins.formatting.ruff.with({ only_local = ".venv/bin" }),
+    null_ls.builtins.formatting.ruff.with({
+        only_local = ".venv/bin",
+        extra_args = { "--ignore", "F841,F401" }
+    }),
     null_ls.builtins.formatting.isort.with({ only_local = ".venv/bin" }),
     null_ls.builtins.diagnostics.flake8.with({
         only_local = ".venv/bin",
@@ -111,7 +112,7 @@ local null_ls_sources = {
         runtime_condition = function(params)
             return params.lsp_params.textDocument.uri:match(".github/workflow") ~= nil
         end,
-    })
+    }),
     --null_ls.builtins.diagnostics.commitlint,
     --null_ls.builtins.diagnostics.vulture.with({ extra_args = { "--min-confidence=70" } }),
 }
@@ -121,7 +122,6 @@ local servers = {
     --"pyright",
     "ruff_lsp",
     "jedi_language_server",
-
     "eslint",
     "tsserver",
 

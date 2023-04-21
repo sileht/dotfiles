@@ -411,7 +411,6 @@ alias diff='diff -rNu'
 alias ip='ip -color'
 alias heroku="TERM=xterm heroku"
 alias r="ranger"
-alias psql="sudo -i -u postgres psql"
 function diffv() {
     diff "$@" | git-split-diffs --color=16m | less -RFX
 }

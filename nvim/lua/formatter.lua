@@ -1,14 +1,11 @@
 return {
     may_format = function()
         if vim.b.formatter_enabled then
-            --[[  if vim.bo.filetype == "python" then
-                for _, action in ipairs({ "fixAll", "organizeImports" }) do
-                    vim.lsp.buf.code_action({
-                        filter = function(a) return a.kind == "source." .. action end,
-                        apply = true
-                    })
+            for _, client in ipairs(vim.lsp.get_active_clients()) do
+                if client.name == "eslint" then
+                    vim.cmd("EslintFixAll")
                 end
-            end ]]
+            end
             vim.lsp.buf.format()
         end
     end,
