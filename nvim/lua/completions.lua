@@ -7,6 +7,9 @@ local has_words_before = function()
 end
 
 cmp.setup({
+    experimental = {
+        ghost_text = true,
+    },
     snippet = {
         expand = function(args)
             vim.fn["vsnip#anonymous"](args.body)
