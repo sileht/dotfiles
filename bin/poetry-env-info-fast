@@ -24,7 +24,7 @@ def toml_get(filepath):
     with open(filepath, 'rb') as f:
         return tomllib.load(f)
 
-poetry = toml_get("/Users/sileht/Library/Preferences/pypoetry/config.toml")
+poetry = toml_get("/Users/sileht/Library/Application Support/pypoetry/config.toml")
 
 if poetry["virtualenvs"]["in-project"]:
     venv = ".venv"
