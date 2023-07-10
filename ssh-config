@@ -9,6 +9,11 @@ Host predator rt eve-unlock
 Host rt
    Port 22222
 
+Host dev
+    Hostname 62.210.173.69
+    Port 5555
+    User root
+
 Host eve predator
     ForwardAgent yes
     User sileht
