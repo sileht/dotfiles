@@ -1,17 +1,25 @@
 [[ ! -o rcs ]] && return
 
+export AWS_PROFILE=mergify-admin
+
 # automatically remove duplicates from these arrays
 typeset -gU path cdpath fpath manpath fignore
 autoload -U zmv             # programmable moving, copying, and linking
 autoload -U zrecompile      # allow zwc file recompiling
 autoload -Uz add-zsh-hook
 
-[ -f /opt/homebrew/bin/brew ] && eval "$(/opt/homebrew/bin/brew shellenv)"
-fpath+=(/opt/homebrew/share/zsh/site-functions)
+BREW_PREFIX=/opt/homebrew
+#BROW_PREFIX=/usr/local/Homebrew
+#alias brow="arch --x86_64 $BROW_PREFIX/bin/brew"
+
+[ -f ${BREW_PREFIX}/bin/brew ] && eval "$(${BREW_PREFIX}/bin/brew shellenv)"
+fpath+=(${BREW_PREFIX}/share/zsh/site-functions)
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 HEROKU_AC_ZSH_SETUP_PATH=$HOME/Library/Caches/heroku/autocomplete/zsh_setup && test -f $HEROKU_AC_ZSH_SETUP_PATH && source $HEROKU_AC_ZSH_SETUP_PATH;
 
+source "${BREW_PREFIX}/share/google-cloud-sdk/path.zsh.inc"
+source "${BREW_PREFIX}/share/google-cloud-sdk/completion.zsh.inc"
 
 # default macos
 #export PATH="$HOME/.local/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
@@ -21,10 +29,12 @@ source $HOME/.env/znap/zsh-snap/znap.zsh
 
 # homebrew optional
 for gnubin in gnu-sed grep findutils coreutils bash; do
-    export PATH="/opt/homebrew/opt/${gnubin}/libexec/gnubin:$PATH"
+    export PATH="${BREW_PREFIX}/opt/${gnubin}/libexec/gnubin:$PATH"
 done
 # me
-export PATH="$HOME/.bin:$HOME/.env/bin:$HOME/.local/npi/node_modules/.bin:$HOME/.cargo/bin:$PATH"
+export PATH="$HOME/.bin:$HOME/.local/bin:$HOME/.env/bin:$HOME/.local/npi/node_modules/.bin:$HOME/.cargo/bin:$PATH"
+
+export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin/"
 
 
 ############
@@ -137,7 +147,7 @@ export GREP_COLOR='mt=$GREP_COLOR'
 
 #znap source Aloxaf/fzf-tab
 
-znap eval iterm2 'curl -fsSL https://iterm2.com/shell_integration/zsh'
+#znap eval iterm2 'curl -fsSL https://iterm2.com/shell_integration/zsh'
 
 znap function _python_argcomplete pipx  'eval "$( register-python-argcomplete pipx  )"'
 complete -o nospace -o default -o bashdefault -F _python_argcomplete pipx
@@ -335,7 +345,7 @@ pipxi() {
         for package in $PIPX_PACKAGES ; do
             if [ ! -e $dir/$package ]; then
                 if [ $package == "ddev" ]; then
-                    pipx install ddev --python /opt/homebrew/bin/python3.8
+                    pipx install ddev --python ${BREW_PREFIX}/bin/python3.8
                 else
                     pipx install $package
                 fi
@@ -358,7 +368,7 @@ snapi() {
         (cd ~/.env/znap/zsh-snap && git pull --rebase)
         (cd ~/.env && git commit -m "update znap" --no-edit znap/zsh-snap )
         znap pull
-        znap clean
+        znap clean ~/.env ~/.local/zsh* ~/.cache/zsh*
         znap compile
         echo
     )
@@ -371,10 +381,12 @@ upgrade() {
         title "BREW"
         brew update
         brew upgrade
+        # brow update
+        # brow upgrade
         title "ENV"
         (cd ~/.env && git diff --quiet && git pull --rebase --recurse-submodules && ./install ) # Only pull if not dirty
         title "ZSNAP"
-        snapi 
+        snapi
         title "PIPX"
         pipxi
         title "NPM"
@@ -393,6 +405,8 @@ function zshexit() {
 }
 i
 add-zsh-hook chpwd s
+
+# alias="WINEPREFIX=~/games-bottle $(brow --prefix game-porting-toolkit)/bin/wine64 winecfg"
 
 alias Q='exec zsh'
 function sc() { tmux attach -d 2>/dev/null || tmux new-session ; }
@@ -548,3 +562,12 @@ sshrefresh(){
 }
 
 alias poetry-rebase-fix="git checkout HEAD poetry.lock; poetry lock --no-update && git add poetry.lock && git rebase --continue"
+
+
+run-game(){
+    exe_path="cmd.exe"
+    if [ ! -z "$1" ]; then
+        exe_path="$1"
+    fi
+    MTL_HUD_ENABLED=1 WINEESYNC=1 WINEPREFIX="$HOME/games-bottle" `brow --prefix game-porting-toolkit`/bin/wine64 "$exe_path" 2>&1 # | grep "D3DM"
+}
