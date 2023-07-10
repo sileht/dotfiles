@@ -66,8 +66,8 @@
 	smtpServerPort = 25
 #[github]
 #	user = sileht
-[credential]
-	helper = store
+#[credential]
+#	helper = store
 [init]
 	defaultBranch = main
 [split-diffs]
@@ -103,7 +103,7 @@
 	commit = 3 normal
 	newMoved = 11 normal
 	oldMovedAlternativeDimmed = 4 normal dim
-	frag = normal dim italic
+	frag = normal dim
 	oldMovedAlternative = 4 normal
 	contextBold = normal bold
 	newBold = 10 normal bold
@@ -111,8 +111,8 @@
 	oldMoved = 3 normal
 	oldBold = 1 normal bold
 	newMovedDimmed = 11 normal dim
-	func = normal dim italic
-	meta = normal dim
+	func = 10 normal dim
+	meta = normal italic
 	newDimmed = 10 normal dim
 	newMovedAlternative = 12 normal
 	new = 10 normal
@@ -154,6 +154,16 @@
 	repo = /Users/sileht/.env/znap/zsh-completions
 	repo = /Users/sileht/.env/znap/zsh-snap
 	repo = /Users/sileht/.env/znap/zsh-edit
+	repo = /Users/sileht/.env/znap/ael-code/zsh-colored-man-pages
+	repo = /Users/sileht/.env/znap/marlonrichert/zcolors
+	repo = /Users/sileht/.env/znap/sindresorhus/pure
+	repo = /Users/sileht/.env/znap/z-shell/F-Sy-H
+	repo = /Users/sileht/.env/znap/zsh-users/zsh-autosuggestions
+	repo = /Users/sileht/.env/znap/zsh-users/zsh-completions
+[credential "https://ghes-dev.mergify.com"]
+	helper = 
+	helper = !/opt/homebrew/bin/gh auth git-credential
+[credential "https://gist.github.com"]
 [credential "https://github.com"]
 	helper = 
 	helper = !/opt/homebrew/bin/gh auth git-credential
