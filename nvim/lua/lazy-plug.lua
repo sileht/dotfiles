@@ -32,7 +32,7 @@ require("lazy").setup({
         "nvim-lualine/lualine.nvim",
         dependencies = {
             "nvim-lua/lsp-status.nvim",
-            "j-hui/fidget.nvim",
+            { "j-hui/fidget.nvim", branch = "legacy" }
         },
         config = function() require("statusline") end
     },
@@ -77,17 +77,36 @@ require("lazy").setup({
         dependencies = {
             { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
             "aaronhallaert/ts-advanced-git-search.nvim",
+            {
+                "nvim-telescope/telescope-file-browser.nvim",
+                dependencies = { "nvim-lua/plenary.nvim" }
+            },
         },
         config = function()
             local defaults = require("telescope.themes").get_ivy({})
             defaults.prompt_prefix = " ❯ "
             defaults.selection_caret = " ❯ "
             defaults.entry_prefix = "   "
+            defaults.find_command = { "fd", "-t=f", "-a" }
+            defaults.path_display = { "smart" }
+            defaults.wrap_results = true
             require("telescope").setup({ defaults = defaults })
             require("telescope").load_extension("fzf")
             require("telescope").load_extension("advanced_git_search")
+            require("telescope").load_extension("file_browser")
         end
     },
+
+    {
+        "zbirenbaum/copilot.lua",
+        config = function()
+            require("copilot").setup({
+                suggestion = { enabled = false },
+                panel = { enabled = true },
+            })
+        end,
+    },
+
     -- lsp, completion, fixer and linter
     {
         "neovim/nvim-lspconfig",
@@ -117,7 +136,7 @@ require("lazy").setup({
     { "folke/lsp-colors.nvim", config = true },
     {
         "folke/trouble.nvim",
-        build = ";git cherry-pick 114aa495e8133f54e42b3c7ffa230a0297fc34d",
+        build = ";git cherry-pick 1098dd433ded8f233880f2a0b21ed299e8e31b17",
         config = function()
             require("trouble").setup(
                 {

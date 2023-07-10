@@ -31,8 +31,11 @@ require("which-key").register(
             "Telescope type definitions" },
         ["<leader>ff"] = { function() require('telescope.builtin').find_files() end, "Telescope find" },
         ["<leader>fg"] = { function() require('telescope.builtin').live_grep() end, "Telescope grep" },
-        ["<leader>fb"] = { function() require('telescope.builtin').buffers() end, "Telescope buffer" },
+        --["<leader>fb"] = { function() require('telescope.builtin').buffers() end, "Telescope buffer" },
         ["<leader>fh"] = { function() require('telescope.builtin').help_tags() end, "Telescope help tags" },
+        ["<leader>fb"] = {
+            function() require("telescope").extensions.file_browser.file_browser() end,
+            "Telescope file browser" },
         ["<leader>D"] = { function() vim.lsp.buf.type_definition() end, "Type definition" },
         ["<leader>ca"] = { function() vim.lsp.buf.code_action() end, "Code action" },
         ["<leader>k"] = { "" },
