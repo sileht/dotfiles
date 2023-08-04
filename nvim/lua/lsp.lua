@@ -88,7 +88,11 @@ local lsp_options = {
 
 local null_ls = require("null-ls")
 local null_ls_sources = {
-    null_ls.builtins.formatting.prettier,
+    null_ls.builtins.formatting.prettier.with({
+        runtime_condition = function(params)
+            return params.lsp_params.textDocument.uri:match(".github/workflow") == nil
+        end,
+    }),
     null_ls.builtins.formatting.black.with({ only_local = ".venv/bin", extra_args = { "--fast" } }),
     null_ls.builtins.formatting.ruff.with({
         only_local = ".venv/bin",

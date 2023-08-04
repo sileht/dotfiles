@@ -19,15 +19,15 @@ require("lazy").setup({
     "cshuaimin/ssr.nvim",
     -- "ziontee113/syntax-tree-surfer",
     "kevinhwang91/rnvimr",
-    { 'akinsho/toggleterm.nvim', opts = { terminal_mappings = true, insert_mappings = true } },
-    "lambdalisue/suda.vim",                                    -- sudo
-    "nacitar/terminalkeys.vim",                                -- screen/tmux keys fix
-    "junegunn/vim-easy-align",                                 -- easyalign ley: ga
-    { "numToStr/Comment.nvim",   config = true },              -- fast comment
-    { "ruifm/gitlinker.nvim",    opts = { mappings = nil }, }, -- open in browser
-    { "lewis6991/gitsigns.nvim", config = true, },             -- git info
-    "dstein64/nvim-scrollview",                                -- scrollbar
-    { "folke/which-key.nvim",  config = function() require("keybindings") end },
+    { 'akinsho/toggleterm.nvim',  opts = { terminal_mappings = true, insert_mappings = true } },
+    "lambdalisue/suda.vim",                                                            -- sudo
+    "nacitar/terminalkeys.vim",                                                        -- screen/tmux keys fix
+    "junegunn/vim-easy-align",                                                         -- easyalign ley: ga
+    { "numToStr/Comment.nvim",    config = true },                                     -- fast comment
+    { "ruifm/gitlinker.nvim",     opts = { mappings = nil }, },                        -- open in browser
+    { "lewis6991/gitsigns.nvim",  config = true },                                     -- git info
+    { "dstein64/nvim-scrollview", config = { signs_on_startup = {}, winblend = 50 } }, -- scrollbar
+    { "folke/which-key.nvim",     config = function() require("keybindings") end },
     {
         "nvim-lualine/lualine.nvim",
         dependencies = {

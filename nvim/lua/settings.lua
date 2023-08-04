@@ -3,7 +3,7 @@ vim.opt.termguicolors = true
 vim.opt.shell = "/bin/zsh"
 vim.opt.cursorline = true
 vim.opt.laststatus = 3 -- Show statusbar
-vim.opt.mouse = ""
+vim.opt.mouse = "a"
 vim.opt.hidden = true  -- Allow buffer switching without saving
 vim.opt.backup = false
 vim.opt.writebackup = false
@@ -23,7 +23,7 @@ vim.opt.wildmode = "list:longest,full" -- Command <Tab> completion, list matches
 vim.opt.whichwrap = "b,s,h,l,<,>,[,]"  -- Backspace and cursor keys wrap too
 vim.opt.scrolljump = 5                 -- Lines to scroll when cursor leaves screen
 vim.opt.scrolloff = 3                  -- Minimum lines to keep above and below cursor
--- vim.opt.clipboard = unnamed,unnamedplus
+vim.opt.clipboard = "unnamed,unnamedplus"
 -- vim.opt.list
 -- vim.opt.listchars = "tab:›\ ,trail:•,extends:#,nbsp:." -- Highlight problematic whitespace
 vim.opt.wrap = false          -- Do not wrap long lines
@@ -64,10 +64,11 @@ vim.diagnostic.config(
     {
         -- virtual_text = {spacing = 4, prefix = "🔥"},
         virtual_text = false,
-        sign = true,
+        signs = true,
         underline = true,
         update_in_insert = false,
-        severity_sort = true
+        severity_sort = true,
+        float = false
     }
 )
 

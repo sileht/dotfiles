@@ -1,13 +1,17 @@
 local cmp = require("cmp")
 
+local has_words_before2 = function()
+    local cursor = vim.api.nvim_win_get_cursor(0)
+    return (vim.api.nvim_buf_get_lines(0, cursor[1] - 1, cursor[1], true)[1] or ''):sub(cursor[2], cursor[2]):match('%s')
+end
 local has_words_before = function()
     if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then return false end
     local cursor = vim.api.nvim_win_get_cursor(0)
-    if cursor == nil then
-        return false
+    if cursor ~= nil then
+        local line, col = cursor[1], cursor[2]
+        return col ~= 0 and vim.api.nvim_buf_get_text(0, line - 1, 0, line - 1, col, {})[1]:match("^%s*$") == nil
     end
-    local line, col = table.unpack(cursor)
-    return col ~= 0 and vim.api.nvim_buf_get_text(0, line - 1, 0, line - 1, col, {})[1]:match("^%s*$") == nil
+    return false
 end
 
 cmp.setup({

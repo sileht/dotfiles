@@ -100,19 +100,21 @@ function M.toggle_focus()
         print("focus layout")
         vim.opt.laststatus = 0
         vim.opt.number = false
+        vim.opt.mouse = ""
         vim.opt.relativenumber = false
         vim.opt.signcolumn = "no"
         require("gitsigns.config").config.signcolumn = false
         require("gitsigns.actions").refresh()
-        --require("scrollview").disable()
+        require("scrollview").set_state(false)
         require("trouble").close()
         vim.opt.cmdheight = 0
     else
-        --require("scrollview").enable()
+        require("scrollview").set_state(true)
         require("gitsigns.actions").refresh()
         require("gitsigns.config").config.signcolumn = true
         vim.opt.signcolumn = "yes"
         vim.opt.relativenumber = true
+        vim.opt.mouse = "a"
         vim.opt.number = true
         vim.opt.laststatus = 3
         require("trouble").open()
@@ -123,8 +125,9 @@ end
 
 M.enhanced_experience_paths = {
     "/Users/sileht/workspace/mergify/engine",
-    "/Users/sileht/workspace/mergify/dashboard",
+    "/Users/sileht/workspace/mergify/shadow_office",
     "/Users/sileht/workspace/mergify/ui",
+    "/Users/sileht/workspace/mergify/cli",
     "/Users/sileht/.env/",
 }
 return M

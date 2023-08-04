@@ -13,7 +13,7 @@ function M.run_linter()
 
     local lint = require("lint")
     lint.linters_by_ft = {
-        python = { "mypy", "flake8" }
+        python = { "mypy" }
     }
     --lint.linters.mypy.ignore_exitcode = false
     lint.linters.mypy.cmd = python_venv_bin .. "mypy"
@@ -25,7 +25,7 @@ function M.run_linter()
         "--no-error-summary",
         "--no-pretty"
     }
-    lint.linters.flake8.cmd = python_venv_bin .. "flake8"
+    -- lint.linters.flake8.cmd = python_venv_bin .. "flake8"
     lint.try_lint(nil, { cwd = rootdir })
 end
 
