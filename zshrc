@@ -8,6 +8,7 @@ autoload -U zmv             # programmable moving, copying, and linking
 autoload -U zrecompile      # allow zwc file recompiling
 autoload -Uz add-zsh-hook
 
+export HOMEBREW_NO_ANALYTICS=1
 BREW_PREFIX=/opt/homebrew
 #BROW_PREFIX=/usr/local/Homebrew
 #alias brow="arch --x86_64 $BROW_PREFIX/bin/brew"
@@ -562,6 +563,7 @@ sshrefresh(){
 }
 
 alias poetry-rebase-fix="git checkout HEAD poetry.lock; poetry lock --no-update && git add poetry.lock && git rebase --continue"
+alias npm-rebase-fix="git checkout HEAD package-lock.json; npm install && git add package-lock.json && git rebase --continue"
 
 
 run-game(){
