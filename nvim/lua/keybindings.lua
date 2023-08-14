@@ -6,6 +6,7 @@ require("which-key").register(
         ["<F12>"] = { function() require('utils').toggle_focus() end, "Show/Hide keybindings" },
         ["<C-k>"] = { function() vim.lsp.buf.signature_help() end, "Show signature" },
         ["<F5>"] = { function() vim.lsp.buf.rename() end, "Rename" },
+        ["<F6>"] = { ":IncRename ", "Rename (Fancy)" },
         ["K"] = { function() vim.lsp.buf.hover() end, "Documentation" },
         ["gP"] = { function() vim.diagnostic.goto_prev() end, "Diagnostic previous" },
         ["gN"] = { function() vim.diagnostic.goto_next() end, "Diagnostic next" },

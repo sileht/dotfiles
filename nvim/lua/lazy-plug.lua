@@ -9,9 +9,7 @@ require("lazy").setup({
         end
     },
     "jubnzv/virtual-types.nvim",
-    -- { "olimorris/onedarkpro.nvim", priority = 1000, config = function() vim.cmd("colorscheme onedark_dark") end },
     { "mhartington/oceanic-next", config = function() vim.cmd("colorscheme OceanicNext") end },
-    -- { "folke/tokyonight.nvim", config = function() vim.cmd("colorscheme tokyonight") end }
 
     "mfussenegger/nvim-lint",
     "tpope/vim-repeat",
@@ -20,13 +18,13 @@ require("lazy").setup({
     -- "ziontee113/syntax-tree-surfer",
     "kevinhwang91/rnvimr",
     { 'akinsho/toggleterm.nvim',  opts = { terminal_mappings = true, insert_mappings = true } },
-    "lambdalisue/suda.vim",                                                            -- sudo
-    "nacitar/terminalkeys.vim",                                                        -- screen/tmux keys fix
-    "junegunn/vim-easy-align",                                                         -- easyalign ley: ga
-    { "numToStr/Comment.nvim",    config = true },                                     -- fast comment
-    { "ruifm/gitlinker.nvim",     opts = { mappings = nil }, },                        -- open in browser
-    { "lewis6991/gitsigns.nvim",  config = true },                                     -- git info
-    { "dstein64/nvim-scrollview", config = { signs_on_startup = {}, winblend = 50 } }, -- scrollbar
+    "lambdalisue/suda.vim",                                                          -- sudo
+    "nacitar/terminalkeys.vim",                                                      -- screen/tmux keys fix
+    "junegunn/vim-easy-align",                                                       -- easyalign ley: ga
+    { "numToStr/Comment.nvim",    opts = {} },                                       -- fast comment
+    { "ruifm/gitlinker.nvim",     opts = { mappings = nil }, },                      -- open in browser
+    { "lewis6991/gitsigns.nvim",  opts = {} },                                       -- git info
+    { "dstein64/nvim-scrollview", opts = { signs_on_startup = {}, winblend = 50 } }, -- scrollbar
     { "folke/which-key.nvim",     config = function() require("keybindings") end },
     {
         "nvim-lualine/lualine.nvim",
@@ -77,10 +75,8 @@ require("lazy").setup({
         dependencies = {
             { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
             "aaronhallaert/ts-advanced-git-search.nvim",
-            {
-                "nvim-telescope/telescope-file-browser.nvim",
-                dependencies = { "nvim-lua/plenary.nvim" }
-            },
+            "nvim-telescope/telescope-ui-select.nvim",
+            "nvim-telescope/telescope-file-browser.nvim",
         },
         config = function()
             local defaults = require("telescope.themes").get_ivy({})
@@ -94,17 +90,17 @@ require("lazy").setup({
             require("telescope").load_extension("fzf")
             require("telescope").load_extension("advanced_git_search")
             require("telescope").load_extension("file_browser")
+            require("telescope").load_extension("ui-select")
         end
     },
+    { "smjonas/inc-rename.nvim", opts = {} },
 
     {
         "zbirenbaum/copilot.lua",
-        config = function()
-            require("copilot").setup({
-                suggestion = { enabled = false },
-                panel = { enabled = true },
-            })
-        end,
+        opts = {
+            suggestion = { enabled = false },
+            panel = { enabled = true },
+        }
     },
 
     -- lsp, completion, fixer and linter
@@ -126,17 +122,20 @@ require("lazy").setup({
                     "petertriho/cmp-git",
                     "onsails/lspkind-nvim",
                     "lukas-reineke/cmp-under-comparator",
-                    { "zbirenbaum/copilot-cmp", dependencies = { "zbirenbaum/copilot.lua" } },
+                    {
+                        "zbirenbaum/copilot-cmp",
+                        dependencies = { "zbirenbaum/copilot.lua" },
+                    },
                 },
                 config = function() require("completions") end
             },
         },
         config = function() require("lsp") end
     },
-    { "folke/lsp-colors.nvim", config = true },
+    { "folke/lsp-colors.nvim",   opts = {} },
     {
         "folke/trouble.nvim",
-        build = ";git cherry-pick 1098dd433ded8f233880f2a0b21ed299e8e31b17",
+        build = ";git cherry-pick custom",
         config = function()
             require("trouble").setup(
                 {
@@ -147,7 +146,8 @@ require("lazy").setup({
                     padding = false,
                     indent_lines = false,
                     mode = "workspace_diagnostics",
-                    auto = false
+                    auto = false,
+                    use_diagnostic_signs = true,
                 }
             )
 
@@ -165,4 +165,5 @@ require("lazy").setup({
             end
         end
     },
+    { 'antonk52/bad-practices.nvim', opts = {} }
 })
