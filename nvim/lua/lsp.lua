@@ -2,9 +2,41 @@ local lspconfig = require("lspconfig")
 local lsp_status = require("lsp-status")
 local cmp_nvim_lsp = require("cmp_nvim_lsp")
 
---vim.lsp.set_log_level("info")
+-- vim.lsp.set_log_level("info")
 
+local log_to_message = function(_, data, _)
+    for _, d in ipairs(data) do
+        print(d)
+    end
+end
 
+local on_new_config_venv_binary_install = function(name, args)
+    return function(new_config, new_root_dir)
+        local venv = require("utils").get_venvdir(new_root_dir)
+        if vim.fn.isdirectory(venv) ~= 0 then
+            local venv_bin_path = venv .. "/bin/" .. name
+            if vim.fn.filereadable(venv_bin_path) == 0 then
+                vim.fn.jobstart(
+                    venv .. "/bin/pip install " .. name,
+                    {
+                        on_stdout = log_to_message,
+                        on_stderr = log_to_message,
+                        on_exit = function()
+                            vim.api.nvim_command("LspRestart")
+                        end
+                    }
+                )
+            else
+                new_config.cmd = { venv_bin_path }
+                if (args ~= nil) then
+                    for _, arg in ipairs(args) do
+                        table.insert(new_config.cmd, arg)
+                    end
+                end
+            end
+        end
+    end
+end
 
 local lsp_options = {
     common = {
@@ -79,13 +111,30 @@ local lsp_options = {
         on_new_config = function(new_config, new_root_dir)
             local venv = require("utils").get_venvdir(new_root_dir)
             if venv ~= nil then
-                new_config.init_options.workspace.environmentPath = venv .. "/bin/python"
+                new_config.init_options.workspace = { environmentPath = venv .. "/bin/python" }
             end
         end,
-        init_options = { workspace = {} }
+    },
+    dmypyls = {
+        on_new_config = function(new_config, new_root_dir)
+            --on_new_config_venv_binary_install("dmypy-ls", { "--chdir=" .. new_root_dir })(new_config, new_root_dir)
+            local venv = require("utils").get_venvdir(new_root_dir)
+            if venv ~= nil then
+                --[[ new_config.cmd = { "dmypy-ls", "--chdir=" .. new_root_dir, "--virtualenv=" .. venv } ]]
+                new_config.cmd = { venv .. "/bin/dmypy-ls", "--chdir=" .. new_root_dir }
+            end
+        end
     },
 }
 
+require("lspconfig.configs")["dmypyls"] = {
+    default_config = {
+        cmd = { 'dmypy-ls' },
+        filetypes = { 'python' },
+        root_dir = lspconfig.util.root_pattern('pyproject.toml', 'setup.py', 'setup.cfg', 'requirements.txt', 'Pipfile'),
+        single_file_support = true,
+    },
+}
 local null_ls = require("null-ls")
 local null_ls_sources = {
     null_ls.builtins.formatting.prettier.with({
@@ -140,6 +189,7 @@ local servers = {
     "marksman",
     "jsonls",
     "grammarly",
+    --"dmypyls",
     --"yamlls",
 }
 for _, lsp in ipairs(servers) do
