@@ -12,6 +12,7 @@
     bl = "!f() { git checkout $(git branch --sort=-committerdate --format='%(HEAD) %(refname:short)' | grep -v -e '^*' | head -1) ; }; f"
     get-file = "!f() { git cat-file blob $1:$2 >| $2 ; }; f"
 
+    c = checkout
     pr = "!f() { git r ; git pull-request \"$@\"; }; f"
     t = "!f() { git branch --set-upstream-to=origin/${1:-main}; }; f"
     r = "!f() { git branch -M $(git rev-parse --abbrev-ref HEAD | sed -e 's,^wip-,,g' -e s,pull/[^-]*-sileht-,,g) ; }; f"
