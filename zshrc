@@ -169,6 +169,7 @@ zstyle ':autocomplete:*' widget-style menu-select
 
 
 PIPX_PACKAGES=(
+    mergify-cli
     ruff-lsp
     git-pull-request
     reno
@@ -181,7 +182,6 @@ PIPX_PACKAGES=(
     poetry
     poethepoet
     ipython
-    pyright
     #autoflake
     ddev
 )
