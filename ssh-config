@@ -70,7 +70,7 @@ Host utopialab.t
 
 Host *.t
     Hostname %hetaneutral.net
-    Port 2222
+    Port 22
     User root
     #PubkeyAcceptedKeyTypes +ssh-dss
 
@@ -98,3 +98,5 @@ Host *
     # PreferredAuthentications publickey,password,gssapi-keyex,gssapi-with-mic,
     #ControlPath ~/.ssh/master-%r@%h:%p
     #ControlMaster auto
+    AddKeysToAgent yes
+    UseKeychain yes
