@@ -1,7 +1,11 @@
 vim.opt.ttyfast = true
 vim.opt.termguicolors = true
 vim.opt.shell = "/bin/zsh"
+
+
 vim.opt.cursorline = true
+-- vim.opt.cursorlineopt = "number"
+
 vim.opt.laststatus = 3 -- Show statusbar
 vim.opt.mouse = "a"
 vim.opt.hidden = true  -- Allow buffer switching without saving
@@ -52,6 +56,8 @@ vim.opt.spellsuggest = "best,9"
 vim.opt.ttimeout = true
 vim.opt.ttimeoutlen = 500
 vim.opt.timeoutlen = 500
+
+
 
 vim.opt.completeopt = "menu,menuone,noselect"
 

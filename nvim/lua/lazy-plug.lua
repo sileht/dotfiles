@@ -1,5 +1,6 @@
 require("lazy").setup({
-    { "nvim-lua/plenary.nvim",    priority = 10000 },
+    { "nvim-lua/plenary.nvim",   priority = 10000 },
+
     {
         'nvim-tree/nvim-web-devicons',
         config = function()
@@ -8,16 +9,20 @@ require("lazy").setup({
             })
         end
     },
+    {
+        "mhartington/oceanic-next",
+        config = function()
+            vim.cmd("colorscheme OceanicNext")
+        end
+    },
     "jubnzv/virtual-types.nvim",
-    { "mhartington/oceanic-next", config = function() vim.cmd("colorscheme OceanicNext") end },
-
     "mfussenegger/nvim-lint",
     "tpope/vim-repeat",
     "tpope/vim-fugitive",
     "cshuaimin/ssr.nvim",
     -- "ziontee113/syntax-tree-surfer",
     "kevinhwang91/rnvimr",
-    { 'akinsho/toggleterm.nvim',  opts = { terminal_mappings = true, insert_mappings = true } },
+    { 'akinsho/toggleterm.nvim', opts = { terminal_mappings = true, insert_mappings = true } },
     "lambdalisue/suda.vim",                                                          -- sudo
     "nacitar/terminalkeys.vim",                                                      -- screen/tmux keys fix
     "junegunn/vim-easy-align",                                                       -- easyalign ley: ga
@@ -100,6 +105,12 @@ require("lazy").setup({
         opts = {
             suggestion = { enabled = false },
             panel = { enabled = true },
+            filetypes = {
+                javascript = true,
+                typescript = true,
+                python = true,
+                ["*"] = false,
+            },
         }
     },
 
@@ -107,7 +118,8 @@ require("lazy").setup({
     {
         "neovim/nvim-lspconfig",
         dependencies = {
-            "jose-elias-alvarez/null-ls.nvim",
+            "nvimtools/none-ls.nvim",
+            --"jose-elias-alvarez/null-ls.nvim",
             {
                 "hrsh7th/nvim-cmp",
                 dependencies = {

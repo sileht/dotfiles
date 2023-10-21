@@ -196,22 +196,15 @@ NPM_PACKAGES=(
     lua-fmt
     typescript
     typescript-language-server
-    npm-check-updates
-    @taplo/cli
     grammarly-languageserver
     @sentry/cli
     vscode-langservers-extracted
-    npm-check-updates
-    git-split-diffs
     vim-language-server
     yaml-language-server
     jsonlint
-    alex
-    fixjson
     prettier
     bash-language-server
     markdownlint
-    npm-check-updates
 )
 
 #########
