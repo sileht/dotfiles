@@ -27,6 +27,7 @@ local sections = {
 }
 require("lualine").setup(
     {
+        options = { theme = 'auto' },
         sections = sections,
         inactive_sections = sections,
         tabline = {

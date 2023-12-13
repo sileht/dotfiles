@@ -37,6 +37,10 @@ export PATH="$HOME/.bin:$HOME/.local/bin:$HOME/.env/bin:$HOME/.local/npi/node_mo
 
 export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin/"
 
+export NODE_OPTIONS="--max-old-space-size=18192" # --trace-deprecation --trace-warnings"
+export NODE_NO_WARNINGS=1
+
+export PYTEST_XDIST_AUTO_NUM_WORKERS=5
 
 ############
 # BINDKEYS #
@@ -205,6 +209,7 @@ NPM_PACKAGES=(
     prettier
     bash-language-server
     markdownlint
+    @vtsls/language-server
 )
 
 #########

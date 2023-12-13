@@ -7,6 +7,8 @@ return {
                 end
             end
             vim.lsp.buf.format()
+            vim.lsp.buf.format()
+            -- require('conform').format()
         end
     end,
     enabled = function()

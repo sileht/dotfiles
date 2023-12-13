@@ -10,9 +10,14 @@ require("lazy").setup({
         end
     },
     {
-        "mhartington/oceanic-next",
+        "loctvl842/monokai-pro.nvim",
+        --"folke/tokyonight.nvim",
         config = function()
-            vim.cmd("colorscheme OceanicNext")
+            require("monokai-pro").setup({
+                filter = "spectrum",
+            })
+            --vim.cmd("colorscheme tokyonight-night")
+            vim.cmd("colorscheme monokai-pro")
         end
     },
     "jubnzv/virtual-types.nvim",
@@ -118,8 +123,39 @@ require("lazy").setup({
     {
         "neovim/nvim-lspconfig",
         dependencies = {
+            --[[
+            {
+                'stevearc/conform.nvim',
+                opts = function(_, opts)
+                    local util = require("conform.util")
+                    local formatters = require("conform.formatters")
+                    opts.formatters_by_ft = {
+                        python = { "ruff_fix", "black" },
+                        ["*"] = { "trim_whitespace" },
+                    }
+                    opts.formatters = {}
+                    local use_venv_for = { "ruff_fix", "black" }
+                    for _, formatter in ipairs(use_venv_for) do
+                        local cmd = formatters[formatter].command
+                        opts.formatters[formatter] = {
+                            command = util.find_executable({ ".venv/bin/" .. cmd }, cmd),
+                        }
+                    end
+
+                    opts.format_on_save = function(bufnr)
+                        local bufname = vim.api.nvim_buf_get_name(bufnr)
+                        if bufname:match(".github/workflow") then
+                            return
+                        end
+                        if not vim.b.formatter_enabled then
+                            return
+                        end
+                        return { timeout_ms = 500, lsp_fallback = true }
+                    end
+                end,
+            },
+            ]] --
             "nvimtools/none-ls.nvim",
-            --"jose-elias-alvarez/null-ls.nvim",
             {
                 "hrsh7th/nvim-cmp",
                 dependencies = {

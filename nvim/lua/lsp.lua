@@ -10,6 +10,7 @@ local log_to_message = function(_, data, _)
     end
 end
 
+---@diagnostic disable-next-line: unused-function,unused-local
 local on_new_config_venv_binary_install = function(name, args)
     return function(new_config, new_root_dir)
         local venv = require("utils").get_venvdir(new_root_dir)
@@ -47,6 +48,10 @@ local lsp_options = {
         on_attach = function(client, bufnr)
             if client.name == "ruff_lsp" then
                 client.server_capabilities.hoverProvider = false
+
+                -- Not ready yet
+                -- client.server_capabilities.documentFormattingProvider = false
+                -- client.server_capabilities.documentRangeFormattingProvider = false
             end
             if client.name == "tsserver" then
                 -- eslint is used instead
@@ -73,6 +78,7 @@ local lsp_options = {
     grammarly = { filetypes = { "gitcommit" } },
     bashls = { filetypes = { "sh", "zsh" } },
     docker_compose_language_service = { filetypes = { "yaml.docker-compose" } },
+    vtsls = {},
     lua_ls = {
         settings = {
             Lua = {
@@ -135,11 +141,12 @@ require("lspconfig.configs")["dmypyls"] = {
         single_file_support = true,
     },
 }
+
 local null_ls = require("null-ls")
 local null_ls_sources = {
     null_ls.builtins.formatting.prettier.with({
         runtime_condition = function(params)
-            return params.lsp_params.textDocument.uri:match(".github/workflow") == nil
+            return require("null-ls.utils").root_pattern(".prettierrc.json")(params.bufname) ~= nil
         end,
     }),
     null_ls.builtins.formatting.black.with({ only_local = ".venv/bin", extra_args = { "--fast" } }),
@@ -158,6 +165,8 @@ local null_ls_sources = {
     null_ls.builtins.diagnostics.mypy.with({
         only_local = ".venv/bin",
         method = null_ls.methods.DIAGNOSTICS_ON_SAVE,
+        debounce = 250,
+        timeout = 20000,
     }),
     null_ls.builtins.diagnostics.yamllint.with({
         only_local = ".venv/bin",
@@ -178,6 +187,7 @@ local servers = {
     "jedi_language_server",
     "eslint",
     "tsserver",
+    --"vtsls",
 
     "html",
     "cssls",

@@ -14,6 +14,8 @@ local has_words_before = function()
     return false
 end
 
+require("linear_cmp_source")
+
 cmp.setup({
     experimental = {
         ghost_text = true,
@@ -103,6 +105,9 @@ cmp.setup.filetype(
             },
             {
                 { name = "buffer" },
+            },
+            {
+                { name = "linear" },
             }
         )
     }
