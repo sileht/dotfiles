@@ -21,7 +21,8 @@
     hotfix = "!f() { git r ; git pull-request -l hotfix \"$@\"; }; f"
     wip = "!f() { git r ; git pull-request -l work-in-progress \"$@\"; }; f"
 
-    lg = "!f() { git log --graph --pretty=cshort --abbrev-commit --date=relative ${@:--15} ;}; f"
+    lg = "!f() { git log --graph --pretty=cshort --abbrev-commit ${@:--15} ;}; f"
+    lgd = "!f() { git log --graph --pretty=cshortiso --abbrev-commit ${@:--15} ;}; f"
     lc = !git oneline ORIG_HEAD.. --stat --no-merges
     oneline = log --pretty=oneline --abbrev-commit --graph --decorate
     who = shortlog -sne
@@ -55,6 +56,7 @@
 [pretty]
     cmedium="format:%C(auto,yellow)commit %H%C(auto,reset)%nAuthor: %an <%ae>%nCommitter: %cn <%ce>%nDate:   %cd (%cr)%n%n%w(0,4,4)%s%n%+b"
     cshort="tformat:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%an %cr)%Creset"
+    cshortiso="tformat:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ai %cr)%Creset"
 #[format]
 #    pretty=cmedium
 [log]
