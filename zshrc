@@ -10,8 +10,8 @@ autoload -Uz add-zsh-hook
 
 export HOMEBREW_NO_ANALYTICS=1
 BREW_PREFIX=/opt/homebrew
-#BROW_PREFIX=/usr/local/Homebrew
-#alias brow="arch --x86_64 $BROW_PREFIX/bin/brew"
+BROW_PREFIX=/usr/local/Homebrew
+alias brow="arch --x86_64 $BROW_PREFIX/bin/brew"
 
 [ -f ${BREW_PREFIX}/bin/brew ] && eval "$(${BREW_PREFIX}/bin/brew shellenv)"
 fpath+=(${BREW_PREFIX}/share/zsh/site-functions)
@@ -405,7 +405,8 @@ function zshexit() {
 i
 add-zsh-hook chpwd s
 
-# alias="WINEPREFIX=~/games-bottle $(brow --prefix game-porting-toolkit)/bin/wine64 winecfg"
+export WINEPREFIX=~/games-bottle
+alias winecfg="$(brow --prefix game-porting-toolkit)/bin/wine64 winecfg"
 
 alias Q='exec zsh'
 function sc() { tmux attach -d 2>/dev/null || tmux new-session ; }
