@@ -46,7 +46,8 @@ require("which-key").register(
 vim.cmd([[
     nnoremap P "0p                            " Paste last yank
     nnoremap Y y$                             " Yank from the cursor to the end of the line, to be consistent with C and D.
-    cnoreabbrev bd :lua require('utils').buffer_delete_workaround()
+    cnoreabbrev bd silent! bd
+    cnoreabbrev bw silent! bw
     nmap <silent> <S-left>  :bp<Enter>
     nmap <silent> <S-right> :bn<Enter>
     xmap ga <Plug>(EasyAlign)

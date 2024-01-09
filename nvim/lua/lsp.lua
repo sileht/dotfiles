@@ -1,5 +1,4 @@
 local lspconfig = require("lspconfig")
-local lsp_status = require("lsp-status")
 local cmp_nvim_lsp = require("cmp_nvim_lsp")
 
 -- vim.lsp.set_log_level("info")
@@ -41,10 +40,7 @@ end
 
 local lsp_options = {
     common = {
-        capabilities = vim.tbl_extend("keep",
-            cmp_nvim_lsp.default_capabilities(),
-            lsp_status.capabilities
-        ),
+        capabilities = cmp_nvim_lsp.default_capabilities(),
         on_attach = function(client, bufnr)
             if client.name == "ruff_lsp" then
                 client.server_capabilities.hoverProvider = false
@@ -62,7 +58,9 @@ local lsp_options = {
                 require('virtualtypes').on_attach(client, bufnr)
             end
             require("formatter").on_attach(client, bufnr)
-            lsp_status.on_attach(client, bufnr)
+            if client.server_capabilities.documentSymbolProvider then
+                require("nvim-navic").attach(client, bufnr)
+            end
         end,
         flags = {
             debounce_text_changes = 150
@@ -206,9 +204,6 @@ for _, lsp in ipairs(servers) do
     local options = vim.deepcopy(lsp_options.common)
     if (lsp_options[lsp] ~= nil) then
         options = vim.tbl_extend("force", options, lsp_options[lsp])
-    end
-    if (lsp_status.extensions[lsp] ~= nil) then
-        options.handlers = lsp_status.extensions[lsp].setup()
     end
     lspconfig[lsp].setup(options)
 end

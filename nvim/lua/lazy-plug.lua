@@ -1,5 +1,5 @@
 require("lazy").setup({
-    { "nvim-lua/plenary.nvim",   priority = 10000 },
+    { "nvim-lua/plenary.nvim", priority = 10000 },
 
     {
         'nvim-tree/nvim-web-devicons',
@@ -20,14 +20,14 @@ require("lazy").setup({
             vim.cmd("colorscheme monokai-pro")
         end
     },
+    { "SmiteshP/nvim-navic",   config = function() require("nvim-navic").setup() end },
     "jubnzv/virtual-types.nvim",
     "mfussenegger/nvim-lint",
     "tpope/vim-repeat",
     "tpope/vim-fugitive",
     "cshuaimin/ssr.nvim",
-    -- "ziontee113/syntax-tree-surfer",
     "kevinhwang91/rnvimr",
-    { 'akinsho/toggleterm.nvim', opts = { terminal_mappings = true, insert_mappings = true } },
+    { 'akinsho/toggleterm.nvim',  opts = { terminal_mappings = true, insert_mappings = true } },
     "lambdalisue/suda.vim",                                                          -- sudo
     "nacitar/terminalkeys.vim",                                                      -- screen/tmux keys fix
     "junegunn/vim-easy-align",                                                       -- easyalign ley: ga
@@ -39,8 +39,7 @@ require("lazy").setup({
     {
         "nvim-lualine/lualine.nvim",
         dependencies = {
-            "nvim-lua/lsp-status.nvim",
-            { "j-hui/fidget.nvim", branch = "legacy" }
+            { "j-hui/fidget.nvim" }
         },
         config = function() require("statusline") end
     },
@@ -50,7 +49,6 @@ require("lazy").setup({
         build = ":TSUpdateSync",
         dependencies = {
             "nvim-treesitter/nvim-treesitter-textobjects",
-            "romgrk/nvim-treesitter-context"
         },
         config = function()
             require("nvim-treesitter.configs").setup(
@@ -75,7 +73,6 @@ require("lazy").setup({
                     }
                 }
             )
-            require("treesitter-context").setup({ enable = true, max_lines = 3 })
         end
     },
 
@@ -123,38 +120,6 @@ require("lazy").setup({
     {
         "neovim/nvim-lspconfig",
         dependencies = {
-            --[[
-            {
-                'stevearc/conform.nvim',
-                opts = function(_, opts)
-                    local util = require("conform.util")
-                    local formatters = require("conform.formatters")
-                    opts.formatters_by_ft = {
-                        python = { "ruff_fix", "black" },
-                        ["*"] = { "trim_whitespace" },
-                    }
-                    opts.formatters = {}
-                    local use_venv_for = { "ruff_fix", "black" }
-                    for _, formatter in ipairs(use_venv_for) do
-                        local cmd = formatters[formatter].command
-                        opts.formatters[formatter] = {
-                            command = util.find_executable({ ".venv/bin/" .. cmd }, cmd),
-                        }
-                    end
-
-                    opts.format_on_save = function(bufnr)
-                        local bufname = vim.api.nvim_buf_get_name(bufnr)
-                        if bufname:match(".github/workflow") then
-                            return
-                        end
-                        if not vim.b.formatter_enabled then
-                            return
-                        end
-                        return { timeout_ms = 500, lsp_fallback = true }
-                    end
-                end,
-            },
-            ]] --
             "nvimtools/none-ls.nvim",
             {
                 "hrsh7th/nvim-cmp",
@@ -184,6 +149,7 @@ require("lazy").setup({
     {
         "folke/trouble.nvim",
         build = ";git cherry-pick custom",
+        enabled = true,
         config = function()
             require("trouble").setup(
                 {
