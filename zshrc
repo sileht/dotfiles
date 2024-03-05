@@ -36,6 +36,7 @@ done
 export PATH="$HOME/.bin:$HOME/.local/bin:$HOME/.env/bin:$HOME/.local/npi/node_modules/.bin:$HOME/.cargo/bin:$PATH"
 
 export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin/"
+export PATH="/opt/homebrew/opt/postgresql@16/bin:$PATH"
 
 export NODE_OPTIONS="--max-old-space-size=18192" # --trace-deprecation --trace-warnings"
 export NODE_NO_WARNINGS=1
@@ -174,19 +175,16 @@ zstyle ':autocomplete:*' widget-style menu-select
 
 PIPX_PACKAGES=(
     mergify-cli
-    ruff-lsp
     git-pull-request
     reno
     rstcheck
     ranger-fm
     jedi-language-server
     anakin-language-server
-    #python-lsp-server
     nox
     poetry
     poethepoet
     ipython
-    #autoflake
     ddev
 )
 
