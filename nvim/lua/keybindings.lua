@@ -12,35 +12,28 @@ require("which-key").register(
         ["gN"] = { function() vim.diagnostic.goto_next() end, "Diagnostic next" },
         ["gD"] = { function() vim.lsp.buf.declaration() end, "Go declaration" },
         ["gi"] = { function() vim.lsp.buf.implementation() end, "Go implementation" },
-        ["<leader>sr"] = { function() require('ssr').open() end, "SSR", mode = { "n", "x" } },
         ["gd"] = { function() require('telescope.builtin').lsp_definitions() end, "Go definitions" },
         ["gr"] = { function() require('telescope.builtin').lsp_references() end, "Go references" },
-        ["<leader>gb"] = { function() require('gitsigns').blame_line({ full = true }) end, "Git Blame" },
-        ["<leader>gd"] = { function() require('gitsigns').toggle_deleted() end, "Git show deleted" },
-        ["<leader>gy"] = {
+        ["<leader>b"] = { function() vim.cmd("Git blame") end, "Git Blame" },
+        ["<leader>D"] = { function() require('gitsigns').toggle_deleted() end, "Git show deleted" },
+        ["<leader>o"] = {
             function()
                 local cb = require('gitlinker.actions').open_in_browser
                 require('gitlinker').get_buf_range_url('n', { action_callback = cb })
             end,
-            "Open line in browser"
+            "Open in GitHub"
         },
-        ["<leader>d"] = { function() require('telescope.builtin').diagnostics({ bufnr = 0 }) end, "Telescope diagnostics" },
-        ["<leader>fp"] = { function() require('telescope.builtin').builtin() end, "Telescope builtin" },
-        ["<leader>fc"] = { function() require('telescope.builtin').git_commits() end, "Telescope git commit" },
-        ["<leader>fs"] = { function() require('telescope.builtin').lsp_document_symbols() end, "Telescope symbols" },
-        ["<leader>fd"] = { function() require('telescope.builtin').lsp_type_definitions() end,
-            "Telescope type definitions" },
-        ["<leader>ff"] = { function() require('telescope.builtin').find_files() end, "Telescope find" },
-        ["<leader>fg"] = { function() require('telescope.builtin').live_grep() end, "Telescope grep" },
-        --["<leader>fb"] = { function() require('telescope.builtin').buffers() end, "Telescope buffer" },
-        ["<leader>fh"] = { function() require('telescope.builtin').help_tags() end, "Telescope help tags" },
-        ["<leader>fb"] = {
+        ["<leader>d"] = { function() require('telescope.builtin').diagnostics({ bufnr = 0 }) end, "Diagnostics" },
+        ["<leader>c"] = { function() require('telescope.builtin').git_commits() end, "Git commit" },
+        --["<leader>f"] = { function() require('telescope.builtin').find_files() end, "find" },
+        ["<leader>g"] = { function() require('telescope.builtin').live_grep() end, "Grep" },
+        ["<leader>k"] = { function() require('telescope.builtin').keymaps() end, "Keymaps" },
+        --["<leader>fb"] = { function() require('telescope.builtin').buffers() end, "buffer" },
+        ["<leader>h"] = { function() require('telescope.builtin').help_tags() end, "help tags" },
+        ["<leader>e"] = {
             function() require("telescope").extensions.file_browser.file_browser() end,
-            "Telescope file browser" },
-        ["<leader>D"] = { function() vim.lsp.buf.type_definition() end, "Type definition" },
-        ["<leader>ca"] = { function() vim.lsp.buf.code_action() end, "Code action" },
-        ["<leader>k"] = { "" },
-        ["<leader>e"] = { ":RnvimrToggle <cr>", "Explorer" }
+            "File browser" },
+        ["<leader>a"] = { function() vim.lsp.buf.code_action() end, "Code action" },
     }
 )
 vim.cmd([[
@@ -52,5 +45,4 @@ vim.cmd([[
     nmap <silent> <S-right> :bn<Enter>
     xmap ga <Plug>(EasyAlign)
     nmap ga <Plug>(EasyAlign)
-    cmap w!! :w suda://%<CR>:e!<CR>
 ]])

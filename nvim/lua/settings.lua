@@ -2,6 +2,12 @@ vim.opt.ttyfast = true
 vim.opt.termguicolors = true
 vim.opt.shell = "/bin/zsh"
 
+vim.g.verbosefile = "/Users/sileht/.local/state/nvim/runtime.log"
+vim.g.loaded_python3_provider = 0
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_node_provider = 0
+vim.g.loaded_ruby_provider = 0
+
 
 vim.opt.cursorline = true
 -- vim.opt.cursorlineopt = "number"
@@ -65,10 +71,11 @@ vim.g.mapleader = ","
 vim.g.maplocalleader = ";"
 
 vim.opt.updatetime = 1500
+vim.opt.updatetime = 300
 
 vim.diagnostic.config(
     {
-        -- virtual_text = {spacing = 4, prefix = "🔥"},
+        --virtual_text = { spacing = 4, prefix = "🔥" },
         virtual_text = false,
         signs = true,
         underline = true,
@@ -78,7 +85,7 @@ vim.diagnostic.config(
     }
 )
 
-local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
+local signs = { Error = "󰅚", Warn = "󰀪", Info = "󰋽", Hint = "󰌶" }
 for type, icon in pairs(signs) do
     local hl = "DiagnosticSign" .. type
     vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })

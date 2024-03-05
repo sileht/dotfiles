@@ -1,9 +1,5 @@
 local cmp = require("cmp")
 
-local has_words_before2 = function()
-    local cursor = vim.api.nvim_win_get_cursor(0)
-    return (vim.api.nvim_buf_get_lines(0, cursor[1] - 1, cursor[1], true)[1] or ''):sub(cursor[2], cursor[2]):match('%s')
-end
 local has_words_before = function()
     if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then return false end
     local cursor = vim.api.nvim_win_get_cursor(0)
@@ -20,16 +16,10 @@ cmp.setup({
     experimental = {
         ghost_text = true,
     },
-    snippet = {
-        expand = function(args)
-            vim.fn["vsnip#anonymous"](args.body)
-        end,
-    },
     sources = cmp.config.sources({
         { name = "copilot" },
         { name = "nvim_lsp" },
         { name = "nvim_lsp_signature_help" },
-        { name = "nvim_lsp_document_symbol" },
         { name = "buffer" },
         { name = "path" },
     }),
@@ -101,9 +91,6 @@ cmp.setup.filetype(
         mapping = cmp.mapping.preset.cmdline(),
         sources = cmp.config.sources(
             {
-                { name = "cmp_git" },
-            },
-            {
                 { name = "buffer" },
             },
             {
@@ -136,5 +123,3 @@ require("copilot").setup({
         ["*"] = false,
     },
 })
-require("copilot_cmp").setup()
-require("cmp_git").setup()

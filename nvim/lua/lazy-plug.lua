@@ -1,53 +1,149 @@
 require("lazy").setup({
-    { "nvim-lua/plenary.nvim", priority = 10000 },
+    { "nvim-lua/plenary.nvim",       priority = 10000 },
+    { 'nvim-tree/nvim-web-devicons', opts = { default = true } },
+    {
+        "rebelot/kanagawa.nvim",
+        config = function()
+            require('kanagawa').setup({
+                overrides = function(colors)
+                    return {
+                        DiagnosticVirtualTextError = {
+                            fg = colors.palette.samuraiRed,
+                            bg = colors.palette.winterRed,
+                            italic = true
+                        },
+                        DiagnosticVirtualTextWarn = {
+                            fg = colors.palette.roninYellow,
+                            bg = colors.palette.winterYellow,
+                            italic = true
+                        },
 
-    {
-        'nvim-tree/nvim-web-devicons',
-        config = function()
-            require('nvim-web-devicons').setup({
-                default = true,
+                        DiagnosticVirtualTextInfo = {
+                            fg = colors.palette.dragonBlue,
+                            bg = colors.palette.waveBlue2,
+                            italic = true
+                        },
+
+                        DiagnosticVirtualTextHint = {
+                            fg = colors.palette.dragonGreen,
+                            bg = colors.palette.winterGreen,
+                            italic = true
+                        },
+
+                    }
+                end,
             })
+            vim.cmd("colorscheme kanagawa-wave")
         end
     },
-    {
-        "loctvl842/monokai-pro.nvim",
-        --"folke/tokyonight.nvim",
-        config = function()
-            require("monokai-pro").setup({
-                filter = "spectrum",
-            })
-            --vim.cmd("colorscheme tokyonight-night")
-            vim.cmd("colorscheme monokai-pro")
-        end
-    },
-    { "SmiteshP/nvim-navic",   config = function() require("nvim-navic").setup() end },
-    "jubnzv/virtual-types.nvim",
-    "mfussenegger/nvim-lint",
-    "tpope/vim-repeat",
-    "tpope/vim-fugitive",
-    "cshuaimin/ssr.nvim",
-    "kevinhwang91/rnvimr",
-    { 'akinsho/toggleterm.nvim',  opts = { terminal_mappings = true, insert_mappings = true } },
-    "lambdalisue/suda.vim",                                                          -- sudo
-    "nacitar/terminalkeys.vim",                                                      -- screen/tmux keys fix
-    "junegunn/vim-easy-align",                                                       -- easyalign ley: ga
-    { "numToStr/Comment.nvim",    opts = {} },                                       -- fast comment
-    { "ruifm/gitlinker.nvim",     opts = { mappings = nil }, },                      -- open in browser
-    { "lewis6991/gitsigns.nvim",  opts = {} },                                       -- git info
-    { "dstein64/nvim-scrollview", opts = { signs_on_startup = {}, winblend = 50 } }, -- scrollbar
+    -- keybinding
     { "folke/which-key.nvim",     config = function() require("keybindings") end },
+    -- . on steroid
+    "tpope/vim-repeat",
+    -- Git blame, ...
+    "tpope/vim-fugitive",
+    -- screen/tmux keys fix
+    "nacitar/terminalkeys.vim",
+    -- easyalign ley: ga
+    "junegunn/vim-easy-align",
+    -- lsp smart rename F5
+    { "smjonas/inc-rename.nvim",  opts = {} },
+    -- comment/uncoment: gcc, gcb
+    { "numToStr/Comment.nvim",    opts = {} },
+    -- open in browser
+    { "ruifm/gitlinker.nvim",     opts = { mappings = nil }, },
+    -- git info
+    { "lewis6991/gitsigns.nvim",  opts = {} },
+    -- scrollbar
+    { "dstein64/nvim-scrollview", opts = { signs_on_startup = {}, winblend = 50 } },
+    -- TODO/NOTE colors
+    { "folke/todo-comments.nvim", opts = { signs = false } },
+
+    -- for lsp reporting right bottom
+    { "j-hui/fidget.nvim",        opts = {} },
+    -- lsp diagnostics bottom right
+    {
+
+        'santigo-zero/right-corner-diagnostics.nvim',
+        opts = {
+            position = 'bottom',
+            auto_cmds = true,
+        },
+    },
+    -- statusline
     {
         "nvim-lualine/lualine.nvim",
-        dependencies = {
-            { "j-hui/fidget.nvim" }
-        },
         config = function() require("statusline") end
     },
-    -- syntax colors
+    -- search and popup for everything
+    {
+        "nvim-telescope/telescope.nvim",
+        dependencies = {
+            {
+                'nvim-telescope/telescope-fzf-native.nvim',
+                build =
+                'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build'
+            },
+            "nvim-telescope/telescope-file-browser.nvim",
+        },
+        config = function()
+            local defaults = require("telescope.themes").get_ivy({})
+            defaults.prompt_prefix = " ❯ "
+            defaults.selection_caret = " ❯ "
+            defaults.entry_prefix = "   "
+            defaults.find_command = { "fd", "-t=f", "-a" }
+            defaults.path_display = { "smart" }
+            defaults.wrap_results = true
+            require("telescope").setup({ defaults = defaults })
+            require("telescope").load_extension("fzf")
+            require("telescope").load_extension("file_browser")
+        end
+    },
+    -- lsp, completion, fixer and linter
+    {
+        "neovim/nvim-lspconfig",
+        dependencies = {
+            {
+                "nvimtools/none-ls.nvim",
+                dependencies = {
+                    "nvimtools/none-ls-extras.nvim",
+                    'MunifTanjim/prettier.nvim',
+                },
+            },
+            -- completions on steroid
+            {
+                "hrsh7th/nvim-cmp",
+                dependencies = {
+                    "hrsh7th/cmp-cmdline",
+                    "hrsh7th/cmp-buffer",
+                    "hrsh7th/cmp-path",
+                    "hrsh7th/cmp-nvim-lsp",
+                    "hrsh7th/cmp-nvim-lsp-signature-help",
+                    "onsails/lspkind-nvim",
+                    "lukas-reineke/cmp-under-comparator",
+                    {
+                        "zbirenbaum/copilot-cmp",
+                        dependencies = {
+                            "zbirenbaum/copilot.lua",
+                        },
+                    },
+                },
+                config = function() require("completions") end
+            },
+        },
+        config = function() require("lsp") end
+    },
+    -- treesitter (for lsp detailled definitions, advanced syntax highlight)
     {
         "nvim-treesitter/nvim-treesitter",
         build = ":TSUpdateSync",
         dependencies = {
+            {
+                "nvim-treesitter/nvim-treesitter-context",
+                opts = {
+                    separator = " ",
+                }
+            },
             "nvim-treesitter/nvim-treesitter-textobjects",
         },
         config = function()
@@ -76,108 +172,4 @@ require("lazy").setup({
         end
     },
 
-    -- find/grep/files/... <leader>pX
-    {
-        "nvim-telescope/telescope.nvim",
-        dependencies = {
-            { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
-            "aaronhallaert/ts-advanced-git-search.nvim",
-            "nvim-telescope/telescope-ui-select.nvim",
-            "nvim-telescope/telescope-file-browser.nvim",
-        },
-        config = function()
-            local defaults = require("telescope.themes").get_ivy({})
-            defaults.prompt_prefix = " ❯ "
-            defaults.selection_caret = " ❯ "
-            defaults.entry_prefix = "   "
-            defaults.find_command = { "fd", "-t=f", "-a" }
-            defaults.path_display = { "smart" }
-            defaults.wrap_results = true
-            require("telescope").setup({ defaults = defaults })
-            require("telescope").load_extension("fzf")
-            require("telescope").load_extension("advanced_git_search")
-            require("telescope").load_extension("file_browser")
-            require("telescope").load_extension("ui-select")
-        end
-    },
-    { "smjonas/inc-rename.nvim", opts = {} },
-
-    {
-        "zbirenbaum/copilot.lua",
-        opts = {
-            suggestion = { enabled = false },
-            panel = { enabled = true },
-            filetypes = {
-                javascript = true,
-                typescript = true,
-                python = true,
-                ["*"] = false,
-            },
-        }
-    },
-
-    -- lsp, completion, fixer and linter
-    {
-        "neovim/nvim-lspconfig",
-        dependencies = {
-            "nvimtools/none-ls.nvim",
-            {
-                "hrsh7th/nvim-cmp",
-                dependencies = {
-                    "hrsh7th/cmp-cmdline",
-                    "hrsh7th/cmp-vsnip",
-                    "hrsh7th/vim-vsnip",
-                    "hrsh7th/cmp-buffer",
-                    "hrsh7th/cmp-path",
-                    "hrsh7th/cmp-nvim-lsp",
-                    "hrsh7th/cmp-nvim-lsp-document-symbol",
-                    "hrsh7th/cmp-nvim-lsp-signature-help",
-                    "petertriho/cmp-git",
-                    "onsails/lspkind-nvim",
-                    "lukas-reineke/cmp-under-comparator",
-                    {
-                        "zbirenbaum/copilot-cmp",
-                        dependencies = { "zbirenbaum/copilot.lua" },
-                    },
-                },
-                config = function() require("completions") end
-            },
-        },
-        config = function() require("lsp") end
-    },
-    { "folke/lsp-colors.nvim",   opts = {} },
-    {
-        "folke/trouble.nvim",
-        build = ";git cherry-pick custom",
-        enabled = true,
-        config = function()
-            require("trouble").setup(
-                {
-                    auto_open = false,
-                    auto_close = false,
-                    group = false,
-                    height = 5,
-                    padding = false,
-                    indent_lines = false,
-                    mode = "workspace_diagnostics",
-                    auto = false,
-                    use_diagnostic_signs = true,
-                }
-            )
-
-            local valid_display = function()
-                local is_headless = next(vim.api.nvim_list_uis()) == nil
-                local win = vim.api.nvim_get_current_win()
-                local buf = vim.api.nvim_get_current_buf()
-                local already_done = vim.g.trouble_init_done and vim.g.trouble_init_done == 1
-                return not is_headless and not already_done and vim.api.nvim_buf_is_valid(buf) and
-                    vim.api.nvim_win_is_valid(win)
-            end
-            if valid_display() then
-                vim.g.trouble_init_done = 1
-                require("trouble").open({ auto = false })
-            end
-        end
-    },
-    { 'antonk52/bad-practices.nvim', opts = {} }
 })

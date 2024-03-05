@@ -3,49 +3,11 @@ local cmp_nvim_lsp = require("cmp_nvim_lsp")
 
 -- vim.lsp.set_log_level("info")
 
-local log_to_message = function(_, data, _)
-    for _, d in ipairs(data) do
-        print(d)
-    end
-end
-
----@diagnostic disable-next-line: unused-function,unused-local
-local on_new_config_venv_binary_install = function(name, args)
-    return function(new_config, new_root_dir)
-        local venv = require("utils").get_venvdir(new_root_dir)
-        if vim.fn.isdirectory(venv) ~= 0 then
-            local venv_bin_path = venv .. "/bin/" .. name
-            if vim.fn.filereadable(venv_bin_path) == 0 then
-                vim.fn.jobstart(
-                    venv .. "/bin/pip install " .. name,
-                    {
-                        on_stdout = log_to_message,
-                        on_stderr = log_to_message,
-                        on_exit = function()
-                            vim.api.nvim_command("LspRestart")
-                        end
-                    }
-                )
-            else
-                new_config.cmd = { venv_bin_path }
-                if (args ~= nil) then
-                    for _, arg in ipairs(args) do
-                        table.insert(new_config.cmd, arg)
-                    end
-                end
-            end
-        end
-    end
-end
-
 local lsp_options = {
     common = {
         capabilities = cmp_nvim_lsp.default_capabilities(),
         on_attach = function(client, bufnr)
             if client.name == "ruff_lsp" then
-                client.server_capabilities.hoverProvider = false
-
-                -- Not ready yet
                 -- client.server_capabilities.documentFormattingProvider = false
                 -- client.server_capabilities.documentRangeFormattingProvider = false
             end
@@ -53,9 +15,6 @@ local lsp_options = {
                 -- eslint is used instead
                 client.server_capabilities.documentFormattingProvider = false
                 client.server_capabilities.documentRangeFormattingProvider = false
-            end
-            if client.server_capabilities.codeLensProvider then
-                require('virtualtypes').on_attach(client, bufnr)
             end
             require("formatter").on_attach(client, bufnr)
             if client.server_capabilities.documentSymbolProvider then
@@ -119,16 +78,6 @@ local lsp_options = {
             end
         end,
     },
-    dmypyls = {
-        on_new_config = function(new_config, new_root_dir)
-            --on_new_config_venv_binary_install("dmypy-ls", { "--chdir=" .. new_root_dir })(new_config, new_root_dir)
-            local venv = require("utils").get_venvdir(new_root_dir)
-            if venv ~= nil then
-                --[[ new_config.cmd = { "dmypy-ls", "--chdir=" .. new_root_dir, "--virtualenv=" .. venv } ]]
-                new_config.cmd = { venv .. "/bin/dmypy-ls", "--chdir=" .. new_root_dir }
-            end
-        end
-    },
 }
 
 require("lspconfig.configs")["dmypyls"] = {
@@ -148,12 +97,12 @@ local null_ls_sources = {
         end,
     }),
     null_ls.builtins.formatting.black.with({ only_local = ".venv/bin", extra_args = { "--fast" } }),
-    null_ls.builtins.formatting.ruff.with({
+    require("none-ls.formatting.ruff").with({
         only_local = ".venv/bin",
         extra_args = { "--ignore", "F841,F401" }
     }),
     null_ls.builtins.formatting.isort.with({ only_local = ".venv/bin" }),
-    null_ls.builtins.diagnostics.flake8.with({
+    require("none-ls.diagnostics.flake8").with({
         only_local = ".venv/bin",
         condition = function(utils)
             return utils.root_has_file({ ".flake8" })
@@ -174,18 +123,25 @@ local null_ls_sources = {
             return params.lsp_params.textDocument.uri:match(".github/workflow") ~= nil
         end,
     }),
-    --null_ls.builtins.diagnostics.commitlint,
-    --null_ls.builtins.diagnostics.vulture.with({ extra_args = { "--min-confidence=70" } }),
+    require("prettier").setup({
+        ["null-ls"] = {
+            condition = function()
+                return require("prettier").config_exists({
+                    -- if `false`, skips checking `package.json` for `"prettier"` key
+                    check_package_json = true,
+                })
+            end,
+            timeout = 5000,
+        }
+    })
 }
 null_ls.setup({ on_attach = lsp_options.common.on_attach, sources = null_ls_sources })
 
 local servers = {
-    --"pyright",
     "ruff_lsp",
     "jedi_language_server",
     "eslint",
     "tsserver",
-    --"vtsls",
 
     "html",
     "cssls",
@@ -197,8 +153,6 @@ local servers = {
     "marksman",
     "jsonls",
     "grammarly",
-    --"dmypyls",
-    --"yamlls",
 }
 for _, lsp in ipairs(servers) do
     local options = vim.deepcopy(lsp_options.common)

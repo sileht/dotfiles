@@ -16,10 +16,9 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 
 vim.api.nvim_create_autocmd('BufEnter', {
     callback = function()
+        local name = vim.api.nvim_buf_get_name(0)
         local buftype = vim.fn.getbufvar(vim.fn.bufnr(), "&buftype")
-        if buftype == "quickfix" or buftype == "nofile" then
-            return
-        else
+        if buftype == "" and name ~= "" then
             local current_file_dir = vim.fn.expand("%:p:h")
             if vim.fn.isdirectory(current_file_dir) ~= 0 then
                 vim.cmd("lcd " .. current_file_dir)
@@ -31,18 +30,6 @@ vim.api.nvim_create_autocmd('BufEnter', {
 vim.api.nvim_create_autocmd("BufWritePre", {
     pattern = "*",
     callback = require("formatter").may_format
-})
-
---[[ vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost" }, {
-    pattern = "*.py",
-    callback = require("linters").run_linter
-}) ]]
-vim.api.nvim_create_autocmd("BufDelete", {
-    callback = function(params)
-        for namespace_id, _ in pairs(vim.diagnostic.get_namespaces()) do
-            vim.diagnostic.reset(namespace_id, params.buf)
-        end
-    end
 })
 
 function _G.set_terminal_keymaps()
@@ -63,3 +50,10 @@ vim.api.nvim_create_autocmd("TermOpen", {
 })
 
 vim.api.nvim_create_user_command("T", "ToggleTerm", {})
+
+vim.api.nvim_create_augroup("qf", { clear = true })
+vim.api.nvim_create_autocmd("Filetype", {
+    group = "qf",
+    pattern = "qf",
+    command = "set nobuflisted"
+})

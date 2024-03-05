@@ -106,7 +106,7 @@ function M.toggle_focus()
         require("gitsigns.config").config.signcolumn = false
         require("gitsigns.actions").refresh()
         require("scrollview").set_state(false)
-        require("trouble").close()
+        --require("trouble").close()
         vim.opt.cmdheight = 0
     else
         require("scrollview").set_state(true)
@@ -117,7 +117,7 @@ function M.toggle_focus()
         vim.opt.mouse = "a"
         vim.opt.number = true
         vim.opt.laststatus = 3
-        require("trouble").open()
+        --require("trouble").open()
         vim.opt.cmdheight = 1
         vim.cmd("wincmd p")
     end
@@ -130,4 +130,42 @@ M.enhanced_experience_paths = {
     "/Users/sileht/workspace/mergify/cli",
     "/Users/sileht/.env/",
 }
+
+
+M.loclist_initiated = false
+M.loclist_last_bufnr = nil
+
+
+function M.loclist_init()
+    local name = vim.api.nvim_buf_get_name(0)
+    local buftype = vim.fn.getbufvar(vim.fn.bufnr(), "&buftype")
+    if buftype ~= "" and name == "" then
+        return
+    end
+
+    if not M.loclist_initiated then
+        M.loclist_initiated = true
+        print("init")
+        --vim.diagnostic.setqflist({ open = false })
+        local window = vim.api.nvim_get_current_win()
+        vim.cmd("copen 6")
+        vim.api.nvim_set_current_win(window)
+    end
+end
+
+function M.loclist_update(force)
+    local name = vim.api.nvim_buf_get_name(0)
+    local bufnr = vim.fn.bufnr()
+    local buftype = vim.fn.getbufvar(vim.fn.bufnr(), "&buftype")
+    if buftype ~= "" and name == "" then
+        --M.loclist_last_bufnr = bufnr
+        return
+    end
+
+    if force or M.loclist_last_bufnr ~= bufnr then
+        --M.loclist_last_bufnr = bufnr
+        vim.diagnostic.setqflist({ open = false })
+    end
+end
+
 return M

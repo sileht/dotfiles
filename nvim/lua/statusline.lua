@@ -12,9 +12,11 @@ local toggler = function(name, module, var)
     return { toggler_text, color = toggler_color }
 end
 
-local is_not_trouble = function()
-    local is_trouble = vim.api.nvim_buf_get_name(0):match(".*(Trouble)$")
-    return is_trouble == nil
+local is_not_diagnostics = function()
+    local name = vim.api.nvim_buf_get_name(0)
+    local is_trouble = name:match(".*(Trouble)$")
+    local is_loclist = name == ""
+    return is_trouble == nil and not is_loclist
 end
 
 local top_sticky_bar = {
@@ -24,36 +26,50 @@ local top_sticky_bar = {
     lualine_x = {
         toggler("Formatter", "formatter", "enabled"),
         toggler("Focus", "utils", "focus_mode_enabled"),
+
     },
     lualine_y = {},
-    lualine_z = { "tabs" }
+    lualine_z = {},
 }
 local top_buffer_bar = {
     lualine_a = {},
-    lualine_b = {
-        { "branch", cond = is_not_trouble },
-        { "diff",   cond = is_not_trouble },
-    },
-    lualine_c = {
-        { "navic", cond = is_not_trouble }
-    },
+    lualine_b = {},
+    lualine_c = {},
     lualine_x = {},
-    lualine_y = { "diagnostics" },
+    lualine_y = {},
     lualine_z = {},
 }
 
 
 local bottom_bar = {
     lualine_a = { "mode" },
-    lualine_b = { "filename" },
-    lualine_c = { "searchcount", "selectioncount" },
-    lualine_x = { "encoding", "fileformat", "filetype" },
-    lualine_y = { "progress" },
-    lualine_z = { "location" }
+    lualine_b = {
+        { "filetype", icon_only = true, separator = { left = '', right = '' } },
+        { "filename" },
+        {
+            "diagnostics",
+            always_visible = false,
+        },
+        { "diff",   cond = is_not_diagnostics },
+        { "branch", cond = is_not_diagnostics },
+    },
+    lualine_c = {},
+    lualine_x = {},
+    lualine_y = {
+        "searchcount", "selectioncount",
+        "encoding", "fileformat",
+    },
+    lualine_z = { "location", "progress" }
 }
 require("lualine").setup(
     {
-        options = { theme = 'auto' },
+        options = {
+            theme = 'kanagawa',
+            --section_separators = '│',
+            component_separators = '│',
+            section_separators = { left = ' ', right = ' ' },
+            --section_separators = { left = '', right = '' },
+        },
         sections = bottom_bar,
         inactive_sections = bottom_bar,
         winbar = top_buffer_bar,
@@ -61,4 +77,3 @@ require("lualine").setup(
         tabline = top_sticky_bar,
     }
 )
-require("fidget").setup()
