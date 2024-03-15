@@ -8,8 +8,8 @@ local lsp_options = {
         capabilities = cmp_nvim_lsp.default_capabilities(),
         on_attach = function(client, bufnr)
             if client.name == "ruff_lsp" then
-                -- client.server_capabilities.documentFormattingProvider = false
-                -- client.server_capabilities.documentRangeFormattingProvider = false
+                --client.server_capabilities.documentFormattingProvider = false
+                --client.server_capabilities.documentRangeFormattingProvider = false
             end
             if client.name == "tsserver" then
                 -- eslint is used instead
@@ -17,9 +17,6 @@ local lsp_options = {
                 client.server_capabilities.documentRangeFormattingProvider = false
             end
             require("formatter").on_attach(client, bufnr)
-            if client.server_capabilities.documentSymbolProvider then
-                require("nvim-navic").attach(client, bufnr)
-            end
         end,
         flags = {
             debounce_text_changes = 150
@@ -114,6 +111,9 @@ local null_ls_sources = {
         method = null_ls.methods.DIAGNOSTICS_ON_SAVE,
         debounce = 250,
         timeout = 20000,
+        runtime_condition = function(params)
+            return vim.fn.filereadable(params.bufname) == 1
+        end
     }),
     null_ls.builtins.diagnostics.yamllint.with({
         only_local = ".venv/bin",

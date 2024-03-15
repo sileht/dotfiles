@@ -58,12 +58,44 @@ require("lazy").setup({
     { "dstein64/nvim-scrollview", opts = { signs_on_startup = {}, winblend = 50 } },
     -- TODO/NOTE colors
     { "folke/todo-comments.nvim", opts = { signs = false } },
-
+    -- tabline
+    {
+        'romgrk/barbar.nvim',
+        dependencies = {
+            'lewis6991/gitsigns.nvim',
+            'nvim-tree/nvim-web-devicons',
+        },
+        init = function() vim.g.barbar_auto_setup = false end,
+        opts = {
+            maximum_padding = 1,
+            insert_at_end = true,
+            icons = {
+                buffer_number = "subscript",
+                diagnostics = {
+                    [vim.diagnostic.severity.ERROR] = { enabled = true },
+                    [vim.diagnostic.severity.WARN] = { enabled = true },
+                    [vim.diagnostic.severity.INFO] = { enabled = true },
+                    [vim.diagnostic.severity.HINT] = { enabled = true },
+                },
+            }
+        },
+    },
+    { 'Bekaboo/deadcolumn.nvim',      opts = {} },
     -- for lsp reporting right bottom
-    { "j-hui/fidget.nvim",        opts = {} },
+    { "j-hui/fidget.nvim",            opts = {} },
+    -- Better code actions UI
+    { "aznhe21/actions-preview.nvim", opts = {} },
+    -- Indentation marker
+    {
+        "lukas-reineke/indent-blankline.nvim",
+        main = "ibl",
+        opts = {
+            indent = { char = "⠅" },
+            scope = { enabled = false },
+        },
+    },
     -- lsp diagnostics bottom right
     {
-
         'santigo-zero/right-corner-diagnostics.nvim',
         opts = {
             position = 'bottom',
@@ -138,12 +170,6 @@ require("lazy").setup({
         "nvim-treesitter/nvim-treesitter",
         build = ":TSUpdateSync",
         dependencies = {
-            {
-                "nvim-treesitter/nvim-treesitter-context",
-                opts = {
-                    separator = " ",
-                }
-            },
             "nvim-treesitter/nvim-treesitter-textobjects",
         },
         config = function()

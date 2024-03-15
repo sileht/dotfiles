@@ -8,7 +8,6 @@ vim.g.loaded_perl_provider = 0
 vim.g.loaded_node_provider = 0
 vim.g.loaded_ruby_provider = 0
 
-
 vim.opt.cursorline = true
 -- vim.opt.cursorlineopt = "number"
 
@@ -36,19 +35,19 @@ vim.opt.scrolloff = 3                  -- Minimum lines to keep above and below 
 vim.opt.clipboard = "unnamed,unnamedplus"
 -- vim.opt.list
 -- vim.opt.listchars = "tab:›\ ,trail:•,extends:#,nbsp:." -- Highlight problematic whitespace
-vim.opt.wrap = false          -- Do not wrap long lines
-vim.opt.autoindent = true     -- Indent at the same level of the previous line
+vim.opt.wrap = false       -- Do not wrap long lines
+vim.opt.autoindent = true  -- Indent at the same level of the previous line
 vim.opt.smartindent = true
-vim.opt.shiftwidth = 4        -- Use indents of 4 spaces
-vim.opt.expandtab = true      -- Tabs are spaces, not tabs
-vim.opt.tabstop = 4           -- An indentation every four columns
-vim.opt.softtabstop = 4       -- Let backspace delete indent
-vim.opt.joinspaces = false    -- Prevents inserting two spaces after punctuation on a join (J)
-vim.opt.splitright = true     -- Puts new vsplit windows to the right of the current
-vim.opt.splitbelow = true     -- Puts new split windows to the bottom of the current
+vim.opt.shiftwidth = 4     -- Use indents of 4 spaces
+vim.opt.expandtab = true   -- Tabs are spaces, not tabs
+vim.opt.tabstop = 4        -- An indentation every four columns
+vim.opt.softtabstop = 4    -- Let backspace delete indent
+vim.opt.joinspaces = false -- Prevents inserting two spaces after punctuation on a join (J)
+vim.opt.splitright = true  -- Puts new vsplit windows to the right of the current
+vim.opt.splitbelow = true  -- Puts new split windows to the bottom of the current
 -- vim.opt.matchpairs+ = "<:>"              -- Match, to be used with %
-vim.opt.pastetoggle = "<F12>" -- pastetoggle (sane indentation on pastes)
-vim.opt.foldenable = false    -- No fold
+--nvim < 0.10 vim.opt.pastetoggle = "<F12>" -- pastetoggle (sane indentation on pastes)
+vim.opt.foldenable = false -- No fold
 vim.opt.foldmethod = "manual"
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 
@@ -65,6 +64,7 @@ vim.opt.timeoutlen = 500
 
 
 
+vim.opt.colorcolumn = "88"
 vim.opt.completeopt = "menu,menuone,noselect"
 
 vim.g.mapleader = ","
