@@ -127,7 +127,9 @@ M.enhanced_experience_paths = {
     "/Users/sileht/workspace/mergify/engine",
     "/Users/sileht/workspace/mergify/shadow_office",
     "/Users/sileht/workspace/mergify/ui",
+    "/Users/sileht/workspace/mergify/docs",
     "/Users/sileht/workspace/mergify/cli",
+    "/Users/sileht/workspace/mergify/heroku",
     "/Users/sileht/.env/",
 }
 

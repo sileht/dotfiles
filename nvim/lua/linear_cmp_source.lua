@@ -106,5 +106,8 @@ source.execute = function(_, completion_item, callback)
     callback(completion_item)
 end
 
----Register custom M to nvim-cmp.
-require("cmp").register_source("linear", source.new())
+source.setup = function()
+    ---Register custom M to nvim-cmp.
+    require("cmp").register_source("linear", source.new())
+end
+return source

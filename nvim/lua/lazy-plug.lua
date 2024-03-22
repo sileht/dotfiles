@@ -37,7 +37,7 @@ require("lazy").setup({
         end
     },
     -- keybinding
-    { "folke/which-key.nvim",     config = function() require("keybindings") end },
+    { "folke/which-key.nvim",    config = function() require("keybindings") end },
     -- . on steroid
     "tpope/vim-repeat",
     -- Git blame, ...
@@ -47,15 +47,19 @@ require("lazy").setup({
     -- easyalign ley: ga
     "junegunn/vim-easy-align",
     -- lsp smart rename F5
-    { "smjonas/inc-rename.nvim",  opts = {} },
+    { "smjonas/inc-rename.nvim", opts = {} },
     -- comment/uncoment: gcc, gcb
-    { "numToStr/Comment.nvim",    opts = {} },
+    { "numToStr/Comment.nvim",   opts = {} },
     -- open in browser
-    { "ruifm/gitlinker.nvim",     opts = { mappings = nil }, },
+    { "ruifm/gitlinker.nvim",    opts = { mappings = nil }, },
     -- git info
-    { "lewis6991/gitsigns.nvim",  opts = {} },
+    { "lewis6991/gitsigns.nvim", opts = {} },
     -- scrollbar
-    { "dstein64/nvim-scrollview", opts = { signs_on_startup = {}, winblend = 50 } },
+    {
+        "dstein64/nvim-scrollview",
+        opts = { signs_on_startup = {}, winblend = 50 }
+    },
+    { "karb94/neoscroll.nvim",    opts = {} },
     -- TODO/NOTE colors
     { "folke/todo-comments.nvim", opts = { signs = false } },
     -- tabline

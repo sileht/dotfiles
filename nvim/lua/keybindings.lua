@@ -35,17 +35,18 @@ require("which-key").register(
             "File browser" },
         ["<leader>a"] = { require("actions-preview").code_actions, "Code action" },
         ["<leader>A"] = { vim.lsp.buf.code_action, "Code action" },
-        --["<S-left>"] = { "<CMD>BufferLineCycleWindowlessPrev<CR>", "Buffer previous" },
-        --["<S-right>"] = { "<CMD>BufferLineCycleWindowlessNext<CR>", "Buffer next" },
+        ["<S-left>"] = { ":BufferPrevious<CR>", "Buffer previous" },
+        ["<S-right>"] = { ":BufferNext<CR>", "Buffer next" },
     }
 )
 vim.cmd([[
     nnoremap P "0p                            " Paste last yank
     nnoremap Y y$                             " Yank from the cursor to the end of the line, to be consistent with C and D.
-    cnoreabbrev bd silent! bd
+    "cnoreabbrev bd silent! bd
+    cnoreabbrev bd :BufferClose<Enter>
     cnoreabbrev bw silent! bw
-    nmap <silent> <S-left>  :bp<Enter>
-    nmap <silent> <S-right> :bn<Enter>
+    "nmap <silent> <S-left>  :bp<Enter>
+    "nmap <silent> <S-right> :bn<Enter>
     xmap ga <Plug>(EasyAlign)
     nmap ga <Plug>(EasyAlign)
 ]])

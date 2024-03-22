@@ -10,11 +10,22 @@ local has_words_before = function()
     return false
 end
 
-require("linear_cmp_source")
-
+require("linear_cmp_source").setup()
+require("copilot").setup({
+    suggestion = { enabled = false },
+    panel = { enabled = false },
+    filetypes = {
+        javascript = true,
+        typescript = true,
+        python = true,
+        ["*"] = false,
+    },
+})
+require("copilot_cmp").setup()
+local lspkind = require('lspkind')
 cmp.setup({
     experimental = {
-        ghost_text = true,
+        ghost_text = false,
     },
     sources = cmp.config.sources({
         { name = "copilot" },
@@ -24,31 +35,10 @@ cmp.setup({
         { name = "path" },
     }),
     formatting = {
-        label = require("copilot_cmp.format").format_label_text,
-        insert_text = require("copilot_cmp.format").format_insert_text,
-        preview = require("copilot_cmp.format").deindent,
-        format = require("lspkind").cmp_format({
-            with_text = true, -- do not show text alongside icons
-            maxwidth = 50,    -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
-            -- The function below will be called before any actual modifications from lspkind
-            -- so that you can provide more controls on popup customization. (See [#30](https://github.com/onsails/lspkind-nvim/pull/30))
-            before = function(entry, vim_item)
-                local kind_map = {
-                    cmp_copilot = " Copilot",
-                }
-                if kind_map[entry.source.name] ~= nil then
-                    local detail = (entry.completion_item.data or {}).detail
-                    vim_item.kind = kind_map[entry.source.name]
-                    if detail and detail:find('.*%%.*') then
-                        vim_item.kind = vim_item.kind .. ' ' .. detail
-                    end
-
-                    if (entry.completion_item.data or {}).multiline then
-                        vim_item.kind = vim_item.kind .. ' ' .. '[ML]'
-                    end
-                end
-                return vim_item
-            end
+        format = lspkind.cmp_format({
+            mode = "symbol",
+            max_width = 80,
+            symbol_map = { Copilot = "" }
         })
     },
     mapping = cmp.mapping.preset.insert({
@@ -113,13 +103,3 @@ cmp.setup.cmdline(
         sources = cmp.config.sources({ { name = "path" } }, { { name = "cmdline" } })
     }
 )
-require("copilot").setup({
-    suggestion = { enabled = false },
-    panel = { enabled = false },
-    filetypes = {
-        javascript = true,
-        typescript = true,
-        python = true,
-        ["*"] = false,
-    },
-})
