@@ -95,6 +95,7 @@
 	repo = /Users/sileht/.env/znap/z-shell/F-Sy-H
 	repo = /Users/sileht/.env/znap/zsh-users/zsh-autosuggestions
 	repo = /Users/sileht/.env/znap/zsh-users/zsh-completions
+	repo = /Users/sileht/.env/znap/Aloxaf/fzf-tab
 [credential "https://ghes-dev.mergify.com"]
 	helper = 
 	helper = !/opt/homebrew/bin/gh auth git-credential

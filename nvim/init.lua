@@ -10,6 +10,7 @@ if not vim.loop.fs_stat(lazypath) then
     })
 end
 vim.opt.rtp:prepend(lazypath)
+vim.opt.rtp:append("/opt/homebrew/opt/fzf")
 
 require("settings")
 require("autocmd")

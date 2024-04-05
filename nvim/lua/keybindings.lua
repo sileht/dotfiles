@@ -26,6 +26,7 @@ require("which-key").register(
         ["<leader>d"] = { function() require('telescope.builtin').diagnostics({ bufnr = 0 }) end, "Diagnostics" },
         ["<leader>c"] = { require('telescope.builtin').git_commits, "Git commit" },
         --["<leader>f"] = { require('telescope.builtin').find_files, "find" },
+        ["<leader>f"] = { require('telescope.builtin').git_files, "Git files" },
         ["<leader>g"] = { require('telescope.builtin').live_grep, "Grep" },
         ["<leader>k"] = { require('telescope.builtin').keymaps, "Keymaps" },
         --["<leader>fb"] = { require('telescope.builtin').buffers, "buffer" },

@@ -17,6 +17,7 @@ alias brow="arch --x86_64 $BROW_PREFIX/bin/brew"
 fpath+=(${BREW_PREFIX}/share/zsh/site-functions)
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
 HEROKU_AC_ZSH_SETUP_PATH=$HOME/Library/Caches/heroku/autocomplete/zsh_setup && test -f $HEROKU_AC_ZSH_SETUP_PATH && source $HEROKU_AC_ZSH_SETUP_PATH;
 
 source "${BREW_PREFIX}/share/google-cloud-sdk/path.zsh.inc"
@@ -43,6 +44,9 @@ export NODE_NO_WARNINGS=1
 
 export PYTEST_XDIST_AUTO_NUM_WORKERS=5
 
+eval "$(fzf --zsh)"
+export FZF_DEFAULT_OPTS='--height 30% --layout=reverse --no-separator --no-scrollbar --info=hidden --pointer="|" --prompt="➠ "'
+
 ############
 # BINDKEYS #
 ############
@@ -52,55 +56,30 @@ KEYTIMEOUT=1
 bindkey -e              # load emacs bindkeys
 bindkey " " magic-space # also do history expansion on space
 
-#typeset -g -A key
-#
-#key[Home]="${terminfo[khome]}"
-#key[End]="${terminfo[kend]}"
-#key[Insert]="${terminfo[kich1]}"
-#key[Backspace]="${terminfo[kbs]}"
-#key[Delete]="${terminfo[kdch1]}"
-#key[Up]="${terminfo[kcuu1]}"
-#key[Down]="${terminfo[kcud1]}"
-#key[Left]="${terminfo[kcub1]}"
-#key[Right]="${terminfo[kcuf1]}"
-#key[PageUp]="${terminfo[kpp]}"
-#key[PageDown]="${terminfo[knp]}"
-#key[Shift-Tab]="${terminfo[kcbt]}"
-#
-## setup key accordingly
-#[[ -n "${key[Home]}"      ]] && bindkey -- "${key[Home]}"       beginning-of-line
-#[[ -n "${key[End]}"       ]] && bindkey -- "${key[End]}"        end-of-line
-#[[ -n "${key[Insert]}"    ]] && bindkey -- "${key[Insert]}"     overwrite-mode
-#[[ -n "${key[Backspace]}" ]] && bindkey -- "${key[Backspace]}"  backward-delete-char
-#[[ -n "${key[Delete]}"    ]] && bindkey -- "${key[Delete]}"     delete-char
-#[[ -n "${key[Up]}"        ]] && bindkey -- "${key[Up]}"         up-line-or-history
-#[[ -n "${key[Down]}"      ]] && bindkey -- "${key[Down]}"       down-line-or-history
-#[[ -n "${key[Left]}"      ]] && bindkey -- "${key[Left]}"       backward-char
-#[[ -n "${key[Right]}"     ]] && bindkey -- "${key[Right]}"      forward-char
-#[[ -n "${key[PageUp]}"    ]] && bindkey -- "${key[PageUp]}"     beginning-of-buffer-or-history
-#[[ -n "${key[PageDown]}"  ]] && bindkey -- "${key[PageDown]}"   end-of-buffer-or-history
-#[[ -n "${key[Shift-Tab]}" ]] && bindkey -- "${key[Shift-Tab]}"  reverse-menu-complete
-#
-### Finally, make sure the terminal is in application mode, when zle is
-### active. Only then are the values from $terminfo valid.
-##if (( ${+terminfo[smkx]} && ${+terminfo[rmkx]} )); then
-##	autoload -Uz add-zle-hook-widget
-##	function zle_application_mode_start { echoti smkx }
-##	function zle_application_mode_stop { echoti rmkx }
-##	add-zle-hook-widget -Uz zle-line-init zle_application_mode_start
-##	add-zle-hook-widget -Uz zle-line-finish zle_application_mode_stop
-##fi
-#
-#
-#autoload -U select-word-style
-#select-word-style bash
-#
 ###########
 # PLUGINS #
 ###########
 
 #zstyle ':znap:*:*' git-maintenance off
 znap prompt sindresorhus/pure
+
+#autoload -U compinit; compinit
+
+znap source Aloxaf/fzf-tab
+# disable sort when completing `git checkout`
+zstyle ':completion:*:git-checkout:*' sort false
+# set descriptions format to enable group support
+# NOTE: don't use escape sequences here, fzf-tab will ignore them
+zstyle ':completion:*:descriptions' format '[%d]'
+# set list-colors to enable filename colorizing
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+# force zsh not to show completion menu, which allows fzf-tab to capture the unambiguous prefix
+zstyle ':completion:*' menu no
+# preview directory's content with eza when completing cd
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
+# switch group using `<` and `>`
+zstyle ':fzf-tab:*' switch-group '<' '>'
+
 
 zstyle ':completion:*' menu select
 ##znap source marlonrichert/zsh-autocomplete
@@ -151,18 +130,8 @@ znap eval zcolors zcolors
 
 export GREP_COLOR='mt=$GREP_COLOR'
 
-#znap source Aloxaf/fzf-tab
-
-#znap eval iterm2 'curl -fsSL https://iterm2.com/shell_integration/zsh'
-
 znap function _python_argcomplete pipx  'eval "$( register-python-argcomplete pipx  )"'
 complete -o nospace -o default -o bashdefault -F _python_argcomplete pipx
-
-#znap function _pyenv pyenv              'eval "$( pyenv init - --no-rehash --path)"'
-#compctl -K    _pyenv pyenv
-
-#znap function _pip_completion pip       'eval "$( pip completion --zsh )"'
-#compctl -K    _pip_completion pip
 
 zstyle ':autocomplete:*' min-delay 0
 zstyle ':autocomplete:*' min-input 2
@@ -570,3 +539,4 @@ run-game(){
     fi
     MTL_HUD_ENABLED=1 WINEESYNC=1 WINEPREFIX="$HOME/games-bottle" `brow --prefix game-porting-toolkit`/bin/wine64 "$exe_path" 2>&1 # | grep "D3DM"
 }
+

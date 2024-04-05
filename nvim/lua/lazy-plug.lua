@@ -47,6 +47,27 @@ require("lazy").setup({
     -- easyalign ley: ga
     "junegunn/vim-easy-align",
     -- lsp smart rename F5
+    {
+        'gelguy/wilder.nvim',
+        dependencies = {
+            "romgrk/fzy-lua-native"
+        },
+        config = function()
+            local wilder = require('wilder')
+            wilder.setup({ modes = { ':', '/', '?' } })
+            wilder.set_option('renderer', wilder.popupmenu_renderer(
+                {
+                    highlights = {
+                        accent = wilder.make_hl('WilderAccent', 'Pmenu',
+                            { { a = 1 }, { a = 1 }, { foreground = '#f4468f' } }),
+                    },
+                    highlighter = { wilder.lua_fzy_highlighter() },
+                    left = { ' ', wilder.popupmenu_devicons() },
+                    right = { ' ', wilder.popupmenu_scrollbar() },
+                }
+            ))
+        end,
+    },
     { "smjonas/inc-rename.nvim", opts = {} },
     -- comment/uncoment: gcc, gcb
     { "numToStr/Comment.nvim",   opts = {} },
@@ -106,7 +127,7 @@ require("lazy").setup({
             auto_cmds = true,
         },
     },
-    -- statusline
+    -- statusline-- with extras
     {
         "nvim-lualine/lualine.nvim",
         config = function() require("statusline") end
