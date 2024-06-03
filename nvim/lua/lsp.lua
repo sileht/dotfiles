@@ -140,6 +140,7 @@ null_ls.setup({ on_attach = lsp_options.common.on_attach, sources = null_ls_sour
 local servers = {
     "ruff_lsp",
     "jedi_language_server",
+    --"biome",
     "eslint",
     "tsserver",
 

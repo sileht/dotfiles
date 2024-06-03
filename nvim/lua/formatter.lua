@@ -18,7 +18,7 @@ end
 M.may_format = function()
     if vim.b.formatter_enabled then
         local can_format = false
-        for _, client in ipairs(vim.lsp.get_active_clients()) do
+        for _, client in ipairs(vim.lsp.get_clients()) do
             if client.name == "eslint" then
                 vim.cmd("EslintFixAll")
             end

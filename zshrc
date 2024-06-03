@@ -65,24 +65,17 @@ znap prompt sindresorhus/pure
 
 #autoload -U compinit; compinit
 
-znap source Aloxaf/fzf-tab
-# disable sort when completing `git checkout`
-zstyle ':completion:*:git-checkout:*' sort false
-# set descriptions format to enable group support
-# NOTE: don't use escape sequences here, fzf-tab will ignore them
 zstyle ':completion:*:descriptions' format '[%d]'
-# set list-colors to enable filename colorizing
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-# force zsh not to show completion menu, which allows fzf-tab to capture the unambiguous prefix
-zstyle ':completion:*' menu no
-# preview directory's content with eza when completing cd
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
-# switch group using `<` and `>`
-zstyle ':fzf-tab:*' switch-group '<' '>'
-
-
 zstyle ':completion:*' menu select
-##znap source marlonrichert/zsh-autocomplete
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+# Use cache
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path $ZVARDIR/compcache
+## allow one error for every three characters typed in approximate completer
+#zstyle -e ':completion:*:approximate:*' max-errors 'reply=( $(( ($#PREFIX+$#SUFFIX)/3 )) numeric )'
+## match uppercase from lowercase
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+
 znap source zsh-users/zsh-completions
 
 ## In-line suggestions
@@ -96,35 +89,7 @@ znap source zsh-users/zsh-autosuggestions
 #ZSH_HIGHLIGHT_HIGHLIGHTERS=( main brackets )
 ##znap source zsh-users/zsh-syntax-highlighting
 znap source z-shell/F-Sy-H
-
 znap source ael-code/zsh-colored-man-pages
-
-zmodload -F zsh/parameter p:functions_source
-
-## Better command line editing tools
-#znap source marlonrichert/zsh-edit
-#zstyle ':edit:*' word-chars '*?\'
-#
-##znap source marlonrichert/zsh-hist  # History editing tools
-#bind \
-#    '^[o' 'open .' \
-#    '^[l' 'git log' \
-#    '^[s' 'git status -Mu --show-stash'
-
-# Replace some default keybindings with better built-in widgets.
-#bindkey \
-#    '^[q'   push-line-or-edit \
-#    '^V'    vi-quoted-insert
-
-# Alt-Shift-S: Prefix current or previous command line with `sudo`.
-.sudo() {
-  [[ -z $BUFFER ]] &&
-      zle .up-history
-  LBUFFER="sudo $LBUFFER"
-}
-zle -N .sudo
-bindkey '^[S' .sudo
-
 znap source marlonrichert/zcolors
 znap eval zcolors zcolors
 
@@ -133,18 +98,9 @@ export GREP_COLOR='mt=$GREP_COLOR'
 znap function _python_argcomplete pipx  'eval "$( register-python-argcomplete pipx  )"'
 complete -o nospace -o default -o bashdefault -F _python_argcomplete pipx
 
-zstyle ':autocomplete:*' min-delay 0
-zstyle ':autocomplete:*' min-input 2
-zstyle ':autocomplete:*' insert-unambiguous yes
-# zstyle ':autocomplete:*' widget-style menu-complete
-zstyle ':autocomplete:*' widget-style menu-select
-# zstyle ':autocomplete:*' widget-style complete-word
-# zstyle ':autocomplete:*' fzf-completion yes
-
 
 PIPX_PACKAGES=(
     mergify-cli
-    git-pull-request
     reno
     rstcheck
     ranger-fm
@@ -158,6 +114,7 @@ PIPX_PACKAGES=(
 )
 
 NPM_PACKAGES=(
+    @biomejs/biome
     diagnostic-languageserver
     @microsoft/compose-language-service
     dockerfile-language-server-nodejs
@@ -280,14 +237,6 @@ set -C                 # Don't ecrase file with >, use >| (overwrite) or >> (app
 #setopt auto_param_slash  # be magic about adding/removing final characters on tab completion
 #setopt auto_remove_slash # be magic about adding/removing final characters on tab completion
 #zmodload zsh/complist    # load fancy completion list and menu handler
-
-# Use cache
-zstyle ':completion:*' use-cache on
-zstyle ':completion:*' cache-path $ZVARDIR/compcache
-## allow one error for every three characters typed in approximate completer
-#zstyle -e ':completion:*:approximate:*' max-errors 'reply=( $(( ($#PREFIX+$#SUFFIX)/3 )) numeric )'
-## match uppercase from lowercase
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
 npi() {
     (

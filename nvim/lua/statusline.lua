@@ -48,18 +48,20 @@ local bottom_bar = {
     lualine_x = {},
     lualine_y = {
         "searchcount", "selectioncount",
-        "encoding", "fileformat",
+        "filetype",
+        "fileformat",
+        "encoding",
     },
     lualine_z = { "location", "progress" }
 }
 require("lualine").setup(
     {
         options = {
-            theme = 'kanagawa',
-            --section_separators = '│',
+            --theme = 'kanagawa',
+            section_separators = ' ',
             component_separators = '│',
             --section_separators = { left = ' ', right = ' ' },
-            section_separators = { left = ' ', right = ' ' },
+            --section_separators = { left = ' ', right = ' ' },
             --section_separators = { left = '', right = '' },
         },
         sections = bottom_bar,

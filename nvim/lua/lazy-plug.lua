@@ -2,38 +2,13 @@ require("lazy").setup({
     { "nvim-lua/plenary.nvim",       priority = 10000 },
     { 'nvim-tree/nvim-web-devicons', opts = { default = true } },
     {
-        "rebelot/kanagawa.nvim",
+        "bluz71/vim-moonfly-colors",
+        name = "moonfly",
+        lazy = false,
+        priority = 1000,
         config = function()
-            require('kanagawa').setup({
-                overrides = function(colors)
-                    return {
-                        DiagnosticVirtualTextError = {
-                            fg = colors.palette.samuraiRed,
-                            bg = colors.palette.winterRed,
-                            italic = true
-                        },
-                        DiagnosticVirtualTextWarn = {
-                            fg = colors.palette.roninYellow,
-                            bg = colors.palette.winterYellow,
-                            italic = true
-                        },
-
-                        DiagnosticVirtualTextInfo = {
-                            fg = colors.palette.dragonBlue,
-                            bg = colors.palette.waveBlue2,
-                            italic = true
-                        },
-
-                        DiagnosticVirtualTextHint = {
-                            fg = colors.palette.dragonGreen,
-                            bg = colors.palette.winterGreen,
-                            italic = true
-                        },
-
-                    }
-                end,
-            })
-            vim.cmd("colorscheme kanagawa-wave")
+            vim.opt.background = "dark"
+            vim.cmd('colorscheme moonfly')
         end
     },
     -- keybinding
@@ -83,6 +58,12 @@ require("lazy").setup({
     { "karb94/neoscroll.nvim",    opts = {} },
     -- TODO/NOTE colors
     { "folke/todo-comments.nvim", opts = { signs = false } },
+    --
+    -- statusline-- with extras
+    {
+        "nvim-lualine/lualine.nvim",
+        config = function() require("statusline") end
+    },
     -- tabline
     {
         'romgrk/barbar.nvim',
@@ -95,7 +76,8 @@ require("lazy").setup({
             maximum_padding = 1,
             insert_at_end = true,
             icons = {
-                buffer_number = "subscript",
+                button = '⛌',
+                buffer_number = "superscript",
                 diagnostics = {
                     [vim.diagnostic.severity.ERROR] = { enabled = true },
                     [vim.diagnostic.severity.WARN] = { enabled = true },
@@ -126,11 +108,6 @@ require("lazy").setup({
             position = 'bottom',
             auto_cmds = true,
         },
-    },
-    -- statusline-- with extras
-    {
-        "nvim-lualine/lualine.nvim",
-        config = function() require("statusline") end
     },
     -- search and popup for everything
     {
@@ -195,7 +172,10 @@ require("lazy").setup({
         "nvim-treesitter/nvim-treesitter",
         build = ":TSUpdateSync",
         dependencies = {
-            "nvim-treesitter/nvim-treesitter-textobjects",
+            {
+                "nvim-treesitter/nvim-treesitter-textobjects",
+                enabled = false,
+            }
         },
         config = function()
             require("nvim-treesitter.configs").setup(

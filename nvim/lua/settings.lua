@@ -10,10 +10,10 @@ vim.g.loaded_ruby_provider = 0
 
 vim.opt.cursorline = true
 -- vim.opt.cursorlineopt = "number"
-
-vim.opt.laststatus = 3 -- Show statusbar
+vim.opt.showtabline = 2 -- Show tabline
+vim.opt.laststatus = 3  -- Show statusbar
 vim.opt.mouse = "a"
-vim.opt.hidden = true  -- Allow buffer switching without saving
+vim.opt.hidden = true   -- Allow buffer switching without saving
 vim.opt.backup = false
 vim.opt.writebackup = false
 vim.opt.undofile = true                -- So is persistent undo ...
