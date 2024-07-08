@@ -3,24 +3,15 @@
 ##########
 IgnoreUnknown RemoteCommand
 
-Host predator rt eve-unlock
-   User root
-
-Host rt
-   Port 22222
-
 Host dev
+    # Hostname ghes-dev.mergify.com
     Hostname 62.210.173.69
     Port 5555
     User root
 
 Host eve predator
-    ForwardAgent yes
-    User sileht
     Port 5555
-
-
-Host eve predator
+    User root
     Hostname %h.sileht.net
 
 Host eve
@@ -28,31 +19,43 @@ Host eve
     DynamicForward 9898
 
 Host eve-unlock
+    User root
     Hostname 192.168.3.200
-    ProxyCommand ssh -x g1.t -W %h:%p
+    ProxyCommand ssh -x nagios.t -W %h:%p
     RequestTTY yes
     RemoteCommand cryptroot-unlock
     Port 5555
 
 Host rt
+    User root
+    Port 22222
     Hostname 192.168.8.2
-    #HostkeyAlgorithms +ssh-rsa
-    #PubkeyAcceptedAlgorithms +ssh-rsa
+    HostkeyAlgorithms +ssh-rsa
+    PubkeyAcceptedAlgorithms +ssh-rsa
+
+Host h
+    Hostname %h.sileht.net
+    User root
+    Port 22222
+    Hostname h.sileht.net
+    HostkeyAlgorithms +ssh-rsa
+    PubkeyAcceptedAlgorithms +ssh-rsa
+    LocalForward 127.0.0.1:8443 127.0.0.1:443
 
 ########
 # TTNN #
 ########
 
-Host puppet.t mx*.t chiliproject.t *ns*.t g*.t openstack.t www.t mastodon.t
+Host h7.t
+    Port 7422
+
+Host *.t
     ForwardAgent yes
-
-Host chiliproject.t
-    Port 22
-
-Host nagios.t
     Port 2222
     User root
     Hostname %hetaneutral.net
+
+Host nagios.t
     DynamicForward 9998
 
 Host *.tunnel
@@ -61,27 +64,6 @@ Host *.tunnel
     User root
     ProxyCommand ssh -W %h:%p nagios.t
 
-Host h7.t
-    Hostname %hetaneutral.net
-    Port 7422
-
-Host utopialab.t
-    Port 55555
-
-Host *.t
-    Hostname %hetaneutral.net
-    Port 22
-    User root
-    #PubkeyAcceptedKeyTypes +ssh-dss
-
-Host *.te
-    Hostname %htaneutral.net
-    Port 2222
-    User root
-    IdentityFile ~/.ssh/id_rsa_g1
-
-Host *.ring.nlnog.net
-    User tetaneutral
 
 ###########
 # DEFAULT #
