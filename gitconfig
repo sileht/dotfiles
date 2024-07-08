@@ -117,4 +117,4 @@
 [mergify-cli]
 	stack-branch-prefix = devs/sileht
 [merge]
-	conflictstyle = diff3
+	conflictstyle = merge
