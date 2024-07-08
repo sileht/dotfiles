@@ -1,9 +1,15 @@
 M = {}
 
-M.code_action_sync = function()
+M.vim_lsp_buf_code_action_sync = function(action)
+    -- sync equivalent of vim.lsp.buf.code_action({
+    -- Should be fixed by https://github.com/neovim/neovim/pull/22598
     local bufnr = vim.api.nvim_get_current_buf()
     local params = vim.lsp.util.make_range_params()
-    params.context = { only = { "source.organizeImports" } }
+    params.context = {
+        only = { action },
+        diagnostics = {}
+    }
+    params.apply = true
     local result = vim.lsp.buf_request_sync(bufnr, "textDocument/codeAction", params, 1000)
     for cid, res in pairs(result or {}) do
         for _, r in pairs(res.result or {}) do
@@ -24,24 +30,12 @@ M.may_format = function()
             end
             can_format = can_format or client.server_capabilities.documentFormattingProvider
         end
-        --[[
-        vim.lsp.buf.code_action({
-            apply = true,
-            filter = function(action)
-                return action.title == 'Ruff: Organize Imports'
-            end,
-        })
-        vim.lsp.buf.code_action({
-            apply = true,
-            filter = function(action)
-                return action.title == "Ruff: Fix All"
-            end,
-        })
-        ]]
-        --
+        if vim.bo.ft == "python" then
+            M.vim_lsp_buf_code_action_sync("source.fixAll.ruff")
+            M.vim_lsp_buf_code_action_sync("source.organizeImports.ruff")
+        end
 
         if can_format then
-            vim.lsp.buf.format()
             vim.lsp.buf.format()
         end
     end

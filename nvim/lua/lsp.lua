@@ -7,10 +7,6 @@ local lsp_options = {
     common = {
         capabilities = cmp_nvim_lsp.default_capabilities(),
         on_attach = function(client, bufnr)
-            if client.name == "ruff_lsp" then
-                --client.server_capabilities.documentFormattingProvider = false
-                --client.server_capabilities.documentRangeFormattingProvider = false
-            end
             if client.name == "tsserver" then
                 -- eslint is used instead
                 client.server_capabilities.documentFormattingProvider = false
@@ -93,19 +89,10 @@ local null_ls_sources = {
             return require("null-ls.utils").root_pattern(".prettierrc.json")(params.bufname) ~= nil
         end,
     }),
-    null_ls.builtins.formatting.black.with({ only_local = ".venv/bin", extra_args = { "--fast" } }),
-    require("none-ls.formatting.ruff").with({
+    --[[ require("none-ls.formatting.ruff").with({
         only_local = ".venv/bin",
         extra_args = { "--ignore", "F841,F401" }
-    }),
-    null_ls.builtins.formatting.isort.with({ only_local = ".venv/bin" }),
-    require("none-ls.diagnostics.flake8").with({
-        only_local = ".venv/bin",
-        condition = function(utils)
-            return utils.root_has_file({ ".flake8" })
-        end,
-        -- method = null_ls.methods.DIAGNOSTICS_ON_SAVE,
-    }),
+    }),]]
     null_ls.builtins.diagnostics.mypy.with({
         only_local = ".venv/bin",
         method = null_ls.methods.DIAGNOSTICS_ON_SAVE,
@@ -135,7 +122,7 @@ local null_ls_sources = {
         }
     })
 }
-null_ls.setup({ on_attach = lsp_options.common.on_attach, sources = null_ls_sources })
+-- null_ls.setup({ on_attach = lsp_options.common.on_attach, sources = null_ls_sources, debug = true })
 
 local servers = {
     "ruff_lsp",
