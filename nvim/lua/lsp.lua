@@ -21,9 +21,14 @@ local lsp_options = {
     ruff_lsp = {
         init_options = {
             settings = {
-                args = {},
+                --args = { "--ignore", "F841,F401" }
             }
         }
+    },
+    eslint = {
+        settings = {
+            format = false,
+        },
     },
     grammarly = { filetypes = { "gitcommit" } },
     bashls = { filetypes = { "sh", "zsh" } },
@@ -73,15 +78,6 @@ local lsp_options = {
     },
 }
 
-require("lspconfig.configs")["dmypyls"] = {
-    default_config = {
-        cmd = { 'dmypy-ls' },
-        filetypes = { 'python' },
-        root_dir = lspconfig.util.root_pattern('pyproject.toml', 'setup.py', 'setup.cfg', 'requirements.txt', 'Pipfile'),
-        single_file_support = true,
-    },
-}
-
 local null_ls = require("null-ls")
 local null_ls_sources = {
     null_ls.builtins.formatting.prettier.with({
@@ -89,10 +85,6 @@ local null_ls_sources = {
             return require("null-ls.utils").root_pattern(".prettierrc.json")(params.bufname) ~= nil
         end,
     }),
-    --[[ require("none-ls.formatting.ruff").with({
-        only_local = ".venv/bin",
-        extra_args = { "--ignore", "F841,F401" }
-    }),]]
     null_ls.builtins.diagnostics.mypy.with({
         only_local = ".venv/bin",
         method = null_ls.methods.DIAGNOSTICS_ON_SAVE,
