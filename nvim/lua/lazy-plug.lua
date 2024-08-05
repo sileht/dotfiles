@@ -201,6 +201,5 @@ require("lazy").setup({
                 }
             )
         end
-    },
-
+    }
 })

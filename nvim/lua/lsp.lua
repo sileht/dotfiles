@@ -8,10 +8,15 @@ local lsp_options = {
         capabilities = cmp_nvim_lsp.default_capabilities(),
         on_attach = function(client, bufnr)
             if client.name == "tsserver" then
-                -- eslint is used instead
+                -- biome is used instead
                 client.server_capabilities.documentFormattingProvider = false
                 client.server_capabilities.documentRangeFormattingProvider = false
             end
+            if client.name == "biome" then
+                client.server_capabilities.documentFormattingProvider = true
+                client.server_capabilities.documentRangeFormattingProvider = true
+            end
+
             require("formatter").on_attach(client, bufnr)
         end,
         flags = {
@@ -80,11 +85,6 @@ local lsp_options = {
 
 local null_ls = require("null-ls")
 local null_ls_sources = {
-    null_ls.builtins.formatting.prettier.with({
-        runtime_condition = function(params)
-            return require("null-ls.utils").root_pattern(".prettierrc.json")(params.bufname) ~= nil
-        end,
-    }),
     null_ls.builtins.diagnostics.mypy.with({
         only_local = ".venv/bin",
         method = null_ls.methods.DIAGNOSTICS_ON_SAVE,
@@ -114,12 +114,12 @@ local null_ls_sources = {
         }
     })
 }
--- null_ls.setup({ on_attach = lsp_options.common.on_attach, sources = null_ls_sources, debug = true })
+null_ls.setup({ on_attach = lsp_options.common.on_attach, sources = null_ls_sources, debug = true })
 
 local servers = {
     "ruff_lsp",
     "jedi_language_server",
-    --"biome",
+    "biome",
     "eslint",
     "tsserver",
 

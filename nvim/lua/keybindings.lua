@@ -1,43 +1,47 @@
 require("which-key").setup()
-require("which-key").register(
+
+function open_in_browser()
+    local cb = require('gitlinker.actions').open_in_browser
+    require('gitlinker').get_buf_range_url('n', { action_callback = cb })
+end
+
+require("which-key").add(
     {
-        ["<F10>"] = { require('formatter').toggle, "Toggle FormatWrite" },
-        ["<F11>"] = { ":set spell!<cr>", "Toggle spell" },
-        ["<F12>"] = { require('utils').toggle_focus, "Show/Hide keybindings" },
-        ["<C-k>"] = { vim.lsp.buf.signature_help, "Show signature" },
-        ["<F5>"] = { vim.lsp.buf.rename, "Rename" },
-        ["<F6>"] = { ":IncRename ", "Rename (Fancy)" },
-        ["K"] = { vim.lsp.buf.hover, "Documentation" },
-        ["gP"] = { vim.diagnostic.goto_prev, "Diagnostic previous" },
-        ["gN"] = { vim.diagnostic.goto_next, "Diagnostic next" },
-        ["gD"] = { vim.lsp.buf.declaration, "Go declaration" },
-        ["gi"] = { vim.lsp.buf.implementation, "Go implementation" },
-        ["gd"] = { require('telescope.builtin').lsp_definitions, "Go definitions" },
-        ["gr"] = { require('telescope.builtin').lsp_references, "Go references" },
-        ["<leader>b"] = { ":Git blame", "Git Blame" },
-        ["<leader>D"] = { require('gitsigns').toggle_deleted, "Git show deleted" },
-        ["<leader>o"] = {
-            function()
-                local cb = require('gitlinker.actions').open_in_browser
-                require('gitlinker').get_buf_range_url('n', { action_callback = cb })
-            end,
-            "Open in GitHub"
+        { "<F10>",     require('formatter').toggle,                                            desc = "Toggle FormatWrite" },
+        { "<F11>",     ":set spell!<cr>",                                                      desc = "Toggle spell" },
+        { "<F12>",     require('utils').toggle_focus,                                          desc = "Show/Hide keybindings" },
+        { "<C-k>",     vim.lsp.buf.signature_help,                                             desc = "Show signature" },
+        { "<F5>",      vim.lsp.buf.rename,                                                     desc = "Rename" },
+        { "<F6>",      ":IncRename ",                                                          desc = "Rename (Fancy)" },
+        { "K",         vim.lsp.buf.hover,                                                      desc = "Documentation" },
+        { "gP",        vim.diagnostic.goto_prev,                                               desc = "Diagnostic previous" },
+        { "gN",        vim.diagnostic.goto_next,                                               desc = "Diagnostic next" },
+        { "gD",        vim.lsp.buf.declaration,                                                desc = "Go declaration" },
+        { "gi",        vim.lsp.buf.implementation,                                             desc = "Go implementation" },
+        { "gd",        require('telescope.builtin').lsp_definitions,                           desc = "Go definitions" },
+        { "gr",        require('telescope.builtin').lsp_references,                            desc = "Go references" },
+        { "<leader>b", ":Git blame",                                                           desc = "Git Blame" },
+        { "<leader>D", require('gitsigns').toggle_deleted,                                     desc = "Git show deleted" },
+        { "<leader>o", open_in_browser,                                                        desc = "Open in GitHub" },
+        { "<leader>d", function() require('telescope.builtin').diagnostics({ bufnr = 0 }) end, desc = "Diagnostics" },
+        { "<leader>c", require('telescope.builtin').git_commits,                               desc = "Git commit" },
+        --{ "<leader>f", require('telescope.builtin').find_files, desc = "find" },
+        { "<leader>f", require('telescope.builtin').git_files,                                 desc = "Git files" },
+        { "<leader>g", require('telescope.builtin').live_grep,                                 desc = "Grep" },
+        { "<leader>k", require('telescope.builtin').keymaps,                                   desc = "Keymaps" },
+        --{ "<leader>fb", require('telescope.builtin').buffers, desc = "buffer" },
+        { "<leader>h", require('telescope.builtin').help_tags,                                 desc = "help tags" },
+        --{ "<leader>n", require('dropbar.api').pick, desc = "dropbar" },
+        {
+            "<leader>e",
+            require("telescope").extensions.file_browser.file_browser,
+            desc =
+            "File browser"
         },
-        ["<leader>d"] = { function() require('telescope.builtin').diagnostics({ bufnr = 0 }) end, "Diagnostics" },
-        ["<leader>c"] = { require('telescope.builtin').git_commits, "Git commit" },
-        --["<leader>f"] = { require('telescope.builtin').find_files, "find" },
-        ["<leader>f"] = { require('telescope.builtin').git_files, "Git files" },
-        ["<leader>g"] = { require('telescope.builtin').live_grep, "Grep" },
-        ["<leader>k"] = { require('telescope.builtin').keymaps, "Keymaps" },
-        --["<leader>fb"] = { require('telescope.builtin').buffers, "buffer" },
-        ["<leader>h"] = { require('telescope.builtin').help_tags, "help tags" },
-        --["<leader>n"] = { require('dropbar.api').pick, "dropbar" },
-        ["<leader>e"] = { require("telescope").extensions.file_browser.file_browser,
-            "File browser" },
-        ["<leader>a"] = { require("actions-preview").code_actions, "Code action" },
-        ["<leader>A"] = { vim.lsp.buf.code_action, "Code action" },
-        ["<S-left>"] = { ":BufferPrevious<CR>", "Buffer previous" },
-        ["<S-right>"] = { ":BufferNext<CR>", "Buffer next" },
+        { "<leader>a", require("actions-preview").code_actions, desc = "Code action" },
+        { "<leader>A", vim.lsp.buf.code_action,                 desc = "Code action" },
+        { "<S-left>",  ":BufferPrevious<CR>",                   desc = "Buffer previous" },
+        { "<S-right>", ":BufferNext<CR>",                       desc = "Buffer next" },
     }
 )
 vim.cmd([[
