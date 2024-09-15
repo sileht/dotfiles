@@ -20,7 +20,11 @@ require("which-key").add(
         { "gi",        vim.lsp.buf.implementation,                                             desc = "Go implementation" },
         { "gd",        require('telescope.builtin').lsp_definitions,                           desc = "Go definitions" },
         { "gr",        require('telescope.builtin').lsp_references,                            desc = "Go references" },
-        { "<leader>b", ":Git blame",                                                           desc = "Git Blame" },
+        { "gpd",       require('goto-preview').goto_preview_definition,                        desc = "Preview definition" },
+        { "gpr",       require('goto-preview').goto_preview_references,                        desc = "Preview references" },
+        { "gc",        require('goto-preview').close_all_win,                                  desc = "Closes Previews" },
+        --{ "<leader>b", ":Git blame",                                                           desc = "Git Blame" },
+        { "<leader>b", ":BlameToggle window<CR>",                                              desc = "Git Blame" },
         { "<leader>D", require('gitsigns').toggle_deleted,                                     desc = "Git show deleted" },
         { "<leader>o", open_in_browser,                                                        desc = "Open in GitHub" },
         { "<leader>d", function() require('telescope.builtin').diagnostics({ bufnr = 0 }) end, desc = "Diagnostics" },
@@ -34,7 +38,8 @@ require("which-key").add(
         --{ "<leader>n", require('dropbar.api').pick, desc = "dropbar" },
         {
             "<leader>e",
-            require("telescope").extensions.file_browser.file_browser,
+            --require("telescope").extensions.file_browser.file_browser,
+            require("tfm").open,
             desc =
             "File browser"
         },
@@ -42,6 +47,7 @@ require("which-key").add(
         { "<leader>A", vim.lsp.buf.code_action,                 desc = "Code action" },
         { "<S-left>",  ":BufferPrevious<CR>",                   desc = "Buffer previous" },
         { "<S-right>", ":BufferNext<CR>",                       desc = "Buffer next" },
+        { ";",         "<Plug>(clever-f-reset)",                desc = "clever-f-reset" },
     }
 )
 vim.cmd([[

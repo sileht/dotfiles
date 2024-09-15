@@ -12,6 +12,19 @@ local lsp_options = {
                 client.server_capabilities.documentFormattingProvider = false
                 client.server_capabilities.documentRangeFormattingProvider = false
             end
+            if client.name == "eslint" then
+                -- biome is used instead
+                client.server_capabilities.documentFormattingProvider = false
+                client.server_capabilities.documentRangeFormattingProvider = false
+            end
+
+
+            if client.name == "ts_ls" then
+                -- biome is used instead
+                client.server_capabilities.documentFormattingProvider = false
+                client.server_capabilities.documentRangeFormattingProvider = false
+            end
+
             if client.name == "biome" then
                 client.server_capabilities.documentFormattingProvider = true
                 client.server_capabilities.documentRangeFormattingProvider = true
@@ -102,17 +115,6 @@ local null_ls_sources = {
             return params.lsp_params.textDocument.uri:match(".github/workflow") ~= nil
         end,
     }),
-    require("prettier").setup({
-        ["null-ls"] = {
-            condition = function()
-                return require("prettier").config_exists({
-                    -- if `false`, skips checking `package.json` for `"prettier"` key
-                    check_package_json = true,
-                })
-            end,
-            timeout = 5000,
-        }
-    })
 }
 null_ls.setup({ on_attach = lsp_options.common.on_attach, sources = null_ls_sources, debug = true })
 
@@ -131,7 +133,7 @@ local servers = {
     "dockerls",
     "docker_compose_language_service",
     "marksman",
-    "jsonls",
+    --"jsonls",
     "grammarly",
 }
 for _, lsp in ipairs(servers) do

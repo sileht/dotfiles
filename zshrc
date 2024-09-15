@@ -1,5 +1,8 @@
 [[ ! -o rcs ]] && return
 
+export LC_ALL=en_US.UTF-8
+export LC_CTYPE=en_US.UTF-8
+
 export AWS_PROFILE=mergify-admin
 
 # automatically remove duplicates from these arrays
@@ -94,9 +97,6 @@ znap source marlonrichert/zcolors
 znap eval zcolors zcolors
 
 export GREP_COLOR='mt=$GREP_COLOR'
-
-znap function _python_argcomplete pipx  'eval "$( register-python-argcomplete pipx  )"'
-complete -o nospace -o default -o bashdefault -F _python_argcomplete pipx
 
 
 PIPX_PACKAGES=(
@@ -344,7 +344,6 @@ alias r="ranger"
 function diffv() {
     diff "$@" | git-split-diffs --color=16m | less -RFX
 }
-
 
 # VIM stuff
 export EDITOR=nvim

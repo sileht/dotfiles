@@ -12,15 +12,30 @@ require("lazy").setup({
         end
     },
     -- keybinding
-    { "folke/which-key.nvim",    config = function() require("keybindings") end },
+    { "folke/which-key.nvim",   config = function() require("keybindings") end },
     -- . on steroid
     "tpope/vim-repeat",
     -- Git blame, ...
-    "tpope/vim-fugitive",
+    -- "tpope/vim-fugitive",
+    { "FabijanZulj/blame.nvim", opts = {} },
+    -- Better f/F/t/T
+    "rhysd/clever-f.vim",
+    -- gpr/gpd (goto preview references/definitions)
+    {
+        "rmagatti/goto-preview",
+        event = "BufEnter",
+        opts = {}
+    },
+    -- file browser
+    {
+        "rolv-apneseth/tfm.nvim",
+        opts = {},
+    },
     -- screen/tmux keys fix
     "nacitar/terminalkeys.vim",
     -- easyalign ley: ga
     "junegunn/vim-easy-align",
+    --
     -- lsp smart rename F5
     {
         'gelguy/wilder.nvim',
