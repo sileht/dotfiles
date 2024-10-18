@@ -124,6 +124,10 @@ require("lazy").setup({
             auto_cmds = true,
         },
     },
+    {
+        'stevearc/dressing.nvim',
+        opts = {},
+    },
     -- search and popup for everything
     {
         "nvim-telescope/telescope.nvim",

@@ -50,6 +50,10 @@ export PYTEST_XDIST_AUTO_NUM_WORKERS=5
 eval "$(fzf --zsh)"
 export FZF_DEFAULT_OPTS='--height 30% --layout=reverse --no-separator --no-scrollbar --info=hidden --pointer="|" --prompt="➠ "'
 
+#export NVM_DIR="$HOME/.nvm"
+#[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
+#[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+
 ############
 # BINDKEYS #
 ############
@@ -95,6 +99,7 @@ znap source z-shell/F-Sy-H
 znap source ael-code/zsh-colored-man-pages
 znap source marlonrichert/zcolors
 znap eval zcolors zcolors
+znap source z-shell/zsh-eza
 
 export GREP_COLOR='mt=$GREP_COLOR'
 
@@ -114,6 +119,7 @@ PIPX_PACKAGES=(
 )
 
 NPM_PACKAGES=(
+    svgexport
     @biomejs/biome
     diagnostic-languageserver
     @microsoft/compose-language-service
@@ -400,7 +406,11 @@ function sgrep() {
       --exclude-dir=.venv
       --exclude-dir=.mypy_cache
       --exclude-dir=__pycache__
+      --exclude-dir=public-config-schemas
+      --exclude-dir=public-api-schemas
       --exclude-dir=node_modules
+      --exclude=mergify.schema.*\.ts
+      --exclude=mergify.schema.*\.js
   )
   grep $GREP_ARGS $@
 }
@@ -411,13 +421,23 @@ alias mmv="nocorrect noglob zmv -W"
 alias zcp='zmv -C'
 alias zln='zmv -L'
 
-alias ls="eza -F --group-directories-first --icons"
-#alias ls="LC_COLLATE=POSIX ls -h --color=auto -bCF --group-directories-first"
-alias ll="ls -l"
-alias lla="ls -la"
-alias lsd='ls -ld *(-/DN)'
-alias lsdir="for dir in *;do;if [ -d \$dir ];then;du -xhsL \$dir 2>/dev/null;fi;done"
-function l(){ lla --color="always" "$@" | more }
+
+alias ls='eza $eza_params'
+alias l='eza --git-ignore $eza_params'
+alias ll='eza --all --header --long $eza_params'
+alias llm='eza --all --header --long --sort=modified $eza_params'
+alias la='eza -lbhHigUmuSa'
+alias lx='eza -lbhHigUmuSa@'
+alias lt='eza --tree $eza_params'
+alias tree='eza --tree $eza_params'
+
+#alias ls="eza -F --group-directories-first --icons"
+##alias ls="LC_COLLATE=POSIX ls -h --color=auto -bCF --group-directories-first"
+#alias ll="ls -l"
+#alias lla="ls -la"
+#alias lsd='ls -ld *(-/DN)'
+#alias lsdir="for dir in *;do;if [ -d \$dir ];then;du -xhsL \$dir 2>/dev/null;fi;done"
+#function l(){ lla --color="always" "$@" | more }
 function lsp() {
     local p="$(readlink -f ${1:=.})"
     local all_paths
@@ -425,7 +445,7 @@ function lsp() {
         all_paths=($p $all_paths)
         p=$(dirname $p)
     done
-    ll -d --sort=inode $all_paths
+    eza --all --header --long $eza_params  -d --sort=inode $all_paths
 }
 
 function fwget(){

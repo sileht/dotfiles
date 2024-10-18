@@ -7,13 +7,12 @@
 
 [alias]
     amend = commit --amend
-    ps = push-stack
     b = "!f() { git -c color.ui=always branch --sort=-committerdate --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))' | head ${1:--25} ; }; f"
     bl = "!f() { git checkout $(git branch --sort=-committerdate --format='%(HEAD) %(refname:short)' | grep -v -e '^*' | head -1) ; }; f"
     get-file = "!f() { git cat-file blob $1:$2 >| $2 ; }; f"
 
-    c = checkout
-    pr = "!f() { git r ; mergify stack -R -k \"$@\"; }; f"
+    # c = checkout
+    pr = "!f() { git r ; mergify stack push -R -k \"$@\"; }; f"
     t = "!f() { git branch --set-upstream-to=origin/${1:-main}; }; f"
     r = "!f() { git branch -M $(git rev-parse --abbrev-ref HEAD | sed -e 's,^wip-,,g' -e s,pull/[^-]*-sileht-,,g) ; }; f"
     f = "!f() { git branch -M \"$@\"; git main ; git checkout \"$@\" ; git t; }; f"
@@ -42,6 +41,7 @@
 
     showv= "!f() { git show $@ | git-split-diffs --color=16m | less -RFX ;} ; f"
     diffv = "!f() { git diff $@ | git-split-diffs --color=16m | less -RFX ;} ; f"
+
 [core]
 	excludesfile = ~/.gitignore-global
     #pager = git-split-diffs --color | less -RFX
@@ -97,6 +97,7 @@
 	repo = /Users/sileht/.env/znap/zsh-users/zsh-completions
 	repo = /Users/sileht/.env/znap/Aloxaf/fzf-tab
 	repo = /Users/sileht/.env/znap/marlonrichert/zsh-autocomplete
+	repo = /Users/sileht/.env/znap/z-shell/zsh-eza
 [credential "https://ghes-dev.mergify.com"]
 	helper = 
 	helper = !/opt/homebrew/bin/gh auth git-credential
