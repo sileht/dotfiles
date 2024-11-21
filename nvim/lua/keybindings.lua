@@ -18,6 +18,7 @@ require("which-key").add(
         { "gN",        vim.diagnostic.goto_next,                                               desc = "Diagnostic next" },
         { "gD",        vim.lsp.buf.declaration,                                                desc = "Go declaration" },
         { "gi",        vim.lsp.buf.implementation,                                             desc = "Go implementation" },
+        { "gs",        ":ISwap<CR>",                                                           desc = "Swap function arguments" },
         { "gd",        require('telescope.builtin').lsp_definitions,                           desc = "Go definitions" },
         { "gr",        require('telescope.builtin').lsp_references,                            desc = "Go references" },
         { "gpd",       require('goto-preview').goto_preview_definition,                        desc = "Preview definition" },
@@ -48,6 +49,41 @@ require("which-key").add(
         { "<S-left>",  ":BufferPrevious<CR>",                   desc = "Buffer previous" },
         { "<S-right>", ":BufferNext<CR>",                       desc = "Buffer next" },
         { ";",         "<Plug>(clever-f-reset)",                desc = "clever-f-reset" },
+        {
+            "<leader>zh",
+            function()
+                local actions = require("CopilotChat.actions")
+                require("CopilotChat.integrations.telescope").pick(actions.help_actions())
+            end,
+            desc = "CopilotChat - Help actions",
+        },
+        {
+            "<leader>zp",
+            function()
+                local actions = require("CopilotChat.actions")
+                require("CopilotChat.integrations.telescope").pick(actions.prompt_actions())
+            end,
+            desc = "CopilotChat - Prompt actions",
+        },
+
+        {
+            "<leader>zo",
+            function()
+                local chat = require("CopilotChat")
+                chat.open()
+            end,
+            desc = "CopilotChat - Prompt actions",
+        },
+        {
+            "<leader>zz",
+            function()
+                local input = vim.fn.input("Quick Chat: ")
+                if input ~= "" then
+                    require("CopilotChat").ask(input, { selection = require("CopilotChat.select").buffer })
+                end
+            end,
+            desc = "CopilotChat - Quick chat",
+        }
     }
 )
 vim.cmd([[

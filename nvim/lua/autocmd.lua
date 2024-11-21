@@ -49,8 +49,6 @@ vim.api.nvim_create_autocmd("TermOpen", {
     callback = function() set_terminal_keymaps() end
 })
 
-vim.api.nvim_create_user_command("T", "ToggleTerm", {})
-
 vim.api.nvim_create_augroup("qf", { clear = true })
 vim.api.nvim_create_autocmd("Filetype", {
     group = "qf",

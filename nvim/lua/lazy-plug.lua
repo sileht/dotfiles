@@ -12,12 +12,21 @@ require("lazy").setup({
         end
     },
     -- keybinding
-    { "folke/which-key.nvim",   config = function() require("keybindings") end },
+    { "folke/which-key.nvim",    config = function() require("keybindings") end },
     -- . on steroid
     "tpope/vim-repeat",
     -- Git blame, ...
     -- "tpope/vim-fugitive",
-    { "FabijanZulj/blame.nvim", opts = {} },
+    -- { "FabijanZulj/blame.nvim", opts = {} },
+    {
+        "NeogitOrg/neogit",
+        dependencies = {
+            "nvim-lua/plenary.nvim",         -- required
+            "sindrets/diffview.nvim",        -- optional - Diff integration
+            "nvim-telescope/telescope.nvim", -- optional
+        },
+        config = true,
+    },
     -- Better f/F/t/T
     "rhysd/clever-f.vim",
     -- gpr/gpd (goto preview references/definitions)
@@ -25,6 +34,33 @@ require("lazy").setup({
         "rmagatti/goto-preview",
         event = "BufEnter",
         opts = {}
+    },
+    {
+        "CopilotC-Nvim/CopilotChat.nvim",
+        branch = "canary",
+        dependencies = {
+            { "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
+            { "nvim-lua/plenary.nvim" },  -- for curl, log wrapper
+        },
+        build = "make tiktoken",          -- Only on MacOS or Linux
+        opts = {
+            prompts = {
+            }
+        },
+    },
+    {
+        "danielfalk/smart-open.nvim",
+        branch = "0.2.x",
+        config = function()
+            require("telescope").load_extension("smart_open")
+        end,
+        dependencies = {
+            "kkharji/sqlite.lua",
+            -- Only required if using match_algorithm fzf
+            { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+            -- Optional.  If installed, native fzy will be used when match_algorithm is fzy
+            { "nvim-telescope/telescope-fzy-native.nvim" },
+        },
     },
     -- file browser
     {
@@ -35,6 +71,10 @@ require("lazy").setup({
     "nacitar/terminalkeys.vim",
     -- easyalign ley: ga
     "junegunn/vim-easy-align",
+    --
+    {
+        "mizlan/iswap.nvim",
+    },
     --
     -- lsp smart rename F5
     {
@@ -153,6 +193,14 @@ require("lazy").setup({
         end
     },
     -- lsp, completion, fixer and linter
+    {
+        "fnune/codeactions-on-save.nvim",
+        config = function()
+            local cos = require("codeactions-on-save")
+            cos.register({ "*.py" }, { "source.organizeImports.ruff", "source.fixAll.ruff" })
+            cos.register({ "*.ts", "*.tsx" }, { "source.organizeImports.biome", "source.fixAll" })
+        end
+    },
     {
         "neovim/nvim-lspconfig",
         dependencies = {
