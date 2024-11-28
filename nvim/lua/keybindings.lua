@@ -96,4 +96,6 @@ vim.cmd([[
     "nmap <silent> <S-right> :bn<Enter>
     xmap ga <Plug>(EasyAlign)
     nmap ga <Plug>(EasyAlign)
+    command GitBlame BlameToggle
+    command Blame BlameToggle
 ]])

@@ -7,7 +7,7 @@ local lsp_options = {
     common = {
         capabilities = cmp_nvim_lsp.default_capabilities(),
         on_attach = function(client, bufnr)
-            if client.name == "tsserver" then
+            if client.name == "ts_ls" then
                 -- biome is used instead
                 client.server_capabilities.documentFormattingProvider = false
                 client.server_capabilities.documentRangeFormattingProvider = false
@@ -36,14 +36,14 @@ local lsp_options = {
             debounce_text_changes = 150
         }
     },
-    ruff_lsp = {
+    ruff = {
     },
     eslint = {
         settings = {
             format = false,
         },
     },
-    tsserver = {
+    ts_ls = {
         settings = {
             typescript = {
                 inlayHints = {
@@ -142,11 +142,11 @@ local null_ls_sources = {
 null_ls.setup({ on_attach = lsp_options.common.on_attach, sources = null_ls_sources, debug = true })
 
 local servers = {
-    "ruff_lsp",
+    "ruff",
     "jedi_language_server",
     "biome",
     "eslint",
-    "tsserver",
+    "ts_ls",
 
     "html",
     "cssls",

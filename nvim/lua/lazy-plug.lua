@@ -12,20 +12,31 @@ require("lazy").setup({
         end
     },
     -- keybinding
-    { "folke/which-key.nvim",    config = function() require("keybindings") end },
+    { "folke/which-key.nvim",   config = function() require("keybindings") end },
     -- . on steroid
     "tpope/vim-repeat",
     -- Git blame, ...
     -- "tpope/vim-fugitive",
-    -- { "FabijanZulj/blame.nvim", opts = {} },
+    { "FabijanZulj/blame.nvim", opts = {} },
     {
         "NeogitOrg/neogit",
+        enabled = false,
         dependencies = {
             "nvim-lua/plenary.nvim",         -- required
             "sindrets/diffview.nvim",        -- optional - Diff integration
             "nvim-telescope/telescope.nvim", -- optional
         },
         config = true,
+    },
+    {
+        'akinsho/git-conflict.nvim', version = "*", opts = {},
+    },
+    -- Change case crX with X c,d,k,n,P,s,U,/
+    { "gregorias/coerce.nvim",   opts = {} },
+    -- shiny cursor move
+    {
+        "sphamba/smear-cursor.nvim",
+        opts = {},
     },
     -- Better f/F/t/T
     "rhysd/clever-f.vim",
@@ -145,6 +156,8 @@ require("lazy").setup({
     { 'Bekaboo/deadcolumn.nvim',      opts = {} },
     -- for lsp reporting right bottom
     { "j-hui/fidget.nvim",            opts = {} },
+    -- Fast motion w, e, b
+    { "chrisgrieser/nvim-spider",     opts = {} },
     -- Better code actions UI
     { "aznhe21/actions-preview.nvim", opts = {} },
     -- Indentation marker
@@ -193,14 +206,6 @@ require("lazy").setup({
         end
     },
     -- lsp, completion, fixer and linter
-    {
-        "fnune/codeactions-on-save.nvim",
-        config = function()
-            local cos = require("codeactions-on-save")
-            cos.register({ "*.py" }, { "source.organizeImports.ruff", "source.fixAll.ruff" })
-            cos.register({ "*.ts", "*.tsx" }, { "source.organizeImports.biome", "source.fixAll" })
-        end
-    },
     {
         "neovim/nvim-lspconfig",
         dependencies = {

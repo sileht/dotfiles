@@ -19,5 +19,9 @@ for file in ${!fixers[*]}; do
         echo " nothing to do"
     fi
 done
-    
-git rebase --continue
+ 
+if git rev-parse --verify CHERRY_PICK_HEAD ; then
+    git cherry-pick --continue
+elif git rev-parse --verify REBASE_HEAD ; then
+    git rebase --continue
+fi

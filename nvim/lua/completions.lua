@@ -25,7 +25,7 @@ require("copilot_cmp").setup()
 local lspkind = require('lspkind')
 cmp.setup({
     experimental = {
-        ghost_text = false,
+        ghost_text = true,
     },
     sources = cmp.config.sources({
         { name = "copilot" },

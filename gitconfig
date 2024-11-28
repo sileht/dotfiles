@@ -116,4 +116,7 @@
 [mergify-cli]
 	stack-branch-prefix = devs/sileht
 [merge]
-	conflictstyle = merge
+    conflictstyle = merge
+[merge "mergiraf"]
+    name = mergiraf
+    driver = mergiraf merge --git %O %A %B -s %S -x %X -y %Y -p %P

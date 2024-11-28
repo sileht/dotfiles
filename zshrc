@@ -114,7 +114,6 @@ PIPX_PACKAGES=(
     anakin-language-server
     nox
     poetry
-    poethepoet
     ipython
     ddev
     uv
@@ -353,6 +352,7 @@ alias diff='diff -rNu'
 alias ip='ip -color'
 alias heroku="TERM=xterm heroku"
 alias r="ranger"
+alias poe="poetry run poe"
 function diffv() {
     diff "$@" | git-split-diffs --color=16m | less -RFX
 }
