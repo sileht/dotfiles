@@ -38,10 +38,10 @@ source.complete = function(self, _, callback)
         return
     end
 
-    local file = io.open(vim.env.HOME .. "/.linear-token", "rb")
-    local token = file:read "*a"
+    local handle = io.popen("security find-generic-password -w -s ENV_LINEAR_TOKEN")
+    local token = handle:read("*a")
     token = token:gsub("%s+", "")
-    file:close()
+    handle:close()
     -- local token = vim.fn.getenv("LINEAR_TOKEN")
     if (token == vim.NIL) then
         return

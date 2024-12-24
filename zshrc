@@ -114,6 +114,7 @@ PIPX_PACKAGES=(
     anakin-language-server
     nox
     poetry
+    poethepoet
     ipython
     ddev
     uv
@@ -352,7 +353,7 @@ alias diff='diff -rNu'
 alias ip='ip -color'
 alias heroku="TERM=xterm heroku"
 alias r="ranger"
-alias poe="poetry run poe"
+#alias poe="poetry run poe"
 function diffv() {
     diff "$@" | git-split-diffs --color=16m | less -RFX
 }
@@ -514,3 +515,24 @@ run-game(){
     MTL_HUD_ENABLED=1 WINEESYNC=1 WINEPREFIX="$HOME/games-bottle" `brow --prefix game-porting-toolkit`/bin/wine64 "$exe_path" 2>&1 # | grep "D3DM"
 }
 
+
+function get-env-secret () {
+    security find-generic-password -w -s "ENV_${1}"
+}
+function export-secret() {
+    env="$1"
+    secret="$(get-env-secret $env)"
+    export "$env=$secret"
+}
+
+# Use: set-keychain-environment-variable SECRET_ENV_VAR
+#   provide: super_secret_key_abc123
+function set-env-secret () {
+    [ -n "$1" ] || print "Missing environment variable name"
+    
+    # Note: if using bash, use `-p` to indicate a prompt string, rather than the leading `?`
+    read -s "?Enter Value for ${1}: " secret
+    
+    ( [ -n "$1" ] && [ -n "$secret" ] ) || return 1
+    security add-generic-password -U -a "${USER}" -D "environment variable" -s "ENV_${1}" -w "${secret}"
+}

@@ -158,6 +158,7 @@ local servers = {
     "marksman",
     --"jsonls",
     "grammarly",
+    "terraformls",
 }
 for _, lsp in ipairs(servers) do
     local options = vim.deepcopy(lsp_options.common)
