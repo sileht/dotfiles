@@ -47,6 +47,21 @@ require("lazy").setup({
         opts = {}
     },
     {
+        "jackMort/ChatGPT.nvim",
+        event = "VeryLazy",
+        dependencies = {
+            "MunifTanjim/nui.nvim",
+            "nvim-lua/plenary.nvim",
+            "nvim-telescope/telescope.nvim"
+        },
+        opts = {
+            openai_params = {
+                model = "o1-mini"
+            },
+            api_key_cmd = "security find-generic-password -w -s ENV_OPENAI_TOKEN"
+        }
+    },
+    {
         "CopilotC-Nvim/CopilotChat.nvim",
         branch = "canary",
         dependencies = {
@@ -210,11 +225,14 @@ require("lazy").setup({
         "neovim/nvim-lspconfig",
         dependencies = {
             {
-                "nvimtools/none-ls.nvim",
-                dependencies = {
-                    "nvimtools/none-ls-extras.nvim",
-                    'MunifTanjim/prettier.nvim',
-                },
+                {
+                    "nvimtools/none-ls.nvim",
+                    build = "git cherry-pick c2ad56b",
+                    dependencies = {
+                        "nvimtools/none-ls-extras.nvim",
+                        'MunifTanjim/prettier.nvim',
+                    },
+                }
             },
             -- completions on steroid
             {

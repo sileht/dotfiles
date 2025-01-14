@@ -117,6 +117,14 @@ local lsp_options = {
             end
         end,
     },
+    red_knot = {
+        on_new_config = function(new_config, new_root_dir)
+            local venv = require("utils").get_venvdir(new_root_dir)
+            if venv ~= nil then
+                new_config.init_options.workspace = { environmentPath = venv .. "/bin/python" }
+            end
+        end,
+    },
 }
 
 local null_ls = require("null-ls")
@@ -159,7 +167,9 @@ local servers = {
     --"jsonls",
     "grammarly",
     "terraformls",
+    --   "red_knot",
 }
+
 for _, lsp in ipairs(servers) do
     local options = vim.deepcopy(lsp_options.common)
     if (lsp_options[lsp] ~= nil) then

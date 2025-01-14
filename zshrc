@@ -16,6 +16,9 @@ BREW_PREFIX=/opt/homebrew
 BROW_PREFIX=/usr/local/Homebrew
 alias brow="arch --x86_64 $BROW_PREFIX/bin/brew"
 
+# default macos
+#export PATH="$HOME/.local/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+
 [ -f ${BREW_PREFIX}/bin/brew ] && eval "$(${BREW_PREFIX}/bin/brew shellenv)"
 fpath+=(${BREW_PREFIX}/share/zsh/site-functions)
 
@@ -23,14 +26,12 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 
 HEROKU_AC_ZSH_SETUP_PATH=$HOME/Library/Caches/heroku/autocomplete/zsh_setup && test -f $HEROKU_AC_ZSH_SETUP_PATH && source $HEROKU_AC_ZSH_SETUP_PATH;
 
-source "${BREW_PREFIX}/share/google-cloud-sdk/path.zsh.inc"
-source "${BREW_PREFIX}/share/google-cloud-sdk/completion.zsh.inc"
-
-# default macos
-#export PATH="$HOME/.local/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
-
 # znap adds ~/.local/bin
 source $HOME/.env/znap/zsh-snap/znap.zsh
+
+source ~/.orbstack/shell/init.zsh
+source "${BREW_PREFIX}/share/google-cloud-sdk/path.zsh.inc"
+source "${BREW_PREFIX}/share/google-cloud-sdk/completion.zsh.inc"
 
 # homebrew optional
 for gnubin in gnu-sed grep findutils coreutils bash; do
