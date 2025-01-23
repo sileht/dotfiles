@@ -4,7 +4,7 @@ set -e
 set -x
 set -o pipefail
 
-declare -A fixers=(["poetry.lock"]="poetry lock --no-update" ["package-lock.json"]="npm install")
+declare -A fixers=(["poetry.lock"]="poetry lock" ["package-lock.json"]="npm install")
 
 for file in ${!fixers[*]}; do
     echo -ne "Checking $file..."
@@ -14,7 +14,7 @@ for file in ${!fixers[*]}; do
     if [ "$is_conflicting" ]; then
         echo " fixing"
         git checkout HEAD "$file"
-        bash -c "${fixes[$key]}"
+        bash -c "${fixers[$file]}"
         git add "$file"
     else
         echo " nothing to do"
