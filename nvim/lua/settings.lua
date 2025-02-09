@@ -1,5 +1,6 @@
 vim.opt.ttyfast = true
 vim.opt.termguicolors = true
+vim.opt.background = "dark"
 vim.opt.shell = "/bin/zsh"
 
 vim.g.verbosefile = "/Users/sileht/.local/state/nvim/runtime.log"
@@ -27,8 +28,6 @@ vim.opt.showmatch = true               -- Show matching brackets/parenthesis
 vim.opt.incsearch = true               -- Find as you type search
 vim.opt.winminheight = 0               -- Windows can be 0 line high
 vim.opt.smartcase = true               -- Case sensitive when uc present
-vim.opt.wildmenu = true                -- Show list instead of just completing
-vim.opt.wildmode = "list:longest,full" -- Command <Tab> completion, list matches, then longest common part, then all.
 vim.opt.whichwrap = "b,s,h,l,<,>,[,]"  -- Backspace and cursor keys wrap too
 vim.opt.scrolljump = 5                 -- Lines to scroll when cursor leaves screen
 vim.opt.scrolloff = 3                  -- Minimum lines to keep above and below cursor
@@ -63,6 +62,9 @@ vim.opt.ttimeoutlen = 500
 vim.opt.timeoutlen = 500
 
 
+-- vim.opt.wildmenu = true                -- Show list instead of just completing
+--vim.opt.wildmode = "list:longest,full" -- Command <Tab> completion, list matches, then longest common part, then all.
+--vim.opt.wildmenu = false               -- Show list instead of just completing
 
 vim.opt.colorcolumn = "88"
 vim.opt.completeopt = "menu,menuone,noselect"

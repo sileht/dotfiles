@@ -1,5 +1,7 @@
-function vim.deprecate()
-end
+--function vim.deprecate()
+--end
+
+vim.loader.enable()
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
@@ -17,4 +19,11 @@ vim.opt.rtp:append("/opt/homebrew/opt/fzf")
 
 require("settings")
 require("autocmd")
-require("lazy-plug")
+require("lazy").setup("plugins", {
+    default = {
+        lazy = true,
+    },
+    change_detection = {
+        notify = false,
+    },
+})

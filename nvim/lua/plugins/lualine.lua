@@ -14,6 +14,7 @@ end
 
 local top_tabbar = {
     lualine_a = {
+        { "diagnostics", always_visible = true, sections = { 'error' } },
         "buffers",
     },
     lualine_b = {},
@@ -54,8 +55,9 @@ local bottom_bar = {
     },
     lualine_z = { "location", "progress" }
 }
-require("lualine").setup(
-    {
+return {
+    "nvim-lualine/lualine.nvim",
+    opts = {
         options = {
             --theme = 'kanagawa',
             section_separators = ' ',
@@ -70,4 +72,4 @@ require("lualine").setup(
         inactive_winbar = top_winbar,
         --tabline = top_tabbar,
     }
-)
+}

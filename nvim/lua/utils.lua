@@ -128,6 +128,7 @@ M.enhanced_experience_paths = {
     "/Users/sileht/workspace/mergify/infra",
     "/Users/sileht/workspace/mergify/infrastructure",
     "/Users/sileht/workspace/mergify/shadow_office",
+    "/Users/sileht/workspace/mergify/cotyledon",
     "/Users/sileht/workspace/mergify/ui",
     "/Users/sileht/workspace/mergify/docs",
     "/Users/sileht/workspace/mergify/gha-ci-issues",
