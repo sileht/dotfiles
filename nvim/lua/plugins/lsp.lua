@@ -2,6 +2,7 @@
 return {
     "neovim/nvim-lspconfig",
     dependencies = {
+        "Saghen/blink.cmp",
         {
             "nvimtools/none-ls.nvim",
             build = "git cherry-pick c2ad56b",
