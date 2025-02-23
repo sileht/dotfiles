@@ -6,12 +6,19 @@ return {
     dependencies = {
         "moyiz/blink-emoji.nvim",
         {
-            "giuxtaposition/blink-cmp-copilot",
+            "fang2hou/blink-copilot",
             dependencies = {
                 "zbirenbaum/copilot.lua",
+                cmd = "Copilot",
+                build = ":Copilot auth",
+                event = "InsertEnter",
                 opts = {
                     suggestion = { enabled = false },
                     panel = { enabled = false },
+                    filetypes = {
+                        markdown = true,
+                        help = true,
+                    },
                 }
             }
         },
@@ -22,6 +29,9 @@ return {
                 preset = 'enter',
                 ['<Tab>'] = { 'select_next', 'fallback' },
                 ['<S-Tab>'] = { 'select_prev', 'fallback' },
+            },
+            cmdline = {
+                enabled = false,
             },
             sources = {
                 default = { 'copilot', 'lsp', 'path', 'emoji', 'buffer', 'linear' },
@@ -34,7 +44,7 @@ return {
                     },
                     copilot = {
                         name = "copilot",
-                        module = "blink-cmp-copilot",
+                        module = "blink-copilot",
                         score_offset = 100,
                         async = true,
                         transform_items = function(_, items)
@@ -58,7 +68,8 @@ return {
                     },
                     linear = {
                         module = "blink-cmp-linear",
-                        name = "linear"
+                        name = "linear",
+                        async = true,
                     }
                 }
             },
@@ -67,14 +78,20 @@ return {
                 window = { border = 'single' },
             },
             completion = {
+                accept = {
+                    auto_brackets = {
+                        enabled = false,
+                    },
+                },
                 menu = {
                     border = 'single',
                     draw = { treesitter = { 'lsp' } },
                     max_height = 15,
                 },
                 documentation = { window = { border = 'single' } },
-                ghost_text = { enabled = true },
+                ghost_text = { enabled = false },
                 trigger = {
+                    show_on_trigger_character = true,
                     show_on_blocked_trigger_characters = { ":" },
                 },
                 list = {

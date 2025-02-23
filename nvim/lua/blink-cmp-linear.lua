@@ -55,7 +55,6 @@ end
 
 ---@param context blink.cmp.Context
 function M:get_completions(context, callback)
-    print(context.get_keyword())
     if context.get_keyword() ~= "MRGFY-" then
         return
     end
@@ -109,8 +108,6 @@ function M:get_completions(context, callback)
     end
 end
 
----`newText` is used for `ghost_text`, thus it is set to the emoji name in `emojis`.
----Change `newText` to the actual emoji when accepting a completion.
 function M:resolve(item, callback)
     local resolved = vim.deepcopy(item)
     if config.insert then

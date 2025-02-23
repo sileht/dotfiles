@@ -78,7 +78,7 @@ M.may_format = function()
             can_format = can_format or client.server_capabilities.documentFormattingProvider
         end
 
-        print(vim.inspect(kinds))
+        --print(vim.inspect(kinds))
         vim_lsp_buf_code_action_sync(kinds)
 
         if can_format then

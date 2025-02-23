@@ -11,7 +11,7 @@ return {
         insert_at_end = true,
         icons = {
             button = '⛌',
-            buffer_number = "superscript",
+            buffer_number = true,
             diagnostics = {
                 [vim.diagnostic.severity.ERROR] = { enabled = true },
                 [vim.diagnostic.severity.WARN] = { enabled = true },

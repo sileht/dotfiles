@@ -50,6 +50,7 @@ return {
                 }
             },
             ruff = {
+
             },
             eslint = {
                 settings = {

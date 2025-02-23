@@ -94,7 +94,8 @@ return {
                         end
                     end,
                     desc = "CopilotChat - Quick chat",
-                }
+                },
+
             }
         )
         vim.cmd([[
