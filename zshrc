@@ -122,6 +122,7 @@ PIPX_PACKAGES=(
 )
 
 NPM_PACKAGES=(
+    npm-check-updates
     svgexport
     @biomejs/biome
     diagnostic-languageserver
