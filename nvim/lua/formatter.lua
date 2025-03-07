@@ -75,11 +75,15 @@ M.may_format = function()
             if client.name == "eslint" then
                 vim.cmd("EslintFixAll")
             end
+            --print(client.name)
+            --print(vim.inspect(client.server_capabilities.documentFormattingProvider))
             can_format = can_format or client.server_capabilities.documentFormattingProvider
         end
 
         --print(vim.inspect(kinds))
-        vim_lsp_buf_code_action_sync(kinds)
+        if next(kinds) == nil then
+            vim_lsp_buf_code_action_sync(kinds)
+        end
 
         if can_format then
             vim.lsp.buf.format()

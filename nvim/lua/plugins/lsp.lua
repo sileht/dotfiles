@@ -1,4 +1,4 @@
--- vim.lsp.set_log_level("info")
+vim.lsp.set_log_level("error")
 return {
     "neovim/nvim-lspconfig",
     dependencies = {
@@ -22,6 +22,11 @@ return {
                 on_attach = function(client, bufnr)
                     if client.name == "ts_ls" then
                         -- biome is used instead
+                        client.server_capabilities.documentFormattingProvider = false
+                        client.server_capabilities.documentRangeFormattingProvider = false
+                    end
+                    if client.name == "null-ls" then
+                        -- Bugged
                         client.server_capabilities.documentFormattingProvider = false
                         client.server_capabilities.documentRangeFormattingProvider = false
                     end
@@ -50,7 +55,9 @@ return {
                 }
             },
             ruff = {
+                    settings = {
 
+                    }
             },
             eslint = {
                 settings = {
@@ -128,6 +135,9 @@ return {
                     local venv = require("utils").get_venvdir(new_root_dir)
                     if venv ~= nil then
                         new_config.init_options.workspace = { environmentPath = venv .. "/bin/python" }
+                        new_config.init_options.hover = { enable = false }
+                        new_config.init_options.diagnostics = { enable= true }
+                        new_config.init_options.jediSettings = { debug = false }
                     end
                 end,
             },

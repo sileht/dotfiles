@@ -34,6 +34,9 @@ return {
                 enabled = false,
             },
             sources = {
+                per_filetype = {
+                    codecompanion = { "codecompanion" },
+                },
                 default = { 'copilot', 'lsp', 'path', 'emoji', 'buffer', 'linear' },
                 providers = {
                     emoji = {
