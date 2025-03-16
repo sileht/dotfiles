@@ -5,23 +5,8 @@ return {
     version = '*',
     dependencies = {
         "moyiz/blink-emoji.nvim",
-        {
-            "fang2hou/blink-copilot",
-            dependencies = {
-                "zbirenbaum/copilot.lua",
-                cmd = "Copilot",
-                build = ":Copilot auth",
-                event = "InsertEnter",
-                opts = {
-                    suggestion = { enabled = false },
-                    panel = { enabled = false },
-                    filetypes = {
-                        markdown = true,
-                        help = true,
-                    },
-                }
-            }
-        },
+        'disrupted/blink-cmp-conventional-commits',
+        "fang2hou/blink-copilot",
     },
     config = function()
         require("blink.cmp").setup({
@@ -36,9 +21,25 @@ return {
             sources = {
                 per_filetype = {
                     codecompanion = { "codecompanion" },
+                    gitcommit = { "conventional_commits", "linear", "path", "emoji", "linear" },
                 },
-                default = { 'copilot', 'lsp', 'path', 'emoji', 'buffer', 'linear' },
+                default = { 'copilot', 'lsp', 'path', 'buffer' },
                 providers = {
+                    conventional_commits = {
+                        name = 'Conventional Commits',
+                        module = 'blink-cmp-conventional-commits',
+                        enabled = function()
+                            return vim.bo.filetype == 'gitcommit'
+                        end,
+                        opts = {}, -- none so far
+                    },
+                    codecompanion = {
+                        name = "CodeCompanion",
+                        module = "codecompanion.providers.completion.blink",
+                        async = true,
+                        score_offset = 100,
+                        enabled = true,
+                    },
                     emoji = {
                         module = "blink-emoji",
                         name = "Emoji",
@@ -50,15 +51,9 @@ return {
                         module = "blink-copilot",
                         score_offset = 100,
                         async = true,
-                        transform_items = function(_, items)
-                            local CompletionItemKind = require("blink.cmp.types").CompletionItemKind
-                            local kind_idx = #CompletionItemKind + 1
-                            CompletionItemKind[kind_idx] = "Copilot"
-                            for _, item in ipairs(items) do
-                                item.kind = kind_idx
-                            end
-                            return items
-                        end,
+                        opts = {
+                            max_completions = 3,
+                        },
                     },
                     lsp = {
                         override = {

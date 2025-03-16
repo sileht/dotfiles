@@ -135,7 +135,8 @@ M.enhanced_experience_paths = {
     "/Users/sileht/workspace/mergify/cli",
     "/Users/sileht/workspace/mergify/heroku",
     "/Users/sileht/workspace/mergify/events-forwarder",
-    "/Users/sileht/.env/",
+    "/Users/sileht/.env",
+    "/Users/sileht/.config",
 }
 
 

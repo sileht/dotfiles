@@ -1,4 +1,4 @@
-function open_in_browser()
+local function open_in_browser()
     local cb = require('gitlinker.actions').open_in_browser
     require('gitlinker').get_buf_range_url('n', { action_callback = cb })
 end
@@ -28,19 +28,10 @@ return {
                 { "<leader>o",        open_in_browser,                                                        desc = "Open in GitHub" },
                 { "<leader>d",        function() require('telescope.builtin').diagnostics({ bufnr = 0 }) end, desc = "Diagnostics" },
                 --{ "<leader>c", require('telescope.builtin').git_commits,                               desc = "Git commit" },A
-                { "<leader>cc",       "<cmd>ChatGPT<CR>",                                                     mode = { "n", "v" },             desc = "ChatGPT - ChatGPT" },
-                { "<leader>ce",       "<cmd>ChatGPTEditWithInstruction<CR>",                                  mode = { "n", "v" },             desc = "ChatGPT - Edit with instruction" },
-                { "<leader>cg",       "<cmd>ChatGPTRun grammar_correction<CR>",                               mode = { "n", "v" },             desc = "ChatGPT - Grammar Correction" },
-                { "<leader>ct",       "<cmd>ChatGPTRun translate<CR>",                                        mode = { "n", "v" },             desc = "ChatGPT - Translate" },
-                { "<leader>ck",       "<cmd>ChatGPTRun keywords<CR>",                                         mode = { "n", "v" },             desc = "ChatGPT - Keywords" },
-                { "<leader>cd",       "<cmd>ChatGPTRun docstring<CR>",                                        mode = { "n", "v" },             desc = "ChatGPT - Docstring" },
-                { "<leader>ca",       "<cmd>ChatGPTRun add_tests<CR>",                                        mode = { "n", "v" },             desc = "ChatGPT - Add Tests" },
-                { "<leader>co",       "<cmd>ChatGPTRun optimize_code<CR>",                                    mode = { "n", "v" },             desc = "ChatGPT - Optimize Code" },
-                { "<leader>cs",       "<cmd>ChatGPTRun summarize<CR>",                                        mode = { "n", "v" },             desc = "ChatGPT - Summarize" },
-                { "<leader>cf",       "<cmd>ChatGPTRun fix_bugs<CR>",                                         mode = { "n", "v" },             desc = "ChatGPT - Fix Bugs" },
-                { "<leader>cx",       "<cmd>ChatGPTRun explain_code<CR>",                                     mode = { "n", "v" },             desc = "ChatGPT - Explain Code" },
-                { "<leader>cr",       "<cmd>ChatGPTRun roxygen_edit<CR>",                                     mode = { "n", "v" },             desc = "ChatGPT - Roxygen Edit" },
-                { "<leader>cl",       "<cmd>ChatGPTRun code_readability_analysis<CR>",                        mode = { "n", "v" },             desc = "ChatGPT - Code Readability Analysis" },
+                { "<leader>cc",       "<cmd>CodeComanionChat<CR>",           mode = { "n", "v" },             desc = "Code Companion - Chat" },
+                { "<leader>ca",       "<cmd>CodeComanionActions<CR>",        mode = { "n", "v" },             desc = "Code Companion - Actions" },
+                { "<leader>cl",       "<cmd>CodeComanionCmd<CR>",            mode = { "n", "v" },             desc = "Code Companion - Cmd" },
+                { "<leader>cp",       "<cmd>CodeComanion<CR>",               mode = { "n", "v" },             desc = "Code Companion - Prompt" },
                 --{ "<leader>f", require('telescope.builtin').find_files, desc = "find" },
                 { "<leader>f",        require('telescope.builtin').git_files,                                 desc = "Git files" },
                 { "<leader>g",        require('telescope.builtin').live_grep,                                 desc = "Grep" },

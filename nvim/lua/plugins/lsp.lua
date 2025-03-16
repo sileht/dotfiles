@@ -55,9 +55,9 @@ return {
                 }
             },
             ruff = {
-                    settings = {
+                settings = {
 
-                    }
+                }
             },
             eslint = {
                 settings = {
@@ -136,7 +136,7 @@ return {
                     if venv ~= nil then
                         new_config.init_options.workspace = { environmentPath = venv .. "/bin/python" }
                         new_config.init_options.hover = { enable = false }
-                        new_config.init_options.diagnostics = { enable= true }
+                        new_config.init_options.diagnostics = { enable = true }
                         new_config.init_options.jediSettings = { debug = false }
                     end
                 end,
@@ -148,6 +148,18 @@ return {
                         new_config.init_options.workspace = { environmentPath = venv .. "/bin/python" }
                     end
                 end,
+            },
+        }
+
+        local lspconfig = require('lspconfig')
+        local configs = require('lspconfig.configs')
+        configs.copilot = {
+            default_config = {
+                cmd = { 'copilot-language-server', '--stdio' },
+                root_dir = lspconfig.util.root_pattern('.git'),
+                init_options = {
+                    copilotIntegrationId = "vscode-chat",
+                },
             },
         }
 
@@ -192,6 +204,7 @@ return {
             "grammarly",
             "terraformls",
             --   "red_knot",
+            --"copilot",
         }
 
         for _, lsp in ipairs(servers) do
