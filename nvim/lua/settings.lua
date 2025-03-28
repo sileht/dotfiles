@@ -75,6 +75,7 @@ vim.g.maplocalleader = ";"
 vim.opt.updatetime = 1500
 vim.opt.updatetime = 300
 
+vim.lsp.inlay_hint.enable(true)
 vim.diagnostic.config(
     {
         --virtual_text = { spacing = 4, prefix = "🔥" },

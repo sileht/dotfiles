@@ -5,7 +5,6 @@ return {
         "Saghen/blink.cmp",
         {
             "nvimtools/none-ls.nvim",
-            build = "git cherry-pick c2ad56b",
             dependencies = {
                 "nvimtools/none-ls-extras.nvim",
                 'MunifTanjim/prettier.nvim',

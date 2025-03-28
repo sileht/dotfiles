@@ -131,6 +131,7 @@ M.enhanced_experience_paths = {
     "/Users/sileht/workspace/mergify/cotyledon",
     "/Users/sileht/workspace/mergify/ui",
     "/Users/sileht/workspace/mergify/docs",
+    "/Users/sileht/workspace/mergify/pytest_mergify",
     "/Users/sileht/workspace/mergify/gha-ci-issues",
     "/Users/sileht/workspace/mergify/cli",
     "/Users/sileht/workspace/mergify/heroku",
