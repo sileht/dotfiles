@@ -1,75 +1,74 @@
 local toggler = function(name, module, var)
     return {
         function()
-            return name .. " " .. (require(module)[var]() and "" or "")
+            return (require(module)[var]() and "" or "") .. " " .. name
         end,
         color = function()
             return {
-                fg = require(module)[var]() and '#D4CEAC' or '#5E6C77'
+                fg = require(module)[var]() and '#AAB1BE' or '#788293'
             }
         end
 
     }
 end
 
-local top_tabbar = {
-    lualine_a = {
-        { "diagnostics", always_visible = true, sections = { 'error' } },
-        "buffers",
-    },
-    lualine_b = {},
-    lualine_c = {},
-    lualine_x = {},
-    lualine_y = {},
-    lualine_z = {},
-}
-local top_winbar = {
-    lualine_a = {},
-    lualine_b = {},
-    lualine_c = {},
-    lualine_x = {
-        --{ "diagnostics", always_visible = true },
-        toggler("Formatter", "formatter", "enabled"),
-        toggler("Focus", "utils", "focus_mode_enabled"),
-    },
-    lualine_y = {},
-    lualine_z = {},
-}
+local top_tabbar = function()
+    return {
+        lualine_a = {},
+        lualine_b = {},
+        lualine_c = {},
+        lualine_x = {},
+        lualine_y = {},
+        lualine_z = {},
+    }
+end
 
+local top_winbar = function()
+    return {
+        lualine_a = {},
+        lualine_b = {},
+        lualine_c = {},
+        lualine_x = {},
+        lualine_y = {},
+        lualine_z = {},
+    }
+end
 
-local bottom_bar = {
-    lualine_a = { "mode" },
-    lualine_b = {
-        { "branch" },
-        { "diff" },
-        -- { "filetype", icon_only = true,         separator = { left = '', right = '' } },
-        --{ "filename" },
-    },
-    lualine_c = {},
-    lualine_x = {},
-    lualine_y = {
-        "searchcount", "selectioncount",
-        "filetype",
-        "fileformat",
-        "encoding",
-    },
-    lualine_z = { "location", "progress" }
-}
+local bottom_bar = function()
+    return {
+        lualine_a = { "mode" },
+        lualine_b = {
+            { "branch" },
+            { "diff" },
+        },
+        lualine_c = {
+            { require("gitblame").get_current_blame_text, cond = require("gitblame").is_blame_text_available } },
+        lualine_x = {},
+        lualine_y = {
+            "searchcount", "selectioncount",
+            toggler("Format", "formatter", "enabled"),
+            "filetype",
+            "fileformat",
+            "encoding",
+        },
+        lualine_z = { "location", "progress", function() return " " end }
+    }
+end
+
 return {
     "nvim-lualine/lualine.nvim",
-    opts = {
-        options = {
-            --theme = 'kanagawa',
-            section_separators = ' ',
-            component_separators = '│',
-            --section_separators = { left = ' ', right = ' ' },
-            --section_separators = { left = ' ', right = ' ' },
-            --section_separators = { left = '', right = '' },
-        },
-        sections = bottom_bar,
-        inactive_sections = bottom_bar,
-        winbar = top_winbar,
-        inactive_winbar = top_winbar,
-        --tabline = top_tabbar,
-    }
+    config = function()
+        require('lualine').setup({
+            options = {
+                theme = "moonfly",
+                component_separators = '│',
+                section_separators = { left = ' ', right = ' ' },
+            },
+            sections = bottom_bar(),
+            inactive_sections = bottom_bar(),
+            --winbar = top_winbar(),
+            --inactive_winbar = top_winbar(),
+            --tabline = top_tabbar(),
+        })
+    end
 }

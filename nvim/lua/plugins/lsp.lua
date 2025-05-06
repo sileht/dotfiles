@@ -202,7 +202,7 @@ return {
             --"jsonls",
             "grammarly",
             "terraformls",
-            --   "red_knot",
+            --"red_knot",
             --"copilot",
         }
 

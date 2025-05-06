@@ -1,6 +1,5 @@
 return {
     'romgrk/barbar.nvim',
-    enabled = true,
     dependencies = {
         'lewis6991/gitsigns.nvim',
         'nvim-tree/nvim-web-devicons',
@@ -11,7 +10,6 @@ return {
         insert_at_end = true,
         icons = {
             button = '⛌',
-            buffer_number = true,
             diagnostics = {
                 [vim.diagnostic.severity.ERROR] = { enabled = true },
                 [vim.diagnostic.severity.WARN] = { enabled = true },
