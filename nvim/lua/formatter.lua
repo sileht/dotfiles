@@ -29,7 +29,7 @@ end
 local function vim_lsp_buf_code_action_sync(kinds)
     local timeout_ms = 100
     local buf = vim.api.nvim_get_current_buf()
-    local params = vim.lsp.util.make_range_params()
+    local params = vim.lsp.util.make_range_params(0, "utf-8")
     params.context = { diagnostics = {} }
 
     local results = vim.lsp.buf_request_sync(buf, "textDocument/codeAction", params, timeout_ms)
@@ -81,7 +81,8 @@ M.may_format = function()
         end
 
         --print(vim.inspect(kinds))
-        if next(kinds) == nil then
+        if next(kinds) ~= nil then
+            vim_lsp_buf_code_action_sync(kinds)
             vim_lsp_buf_code_action_sync(kinds)
         end
 

@@ -75,21 +75,34 @@ vim.g.maplocalleader = ";"
 vim.opt.updatetime = 1500
 vim.opt.updatetime = 300
 
-vim.lsp.inlay_hint.enable(true)
+--vim.lsp.inlay_hint.enable(true)
 vim.diagnostic.config(
     {
         --virtual_text = { spacing = 4, prefix = "🔥" },
         virtual_text = false,
-        signs = true,
+        virtual_lines = false,
+        -- virtual_lines = {
+        --    current_line = true,
+        -- },
         underline = true,
         update_in_insert = false,
         severity_sort = true,
-        float = false
+        float = {
+            current_line = true,
+        },
+        signs = {
+            text = {
+                [vim.diagnostic.severity.ERROR] = "󰅚 ",
+                [vim.diagnostic.severity.WARN] = "󰀪 ",
+                [vim.diagnostic.severity.INFO] = "󰋽 ",
+                [vim.diagnostic.severity.HINT] = "󰌶 ",
+            },
+            linehl = {
+                [vim.diagnostic.severity.ERROR] = "Error",
+                [vim.diagnostic.severity.WARN] = "Warn",
+                [vim.diagnostic.severity.INFO] = "Info",
+                [vim.diagnostic.severity.HINT] = "Hint",
+            },
+        },
     }
 )
-
-local signs = { Error = "󰅚", Warn = "󰀪", Info = "󰋽", Hint = "󰌶" }
-for type, icon in pairs(signs) do
-    local hl = "DiagnosticSign" .. type
-    vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
-end
