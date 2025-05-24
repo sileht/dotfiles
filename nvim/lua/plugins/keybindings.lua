@@ -45,9 +45,8 @@ return {
                 --    "<leader>e",
                 --    require("telescope").extensions.file_browser.file_browser,
                 --    desc = "File browser"
-                --},
-                { "<leader>a",        require("actions-preview").code_actions,                                desc = "Code action" },
-                { "<leader>A",        vim.lsp.buf.code_action,                                                desc = "Code action" },
+                { "<leader>A",        require("actions-preview").code_actions,                                desc = "Code action" },
+                { "<leader>a",        vim.lsp.buf.code_action,                                                desc = "Code action" },
                 { "<S-left>",         ":BufferPrevious<CR>",                                                  desc = "Buffer previous" },
                 { "<S-right>",        ":BufferNext<CR>",                                                      desc = "Buffer next" },
                 { ";",                "<Plug>(clever-f-reset)",                                               desc = "clever-f-reset" },

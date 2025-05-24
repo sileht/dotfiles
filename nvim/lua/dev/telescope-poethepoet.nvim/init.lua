@@ -1,0 +1,2 @@
+M = {}
+return M

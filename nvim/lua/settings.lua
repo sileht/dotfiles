@@ -78,12 +78,16 @@ vim.opt.updatetime = 300
 --vim.lsp.inlay_hint.enable(true)
 vim.diagnostic.config(
     {
-        --virtual_text = { spacing = 4, prefix = "🔥" },
-        virtual_text = false,
-        virtual_lines = false,
+        virtual_text = {
+            spacing = 2,
+            prefix = "●",
+            --prefix = "🔥",
+        },
+        --virtual_text = false,
         -- virtual_lines = {
         --    current_line = true,
         -- },
+        virtual_lines = false,
         underline = true,
         update_in_insert = false,
         severity_sort = true,

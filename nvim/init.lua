@@ -26,4 +26,8 @@ require("lazy").setup("plugins", {
     change_detection = {
         notify = false,
     },
+    dev = {
+        path = "~/.config/nvim/lua/dev",
+        pattern = { "sileht" }
+    },
 })
