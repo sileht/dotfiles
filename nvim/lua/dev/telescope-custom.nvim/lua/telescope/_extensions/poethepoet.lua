@@ -7,13 +7,7 @@ local action_state = require 'telescope.actions.state'
 local extension = { exports = {} }
 
 extension.setup = function(config)
-    if config.theme then
-        extension.config = require "telescope.themes"['get_' .. config.theme] { config }
-    else
-        extension.config = require "telescope.themes".get_dropdown { config }
-    end
-
-    extension.config.action = config.action or vim.fn.system
+    extension.config = require "telescope.themes".get_ivy { config }
 end
 
 local function get_tasks()

@@ -82,11 +82,20 @@ vim.diagnostic.config(
             spacing = 2,
             prefix = "●",
             --prefix = "🔥",
+            format = function(diagnostic)
+                return string.format(
+                    '%s/%s: %s',
+                    diagnostic.source,
+                    diagnostic.code or "?",
+                    diagnostic.message
+                )
+            end,
+
         },
         --virtual_text = false,
-        -- virtual_lines = {
-        --    current_line = true,
-        -- },
+        --virtual_lines = {
+        --   current_line = true,
+        --},
         virtual_lines = false,
         underline = true,
         update_in_insert = false,

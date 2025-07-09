@@ -20,8 +20,8 @@ return {
             },
             sources = {
                 per_filetype = {
-                    codecompanion = { "codecompanion" },
-                    gitcommit = { "conventional_commits", "linear", "path", "emoji", "linear" },
+                    --codecompanion = { "codecompanion" },
+                    gitcommit = { "conventional_commits", "linear", "path", "emoji", "linear", "buffer" },
                 },
                 default = { 'copilot', 'lsp', 'path', 'buffer' },
                 providers = {
@@ -33,13 +33,13 @@ return {
                         end,
                         opts = {}, -- none so far
                     },
-                    codecompanion = {
-                        name = "CodeCompanion",
-                        module = "codecompanion.providers.completion.blink",
-                        async = true,
-                        score_offset = 100,
-                        enabled = true,
-                    },
+                    -- codecompanion = {
+                    --     name = "CodeCompanion",
+                    --     module = "codecompanion.providers.completion.blink",
+                    --     async = true,
+                    --     score_offset = 100,
+                    --     enabled = false,
+                    -- },
                     emoji = {
                         module = "blink-emoji",
                         name = "Emoji",
@@ -56,13 +56,13 @@ return {
                         },
                     },
                     lsp = {
-                        override = {
-                            get_trigger_characters = function(self)
-                                local trigger_characters = self:get_trigger_characters()
-                                vim.list_extend(trigger_characters, { '\n', '\t', ' ' })
-                                return trigger_characters
-                            end
-                        },
+                        -- override = {
+                        --     get_trigger_characters = function(self)
+                        --         local trigger_characters = self:get_trigger_characters()
+                        --         vim.list_extend(trigger_characters, { '\n', '\t', ' ' })
+                        --         return trigger_characters
+                        --     end
+                        -- },
                     },
                     linear = {
                         module = "blink-cmp-linear",
@@ -82,6 +82,7 @@ return {
                     },
                 },
                 menu = {
+                    -- auto_show = false,
                     border = 'single',
                     draw = { treesitter = { 'lsp' } },
                     max_height = 15,

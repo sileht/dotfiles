@@ -61,13 +61,7 @@ function M:get_completions(context, callback)
 
     local task = async.task.empty():map(function()
         if not token then
-            local handle = io.popen("security find-generic-password -w -s ENV_LINEAR_TOKEN")
-            if not handle then
-                print("linear token not found")
-                return
-            end
-            token = handle:read("*a"):gsub("%s+", "")
-            handle:close()
+            token = require("utils").get_secret("ENV_LINEAR_TOKEN")
         end
 
         if issues then

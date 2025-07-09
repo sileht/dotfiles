@@ -1,3 +1,4 @@
+-- lsp progress right bottom
 return {
     "j-hui/fidget.nvim",
     event = "VeryLazy",

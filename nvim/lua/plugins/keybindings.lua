@@ -28,10 +28,7 @@ return {
                 { "<leader>o",        open_in_browser,                                                        desc = "Open in GitHub" },
                 { "<leader>d",        function() require('telescope.builtin').diagnostics({ bufnr = 0 }) end, desc = "Diagnostics" },
                 --{ "<leader>c", require('telescope.builtin').git_commits,                               desc = "Git commit" },A
-                { "<leader>cc",       "<cmd>CodeComanionChat<CR>",                                            mode = { "n", "v" },             desc = "Code Companion - Chat" },
-                { "<leader>ca",       "<cmd>CodeComanionActions<CR>",                                         mode = { "n", "v" },             desc = "Code Companion - Actions" },
-                { "<leader>cl",       "<cmd>CodeComanionCmd<CR>",                                             mode = { "n", "v" },             desc = "Code Companion - Cmd" },
-                { "<leader>cp",       "<cmd>CodeComanion<CR>",                                                mode = { "n", "v" },             desc = "Code Companion - Prompt" },
+                { "<leader>c",        "<cmd>ClaudeCode<CR>",                                                  desc = "Toggle Claude Code" },
                 --{ "<leader>f", require('telescope.builtin').find_files, desc = "find" },
                 { "<leader>f",        require('telescope.builtin').git_files,                                 desc = "Git files" },
                 { "<leader>g",        require('telescope.builtin').live_grep,                                 desc = "Grep" },
@@ -41,9 +38,12 @@ return {
                 --{ "<leader>n", require('dropbar.api').pick, desc = "dropbar" },
                 { "<leader><leader>", require("telescope").extensions.smart_open.smart_open,                  desc = "File browser" },
                 { "<leader>e",        require("telescope").extensions.smart_open.smart_open,                  desc = "File browser" },
+                { "<leader>p",        require("telescope").extensions.poethepoet.poethepoet,                  desc = "Poethepoet" },
+                { "<leader>s",        require("telescope").extensions.prflow.prflow,                          desc = "PR Flow" },
+                { "<leader>t",        ":FloatermToggle<CR>",                                                  desc = "Terminal" },
                 -- {
                 --    "<leader>e",
-                --    require("telescope").extensions.file_browser.file_browser,
+                --    require("telescope").extensions.file_browser.file_browse,,
                 --    desc = "File browser"
                 { "<leader>A",        require("actions-preview").code_actions,                                desc = "Code action" },
                 { "<leader>a",        vim.lsp.buf.code_action,                                                desc = "Code action" },

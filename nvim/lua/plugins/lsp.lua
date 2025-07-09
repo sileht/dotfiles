@@ -173,6 +173,12 @@ local function config()
 
     local null_ls = require("null-ls")
     local null_ls_sources = {
+        null_ls.builtins.formatting.sqlfluff.with({
+            method = null_ls.methods.DIAGNOSTICS_ON_SAVE,
+        }),
+        null_ls.builtins.diagnostics.sqlfluff.with({
+            method = null_ls.methods.DIAGNOSTICS_ON_SAVE,
+        }),
         null_ls.builtins.diagnostics.mypy.with({
             only_local = ".venv/bin",
             method = null_ls.methods.DIAGNOSTICS_ON_SAVE,

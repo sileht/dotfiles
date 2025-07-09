@@ -159,6 +159,17 @@ function M.loclist_init()
     end
 end
 
+function M.get_secret(name)
+    local handle = io.popen("security find-generic-password -w -s " .. name)
+    if not handle then
+        print(name .. " not found")
+        return
+    end
+    secret = handle:read("*a"):gsub("%s+", "")
+    handle:close()
+    return secret
+end
+
 function M.loclist_update(force)
     local name = vim.api.nvim_buf_get_name(0)
     local bufnr = vim.fn.bufnr()

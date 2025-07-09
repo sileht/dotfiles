@@ -1,3 +1,4 @@
+-- cmdline&search wildmenu popup
 return {
     'gelguy/wilder.nvim',
     dependencies = {
