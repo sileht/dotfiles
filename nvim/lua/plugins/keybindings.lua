@@ -31,6 +31,7 @@ return {
                 { "<leader>c",        "<cmd>ClaudeCode<CR>",                                                  desc = "Toggle Claude Code" },
                 --{ "<leader>f", require('telescope.builtin').find_files, desc = "find" },
                 { "<leader>f",        require('telescope.builtin').git_files,                                 desc = "Git files" },
+                { "<leader>F",        require('toggle-f-string').toggle_fstring,                              desc = "Toggle f-string" },
                 { "<leader>g",        require('telescope.builtin').live_grep,                                 desc = "Grep" },
                 { "<leader>k",        require('telescope.builtin').keymaps,                                   desc = "Keymaps" },
                 --{ "<leader>fb", require('telescope.builtin').buffers, desc = "buffer" },

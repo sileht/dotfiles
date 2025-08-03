@@ -1,3 +1,4 @@
 .ropeproject
 prod.env
 .python-version
+.DS_Store

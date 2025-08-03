@@ -1,5 +1,7 @@
 [[ ! -o rcs ]] && return
 
+
+
 export LC_ALL=en_US.UTF-8
 export LC_CTYPE=en_US.UTF-8
 
@@ -13,8 +15,6 @@ autoload -Uz add-zsh-hook
 
 export HOMEBREW_NO_ANALYTICS=1
 BREW_PREFIX=/opt/homebrew
-BROW_PREFIX=/usr/local/Homebrew
-alias brow="arch --x86_64 $BROW_PREFIX/bin/brew"
 
 # default macos
 #export PATH="$HOME/.local/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
@@ -23,8 +23,6 @@ alias brow="arch --x86_64 $BROW_PREFIX/bin/brew"
 fpath+=(${BREW_PREFIX}/share/zsh/site-functions)
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-
-HEROKU_AC_ZSH_SETUP_PATH=$HOME/Library/Caches/heroku/autocomplete/zsh_setup && test -f $HEROKU_AC_ZSH_SETUP_PATH && source $HEROKU_AC_ZSH_SETUP_PATH;
 
 # znap adds ~/.local/bin
 source $HOME/.env/znap/zsh-snap/znap.zsh
@@ -40,22 +38,20 @@ done
 # me
 export PATH="$HOME/.bin:$HOME/.local/bin:$HOME/.env/bin:$HOME/.local/npi/node_modules/.bin:$HOME/.cargo/bin:$PATH"
 
-export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin/"
+# export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin/"
 export PATH="/opt/homebrew/opt/postgresql@16/bin:$PATH"
 export PATH="$PATH:/Users/sileht/workspace/mergify/oss/mergiraf/target/release"
-export PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH"
+export PATH="/opt/homebrew/opt/openjdk@21/bin:$PATH"
 
 export NODE_OPTIONS="--max-old-space-size=18192" # --trace-deprecation --trace-warnings"
 export NODE_NO_WARNINGS=1
+
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/openjdk-21.jdk/Contents/Home
 
 export PYTEST_XDIST_AUTO_NUM_WORKERS=5
 
 eval "$(fzf --zsh)"
 export FZF_DEFAULT_OPTS='--height 30% --layout=reverse --no-separator --no-scrollbar --info=hidden --pointer="|" --prompt="➠ "'
-
-#export NVM_DIR="$HOME/.nvm"
-#[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
-#[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 
 ############
 # BINDKEYS #
@@ -70,10 +66,11 @@ bindkey " " magic-space # also do history expansion on space
 # PLUGINS #
 ###########
 
-#zstyle ':znap:*:*' git-maintenance off
-znap prompt sindresorhus/pure
+zstyle ':znap:*:*' git-maintenance off
+# znap prompt sindresorhus/pure
+autoload -U promptinit; promptinit
+prompt pure
 
-#autoload -U compinit; compinit
 
 zstyle ':completion:*:descriptions' format '[%d]'
 zstyle ':completion:*' menu select
@@ -88,42 +85,40 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
 znap source zsh-users/zsh-completions
 
-## In-line suggestions
+# Command-line syntax highlighting
+#ZSH_HIGHLIGHT_HIGHLIGHTERS=( main brackets )
+##znap source zsh-users/zsh-syntax-highlighting
+znap source z-shell/F-Sy-H
+
+# In-line suggestions
+ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
+ZSH_AUTOSUGGEST_USE_ASYNC=1
 ZSH_AUTOSUGGEST_ACCEPT_WIDGETS=()
 ZSH_AUTOSUGGEST_PARTIAL_ACCEPT_WIDGETS+=( forward-char forward-word end-of-line )
 ZSH_AUTOSUGGEST_STRATEGY=( history )
 ZSH_AUTOSUGGEST_HISTORY_IGNORE=$'(*\n*|?(#c80,)|*\\#:hist:push-line:)'
 znap source zsh-users/zsh-autosuggestions
 
-# Command-line syntax highlighting
-#ZSH_HIGHLIGHT_HIGHLIGHTERS=( main brackets )
-##znap source zsh-users/zsh-syntax-highlighting
-znap source z-shell/F-Sy-H
-znap source ael-code/zsh-colored-man-pages
-znap source marlonrichert/zcolors
-znap eval zcolors zcolors
-znap source z-shell/zsh-eza
 
 export GREP_COLOR='mt=$GREP_COLOR'
 
 
 PIPX_PACKAGES=(
-    # mergify-cli
     reno
-    rstcheck
-    ranger-fm
     jedi-language-server
-    anakin-language-server
-    nox
     poetry
     poethepoet
-    ipython
-    ddev
-    uv
+    neovim-remote
+    neovim
+    # ddev
 )
 
 NPM_PACKAGES=(
+    @github/local-action
+    @anthropic-ai/claude-code
+    squawk-cli
     npm-check-updates
+    @redocly/cli@latest
     svgexport
     @biomejs/biome
     diagnostic-languageserver
@@ -164,6 +159,7 @@ case $HOST in
 esac
 
 zstyle :prompt:pure:git:stash show yes
+zstyle :prompt:pure:git:fetch only_upstream yes
 zstyle :prompt:pure:host color $host_color
 zstyle :prompt:pure:user color $host_color
 
@@ -192,7 +188,7 @@ MAILCHECK=0
 # HISTORY #
 ###########
 HISTFILE=$ZVARDIR/history
-HISTSIZE=10000
+HISTSIZE=100000
 SAVEHIST=$HISTSIZE
 LISTMAX=1000
 #setopt bang_hist          # treat ! specially like csh did
@@ -249,6 +245,15 @@ set -C                 # Don't ecrase file with >, use >| (overwrite) or >> (app
 #setopt auto_param_slash  # be magic about adding/removing final characters on tab completion
 #setopt auto_remove_slash # be magic about adding/removing final characters on tab completion
 #zmodload zsh/complist    # load fancy completion list and menu handler
+
+
+
+macos_finder_setup() {
+    local EXTS=xml json yaml yml md txt html css js ts tsx go py rb php java c cpp h sh zsh bash fish dockerfile
+    for ext in $EXTS; do
+        duti -s com.apple.automator.Nvim $ext all
+    done
+}
 
 npi() {
     (
@@ -310,8 +315,6 @@ upgrade() {
         title "BREW"
         brew update
         brew upgrade
-        brew reinstall utf8proc
-        brew reinstall nvim
         # brow update
         # brow upgrade
         title "ENV"
@@ -337,11 +340,8 @@ function zshexit() {
 i
 add-zsh-hook chpwd s
 
-export WINEPREFIX=~/games-bottle
-alias winecfg="$(brow --prefix game-porting-toolkit)/bin/wine64 winecfg"
 
 alias Q='exec zsh'
-function sc() { tmux attach -d 2>/dev/null || tmux new-session ; }
 if (( $+commands[xdg-open] )) then alias open="xdg-open" ; fi
 alias rm="nocorrect rm -i"
 alias mv="nocorrect mv -i"
@@ -355,9 +355,7 @@ alias man="LANG=C man"
 alias df="df -h"
 alias diff='diff -rNu'
 alias ip='ip -color'
-alias heroku="TERM=xterm heroku"
 alias r="ranger"
-#alias poe="poetry run poe"
 function diffv() {
     diff "$@" | git-split-diffs --color=16m | less -RFX
 }
@@ -381,11 +379,10 @@ alias vi="nvim"
 alias svi="sudo -E nvim"
 
 # LESS stuff
-export LESS='--quit-if-one-screen --no-init --hilite-search --jump-target=0.5 --SILENT --raw-control-chars'
+export LESS='--quit-if-one-screen --no-init --hilite-search --SILENT --raw-control-chars --jump-target=2'
 export LESSHISTFILE=~/.var/less/history
 [[ -d ${LESSHISTFILE%/*} ]] || mkdir -p ${LESSHISTFILE%/*}
 export PAGER=less
-#export PAGER=bat
 export LESSCOLOR=always
 export LESSCOLORIZER="highlight -O ansi"
 export LESSOPEN="|lesspipe %s"
@@ -434,7 +431,7 @@ alias zln='zmv -L'
 
 
 alias ls='eza $eza_params'
-alias l='eza --git-ignore $eza_params'
+alias l='eza --git-ignore --long $eza_params'
 alias ll='eza --all --header --long $eza_params'
 alias llm='eza --all --header --long --sort=modified $eza_params'
 alias la='eza -lbhHigUmuSa'
@@ -442,13 +439,6 @@ alias lx='eza -lbhHigUmuSa@'
 alias lt='eza --tree $eza_params'
 alias tree='eza --tree $eza_params'
 
-#alias ls="eza -F --group-directories-first --icons"
-##alias ls="LC_COLLATE=POSIX ls -h --color=auto -bCF --group-directories-first"
-#alias ll="ls -l"
-#alias lla="ls -la"
-#alias lsd='ls -ld *(-/DN)'
-#alias lsdir="for dir in *;do;if [ -d \$dir ];then;du -xhsL \$dir 2>/dev/null;fi;done"
-#function l(){ lla --color="always" "$@" | more }
 function lsp() {
     local p="$(readlink -f ${1:=.})"
     local all_paths
@@ -507,19 +497,6 @@ sshrefresh(){
     done
 }
 
-alias poetry-rebase-fix="git checkout HEAD poetry.lock; poetry lock --no-update && git add poetry.lock && git rebase --continue"
-alias npm-rebase-fix="git checkout HEAD package-lock.json; npm install && git add package-lock.json && git rebase --continue"
-
-
-run-game(){
-    exe_path="cmd.exe"
-    if [ ! -z "$1" ]; then
-        exe_path="$1"
-    fi
-    MTL_HUD_ENABLED=1 WINEESYNC=1 WINEPREFIX="$HOME/games-bottle" `brow --prefix game-porting-toolkit`/bin/wine64 "$exe_path" 2>&1 # | grep "D3DM"
-}
-
-
 function get-env-secret () {
     security find-generic-password -w -s "ENV_${1}"
 }
@@ -540,3 +517,10 @@ function set-env-secret () {
     ( [ -n "$1" ] && [ -n "$secret" ] ) || return 1
     security add-generic-password -U -a "${USER}" -D "environment variable" -s "ENV_${1}" -w "${secret}"
 }
+
+
+
+if [[ $1 == eval ]]; then
+    "$@"
+    set --
+fi

@@ -9,6 +9,7 @@ local ENABLED_LSP_SERVERS = {
 
     "html",
     "cssls",
+    "jdtls",
 
     "lua_ls",
     "vimls",
@@ -62,7 +63,11 @@ local LSP_SERVERS_OPTIONS = {
     },
     ruff = {
         settings = {
-
+            configuration = {
+                lint = {
+                    ["unsafe-fixes"] = true
+                }
+            }
         }
     },
     eslint = {
@@ -102,6 +107,7 @@ local LSP_SERVERS_OPTIONS = {
     bashls = { filetypes = { "sh", "zsh" } },
     docker_compose_language_service = { filetypes = { "yaml.docker-compose" } },
     vtsls = {},
+    jdtls = {},
     lua_ls = {
         settings = {
             Lua = {

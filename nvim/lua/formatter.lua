@@ -101,8 +101,8 @@ M.on_attach = function(client, bufnr)
         return
     end
     for _, path in ipairs(require("utils").enhanced_experience_paths) do
-        local i, _ = string.find(client.config.root_dir, path)
-        if i == 1 then
+        local found = vim.startswith(client.config.root_dir, path)
+        if found then
             vim.api.nvim_buf_set_var(bufnr, "formatter_enabled", true)
         end
     end

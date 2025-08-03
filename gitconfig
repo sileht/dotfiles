@@ -12,7 +12,8 @@
     get-file = "!f() { git cat-file blob $1:$2 >| $2 ; }; f"
 
     # c = checkout
-    pr = "!f() { git r ; mergify stack push -k \"$@\"; }; f"
+    pr = "!f() { git r && git check && mergify stack push -k \"$@\"; }; f"
+    check = "!f() { if test -f .pre-commit-config.yaml; then pre-commit run --from-ref $(git diverge-commit) --to-ref HEAD; fi ; }; f"
     t = "!f() { git branch --set-upstream-to=origin/${1:-main}; }; f"
     r = "!f() { git branch -M $(git rev-parse --abbrev-ref HEAD | sed -e 's,^wip-,,g' -e s,pull/[^-]*-sileht-,,g) ; }; f"
     f = "!f() { git branch -M \"$@\"; git main ; git checkout \"$@\" ; git t; }; f"
@@ -86,16 +87,7 @@
 	repo = /Users/sileht/.env/znap/zsh-colored-man-pages
 	repo = /Users/sileht/.env/znap/zsh-completions
 	repo = /Users/sileht/.env/znap/zsh-snap
-	repo = /Users/sileht/.env/znap/zsh-edit
-	repo = /Users/sileht/.env/znap/ael-code/zsh-colored-man-pages
-	repo = /Users/sileht/.env/znap/marlonrichert/zcolors
-	repo = /Users/sileht/.env/znap/sindresorhus/pure
-	repo = /Users/sileht/.env/znap/z-shell/F-Sy-H
-	repo = /Users/sileht/.env/znap/zsh-users/zsh-autosuggestions
-	repo = /Users/sileht/.env/znap/zsh-users/zsh-completions
-	repo = /Users/sileht/.env/znap/Aloxaf/fzf-tab
 	repo = /Users/sileht/.env/znap/marlonrichert/zsh-autocomplete
-	repo = /Users/sileht/.env/znap/z-shell/zsh-eza
 [credential "https://ghes-dev.mergify.com"]
 	helper = 
 	helper = !/opt/homebrew/bin/gh auth git-credential
@@ -115,6 +107,7 @@
 	required = true
 [mergify-cli]
 	stack-branch-prefix = devs/sileht
+	stack-keep-pr-title-body = true
 [merge]
     conflictstyle = merge
 [merge "mergiraf"]
