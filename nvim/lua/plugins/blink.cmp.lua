@@ -21,7 +21,7 @@ return {
             sources = {
                 per_filetype = {
                     --codecompanion = { "codecompanion" },
-                    gitcommit = { "conventional_commits", "linear", "path", "emoji", "linear", "buffer" },
+                    gitcommit = { "conventional_commits", "linear", "path", "emoji", "buffer" },
                 },
                 default = { 'copilot', 'lsp', 'path', 'buffer' },
                 providers = {
