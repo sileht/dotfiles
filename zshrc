@@ -39,9 +39,10 @@ done
 export PATH="$HOME/.bin:$HOME/.local/bin:$HOME/.env/bin:$HOME/.local/npi/node_modules/.bin:$HOME/.cargo/bin:$PATH"
 
 # export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin/"
-export PATH="/opt/homebrew/opt/postgresql@16/bin:$PATH"
 export PATH="$PATH:/Users/sileht/workspace/mergify/oss/mergiraf/target/release"
+export PATH="/opt/homebrew/opt/postgresql@16/bin:$PATH"
 export PATH="/opt/homebrew/opt/openjdk@21/bin:$PATH"
+export PATH="/opt/homebrew/opt/node@22/bin:$PATH"
 
 export NODE_OPTIONS="--max-old-space-size=18192" # --trace-deprecation --trace-warnings"
 export NODE_NO_WARNINGS=1
