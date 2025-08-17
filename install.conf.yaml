@@ -9,7 +9,6 @@
     - '~/.config'
     - '~/.config/ranger'
     - '~/.config/nvim'
-    - '~/.ssh'
     - '~/.ctag'
 
 - link:
@@ -17,7 +16,6 @@
     ~/.config/nvim: nvim
     ~/.gitconfig: gitconfig
     ~/.gitignore-global: gitignore-global
-    ~/.ssh/config: ssh-config
     ~/.tmux: tmux
     ~/.tmux.conf: tmux.conf
     ~/.wgetrc: wgetrc
