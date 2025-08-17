@@ -430,6 +430,11 @@ alias mmv="nocorrect noglob zmv -W"
 alias zcp='zmv -C'
 alias zln='zmv -L'
 
+typeset -ag eza_params
+eza_params=(
+    '--git' '--icons' '--group' '--group-directories-first'
+    '--time-style=long-iso' '--color-scale=all'
+)
 
 alias ls='eza $eza_params'
 alias l='eza --git-ignore --long $eza_params'
