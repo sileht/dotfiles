@@ -16,8 +16,6 @@
     ~/.config/nvim: nvim
     ~/.gitconfig: gitconfig
     ~/.gitignore-global: gitignore-global
-    ~/.tmux: tmux
-    ~/.tmux.conf: tmux.conf
     ~/.wgetrc: wgetrc
     ~/.zprofile: zprofile
     ~/.zshenv: zshenv
