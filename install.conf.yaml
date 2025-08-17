@@ -7,12 +7,9 @@
 - clean:
     - '~'
     - '~/.config'
-    - '~/.config/ranger'
     - '~/.config/nvim'
-    - '~/.ctag'
 
 - link:
-    ~/.config/ranger: ranger
     ~/.config/nvim: nvim
     ~/.gitconfig: gitconfig
     ~/.gitignore-global: gitignore-global
