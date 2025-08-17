@@ -1,12 +1,3 @@
-[submodule "tmux/plugins/tpm"]
-	path = tmux/plugins/tpm
-	url = https://github.com/tmux-plugins/tpm.git
-[submodule "nord-dircolors"]
-	path = nord-dircolors
-	url = https://github.com/arcticicestudio/nord-dircolors
-[submodule "js-langserver"]
-	path = js-langserver
-	url = https://github.com/tbodt/js-langserver
 [submodule "dotbot"]
 	path = dotbot
 	url = https://github.com/anishathalye/dotbot
