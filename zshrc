@@ -1,7 +1,5 @@
 [[ ! -o rcs ]] && return
 
-
-
 export LC_ALL=en_US.UTF-8
 export LC_CTYPE=en_US.UTF-8
 
@@ -19,15 +17,12 @@ BREW_PREFIX=/opt/homebrew
 # default macos
 #export PATH="$HOME/.local/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 
-[ -f ${BREW_PREFIX}/bin/brew ] && eval "$(${BREW_PREFIX}/bin/brew shellenv)"
+eval "$(${BREW_PREFIX}/bin/brew shellenv)"
 fpath+=(${BREW_PREFIX}/share/zsh/site-functions)
 
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-
-# znap adds ~/.local/bin
-source $HOME/.env/znap/zsh-snap/znap.zsh
-
-source ~/.orbstack/shell/init.zsh
+source "${HOME}/.env/znap/zsh-snap/znap.zsh"
+source "${HOME}/.iterm2_shell_integration.zsh"
+source "${HOME}/.orbstack/shell/init.zsh"
 source "${BREW_PREFIX}/share/google-cloud-sdk/path.zsh.inc"
 source "${BREW_PREFIX}/share/google-cloud-sdk/completion.zsh.inc"
 
@@ -35,8 +30,6 @@ source "${BREW_PREFIX}/share/google-cloud-sdk/completion.zsh.inc"
 for gnubin in gnu-sed grep findutils coreutils bash; do
     export PATH="${BREW_PREFIX}/opt/${gnubin}/libexec/gnubin:$PATH"
 done
-# me
-export PATH="$HOME/.bin:$HOME/.local/bin:$HOME/.env/bin:$HOME/.local/npi/node_modules/.bin:$HOME/.cargo/bin:$PATH"
 
 # export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin/"
 export PATH="$PATH:/Users/sileht/workspace/mergify/oss/mergiraf/target/release"
@@ -44,12 +37,19 @@ export PATH="/opt/homebrew/opt/postgresql@16/bin:$PATH"
 export PATH="/opt/homebrew/opt/openjdk@21/bin:$PATH"
 export PATH="/opt/homebrew/opt/node@22/bin:$PATH"
 
+# me
+export PATH="$HOME/.bin:$HOME/.local/bin:$HOME/.env/bin:$HOME/.local/npi/node_modules/.bin:$HOME/.cargo/bin:$PATH"
+
+# ENV
+
 export NODE_OPTIONS="--max-old-space-size=18192" # --trace-deprecation --trace-warnings"
 export NODE_NO_WARNINGS=1
 
 export JAVA_HOME=/Library/Java/JavaVirtualMachines/openjdk-21.jdk/Contents/Home
 
 export PYTEST_XDIST_AUTO_NUM_WORKERS=5
+
+export SSH_AUTH_SOCK=/Users/sileht/Library/Containers/com.bitwarden.desktop/Data/.bitwarden-ssh-agent.sock
 
 eval "$(fzf --zsh)"
 export FZF_DEFAULT_OPTS='--height 30% --layout=reverse --no-separator --no-scrollbar --info=hidden --pointer="|" --prompt="➠ "'
