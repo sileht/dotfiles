@@ -3,7 +3,6 @@
 export LC_ALL=en_US.UTF-8
 export LC_CTYPE=en_US.UTF-8
 
-export AWS_PROFILE=mergify-admin
 
 # automatically remove duplicates from these arrays
 typeset -gU path cdpath fpath manpath fignore
@@ -11,17 +10,17 @@ autoload -U zmv             # programmable moving, copying, and linking
 autoload -U zrecompile      # allow zwc file recompiling
 autoload -Uz add-zsh-hook
 
+source "${HOME}/.env/znap/zsh-snap/znap.zsh"
+
 export HOMEBREW_NO_ANALYTICS=1
 BREW_PREFIX=/opt/homebrew
 
 # default macos
 #export PATH="$HOME/.local/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 
-eval "$(${BREW_PREFIX}/bin/brew shellenv)"
+znap eval brew "${BREW_PREFIX}/bin/brew shellenv"
 fpath+=(${BREW_PREFIX}/share/zsh/site-functions)
 
-source "${HOME}/.env/znap/zsh-snap/znap.zsh"
-source "${HOME}/.iterm2_shell_integration.zsh"
 source "${HOME}/.orbstack/shell/init.zsh"
 source "${BREW_PREFIX}/share/google-cloud-sdk/path.zsh.inc"
 source "${BREW_PREFIX}/share/google-cloud-sdk/completion.zsh.inc"
@@ -33,26 +32,24 @@ done
 
 # export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin/"
 export PATH="$PATH:/Users/sileht/workspace/mergify/oss/mergiraf/target/release"
-export PATH="/opt/homebrew/opt/postgresql@16/bin:$PATH"
-export PATH="/opt/homebrew/opt/openjdk@21/bin:$PATH"
-export PATH="/opt/homebrew/opt/node@22/bin:$PATH"
+export PATH="${BREW_PREFIX}/opt/postgresql@16/bin:$PATH"
+export PATH="${BREW_PREFIX}/opt/openjdk@21/bin:$PATH"
+export PATH="${BREW_PREFIX}/opt/node@22/bin:$PATH"
 
 # me
 export PATH="$HOME/.bin:$HOME/.local/bin:$HOME/.env/bin:$HOME/.local/npi/node_modules/.bin:$HOME/.cargo/bin:$PATH"
 
 # ENV
 
+export AWS_PROFILE=mergify-admin
 export NODE_OPTIONS="--max-old-space-size=18192" # --trace-deprecation --trace-warnings"
 export NODE_NO_WARNINGS=1
-
 export JAVA_HOME=/Library/Java/JavaVirtualMachines/openjdk-21.jdk/Contents/Home
-
 export PYTEST_XDIST_AUTO_NUM_WORKERS=5
-
 export SSH_AUTH_SOCK=/Users/sileht/Library/Containers/com.bitwarden.desktop/Data/.bitwarden-ssh-agent.sock
 
-eval "$(fzf --zsh)"
-export FZF_DEFAULT_OPTS='--height 30% --layout=reverse --no-separator --no-scrollbar --info=hidden --pointer="|" --prompt="➠ "'
+
+# [ ! -f "$HOME/.x-cmd.root/X" ] || . "$HOME/.x-cmd.root/X" # boot up x-cmd.
 
 ############
 # BINDKEYS #
@@ -100,6 +97,10 @@ ZSH_AUTOSUGGEST_STRATEGY=( history )
 ZSH_AUTOSUGGEST_HISTORY_IGNORE=$'(*\n*|?(#c80,)|*\\#:hist:push-line:)'
 znap source zsh-users/zsh-autosuggestions
 
+znap eval iterm2 'curl -fsSL https://iterm2.com/shell_integration/zsh'
+znap eval fzf "fzf --zsh"
+
+export FZF_DEFAULT_OPTS='--height 30% --layout=reverse --no-separator --no-scrollbar --info=hidden --pointer="|" --prompt="➠ "'
 
 export GREP_COLOR='mt=$GREP_COLOR'
 
@@ -107,14 +108,13 @@ export GREP_COLOR='mt=$GREP_COLOR'
 PIPX_PACKAGES=(
     reno
     jedi-language-server
-    poetry
+    # poetry
     poethepoet
-    neovim-remote
-    neovim
     # ddev
 )
 
 NPM_PACKAGES=(
+    eslint_d
     @github/local-action
     @anthropic-ai/claude-code
     squawk-cli
@@ -356,7 +356,7 @@ alias man="LANG=C man"
 alias df="df -h"
 alias diff='diff -rNu'
 alias ip='ip -color'
-alias r="ranger"
+alias r="yazi"
 function diffv() {
     diff "$@" | git-split-diffs --color=16m | less -RFX
 }

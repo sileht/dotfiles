@@ -27,10 +27,10 @@ vim.api.nvim_create_autocmd('BufEnter', {
     end
 })
 
-vim.api.nvim_create_autocmd("BufWritePre", {
-    pattern = "*",
-    callback = require("formatter").may_format
-})
+-- vim.api.nvim_create_autocmd("BufWritePre", {
+--  pattern = "*",
+--  callback = require("formatter").may_format
+--})
 
 function _G.set_terminal_keymaps()
     local opts = { buffer = 0 }

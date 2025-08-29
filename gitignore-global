@@ -2,3 +2,6 @@
 prod.env
 .python-version
 .DS_Store
+
+CLAUDE.md
+.claude

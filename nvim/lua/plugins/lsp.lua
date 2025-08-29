@@ -1,4 +1,4 @@
-vim.lsp.set_log_level("error")
+-- vim.lsp.set_log_level("error")
 
 local ENABLED_LSP_SERVERS = {
     "ruff",

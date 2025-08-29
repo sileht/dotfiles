@@ -31,3 +31,4 @@ require("lazy").setup("plugins", {
         pattern = { "sileht" }
     },
 })
+require('vim._extui').enable({})
