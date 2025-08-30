@@ -5,3 +5,4 @@ prod.env
 
 CLAUDE.md
 .claude
+logging.properties

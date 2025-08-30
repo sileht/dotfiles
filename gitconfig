@@ -54,40 +54,8 @@
     cshortiso="tformat:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ai %cr)%Creset"
 [log]
     date=local
-[sendemail]
-    smtpSslCertPath = /etc/ssl/certs/
-    smtpEncryption = tls
-	smtpServer = mail.sileht.net
-	smtpUser = sileht@sileht.net
-	smtpServerPort = 25
 [init]
 	defaultBranch = main
-[maintenance]
-	repo = /home/sileht/.env/asdf
-	repo = /home/sileht/.env/base16-shell
-	repo = /home/sileht/.env
-	repo = /home/sileht/.env/dotbot
-	repo = /home/sileht/.env/exa
-	repo = /home/sileht/.env/.git
-	repo = /home/sileht/.env/pure
-	repo = /home/sileht/.env/zcolors
-	repo = /home/sileht/.env/zinit
-	repo = /home/sileht/.env/zsh-autocomplete
-	repo = /home/sileht/.env/zsh-autosuggestions
-	repo = /home/sileht/.env/zsh-completions
-	repo = /home/sileht/.env/zsh-snap
-	repo = /home/sileht/.env/zsh-syntax-highlighting
-	repo = /home/sileht/.env/fast-syntax-highlighting
-	repo = /home/sileht/.env/history-search-multi-word
-	repo = /home/sileht/.env/zsh-history-substring-search
-	repo = /Users/sileht/.env/znap/F-Sy-H
-	repo = /Users/sileht/.env/znap/pure
-	repo = /Users/sileht/.env/znap/zcolors
-	repo = /Users/sileht/.env/znap/zsh-autosuggestions
-	repo = /Users/sileht/.env/znap/zsh-colored-man-pages
-	repo = /Users/sileht/.env/znap/zsh-completions
-	repo = /Users/sileht/.env/znap/zsh-snap
-	repo = /Users/sileht/.env/znap/marlonrichert/zsh-autocomplete
 [credential "https://ghes-dev.mergify.com"]
 	helper = 
 	helper = !/opt/homebrew/bin/gh auth git-credential
