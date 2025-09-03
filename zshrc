@@ -32,7 +32,7 @@ done
 
 # export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin/"
 export PATH="$PATH:/Users/sileht/workspace/mergify/oss/mergiraf/target/release"
-export PATH="${BREW_PREFIX}/opt/postgresql@16/bin:$PATH"
+export PATH="${BREW_PREFIX}/opt/postgresql@17/bin:$PATH"
 export PATH="${BREW_PREFIX}/opt/openjdk@21/bin:$PATH"
 export PATH="${BREW_PREFIX}/opt/node@22/bin:$PATH"
 
