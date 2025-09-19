@@ -103,6 +103,7 @@ vim.diagnostic.config(
         float = {
             current_line = true,
         },
+        severity_sort = true,
         signs = {
             text = {
                 [vim.diagnostic.severity.ERROR] = "󰅚 ",

@@ -37,7 +37,7 @@ export PATH="${BREW_PREFIX}/opt/openjdk@21/bin:$PATH"
 export PATH="${BREW_PREFIX}/opt/node@22/bin:$PATH"
 
 # me
-export PATH="$HOME/.bin:$HOME/.local/bin:$HOME/.env/bin:$HOME/.local/npi/node_modules/.bin:$HOME/.cargo/bin:$PATH"
+export PATH="$HOME/.bin:$HOME/.local/bin:$HOME/.env/bin:$HOME/.local/npmi/node_modules/.bin:$HOME/.cargo/bin:$PATH"
 
 # ENV
 
@@ -114,34 +114,34 @@ PIPX_PACKAGES=(
 )
 
 NPM_PACKAGES=(
-    eslint_d
-    @github/local-action
     @anthropic-ai/claude-code
-    squawk-cli
-    npm-check-updates
-    @redocly/cli@latest
-    svgexport
     @biomejs/biome
-    diagnostic-languageserver
-    @microsoft/compose-language-service
     @github/copilot-language-server
+    @github/local-action
+    @microsoft/compose-language-service
+    @redocly/cli@latest
+    @sentry/cli
+    @vtsls/language-server
+    bash-language-server
+    diagnostic-languageserver
     dockerfile-language-server-nodejs
-    wrangler
-    serve
-    neovim
+    eslint_d
+    grammarly-languageserver
+    jsonlint
     lua-fmt
+    markdownlint
+    neovim
+    npm-check-updates
+    prettier
+    serve
+    squawk-cli
+    svgexport
     typescript
     typescript-language-server
-    grammarly-languageserver
-    @sentry/cli
-    vscode-langservers-extracted
     vim-language-server
+    vscode-langservers-extracted
+    wrangler
     yaml-language-server
-    jsonlint
-    prettier
-    bash-language-server
-    markdownlint
-    @vtsls/language-server
 )
 
 #########
@@ -256,10 +256,10 @@ macos_finder_setup() {
     done
 }
 
-npi() {
+npmi() {
     (
         add-zsh-hook -d chpwd s
-        local dir=$HOME/.local/npi
+        local dir=$HOME/.local/npmi
         mkdir -p $dir
         cd $dir
         npm install --no-fund --no-audit --no-save --no-package-lock $NPM_PACKAGES
@@ -325,7 +325,7 @@ upgrade() {
         title "PIPX"
         pipxi
         title "NPM"
-        npi
+        npmi
         title "NVIM"
         vimi
     )
