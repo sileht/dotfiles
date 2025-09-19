@@ -10,6 +10,7 @@ local ENABLED_LSP_SERVERS = {
     "html",
     "cssls",
     "jdtls",
+    "harper_ls",
 
     "lua_ls",
     "vimls",
@@ -17,7 +18,7 @@ local ENABLED_LSP_SERVERS = {
     "docker_compose_language_service",
     "marksman",
     --"jsonls",
-    "grammarly",
+    --"grammarly",
     "terraformls",
     --"copilot",
 }
@@ -108,6 +109,7 @@ local LSP_SERVERS_OPTIONS = {
     docker_compose_language_service = { filetypes = { "yaml.docker-compose" } },
     vtsls = {},
     jdtls = {},
+    ['harper_ls'] = {},
     lua_ls = {
         settings = {
             Lua = {
