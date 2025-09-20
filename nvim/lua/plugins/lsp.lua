@@ -1,5 +1,6 @@
 -- vim.lsp.set_log_level("error")
 
+
 local ENABLED_LSP_SERVERS = {
     "ruff",
     "jedi_language_server",
@@ -9,7 +10,7 @@ local ENABLED_LSP_SERVERS = {
 
     "html",
     "cssls",
-    "jdtls",
+    "bashls",
     "harper_ls",
 
     "lua_ls",
@@ -25,43 +26,6 @@ local ENABLED_LSP_SERVERS = {
 
 
 local LSP_SERVERS_OPTIONS = {
-    common = {
-        capabilities = require('blink.cmp').get_lsp_capabilities(),
-        on_attach = function(client, bufnr)
-            if client.name == "ts_ls" then
-                -- biome is used instead
-                client.server_capabilities.documentFormattingProvider = false
-                client.server_capabilities.documentRangeFormattingProvider = false
-            end
-            if client.name == "null-ls" then
-                -- Bugged
-                client.server_capabilities.documentFormattingProvider = false
-                client.server_capabilities.documentRangeFormattingProvider = false
-            end
-            if client.name == "eslint" then
-                -- biome is used instead
-                client.server_capabilities.documentFormattingProvider = false
-                client.server_capabilities.documentRangeFormattingProvider = false
-            end
-
-
-            if client.name == "ts_ls" then
-                -- biome is used instead
-                client.server_capabilities.documentFormattingProvider = false
-                client.server_capabilities.documentRangeFormattingProvider = false
-            end
-
-            if client.name == "biome" then
-                client.server_capabilities.documentFormattingProvider = true
-                client.server_capabilities.documentRangeFormattingProvider = true
-            end
-
-            require("formatter").on_attach(client, bufnr)
-        end,
-        flags = {
-            debounce_text_changes = 150
-        }
-    },
     ruff = {
         settings = {
             configuration = {
@@ -71,12 +35,28 @@ local LSP_SERVERS_OPTIONS = {
             }
         }
     },
+    biome = {
+        on_attach = function(client, bufnr)
+            client.server_capabilities.documentFormattingProvider = true
+            client.server_capabilities.documentRangeFormattingProvider = true
+        end,
+    },
     eslint = {
+        on_attach = function(client, bufnr)
+            -- biome is used instead
+            client.server_capabilities.documentFormattingProvider = false
+            client.server_capabilities.documentRangeFormattingProvider = false
+        end,
         settings = {
             format = false,
         },
     },
     ts_ls = {
+        on_attach = function(client, bufnr)
+            -- biome is used instead
+            client.server_capabilities.documentFormattingProvider = false
+            client.server_capabilities.documentRangeFormattingProvider = false
+        end,
         settings = {
             typescript = {
                 inlayHints = {
@@ -107,10 +87,36 @@ local LSP_SERVERS_OPTIONS = {
     grammarly = { filetypes = { "gitcommit" } },
     bashls = { filetypes = { "sh", "zsh" } },
     docker_compose_language_service = { filetypes = { "yaml.docker-compose" } },
-    vtsls = {},
-    jdtls = {},
     ['harper_ls'] = {},
     lua_ls = {
+        on_init = function(client)
+            if client.workspace_folders then
+                local path = client.workspace_folders[1].name
+                if
+                    path ~= vim.fn.stdpath('config')
+                    and (vim.uv.fs_stat(path .. '/.luarc.json') or vim.uv.fs_stat(path .. '/.luarc.jsonc'))
+                then
+                    return
+                end
+            end
+
+            client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
+                runtime = {
+                    version = 'LuaJIT',
+                    path = {
+                        'lua/?.lua',
+                        'lua/?/init.lua',
+                    },
+                },
+                -- Make the server aware of Neovim runtime files
+                workspace = {
+                    checkThirdParty = false,
+                    library = {
+                        vim.env.VIMRUNTIME
+                    }
+                }
+            })
+        end,
         settings = {
             Lua = {
                 format = {
@@ -121,7 +127,7 @@ local LSP_SERVERS_OPTIONS = {
                     }
                 },
                 diagnostics = {
-                    globals = { "vim" },
+                    --globals = { "vim" },
                     severity = {
                         ["action-after-return"] = "Info",
                         ["undefined-global"] = "Ignore",
@@ -131,88 +137,81 @@ local LSP_SERVERS_OPTIONS = {
             }
         }
     },
-    pyright = {
-        on_new_config = function(new_config, new_root_dir)
-            local venv = require("utils").get_venvdir(new_root_dir)
-            if venv ~= nil then
-                new_config.settings = {
-                    python = {
-                        pythonPath = venv .. "/bin/python",
-                        venvPath = venv,
-                    }
-                }
-            end
-        end
-    },
     jedi_language_server = {
-        on_new_config = function(new_config, new_root_dir)
-            local venv = require("utils").get_venvdir(new_root_dir)
+        init_options = {
+            hover = { enable = false },
+            diagnostics = { enable = true },
+            jediSettings = { debug = false },
+        },
+        before_init = function(init_params, config)
+            local venv = require("utils").get_venvdir(config.root_dir)
             if venv ~= nil then
-                new_config.init_options.workspace = { environmentPath = venv .. "/bin/python" }
-                new_config.init_options.hover = { enable = false }
-                new_config.init_options.diagnostics = { enable = true }
-                new_config.init_options.jediSettings = { debug = false }
+                init_params.initializationOptions.workspace = { environmentPath = venv .. "/bin/python" }
             end
         end,
     },
-    red_knot = {
-        on_new_config = function(new_config, new_root_dir)
-            local venv = require("utils").get_venvdir(new_root_dir)
+    ty = {
+        before_init = function(init_params, config)
+            local venv = require("utils").get_venvdir(config.root_dir)
             if venv ~= nil then
-                new_config.init_options.workspace = { environmentPath = venv .. "/bin/python" }
+                init_params.initializationOptions.workspace = { environmentPath = venv .. "/bin/python" }
             end
         end,
+    },
+    copilot = {
+        cmd = { 'copilot-language-server', '--stdio' },
+        root_markers = { '.git' },
+        init_options = {
+            copilotIntegrationId = "vscode-chat",
+        },
     },
 }
 
 
 local function config()
-    local lspconfig = require('lspconfig')
-    local configs = require('lspconfig.configs')
-    configs.copilot = {
-        default_config = {
-            cmd = { 'copilot-language-server', '--stdio' },
-            root_dir = lspconfig.util.root_pattern('.git'),
-            init_options = {
-                copilotIntegrationId = "vscode-chat",
-            },
-        },
-    }
-
     local null_ls = require("null-ls")
-    local null_ls_sources = {
-        null_ls.builtins.formatting.sqlfluff.with({
-            method = null_ls.methods.DIAGNOSTICS_ON_SAVE,
-        }),
-        null_ls.builtins.diagnostics.sqlfluff.with({
-            method = null_ls.methods.DIAGNOSTICS_ON_SAVE,
-        }),
-        null_ls.builtins.diagnostics.mypy.with({
-            only_local = ".venv/bin",
-            method = null_ls.methods.DIAGNOSTICS_ON_SAVE,
-            debounce = 250,
-            timeout = 20000,
-            runtime_condition = function(params)
-                return vim.fn.filereadable(params.bufname) == 1
-            end
-        }),
-        null_ls.builtins.diagnostics.yamllint.with({
-            only_local = ".venv/bin",
-        }),
-        null_ls.builtins.diagnostics.actionlint.with({
-            runtime_condition = function(params)
-                return params.lsp_params.textDocument.uri:match(".github/workflow") ~= nil
-            end,
-        }),
-    }
-    null_ls.setup({ on_attach = LSP_SERVERS_OPTIONS.common.on_attach, sources = null_ls_sources, debug = true })
+    null_ls.setup({
+        -- on_attach = function(client, bufnr)
+        --     client.server_capabilities.documentFormattingProvider = false
+        --     client.server_capabilities.documentRangeFormattingProvider = false
+        -- end,
+        sources = {
+            null_ls.builtins.code_actions.gitrebase.with({}),
+            null_ls.builtins.formatting.sqlfluff.with({
+                method = null_ls.methods.DIAGNOSTICS_ON_SAVE,
+            }),
+            null_ls.builtins.diagnostics.sqlfluff.with({
+                method = null_ls.methods.DIAGNOSTICS_ON_SAVE,
+            }),
+            null_ls.builtins.diagnostics.mypy.with({
+                only_local = ".venv/bin",
+                method = null_ls.methods.DIAGNOSTICS_ON_SAVE,
+                debounce = 250,
+                timeout = 20000,
+                runtime_condition = function(params)
+                    return vim.fn.filereadable(params.bufname) == 1
+                end
+            }),
+            null_ls.builtins.diagnostics.yamllint.with({
+                only_local = ".venv/bin",
+            }),
+            null_ls.builtins.diagnostics.actionlint.with({
+                runtime_condition = function(params)
+                    return params.lsp_params.textDocument.uri:match(".github/workflow") ~= nil
+                end,
+            }),
+        },
+        debug = true
+    })
+
+    vim.lsp.config('*', { flags = { debounce_text_changes = 150 } })
+    vim.lsp.config('*', { capabilities = require('blink.cmp').get_lsp_capabilities() })
 
     for _, lsp in ipairs(ENABLED_LSP_SERVERS) do
-        local options = vim.deepcopy(LSP_SERVERS_OPTIONS.common)
-        if (LSP_SERVERS_OPTIONS[lsp] ~= nil) then
-            options = vim.tbl_extend("force", options, LSP_SERVERS_OPTIONS[lsp])
+        if LSP_SERVERS_OPTIONS[lsp] ~= nil then
+            vim.lsp.config(lsp, LSP_SERVERS_OPTIONS[lsp])
         end
-        lspconfig[lsp].setup(options)
+        vim.lsp.enable(lsp)
     end
 end
 

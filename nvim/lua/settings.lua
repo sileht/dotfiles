@@ -3,7 +3,7 @@ vim.opt.termguicolors = true
 vim.opt.background = "dark"
 vim.opt.shell = "/bin/zsh"
 
-vim.g.verbosefile = "/Users/sileht/.local/state/nvim/runtime.log"
+-- vim.g.verbosefile = "/Users/sileht/.local/state/nvim/runtime.log"
 vim.g.loaded_python3_provider = 0
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_node_provider = 0
@@ -99,7 +99,6 @@ vim.diagnostic.config(
         virtual_lines = false,
         underline = true,
         update_in_insert = false,
-        severity_sort = true,
         float = {
             current_line = true,
         },

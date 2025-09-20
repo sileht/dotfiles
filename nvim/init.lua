@@ -19,6 +19,7 @@ vim.opt.rtp:append("/opt/homebrew/opt/fzf")
 
 require("settings")
 require("autocmd")
+require("formatter").setup()
 require("lazy").setup("plugins", {
     default = {
         lazy = true,

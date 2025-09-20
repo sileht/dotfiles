@@ -27,11 +27,6 @@ vim.api.nvim_create_autocmd('BufEnter', {
     end
 })
 
--- vim.api.nvim_create_autocmd("BufWritePre", {
---  pattern = "*",
---  callback = require("formatter").may_format
---})
-
 function _G.set_terminal_keymaps()
     local opts = { buffer = 0 }
     vim.keymap.set('t', '<esc>', [[<C-\><C-n>]], opts)
@@ -42,12 +37,6 @@ function _G.set_terminal_keymaps()
     vim.keymap.set('t', '<C-l>', [[<Cmd>wincmd l<CR>]], opts)
     vim.keymap.set('t', '<C-w>', [[<C-\><C-n><C-w>]], opts)
 end
-
--- if you only want these mappings for toggle term use term://*toggleterm#* instead
-vim.api.nvim_create_autocmd("TermOpen", {
-    pattern = "term://*",
-    callback = function() set_terminal_keymaps() end
-})
 
 vim.api.nvim_create_augroup("qf", { clear = true })
 vim.api.nvim_create_autocmd("Filetype", {

@@ -20,7 +20,6 @@ return {
             },
             sources = {
                 per_filetype = {
-                    --codecompanion = { "codecompanion" },
                     gitcommit = { "conventional_commits", "linear", "path", "emoji", "buffer" },
                 },
                 default = { 'copilot', 'lsp', 'path', 'buffer' },
@@ -33,13 +32,6 @@ return {
                         end,
                         opts = {}, -- none so far
                     },
-                    -- codecompanion = {
-                    --     name = "CodeCompanion",
-                    --     module = "codecompanion.providers.completion.blink",
-                    --     async = true,
-                    --     score_offset = 100,
-                    --     enabled = false,
-                    -- },
                     emoji = {
                         module = "blink-emoji",
                         name = "Emoji",

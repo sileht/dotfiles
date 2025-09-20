@@ -1,11 +1,11 @@
-local toggler = function(name, module, var)
+local toggler = function(name, method)
     return {
         function()
-            return (require(module)[var]() and "" or "") .. " " .. name
+            return (method() and "" or "") .. " " .. name
         end,
         color = function()
             return {
-                fg = require(module)[var]() and '#AAB1BE' or '#788293'
+                fg = method() and '#AAB1BE' or '#788293'
             }
         end
 
@@ -46,7 +46,7 @@ local bottom_bar = function()
         lualine_x = {},
         lualine_y = {
             "searchcount", "selectioncount",
-            toggler("Format", "formatter", "enabled"),
+            toggler("Format", require("formatter").enabled_on_current_buffer),
             "filetype",
             "fileformat",
             "encoding",
