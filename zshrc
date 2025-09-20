@@ -376,6 +376,7 @@ function nvim2(){
 }
 
 alias vim="nvim"
+alias vimdiff="nvim -d"
 alias vi="nvim"
 alias svi="sudo -E nvim"
 
