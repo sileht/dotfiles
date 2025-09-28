@@ -1,11 +1,14 @@
 return {
     'stevearc/conform.nvim',
     opts = {
+        formatters = {
+            ruff_fix = { append_args = { "--unsafe-fixes" } },
+        },
         formatters_by_ft = {
             javascript = { "biome", "biome-organize-imports", "eslint_d" },
             typescript = { "biome", "biome-organize-imports", "eslint_d" },
             python = { "ruff_fix", "ruff_format", "ruff_organize_imports" },
-            lua = { "lsp_format" },
+            lua = { lsp_format = "fallback" },
             java = { "spotless_maven" },
             sql = { "sqlfluff" },
         },

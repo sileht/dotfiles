@@ -61,7 +61,6 @@ vim.opt.ttimeout = true
 vim.opt.ttimeoutlen = 500
 vim.opt.timeoutlen = 500
 
-
 -- vim.opt.wildmenu = true                -- Show list instead of just completing
 --vim.opt.wildmode = "list:longest,full" -- Command <Tab> completion, list matches, then longest common part, then all.
 --vim.opt.wildmenu = false               -- Show list instead of just completing

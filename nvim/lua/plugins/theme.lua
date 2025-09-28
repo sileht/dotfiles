@@ -1,4 +1,15 @@
 return {
+    "EdenEast/nightfox.nvim",
+    lazy     = false,
+    priority = 1000,
+    config   = function()
+        require("nightfox").setup({ options = { dim_inactive = true } })
+        --vim.cmd.colorscheme("carbonfox")
+        vim.cmd.colorscheme("duskfox")
+    end
+}
+
+--[[ return {
     "rebelot/kanagawa.nvim",
     lazy     = false,
     priority = 1000,
@@ -6,9 +17,9 @@ return {
         require("kanagawa").setup({
             compile = true,
         })
-        vim.cmd("colorscheme kanagawa-wave")
+        vim.cmd("colorscheme kanagawa")
     end
-}
+} ]]
 
 --[[ return {
     "bluz71/vim-moonfly-colors",

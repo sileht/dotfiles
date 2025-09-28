@@ -139,9 +139,14 @@ local LSP_SERVERS_OPTIONS = {
     },
     jedi_language_server = {
         init_options = {
-            hover = { enable = false },
+            --hover = { enable = false },
             diagnostics = { enable = true },
             jediSettings = { debug = false },
+            completion = {
+                disableSnippets = true,
+                resolveEagerly = true,
+            },
+            --semanticTokens = { enable = true },
         },
         before_init = function(init_params, config)
             local venv = require("utils").get_venvdir(config.root_dir)
