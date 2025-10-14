@@ -74,6 +74,8 @@ vim.g.maplocalleader = ";"
 vim.opt.updatetime = 1500
 vim.opt.updatetime = 300
 
+vim.opt.pumborder = 'rounded'
+
 --vim.lsp.inlay_hint.enable(true)
 vim.diagnostic.config(
     {

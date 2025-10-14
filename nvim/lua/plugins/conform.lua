@@ -2,7 +2,7 @@ return {
     'stevearc/conform.nvim',
     opts = {
         formatters = {
-            ruff_fix = { append_args = { "--unsafe-fixes" } },
+            --           ruff_fix = { append_args = { "--unsafe-fixes" } },
         },
         formatters_by_ft = {
             javascript = { "biome", "biome-organize-imports", "eslint_d" },

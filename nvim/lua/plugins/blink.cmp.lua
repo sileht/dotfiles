@@ -30,11 +30,11 @@ return {
                 draw = { treesitter = { 'lsp' } },
                 max_height = 15,
             },
-            documentation = { window = { border = 'single' } },
+            documentation = { window = { border = 'rounded' } },
             --ghost_text = { enabled = true },
             trigger = {
                 --show_on_blocked_trigger_characters = { ":" },
-                --show_on_blocked_trigger_characters = { " ", "\n", "\t", ":" },
+                show_on_blocked_trigger_characters = { " ", "\n", "\t", ":" },
             },
             list = {
                 selection = {

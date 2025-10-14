@@ -108,6 +108,7 @@ export GREP_COLOR='mt=$GREP_COLOR'
 PIPX_PACKAGES=(
     reno
     jedi-language-server
+    mergify-cli
     # poetry
     poethepoet
     # ddev
@@ -165,11 +166,11 @@ zstyle :prompt:pure:host color $host_color
 zstyle :prompt:pure:user color $host_color
 
 # Cursor style when executing a command
-.prompt.cursor.blinking-underline() { print -n '\e[3 q'; true }
+.prompt.cursor.blinking-underline() { print -n '\e[3 q'; true; }
 add-zsh-hook preexec .prompt.cursor.blinking-underline
 
  # Cursor style when the command line is active
-.prompt.cursor.blinking-bar()       { print -n '\e[5 q'; true }
+.prompt.cursor.blinking-bar()       { print -n '\e[5 q'; true; }
 add-zsh-hook precmd  .prompt.cursor.blinking-bar
 .prompt.cursor.blinking-bar
 
@@ -177,7 +178,7 @@ add-zsh-hook precmd  .prompt.cursor.blinking-bar
 # WATCH #
 #########
 # this function is launched every $PERIOD seconds
-_rehash(){ rehash }
+_rehash(){ rehash; }
 add-zsh-hook periodic _rehash
 PERIOD=30
 watch=(notme)
@@ -271,7 +272,7 @@ pipxi() {
         local dir=$HOME/.local/pipx/venvs/
         local pipx_packages_installed=($(pipx list --short | awk '{print $1}'))
         for package in $pipx_packages_installed ; do
-            if [[ $PIPX_PACKAGES[(Ie)$package] -eq 0 ]] ; then
+            if [[ ! " ${PIPX_PACKAGES[@]} " =~ " ${package} " ]]; then
                 if [ $package != "mergify_cli" ]; then
                     pipx uninstall $package
                 fi
@@ -309,31 +310,32 @@ snapi() {
     )
 }
 
+_upgrade_title() { echo ; echo "# $1 #" ; echo; }
+
 upgrade() {
     (
         add-zsh-hook -d chpwd s
-        local title() { echo ; echo "# $1 #" ; echo; }
-        title "BREW"
+        _upgrade_title "BREW"
         brew update
         brew upgrade
         # brow update
         # brow upgrade
-        title "ENV"
+        _upgrade_title "ENV"
         (cd ~/.env && git diff --quiet && git pull --rebase --recurse-submodules && ./install ) # Only pull if not dirty
-        title "ZSNAP"
+        _upgrade_title "ZSNAP"
         snapi
-        title "PIPX"
+        _upgrade_title "PIPX"
         pipxi
-        title "NPM"
+        _upgrade_title "NPM"
         npmi
-        title "NVIM"
+        _upgrade_title "NVIM"
         vimi
     )
 }
 
-function cdt() { cd $(mktemp -d -t cdt.$(date '+%Y%m%d-%H%M%S').XXXXXXXX) ; pwd }
+function cdt() { cd $(mktemp -d -t cdt.$(date '+%Y%m%d-%H%M%S').XXXXXXXX) ; pwd; }
 function s() { pwd >| $ZVARDIR/.saved_dir; pwd >| $ZVARDIR/.saved_dir_$$; }
-function i() { sp="$(cat $ZVARDIR/.saved_dir 2>/dev/null)"; [ -d $sp -a -r $sp ] && cd $sp }
+function i() { sp="$(cat $ZVARDIR/.saved_dir 2>/dev/null)"; [ -d $sp -a -r $sp ] && cd $sp; }
 function ii() { p=$(cat $ZVARDIR/.saved_dir_* | fzf) ; cd $p ; s ; }
 function zshexit() {
     rm -f $ZVARDIR/.saved_dir_$$
@@ -373,6 +375,29 @@ function nvim2(){
         cmd="$cmd $new_arg"
 	done
 	eval $cmd
+}
+
+
+function git_c() {
+    local branch dir
+    branch="$(git b | fzf --ansi | sed 's/^*//g'| awk '{print $1}')"
+    [[ -z "$branch" ]] && return 130
+
+    dir="$(git worktree list | grep "\[${branch}\]" | awk '{print $1}')"
+    if [[ -n "$dir" ]]; then
+        cd "$dir" || return
+    else
+        git checkout "$branch"
+    fi
+}
+
+_git_path=$(which git)
+function git() {
+    if [[ "$1" == "c" ]]; then 
+        git_c
+    else 
+        $_git_path "$@"
+    fi
 }
 
 alias vim="nvim"

@@ -11,7 +11,6 @@
     bl = "!f() { git checkout $(git branch --sort=-committerdate --format='%(HEAD) %(refname:short)' | grep -v -e '^*' | head -1) ; }; f"
     get-file = "!f() { git cat-file blob $1:$2 >| $2 ; }; f"
 
-    # c = checkout
     pr = "!f() { git r && git check && mergify stack push -k \"$@\"; }; f"
     check = "!f() { if test -f .pre-commit-config.yaml; then pre-commit run --from-ref $(git diverge-commit) --to-ref HEAD; fi ; }; f"
     t = "!f() { git branch --set-upstream-to=origin/${1:-main}; }; f"
@@ -75,9 +74,14 @@
 	required = true
 [mergify-cli]
 	stack-branch-prefix = devs/sileht
-	stack-keep-pr-title-body = true
 [merge]
     conflictstyle = merge
 [merge "mergiraf"]
     name = mergiraf
     driver = mergiraf merge --git %O %A %B -s %S -x %X -y %Y -p %P
+
+[diff]
+#    tool = nvim_difftool
+
+[difftool "nvim_difftool"]
+    cmd = nvim -c \"packadd nvim.difftool\" -c \"DiffTool $LOCAL $REMOTE\"

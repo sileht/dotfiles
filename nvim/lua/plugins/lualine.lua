@@ -60,7 +60,7 @@ return {
     config = function()
         require('lualine').setup({
             options = {
-                theme = "moonfly",
+                theme = "duskfox",
                 component_separators = '│',
                 section_separators = { left = ' ', right = ' ' },
             },
