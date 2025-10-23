@@ -41,7 +41,7 @@ export PATH="$HOME/.bin:$HOME/.local/bin:$HOME/.env/bin:$HOME/.local/npmi/node_m
 
 # ENV
 
-export AWS_PROFILE=mergify-admin
+#export AWS_PROFILE=mergify-admin
 export NODE_OPTIONS="--max-old-space-size=18192" # --trace-deprecation --trace-warnings"
 export NODE_NO_WARNINGS=1
 export JAVA_HOME=/Library/Java/JavaVirtualMachines/openjdk-21.jdk/Contents/Home
@@ -109,6 +109,7 @@ PIPX_PACKAGES=(
     reno
     jedi-language-server
     mergify-cli
+    refly
     # poetry
     poethepoet
     # ddev

@@ -11,7 +11,7 @@
     bl = "!f() { git checkout $(git branch --sort=-committerdate --format='%(HEAD) %(refname:short)' | grep -v -e '^*' | head -1) ; }; f"
     get-file = "!f() { git cat-file blob $1:$2 >| $2 ; }; f"
 
-    pr = "!f() { git r && git check && mergify stack push -k \"$@\"; }; f"
+    pr = "!f() { git r && git check && mergify stack push \"$@\"; }; f"
     check = "!f() { if test -f .pre-commit-config.yaml; then pre-commit run --from-ref $(git diverge-commit) --to-ref HEAD; fi ; }; f"
     t = "!f() { git branch --set-upstream-to=origin/${1:-main}; }; f"
     r = "!f() { git branch -M $(git rev-parse --abbrev-ref HEAD | sed -e 's,^wip-,,g' -e s,pull/[^-]*-sileht-,,g) ; }; f"

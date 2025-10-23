@@ -3,7 +3,9 @@
 
 local ENABLED_LSP_SERVERS = {
     "ruff",
-    "jedi_language_server",
+    --"jedi_language_server",
+    --https://github.com/facebook/pyrefly
+    "pyrefly",
     "biome",
     "eslint",
     "ts_ls",
@@ -163,6 +165,23 @@ local LSP_SERVERS_OPTIONS = {
             end
         end,
     },
+    pyrefly = {
+        cmd = { "pyrefly", "lsp" },
+        settings = {
+            --disableTypeErrors = true,
+            pyrefly = {
+                disableLanguageServices = false,
+                disableTypeErrors = true,
+            }
+        },
+        before_init = function(init_params, config)
+            local venv = require("utils").get_venvdir(config.root_dir)
+            if venv ~= nil then
+                vim.fn.extend(config.cmd, { "--python-interpreter-path", venv .. "/bin/python" })
+            end
+        end,
+    },
+
     copilot = {
         cmd = { 'copilot-language-server', '--stdio' },
         root_markers = { '.git' },
