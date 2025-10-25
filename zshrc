@@ -109,7 +109,7 @@ PIPX_PACKAGES=(
     reno
     jedi-language-server
     mergify-cli
-    refly
+    pyrefly
     # poetry
     poethepoet
     # ddev
