@@ -1,4 +1,4 @@
--- hidden diagnotics showed upper right
+-- hidden diagnostics showed upper right
 return {
     "boltlessengineer/sense.nvim",
 }

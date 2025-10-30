@@ -31,7 +31,6 @@ M.toggle = function()
     vim.b.formatter_enabled = not vim.b.formatter_enabled
 end
 
-
 M.setup = function()
     vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
         callback = function(args)

@@ -36,14 +36,11 @@ return {
                 { "<leader>k", require('telescope.builtin').keymaps, desc = "Keymaps" },
                 --{ "<leader>fb", require('telescope.builtin').buffers, desc = "buffer" },
                 { "<leader>h", require('telescope.builtin').help_tags, desc = "help tags" },
-                --{ "<leader>n", require('dropbar.api').pick, desc = "dropbar" },
                 { "<leader><leader>", require("telescope").extensions.smart_open.smart_open, desc = "File browser" },
                 { "<leader>e", require("telescope").extensions.smart_open.smart_open, desc = "File browser" },
-                { "<leader>p", require("telescope").extensions.poethepoet.poethepoet, desc = "Poethepoet" },
-                { "<leader>s", require("telescope").extensions.prflow.prflow, desc = "PR Flow" },
                 -- {
                 --    "<leader>e",
-                --    require("telescope").extensions.file_browser.file_browse,,
+                --    require("telescope").extensions.file_browser.file_browser,
                 --    desc = "File browser"
                 { "<leader>A", require("actions-preview").code_actions, desc = "Code action" },
                 { "<leader>a", vim.lsp.buf.code_action, desc = "Code action" },
