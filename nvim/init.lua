@@ -2,7 +2,6 @@
 --end
 
 vim.loader.enable()
-require('vim._extui').enable({})
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
@@ -29,3 +28,4 @@ require("lazy").setup("plugins", {
         notify = false,
     },
 })
+--require('vim._extui').enable({})

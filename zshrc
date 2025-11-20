@@ -116,6 +116,7 @@ PIPX_PACKAGES=(
 )
 
 NPM_PACKAGES=(
+    @github/copilot
     @anthropic-ai/claude-code
     @biomejs/biome
     @github/copilot-language-server
@@ -280,11 +281,13 @@ pipxi() {
             fi
         done
         for package in $PIPX_PACKAGES ; do
-            if [ ! -e $dir/$package ]; then
-                if [ $package == "ddev" ]; then
-                    pipx install ddev --python ${BREW_PREFIX}/bin/python3.8
-                else
-                    pipx install $package
+            if [ ! -e "$dir/$package" ]; then
+                pipx install --python ${BREW_PREFIX}/bin/python3 $package
+            else
+                local py_expected=$(readlink -f ${BREW_PREFIX}/bin/python3)
+                local py_current=$(readlink -f $dir/$package/bin/python3)
+                if [ "$py_current" != "$py_expected" ]; then
+                    pipx reinstall --python ${BREW_PREFIX}/bin/python3 $package
                 fi
             fi
         done
@@ -379,7 +382,7 @@ function nvim2(){
 }
 
 
-function git_c() {
+function b() {
     local branch dir
     branch="$(git b | fzf --ansi | sed 's/^*//g'| awk '{print $1}')"
     [[ -z "$branch" ]] && return 130
@@ -389,15 +392,6 @@ function git_c() {
         cd "$dir" || return
     else
         git checkout "$branch"
-    fi
-}
-
-_git_path=$(which git)
-function git() {
-    if [[ "$1" == "c" ]]; then 
-        git_c
-    else 
-        $_git_path "$@"
     fi
 }
 
