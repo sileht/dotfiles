@@ -15,7 +15,7 @@ return {
             ['<S-Tab>'] = { 'select_prev', 'fallback' },
         },
         cmdline = {
-            enabled = false,
+            enabled = true,
         },
 
         signature = {
@@ -28,7 +28,7 @@ return {
             menu = {
                 border = 'rounded',
                 draw = { treesitter = { 'lsp' } },
-                max_height = 15,
+                max_height = 100
             },
             documentation = { window = { border = 'rounded' } },
             --ghost_text = { enabled = true },

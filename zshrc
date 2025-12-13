@@ -111,11 +111,12 @@ PIPX_PACKAGES=(
     mergify-cli
     pyrefly
     # poetry
-    poethepoet
+    # poethepoet
     # ddev
 )
 
 NPM_PACKAGES=(
+    tree-sitter-cli
     @github/copilot
     @anthropic-ai/claude-code
     @biomejs/biome
@@ -298,7 +299,7 @@ pipxi() {
 vimi(){
     (
         command nvim -c "lua require('lazy').sync({wait=1})" -c "sleep 100m" -c "qa"
-        nvim --headless -c TSUpdateSync -c q
+        # nvim --headless -c TSUpdate -c q
     )
 }
 
@@ -399,6 +400,8 @@ alias vim="nvim"
 alias vimdiff="nvim -d"
 alias vi="nvim"
 alias svi="sudo -E nvim"
+
+alias poe="uv run poe"
 
 # LESS stuff
 export LESS='--quit-if-one-screen --no-init --hilite-search --SILENT --raw-control-chars --jump-target=2'
@@ -551,3 +554,6 @@ if [[ $1 == eval ]]; then
     "$@"
     set --
 fi
+
+# Added by Antigravity
+export PATH="/Users/sileht/.antigravity/antigravity/bin:$PATH"

@@ -42,7 +42,13 @@ local bottom_bar = function()
             { "diff" },
         },
         lualine_c = {
-            { require("gitblame").get_current_blame_text, cond = require("gitblame").is_blame_text_available } },
+            {
+                'diagnostics',
+                symbols = { error = ' ', warn = ' ', info = ' ', hint = ' ' },
+                always_visible = true,
+            }
+            --{ require("gitblame").get_current_blame_text, cond = require("gitblame").is_blame_text_available }
+        },
         lualine_x = {},
         lualine_y = {
             "searchcount", "selectioncount",

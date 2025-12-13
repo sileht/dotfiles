@@ -66,7 +66,16 @@ vim.opt.timeoutlen = 500
 --vim.opt.wildmenu = false               -- Show list instead of just completing
 
 vim.opt.colorcolumn = "88"
-vim.opt.completeopt = "menu,menuone,noselect"
+vim.opt.complete = "o,.,w,b,u"
+vim.opt.completeopt = "fuzzy,menu,menuone,noselect,popup"
+
+-- insert mode completion options
+--vim.opt.autocomplete = true
+--vim.api.nvim_create_autocmd("LspAttach", { command = "setlocal complete=o" })
+vim.opt.shortmess:prepend("c") -- avoid having to press enter on snippet completion
+vim.opt.pumheight = 10
+vim.opt.pummaxwidth = 80
+vim.opt.pumborder = 'rounded'
 
 vim.g.mapleader = ","
 vim.g.maplocalleader = ";"

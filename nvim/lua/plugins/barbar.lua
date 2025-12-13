@@ -9,12 +9,12 @@ return {
         maximum_padding = 1,
         insert_at_end = true,
         icons = {
-            button = '⛌',
+            button = '',
             diagnostics = {
-                [vim.diagnostic.severity.ERROR] = { enabled = true },
-                [vim.diagnostic.severity.WARN] = { enabled = true },
-                [vim.diagnostic.severity.INFO] = { enabled = true },
-                [vim.diagnostic.severity.HINT] = { enabled = true },
+                [vim.diagnostic.severity.ERROR] = { enabled = true, icon = " " },
+                [vim.diagnostic.severity.WARN] = { enabled = true, icon = " " },
+                [vim.diagnostic.severity.INFO] = { enabled = true, icon = " " },
+                [vim.diagnostic.severity.HINT] = { enabled = true, icon = " " },
             },
         }
     },

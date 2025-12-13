@@ -1,36 +1,24 @@
 return {
     "nvim-treesitter/nvim-treesitter",
-    --event = "VeryLazy",
     enabled = true,
-    build = ":TSUpdateSync",
-    dependencies = {
-        {
-            "nvim-treesitter/nvim-treesitter-textobjects",
-            enabled = false,
-        }
-    },
+    lazy = false,
+    branch = 'main',
+    build = ":TSUpdate",
     config = function()
-        require("nvim-treesitter.configs").setup(
-            {
-                ensure_installed = "all",
-                ignore_install = { "phpdoc", "wgsl" },
-                indent = { enable = true },
-                incremental_selection = { enable = true },
-                highlight = { enable = true, additional_vim_regex_highlighting = false },
-                textobjects = {
-                    select = {
-                        enable = true,
-                        -- Automatically jump forward to textobj, similar to targets.vim
-                        lookahead = true,
-                        keymaps = {
-                            ["af"] = "@function.outer",
-                            ["if"] = "@function.inner",
-                            ["ac"] = "@class.outer",
-                            ["ic"] = "@class.inner"
-                        }
-                    }
-                }
-            }
-        )
+        require("nvim-treesitter").setup({})
+        local plugins = require('nvim-treesitter').get_available()
+        local ignore_install = {} -- "phpdoc", "wgsl", "jsonc", "blueprint", "fusion" }
+        local to_install = vim.tbl_filter(function(item)
+            return not vim.tbl_contains(ignore_install, item)
+        end, plugins)
+        require("nvim-treesitter").install(to_install)
+        vim.api.nvim_create_autocmd('BufEnter', {
+            callback = function()
+                local ok, _ = pcall(vim.treesitter, 'start')
+                if ok then
+                    vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+                end
+            end,
+        })
     end
 }
