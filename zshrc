@@ -25,11 +25,6 @@ source "${HOME}/.orbstack/shell/init.zsh"
 source "${BREW_PREFIX}/share/google-cloud-sdk/path.zsh.inc"
 source "${BREW_PREFIX}/share/google-cloud-sdk/completion.zsh.inc"
 
-# homebrew optional
-for gnubin in gnu-sed grep findutils coreutils bash; do
-    export PATH="${BREW_PREFIX}/opt/${gnubin}/libexec/gnubin:$PATH"
-done
-
 # export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin/"
 export PATH="$PATH:/Users/sileht/workspace/mergify/oss/mergiraf/target/release"
 export PATH="${BREW_PREFIX}/opt/postgresql@17/bin:$PATH"
@@ -38,6 +33,15 @@ export PATH="${BREW_PREFIX}/opt/node@22/bin:$PATH"
 
 # me
 export PATH="$HOME/.bin:$HOME/.local/bin:$HOME/.env/bin:$HOME/.local/npmi/node_modules/.bin:$HOME/.cargo/bin:$PATH"
+
+export CLAUDE_PATH=$PATH
+
+## homebrew optional
+for gnubin in gnu-sed grep findutils coreutils bash; do
+    export PATH="${BREW_PREFIX}/opt/${gnubin}/libexec/gnubin:$PATH"
+done
+
+
 
 # ENV
 
@@ -48,8 +52,8 @@ export JAVA_HOME=/Library/Java/JavaVirtualMachines/openjdk-21.jdk/Contents/Home
 export PYTEST_XDIST_AUTO_NUM_WORKERS=5
 export SSH_AUTH_SOCK=/Users/sileht/Library/Containers/com.bitwarden.desktop/Data/.bitwarden-ssh-agent.sock
 
-
-# [ ! -f "$HOME/.x-cmd.root/X" ] || . "$HOME/.x-cmd.root/X" # boot up x-cmd.
+export SUPERVISOR_ENDPOINT=https://ha-api.sileht.net
+export SUPERVISOR_API_TOKEN=$(cat ~/.ha-token)
 
 ############
 # BINDKEYS #
@@ -110,15 +114,16 @@ PIPX_PACKAGES=(
     jedi-language-server
     mergify-cli
     pyrefly
+    mpremote
     # poetry
     # poethepoet
     # ddev
 )
 
 NPM_PACKAGES=(
+    bun
     tree-sitter-cli
     @github/copilot
-    @anthropic-ai/claude-code
     @biomejs/biome
     @github/copilot-language-server
     @github/local-action
@@ -176,6 +181,21 @@ add-zsh-hook preexec .prompt.cursor.blinking-underline
 .prompt.cursor.blinking-bar()       { print -n '\e[5 q'; true; }
 add-zsh-hook precmd  .prompt.cursor.blinking-bar
 .prompt.cursor.blinking-bar
+
+# Show +*+ in prompt when claude is running in current directory
+_claude_indicator() {
+    local pids="$(pgrep -f claude 2>/dev/null | tr '\n' ',')"
+    pids="${pids%,}"
+
+    if [[ -n "$pids" ]] && lsof -d cwd -a -p "$pids" -Fn 2>/dev/null | command grep -qxF "n${PWD}"; then
+        export CONDA_DEFAULT_ENV="🤖"
+    elif [[ "$CONDA_DEFAULT_ENV" = "🤖" ]]; then
+        unset CONDA_DEFAULT_ENV
+    fi
+}
+add-zsh-hook chpwd _claude_indicator
+add-zsh-hook precmd _claude_indicator
+_claude_indicator
 
 #########
 # WATCH #
@@ -368,6 +388,22 @@ function diffv() {
     diff "$@" | git-split-diffs --color=16m | less -RFX
 }
 
+
+alias claude="PATH=$CLAUDE_PATH claude"
+
+function c() {
+    if [ -e ".git" ] ; then
+        local claude_session=$(mergify stack session | sed -n -e '/Claude-Session-Id:/s/Claude-Session-Id: //gp')
+        if [ -n "$claude_session" ]; then
+            claude --resume "$claude_session"
+        else
+            claude
+        fi
+    else
+        claude --resume
+    fi
+}
+
 # VIM stuff
 export EDITOR=nvim
 export VISUAL=nvim
@@ -382,13 +418,141 @@ function nvim2(){
 	eval $cmd
 }
 
-
-function b() {
-    local branch dir
-    branch="$(git b | fzf --ansi | sed 's/^*//g'| awk '{print $1}')"
+function n() {
+    branch="$1"
     [[ -z "$branch" ]] && return 130
 
-    dir="$(git worktree list | grep "\[${branch}\]" | awk '{print $1}')"
+    # Find the main repository path
+    if [ -f .git ]; then
+        # We're in a worktree, resolve the main repo
+        main_repo=$(git rev-parse --path-format=absolute --git-common-dir)
+        main_repo="${main_repo%/.git}"
+    else
+        main_repo=$(git rev-parse --show-toplevel)
+    fi
+
+    project="$(basename ${main_repo} | sed -e 's/^base-//g')"
+    worktrees_path="${main_repo}/../${project}"
+    worktree_path="${worktrees_path}/${branch}"
+
+    git fetch origin main
+    git worktree add "$worktree_path" -b "$branch" "origin/main" || git worktree add "$worktree_path" "$branch"
+    cd $worktree_path
+    if [ "$project" == "engine" ]; then
+        cp ../test.env .
+    fi
+    if [ "$project" == "ui" ]; then
+        npm install
+    fi
+
+}
+
+function g() {
+    local base_dir=~/workspace/mergify
+    local base
+
+    # Handle GitHub PR URL: extract repo and branch, then cd to the worktree
+    if [[ "$1" =~ ^https://github\.com/([^/]+)/([^/]+)/pull/([0-9]+) ]]; then
+        local repo="${match[2]}"
+        local pr_number="${match[3]}"
+        local branch
+        branch="$(gh pr view "$pr_number" --repo "${match[1]}/${repo}" --json headRefName -q .headRefName)" || return 1
+
+        if [[ -d "$base_dir/base-$repo" ]]; then
+            base="$base_dir/base-$repo"
+        elif [[ -d "$base_dir/$repo" ]]; then
+            cd "$base_dir/$repo"
+            return
+        else
+            # Try suffix matching: e.g. "dashboard-ui" -> check dirs ending in "-ui" or named "ui"
+            local suffix="${repo##*-}"
+            if [[ "$suffix" != "$repo" ]]; then
+                if [[ -d "$base_dir/base-$suffix" ]]; then
+                    base="$base_dir/base-$suffix"
+                elif [[ -d "$base_dir/$suffix" ]]; then
+                    cd "$base_dir/$suffix"
+                    return
+                fi
+            fi
+            if [[ -z "$base" ]]; then
+                echo "No project directory found for '$repo'"
+                return 1
+            fi
+        fi
+
+        local dir
+        # Try exact branch name match
+        dir="$(git -C "$base" worktree list | grep "\[${branch}\]" | awk '{print $1}')"
+        # Try upstream tracking branch
+        if [[ -z "$dir" ]]; then
+            local local_branch
+            local_branch="$(git -C "$base" for-each-ref --format='%(refname:short) %(upstream:short)' refs/heads/ | awk -v target="origin/${branch}" '$2 == target {print $1; exit}')"
+            [[ -n "$local_branch" ]] && dir="$(git -C "$base" worktree list | grep "\[${local_branch}\]" | awk '{print $1}')"
+        fi
+        # Try extracting worktree name from devs/<user>/<name>/<change-id> pattern
+        if [[ -z "$dir" && "$branch" =~ ^devs/[^/]+/([^/]+)/ ]]; then
+            dir="$(git -C "$base" worktree list | grep "\[${match[1]}\]" | awk '{print $1}')"
+        fi
+        if [[ -n "$dir" ]]; then
+            cd "$dir"
+        else
+            echo "No worktree found for branch '$branch' (PR #$pr_number)"
+            return 1
+        fi
+        return
+    fi
+
+    # If cwd is already inside a worktree, use its bare repo as the base
+    local git_common_dir="$(git rev-parse --git-common-dir 2>/dev/null)"
+    if [[ -n "$git_common_dir" && "$git_common_dir" != ".git" ]]; then
+        base="${git_common_dir%/.git}"
+        base="${base:A}"  # resolve to absolute path
+    else
+        # List all projects: strip "base-" prefix for worktree projects, show others as-is
+        local choice
+        if [[ -n "$1" ]]; then
+            local matches=("${(@f)$(find "$base_dir" -maxdepth 1 -type d -name "*${1}*" ! -name "$(basename "$base_dir")" 2>/dev/null)}")
+            if (( ${#matches} == 0 )); then
+                echo "No directory matching '$1'"
+                return 1
+            elif (( ${#matches} == 1 )); then
+                choice="${matches[1]##*/}"
+                choice="${choice#base-}"
+            else
+                choice="$(printf '%s\n' "${matches[@]}" | while read -r d; do printf '%s %s\n' "$(stat -c '%Y' "$d")" "$d"; done | sort -rn | sed 's|^[0-9]* .*/||; s/^base-//' | awk '!seen[$0]++' | fzf --ansi)"
+                [[ -z "$choice" ]] && return 130
+            fi
+        else
+            choice="$(find "$base_dir" -maxdepth 1 -mindepth 1 -type d -printf '%T@ %f\n' 2>/dev/null | sort -rn | sed 's|^[0-9.]* ||; s/^base-//' | awk '!seen[$0]++' | fzf --ansi)"
+            [[ -z "$choice" ]] && return 130
+        fi
+
+        # Determine if this is a base-* (worktree) project or a simple directory
+        if [[ -d "$base_dir/base-$choice" ]]; then
+            base="$base_dir/base-$choice"
+        else
+            cd "$base_dir/$choice"
+            return
+        fi
+    fi
+
+    local branch dir
+    local worktrees="$(git -C "$base" worktree list | grep -v "^${base} ")"
+    local branches=("${(@f)$(echo "$worktrees" | sed -n 's/.*\[\(.*\)\]/\1/p')}")
+    branch="$(git -C "$base" b "${branches[@]}" | fzf --ansi | awk '{print $1}')"
+
+    [[ -z "$branch" ]] && return 130
+
+    dir="$(echo "$worktrees" | grep "\[${branch}\]" | awk '{print $1}')"
+    [[ -n "$dir" ]] && cd "$dir"
+}
+
+function bb() {
+    local branch dir
+    branch="$(git bb | fzf --ansi | sed 's/^*//g'| awk '{print $1}')"
+    [[ -z "$branch" ]] && return 130
+
+    dir="$(cd git worktree list | grep "\[${branch}\]" | awk '{print $1}')"
     if [[ -n "$dir" ]]; then
         cd "$dir" || return
     else
@@ -402,6 +566,7 @@ alias vi="nvim"
 alias svi="sudo -E nvim"
 
 alias poe="uv run poe"
+alias li="linear-cli"
 
 # LESS stuff
 export LESS='--quit-if-one-screen --no-init --hilite-search --SILENT --raw-control-chars --jump-target=2'
@@ -490,15 +655,14 @@ function fwget(){
 
 # Docker Stuffs
 export DOCKER_BUILDKIT=1
-diclean () {
-    docker images -q -f dangling=true | xargs docker rmi
-}
 dclean () {
     filter=${1:=whatever}
     for d in $(docker ps -a | grep --color=auto -v -e 'CONTAINER ID' -e " ${filter}_" | awk '{print $1}'); do
         docker stop $d
         docker rm $d
     done
+    docker volume ls -f "dangling=true" | awk '/local/{print $2}' | xargs docker volume rm
+    docker images -q -f "dangling=true" | xargs docker rmi
     docker ps -a
 }
 

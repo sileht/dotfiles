@@ -63,4 +63,33 @@ function M.get_secret(name)
     return secret
 end
 
+function M.copy_current_file_path()
+    local file = vim.fn.expand("%:p")
+
+    local mode = vim.fn.mode()
+    local s, e
+
+    if mode:match("[vV\22]") then
+        -- Visual mode: use live selection endpoints
+        s = vim.fn.getpos("v")[2]
+        e = vim.fn.getpos(".")[2]
+    else
+        -- Normal mode fallback: current line
+        s = vim.fn.line(".")
+        e = s
+    end
+
+    if s > e then s, e = e, s end
+
+    local ref
+    if s == e then
+        ref = string.format("%s#L%d", file, s)
+    else
+        ref = string.format("%s#L%d-L%d", file, s, e)
+    end
+
+    vim.fn.setreg("+", ref)
+    vim.notify(ref)
+end
+
 return M

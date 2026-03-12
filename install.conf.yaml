@@ -11,6 +11,7 @@
 
 - link:
     ~/.config/nvim: nvim
+    ~/.claude: claude
     ~/.gitconfig: gitconfig
     ~/.gitignore-global: gitignore-global
     ~/.wgetrc: wgetrc

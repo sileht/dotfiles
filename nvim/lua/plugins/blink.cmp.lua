@@ -6,7 +6,7 @@ return {
     dependencies = {
         "moyiz/blink-emoji.nvim",
         'disrupted/blink-cmp-conventional-commits',
-        "fang2hou/blink-copilot",
+        --"fang2hou/blink-copilot",
     },
     opts = {
         keymap = {
@@ -48,7 +48,7 @@ return {
             per_filetype = {
                 gitcommit = { "conventional_commits", "linear", "path", "emoji", "buffer" },
             },
-            default = { 'lsp', 'copilot', 'path', 'buffer' },
+            default = { 'lsp', 'path', 'buffer' }, --'copilot',
             providers = {
                 lsp = {
                 },
@@ -66,6 +66,7 @@ return {
                     score_offset = 15,        -- Tune by preference
                     opts = { insert = true }, -- Insert emoji (default) or complete its name
                 },
+                --[[
                 copilot = {
                     name = "copilot",
                     module = "blink-copilot",
@@ -75,6 +76,7 @@ return {
                         max_completions = 3,
                     },
                 },
+                ]] --
                 linear = {
                     module = "blink-cmp-linear",
                     name = "linear",

@@ -7,7 +7,8 @@
 
 [alias]
     amend = commit --amend
-    b = "!f() { git -c color.ui=always branch --sort=-committerdate --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))' | head ${1:--25} ; }; f"
+    b = "!f() { git -c color.ui=always branch --sort=-committerdate --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))' --list $@ ; }; f"
+    bb = "!f() { git -c color.ui=always branch --sort=-committerdate --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))' | head ${1:--25} ; }; f"
     bl = "!f() { git checkout $(git branch --sort=-committerdate --format='%(HEAD) %(refname:short)' | grep -v -e '^*' | head -1) ; }; f"
     get-file = "!f() { git cat-file blob $1:$2 >| $2 ; }; f"
 
@@ -17,6 +18,7 @@
     r = "!f() { git branch -M $(git rev-parse --abbrev-ref HEAD | sed -e 's,^wip-,,g' -e s,pull/[^-]*-sileht-,,g) ; }; f"
     f = "!f() { git branch -M \"$@\"; git main ; git checkout \"$@\" ; git t; }; f"
     p = "!f() { git pull --rebase origin \"$@\" ;}; f"
+    backup = "!f() { git branch $(git rev-parse --abbrev-ref HEAD)-$(date +\"%Y%m%d-%H%M\") ; } ; f"
 
     lg = "!f() { git log --graph --pretty=cshort --abbrev-commit ${@:--15} ;}; f"
     lgd = "!f() { git log --graph --pretty=cshortiso --abbrev-commit ${@:--15} ;}; f"
@@ -73,7 +75,8 @@
 	process = git-lfs filter-process
 	required = true
 [mergify-cli]
-	stack-branch-prefix = devs/sileht
+    stack-branch-prefix = devs/sileht
+    stack-create-as-draft = true
 [merge]
     conflictstyle = merge
 [merge "mergiraf"]
@@ -87,3 +90,5 @@
     cmd = nvim -c \"packadd nvim.difftool\" -c \"DiffTool $LOCAL $REMOTE\"
 [gh]
 	defaultRemote = origin
+[url "https://github.com/"]
+	insteadOf = git@github.com:

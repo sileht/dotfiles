@@ -2,7 +2,7 @@
 local ENABLED_LSP_SERVERS = {
     "bashls",
     "biome",
-    "copilot",
+    --"copilot",
     "cssls",
     "docker_compose_language_service",
     "dockerls",

@@ -47,6 +47,7 @@ return {
                 { "<S-left>", ":BufferPrevious<CR>", desc = "Buffer previous" },
                 { "<S-right>", ":BufferNext<CR>", desc = "Buffer next" },
                 { ";", "<Plug>(clever-f-reset)", desc = "clever-f-reset" },
+                { "m", require('utils').copy_current_file_path, desc = "Copy current file path with selected line numbers", mode = "v" },
 
             }
         )
