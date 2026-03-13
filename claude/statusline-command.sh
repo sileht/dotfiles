@@ -82,5 +82,13 @@ printf "%b" "${parts[*]}"
 
 # Set iTerm2 tab title and color
 printf "\n%s" "$title"
+
+# Save base title (without status prefix) for hooks to reuse
+if [ -n "$session_id" ]; then
+    base_title="${repo:-$(basename "$cwd")}"
+    [ -n "$branch" ] && base_title="${base_title} | ${branch}"
+    echo "$base_title" > "$HOME/.claude/current-step/$session_id/base_title"
+fi
+
 iterm2_set_tab_title "$title"
 iterm2_set_tab_color "${session_status:-}"

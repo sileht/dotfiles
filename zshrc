@@ -395,12 +395,12 @@ function c() {
     if [ -e ".git" ] ; then
         local claude_session=$(mergify stack session | sed -n -e '/Claude-Session-Id:/s/Claude-Session-Id: //gp')
         if [ -n "$claude_session" ]; then
-            claude --resume "$claude_session"
+            exec claude --resume "$claude_session" "$@"
         else
-            claude
+            exec claude "$@"
         fi
     else
-        claude --resume
+        exec claude "$@"
     fi
 }
 

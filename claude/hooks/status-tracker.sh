@@ -19,8 +19,16 @@ STATUS_DIR="$HOME/.claude/current-step/$SESSION_ID"
 mkdir -p "$STATUS_DIR"
 echo "$STATUS" > "$STATUS_DIR/status"
 
-# Update iTerm2 tab color immediately for instant visual feedback
+# Update iTerm2 tab color and title immediately for instant visual feedback
 source "$(dirname "$0")/iterm2-helpers.sh"
 iterm2_set_tab_color "$STATUS"
+
+# Also update the tab title if a base title was saved by the statusline
+BASE_TITLE_FILE="$STATUS_DIR/base_title"
+if [ -f "$BASE_TITLE_FILE" ]; then
+    BASE_TITLE=$(cat "$BASE_TITLE_FILE")
+    EMOJI=$(iterm2_status_emoji "$STATUS")
+    iterm2_set_tab_title "${EMOJI} ${BASE_TITLE}: ${STATUS}"
+fi
 
 exit 0
