@@ -1,7 +1,6 @@
 .credentials.json
 
 # Runtime state (not config)
-:w
 .last-cleanup
 daemon.log
 daemon-auth-cooldown
