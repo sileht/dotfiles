@@ -3,3 +3,6 @@ prod.env
 .DS_Store
 
 logging.properties
+.plan-prompt.txt
+
+**/.claude/settings.local.json

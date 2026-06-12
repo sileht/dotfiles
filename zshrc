@@ -29,7 +29,6 @@ source "${BREW_PREFIX}/share/google-cloud-sdk/completion.zsh.inc"
 export PATH="$PATH:/Users/sileht/workspace/mergify/oss/mergiraf/target/release"
 export PATH="${BREW_PREFIX}/opt/postgresql@17/bin:$PATH"
 export PATH="${BREW_PREFIX}/opt/openjdk@21/bin:$PATH"
-export PATH="${BREW_PREFIX}/opt/node@22/bin:$PATH"
 
 # me
 export PATH="$HOME/.bin:$HOME/.local/bin:$HOME/.env/bin:$HOME/.local/npmi/node_modules/.bin:$HOME/.cargo/bin:$PATH"
@@ -115,6 +114,7 @@ PIPX_PACKAGES=(
     mergify-cli
     pyrefly
     mpremote
+    pyinfra
     # poetry
     # poethepoet
     # ddev
@@ -122,6 +122,7 @@ PIPX_PACKAGES=(
 
 NPM_PACKAGES=(
     bun
+    @vantasdk/vanta-mcp-server
     tree-sitter-cli
     @github/copilot
     @biomejs/biome
@@ -196,6 +197,31 @@ _claude_indicator() {
 add-zsh-hook chpwd _claude_indicator
 add-zsh-hook precmd _claude_indicator
 _claude_indicator
+
+# Shorten window title path: keep last 2 dirs full, abbreviate others to first letter
+# e.g. ~/workspace/mergify/infra/env/prod -> ~/w/m/i/env/prod
+# Overrides the title set by `prompt pure` (registered earlier in precmd_functions).
+_shorten_path() {
+    local path="$1"
+    local -a parts=("${(@s:/:)path}")
+    local count=${#parts}
+    local result="" part
+    local i
+    for ((i=1; i<=count; i++)); do
+        (( i > 1 )) && result+="/"
+        part="${parts[$i]}"
+        if (( count - i + 1 <= 2 )) || [[ -z "$part" || "$part" == "~" ]]; then
+            result+="$part"
+        else
+            result+="${part[1]}"
+        fi
+    done
+    print -r -- "$result"
+}
+_set_window_title() {
+    print -n $'\e]0;'"$(_shorten_path "${PWD/#$HOME/~}")"$'\a'
+}
+add-zsh-hook precmd _set_window_title
 
 #########
 # WATCH #
@@ -365,7 +391,7 @@ function ii() { p=$(cat $ZVARDIR/.saved_dir_* | fzf) ; cd $p ; s ; }
 function zshexit() {
     rm -f $ZVARDIR/.saved_dir_$$
 }
-i
+#i
 add-zsh-hook chpwd s
 
 
@@ -389,21 +415,6 @@ function diffv() {
 }
 
 
-alias claude="PATH=$CLAUDE_PATH claude"
-
-function c() {
-    if [ -e ".git" ] ; then
-        local claude_session=$(mergify stack session | sed -n -e '/Claude-Session-Id:/s/Claude-Session-Id: //gp')
-        if [ -n "$claude_session" ]; then
-            exec claude --resume "$claude_session" "$@"
-        else
-            exec claude "$@"
-        fi
-    else
-        exec claude "$@"
-    fi
-}
-
 # VIM stuff
 export EDITOR=nvim
 export VISUAL=nvim
@@ -418,153 +429,39 @@ function nvim2(){
 	eval $cmd
 }
 
-function n() {
-    branch="$1"
-    [[ -z "$branch" ]] && return 130
 
-    # Find the main repository path
-    if [ -f .git ]; then
-        # We're in a worktree, resolve the main repo
-        main_repo=$(git rev-parse --path-format=absolute --git-common-dir)
-        main_repo="${main_repo%/.git}"
+function p() {
+    local projects_dir=~/workspace/mergify/manager/projects
+    local project worktrees_dir worktrees worktree
+
+    project="$(find "$projects_dir" -maxdepth 1 -mindepth 1 -type d ! -name plans -printf '%T@ %f\n' 2>/dev/null | sort -rn | sed 's|^[0-9.]* ||' | fzf --ansi)"
+    [[ -z "$project" ]] && return 130
+
+    worktrees_dir="$projects_dir/$project/worktrees"
+    [[ ! -d "$worktrees_dir" ]] && { echo "No worktrees directory: $worktrees_dir" ; return 1 ; }
+
+    worktrees=("${(@f)$(find "$worktrees_dir" -maxdepth 1 -mindepth 1 -type d -printf '%f\n' 2>/dev/null)}")
+    if (( ${#worktrees} == 0 )); then
+        echo "No worktrees in $worktrees_dir"
+        return 1
+    elif (( ${#worktrees} == 1 )); then
+        worktree="${worktrees[1]}"
     else
-        main_repo=$(git rev-parse --show-toplevel)
+        worktree="$(find "$worktrees_dir" -maxdepth 1 -mindepth 1 -type d -printf '%T@ %f\n' 2>/dev/null | sort -rn | sed 's|^[0-9.]* ||' | fzf --ansi)"
+        [[ -z "$worktree" ]] && return 130
     fi
 
-    project="$(basename ${main_repo} | sed -e 's/^base-//g')"
-    worktrees_path="${main_repo}/../${project}"
-    worktree_path="${worktrees_path}/${branch}"
-
-    git fetch origin main
-    git worktree add "$worktree_path" -b "$branch" "origin/main" || git worktree add "$worktree_path" "$branch"
-    cd $worktree_path
-    if [ "$project" == "engine" ]; then
-        cp ../test.env .
-    fi
-    if [ "$project" == "ui" ]; then
-        npm install
-    fi
-
+    cd "$worktrees_dir/$worktree"
 }
 
-function g() {
-    local base_dir=~/workspace/mergify
-    local base
-
-    # Handle GitHub PR URL: extract repo and branch, then cd to the worktree
-    if [[ "$1" =~ ^https://github\.com/([^/]+)/([^/]+)/pull/([0-9]+) ]]; then
-        local repo="${match[2]}"
-        local pr_number="${match[3]}"
-        local branch
-        branch="$(gh pr view "$pr_number" --repo "${match[1]}/${repo}" --json headRefName -q .headRefName)" || return 1
-
-        if [[ -d "$base_dir/base-$repo" ]]; then
-            base="$base_dir/base-$repo"
-        elif [[ -d "$base_dir/$repo" ]]; then
-            cd "$base_dir/$repo"
-            return
-        else
-            # Try suffix matching: e.g. "dashboard-ui" -> check dirs ending in "-ui" or named "ui"
-            local suffix="${repo##*-}"
-            if [[ "$suffix" != "$repo" ]]; then
-                if [[ -d "$base_dir/base-$suffix" ]]; then
-                    base="$base_dir/base-$suffix"
-                elif [[ -d "$base_dir/$suffix" ]]; then
-                    cd "$base_dir/$suffix"
-                    return
-                fi
-            fi
-            if [[ -z "$base" ]]; then
-                echo "No project directory found for '$repo'"
-                return 1
-            fi
-        fi
-
-        local dir
-        # Try exact branch name match
-        dir="$(git -C "$base" worktree list | grep "\[${branch}\]" | awk '{print $1}')"
-        # Try upstream tracking branch
-        if [[ -z "$dir" ]]; then
-            local local_branch
-            local_branch="$(git -C "$base" for-each-ref --format='%(refname:short) %(upstream:short)' refs/heads/ | awk -v target="origin/${branch}" '$2 == target {print $1; exit}')"
-            [[ -n "$local_branch" ]] && dir="$(git -C "$base" worktree list | grep "\[${local_branch}\]" | awk '{print $1}')"
-        fi
-        # Try extracting worktree name from devs/<user>/<name>/<change-id> pattern
-        if [[ -z "$dir" && "$branch" =~ ^devs/[^/]+/([^/]+)/ ]]; then
-            dir="$(git -C "$base" worktree list | grep "\[${match[1]}\]" | awk '{print $1}')"
-        fi
-        if [[ -n "$dir" ]]; then
-            cd "$dir"
-        else
-            echo "No worktree found for branch '$branch' (PR #$pr_number)"
-            return 1
-        fi
-        return
-    fi
-
-    # If cwd is already inside a worktree, use its bare repo as the base
-    local git_common_dir="$(git rev-parse --git-common-dir 2>/dev/null)"
-    if [[ -n "$git_common_dir" && "$git_common_dir" != ".git" ]]; then
-        base="${git_common_dir%/.git}"
-        base="${base:A}"  # resolve to absolute path
-    else
-        # List all projects: strip "base-" prefix for worktree projects, show others as-is
-        local choice
-        if [[ -n "$1" ]]; then
-            local matches=("${(@f)$(find "$base_dir" -maxdepth 1 -type d -name "*${1}*" ! -name "$(basename "$base_dir")" 2>/dev/null)}")
-            if (( ${#matches} == 0 )); then
-                echo "No directory matching '$1'"
-                return 1
-            elif (( ${#matches} == 1 )); then
-                choice="${matches[1]##*/}"
-                choice="${choice#base-}"
-            else
-                choice="$(printf '%s\n' "${matches[@]}" | while read -r d; do printf '%s %s\n' "$(stat -c '%Y' "$d")" "$d"; done | sort -rn | sed 's|^[0-9]* .*/||; s/^base-//' | awk '!seen[$0]++' | fzf --ansi)"
-                [[ -z "$choice" ]] && return 130
-            fi
-        else
-            choice="$(find "$base_dir" -maxdepth 1 -mindepth 1 -type d -printf '%T@ %f\n' 2>/dev/null | sort -rn | sed 's|^[0-9.]* ||; s/^base-//' | awk '!seen[$0]++' | fzf --ansi)"
-            [[ -z "$choice" ]] && return 130
-        fi
-
-        # Determine if this is a base-* (worktree) project or a simple directory
-        if [[ -d "$base_dir/base-$choice" ]]; then
-            base="$base_dir/base-$choice"
-        else
-            cd "$base_dir/$choice"
-            return
-        fi
-    fi
-
-    local branch dir
-    local worktrees="$(git -C "$base" worktree list | grep -v "^${base} ")"
-    local branches=("${(@f)$(echo "$worktrees" | sed -n 's/.*\[\(.*\)\]/\1/p')}")
-    branch="$(git -C "$base" b "${branches[@]}" | fzf --ansi | awk '{print $1}')"
-
-    [[ -z "$branch" ]] && return 130
-
-    dir="$(echo "$worktrees" | grep "\[${branch}\]" | awk '{print $1}')"
-    [[ -n "$dir" ]] && cd "$dir"
-}
-
-function bb() {
-    local branch dir
-    branch="$(git bb | fzf --ansi | sed 's/^*//g'| awk '{print $1}')"
-    [[ -z "$branch" ]] && return 130
-
-    dir="$(cd git worktree list | grep "\[${branch}\]" | awk '{print $1}')"
-    if [[ -n "$dir" ]]; then
-        cd "$dir" || return
-    else
-        git checkout "$branch"
-    fi
-}
-
+alias c="claude"
+alias m="claude -c --name Manager"
 alias vim="nvim"
 alias vimdiff="nvim -d"
 alias vi="nvim"
 alias svi="sudo -E nvim"
 
+alias restart-pr-review='launchctl bootout gui/$(id -u) ~/Library/LaunchAgents/com.mergify.pr-review.plist; launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.mergify.pr-review.plist'
 alias poe="uv run poe"
 alias li="linear-cli"
 
@@ -718,6 +615,3 @@ if [[ $1 == eval ]]; then
     "$@"
     set --
 fi
-
-# Added by Antigravity
-export PATH="/Users/sileht/.antigravity/antigravity/bin:$PATH"

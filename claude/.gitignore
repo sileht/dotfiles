@@ -1,0 +1,12 @@
+.credentials.json
+
+# Runtime state (not config)
+:w
+.last-cleanup
+daemon.log
+daemon-auth-cooldown
+daemon-auth-status.json
+daemon/
+jobs/
+sessions/
+skills-backup/

@@ -13,7 +13,7 @@
     get-file = "!f() { git cat-file blob $1:$2 >| $2 ; }; f"
 
     pr = "!f() { git r && git check && mergify stack push \"$@\"; }; f"
-    check = "!f() { if test -f .pre-commit-config.yaml; then pre-commit run --from-ref $(git diverge-commit) --to-ref HEAD; fi ; }; f"
+
     t = "!f() { git branch --set-upstream-to=origin/${1:-main}; }; f"
     r = "!f() { git branch -M $(git rev-parse --abbrev-ref HEAD | sed -e 's,^wip-,,g' -e s,pull/[^-]*-sileht-,,g) ; }; f"
     f = "!f() { git branch -M \"$@\"; git main ; git checkout \"$@\" ; git t; }; f"
@@ -44,6 +44,7 @@
 
 [core]
 	excludesfile = ~/.gitignore-global
+	pager = delta
     #pager = git-split-diffs --color | less -RFX
 [push]
 	default = simple
@@ -78,7 +79,7 @@
     stack-branch-prefix = devs/sileht
     stack-create-as-draft = true
 [merge]
-    conflictstyle = merge
+	conflictStyle = zdiff3
 [merge "mergiraf"]
     name = mergiraf
     driver = mergiraf merge --git %O %A %B -s %S -x %X -y %Y -p %P
@@ -92,3 +93,8 @@
 	defaultRemote = origin
 [url "https://github.com/"]
 	insteadOf = git@github.com:
+[interactive]
+	diffFilter = delta --color-only
+[delta]
+	navigate = true
+	dark = true

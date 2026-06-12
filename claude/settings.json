@@ -1,10 +1,14 @@
 {
   "env": {
-    "CLAUDE_CODE_DISABLE_TERMINAL_TITLE": "1",
+    "CLAUDE_CODE_DISABLE_TERMINAL_TITLE": "0",
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
   },
   "permissions": {
     "allow": [
+      "mcp__plugin_linear_linear__list_issue_statuses",
+      "mcp__plugin_linear_linear__list_projects",
+      "mcp__plugin_linear_linear__get_issue",
+      "Bash(gh search:*)",
       "Bash(* --help)",
       "Bash(* --version)",
       "Bash(mergify:*)",
@@ -16,6 +20,8 @@
       "Bash(gh:*)",
       "Bash(ls:*)",
       "Bash(git:*)",
+      "Bash(git add:*)",
+      "Bash(CI=true npx vitest run:*)",
       "Bash(mv:*)",
       "Bash(echo:*)",
       "Bash(sed:*)",
@@ -37,7 +43,9 @@
       "Bash(chmod:*)",
       "Bash(lsof:*)",
       "Bash(make:*)",
-      "Bash(PORT=:*)",
+      "Bash(log:*)",
+      "Bash(/usr/bin/log:*)",
+      "Bash(xcodebuild:*)",
       "Bash(find:*)",
       "Bash(docker:*)",
       "Bash(poetry:*)",
@@ -53,8 +61,31 @@
       "WebFetch(domain:mergify.com)",
       "Skill(commit-commands:commit)",
       "Skill(gh-fix-ci)",
-      "Skill(gh-address-reviews)"
-    ]
+      "Skill(gh-address-reviews)",
+      "Skill(gh-fix-pr)",
+      "mcp__plugin_linear_linear__list_teams",
+      "mcp__plugin_linear_linear__save_issue"
+    ],
+    "deny": [
+      "Read(.creds)",
+      "Read(.creds-*)",
+      "Read(id_rsa)",
+      "Read(id_ed25519)",
+      "Read(*.tfstate)",
+      "Read(.aws/credentials)",
+      "Read(.aws/config)",
+      "Read(.docker/config.json)",
+      "Read(.kube/config)",
+      "Read(.npmrc)",
+      "Read(.pypirc)",
+      "Read(.git-credentials)",
+      "Read(.netrc)",
+      "Read(*.pem)",
+      "Read(*.key)",
+      "Read(*.p12)",
+      "Read(*.crt)"
+    ],
+    "defaultMode": "auto"
   },
   "hooks": {
     "SessionStart": [
@@ -143,25 +174,38 @@
     "command": "/Users/sileht/.claude/statusline-command.sh"
   },
   "enabledPlugins": {
+    "superpowers@claude-plugins-official": false,
     "typescript-lsp@claude-plugins-official": true,
-    "code-simplifier@claude-plugins-official": true,
-    "code-review@claude-plugins-official": true,
-    "feature-dev@claude-plugins-official": true,
-    "commit-commands@claude-plugins-official": true,
-    "pr-review-toolkit@claude-plugins-official": true,
-    "explanatory-output-style@claude-plugins-official": true,
-    "linear@claude-plugins-official": true,
-    "learning-output-style@claude-plugins-official": true,
-    "sentry@claude-plugins-official": true,
-    "slack@claude-plugins-official": true,
-    "claude-md-management@claude-plugins-official": true,
+    "mergify-internal@mergify-internal": true,
     "claude-code-setup@claude-plugins-official": true,
-    "hookify@claude-plugins-official": true,
-    "superpowers@claude-plugins-official": true,
-    "frontend-design@claude-plugins-official": true
+    "code-review@claude-plugins-official": true,
+    "pr-review-toolkit@claude-plugins-official": true,
+    "visual-explainer@visual-explainer-marketplace": true
+  },
+  "extraKnownMarketplaces": {
+    "addy-agent-skills": {
+      "source": {
+        "source": "github",
+        "repo": "addyosmani/agent-skills"
+      }
+    },
+    "mergify-internal": {
+      "source": {
+        "source": "git",
+        "url": "https://github.com/Mergifyio/skills.git"
+      }
+    },
+    "visual-explainer-marketplace": {
+      "source": {
+        "source": "github",
+        "repo": "nicobailon/visual-explainer"
+      }
+    }
   },
   "effortLevel": "high",
   "skipDangerousModePermissionPrompt": true,
+  "agentPushNotifEnabled": true,
+  "skipAutoPermissionPrompt": true,
   "feedbackSurveyState": {
     "lastShownTime": 1753962254123
   }

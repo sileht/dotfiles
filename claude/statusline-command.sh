@@ -14,8 +14,33 @@ session_id=$(echo "$input" | jq -r '.session_id // empty')
 # Shorten home directory to ~
 cwd="${cwd/#$HOME/~}"
 
+# Keep original path for git operations
+cwd_real="${cwd/#\~/$HOME}"
+
+# Shorten path: keep last 2 dirs full, abbreviate others to first letter
+shorten_path() {
+    local path="$1"
+    IFS='/' read -ra parts <<< "$path"
+    local count=${#parts[@]}
+    local result=""
+    for ((i=0; i<count; i++)); do
+        if [ $i -gt 0 ]; then
+            result+="/"
+        fi
+        if [ $((count - i)) -le 2 ]; then
+            result+="${parts[$i]}"
+        elif [ "${parts[$i]}" = "~" ] || [ -z "${parts[$i]}" ]; then
+            result+="${parts[$i]}"
+        else
+            result+="${parts[$i]:0:1}"
+        fi
+    done
+    echo "$result"
+}
+cwd=$(shorten_path "$cwd")
+
 # Get git branch (skip optional locks for performance)
-branch=$(git -C "${cwd/#\~/$HOME}" symbolic-ref --short HEAD 2>/dev/null)
+branch=$(git -C "$cwd_real" symbolic-ref --short HEAD 2>/dev/null)
 
 # Colors
 CYAN='\033[36m'
@@ -24,7 +49,7 @@ YELLOW='\033[33m'
 RESET='\033[0m'
 
 # Get GitHub repo name from git remote (org/repo), fallback to basename
-repo=$(git -C "${cwd/#\~/$HOME}" remote get-url origin 2>/dev/null | sed 's/\.git$//' | sed -E 's#.+[:/][^/]+/([^/]+)$#\1#')
+repo=$(git -C "$cwd_real" remote get-url origin 2>/dev/null | sed 's/\.git$//' | sed -E 's#.+[:/][^/]+/([^/]+)$#\1#')
 title="${repo:-$(basename "$cwd")}"
 # Build status line parts
 parts=()
@@ -36,7 +61,7 @@ parts+=("${CYAN}${cwd}${RESET}")
 if [ -n "$branch" ]; then
     title="${title} | ${branch}"
     dirty=""
-    if ! git -C "${cwd/#\~/$HOME}" diff --quiet 2>/dev/null || ! git -C "${cwd/#\~/$HOME}" diff --cached --quiet 2>/dev/null; then
+    if ! git -C "$cwd_real" diff --quiet 2>/dev/null || ! git -C "$cwd_real" diff --cached --quiet 2>/dev/null; then
         title="${title}*"
         dirty="${YELLOW}*${RESET}"
     fi
@@ -46,11 +71,10 @@ fi
 # Add model name
 parts+=("[$model]")
 
-# Add context remaining if available
-if [ -n "$remaining" ]; then
-    # Round to integer
-    remaining_int=$(printf "%.0f" "$remaining")
-    parts+=("{ctx:${remaining_int}%}")
+# Add session cost if available
+cost=$(echo "$input" | jq -r '.cost.total_cost_usd // empty')
+if [ -n "$cost" ]; then
+    parts+=("[${GREEN}$(printf '$%.2f' "$cost")${RESET}]")
 fi
 
 # Add output style if not default
@@ -66,29 +90,27 @@ fi
 # Load shared iTerm2 helpers
 source "$HOME/.claude/hooks/iterm2-helpers.sh"
 
-# Add session status to title + iTerm2 tab color
-session_status=""
-if [ -n "$session_id" ]; then
-    status_file="$HOME/.claude/current-step/$session_id/status"
-    if [ -f "$status_file" ]; then
-        session_status=$(cat "$status_file")
-        emoji=$(iterm2_status_emoji "$session_status")
-        title="${emoji} ${title}: ${session_status}"
-    fi
-fi
-
 # Join parts with space and print
 printf "%b" "${parts[*]}"
 
-# Set iTerm2 tab title and color
-printf "\n%s" "$title"
-
 # Save base title (without status prefix) for hooks to reuse
 if [ -n "$session_id" ]; then
-    base_title="${repo:-$(basename "$cwd")}"
-    [ -n "$branch" ] && base_title="${base_title} | ${branch}"
-    echo "$base_title" > "$HOME/.claude/current-step/$session_id/base_title"
+    title="${repo:-$(basename "$cwd")}"
+    [ -n "$branch" ] && title="$title | $branch"
+    subtitle=""
+    #if [ -n "$branch" ]; then
+    #    title="${branch}"
+    #    subtitle="${cwd}"
+    #else
+    #    title="${cwd}"
+    #    subtitle=":"
+    #fi
+    STATUS_DIR="$HOME/.claude/current-step/$session_id"
+    mkdir -p "$STATUS_DIR"
+    echo "$title" > "$STATUS_DIR/title"
+    echo "$subtitle" > "$STATUS_DIR/subtitle"
+    echo "$repo" > "$STATUS_DIR/repo"
+    echo
+    iterm2_set_tab "$session_id"
 fi
-
-iterm2_set_tab_title "$title"
-iterm2_set_tab_color "${session_status:-}"
+exit 0

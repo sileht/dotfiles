@@ -1,0 +1,67 @@
+#!/bin/bash
+# git-check: Run pre-commit checks per commit diverging from the fork point.
+# Produces a per-commit report showing pass/fail status.
+
+set -euo pipefail
+
+# Only run if a pre-commit config exists
+if [ ! -f .pre-commit-config.yaml ]; then
+    echo "No .pre-commit-config.yaml found, skipping checks."
+    exit 0
+fi
+
+fork_point=$(git diverge-commit)
+commits=$(git rev-list --reverse "${fork_point}..HEAD")
+
+if [ -z "$commits" ]; then
+    echo "No commits diverge from the fork point."
+    exit 0
+fi
+
+commit_count=$(echo "$commits" | wc -l | tr -d ' ')
+echo "Running pre-commit on $commit_count commit(s) since fork point..."
+echo ""
+
+failed_commits=()
+i=0
+
+for commit in $commits; do
+    i=$((i + 1))
+    short=$(git rev-parse --short "$commit")
+    subject=$(git log -1 --format='%s' "$commit")
+
+    if [ "$commit" = "$(git rev-parse HEAD)" ]; then
+        from_ref="${commit}^"
+        to_ref="HEAD"
+    else
+        from_ref="${commit}^"
+        to_ref="$commit"
+    fi
+
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    echo "[$i/$commit_count] $short — $subject"
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+    if pre-commit run --from-ref "$from_ref" --to-ref "$to_ref"; then
+        echo "✓ PASSED"
+    else
+        echo "✗ FAILED"
+        failed_commits+=("$short $subject")
+    fi
+    echo ""
+done
+
+echo "═══════════════════════════════════════════════"
+echo "SUMMARY: $commit_count commit(s) checked"
+echo "═══════════════════════════════════════════════"
+
+if [ ${#failed_commits[@]} -eq 0 ]; then
+    echo "All commits passed pre-commit checks."
+    exit 0
+else
+    echo "${#failed_commits[@]} commit(s) FAILED:"
+    for entry in "${failed_commits[@]}"; do
+        echo "  ✗ $entry"
+    done
+    exit 1
+fi
